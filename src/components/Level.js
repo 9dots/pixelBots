@@ -1,23 +1,27 @@
 import element from 'vdux/element'
 import {Flex} from 'vdux-ui'
 import Row from './Row'
+import Turtle from './Turtle'
 import reduce from '@f/reduce'
 
 function render ({props}) {
-  let {turtles, numRows = 5, numColumns = 5, painted = []} = props
+  let {turtles, numRows = 5, numColumns = 5, painted = [], active, height} = props
   let rows = []
-  let turtleLoc = reduce((cur, turtle) => {
-    cur.push(turtle.location)
-    return cur
-  }, [], turtles)
-
+  let turtleArr = []
+  const size = parseInt(height) / numRows + 'px'
 
   for (var i = 0; i < numRows; i++) {
-    rows.push(<Row painted={getPainted(i)} active={getActive(i)} num={numColumns}/>)
+    rows.push(<Row size={size} height={height} active={active} turtles={turtles} row={i} painted={getPainted(i)} num={numColumns}/>)
   }
+
+  for (var turtle in turtles) {
+    turtleArr.push(<Turtle cellSize={size} active={active} turtle={turtles[turtle]} id={turtle}/>)
+  }
+
   return (
-    <Flex column>
+    <Flex tall relative column>
       {rows}
+      {turtleArr}
     </Flex>
   )
 
@@ -28,15 +32,6 @@ function render ({props}) {
       }
       return cur
     }, [])
-  }
-
-  function getActive (idx) {
-    for (var i = 0; i < turtleLoc.length; i++) {
-      if (idx === turtleLoc[i][0]) {
-        return turtleLoc[i][1]
-      }
-      return false
-    }
   }
 }
 

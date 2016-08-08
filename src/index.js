@@ -8,17 +8,22 @@ import reducer from './reducer'
 import location from 'redux-effects-location'
 import effects from 'redux-effects'
 import flow from 'redux-flo'
+import codeRunner from './middleware/codeRunner'
+import theme from './theme'
 
 var app = require('./app').default
 
 const initialState = {
   url: '/',
-  levelSize: [12, 12],
+  levelSize: [4, 4],
   painted: [],
+  active: 1,
   turtles: {
     1: {
-      location: [11, 0],
-      dir: 0
+      location: [3, 0],
+      dir: 0,
+      sequence: [],
+      rot: 0
     }
   }
 }
@@ -40,12 +45,13 @@ const {subscribe, render, replaceReducer} = vdux({
     flow(),
     effects,
     location(),
+    codeRunner()
   ]
 })
 
 domready(() => {
   subscribe((state) => {
-    render(app(state))
+    render(app(state), {uiTheme: theme})
   })
 })
 
