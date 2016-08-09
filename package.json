@@ -26,7 +26,8 @@
     "redux-flo": "^2.2.1",
     "vdux": "^2.4.9",
     "vdux-containers": "^1.1.18",
-    "vdux-ui": "^1.2.23"
+    "vdux-ui": "^1.2.23",
+    "yoco": "^1.6.2"
   },
   "devDependencies": {
     "babelify": "^7.3.0",

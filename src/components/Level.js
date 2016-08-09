@@ -2,12 +2,17 @@ import element from 'vdux/element'
 import {Flex} from 'vdux-ui'
 import Row from './Row'
 import Turtle from './Turtle'
-import reduce from '@f/reduce'
+import {reset} from '../actions'
+
+function onCreate () {
+  return reset()
+}
 
 function render ({props}) {
   let {turtles, numRows = 5, numColumns = 5, painted = [], active, height} = props
   let rows = []
   let turtleArr = []
+
   const size = parseInt(height) / numRows + 'px'
 
   for (var i = 0; i < numRows; i++) {
@@ -36,5 +41,6 @@ function render ({props}) {
 }
 
 export default {
+  onCreate,
   render
 }

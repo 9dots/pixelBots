@@ -4,12 +4,13 @@ import {setActive} from '../actions'
 
 function render ({props}) {
   let {turtle, active, id, cellSize} = props
-  var deg = 0
 
-  if (turtle) {
-    let {rot} = turtle
-    deg = rot * 90
+  if (Object.keys(turtle.current).length < 1) {
+    return (<div/>)
   }
+
+  let {rot} = turtle.current
+  let deg = rot * 90
 
   let turtleSize = parseInt(cellSize) / 2 + 'px'
   let pos = getPosition()
@@ -36,8 +37,8 @@ function render ({props}) {
     const MULT = parseInt(cellSize)
     const OFFSET = (MULT - parseInt(turtleSize)) / 2
     return {
-      top: turtle.location[0] * MULT + OFFSET,
-      left: turtle.location[1] * MULT + OFFSET
+      top: turtle.current.location[0] * MULT + OFFSET,
+      left: turtle.current.location[1] * MULT + OFFSET
     }
   }
 }

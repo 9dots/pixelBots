@@ -8,7 +8,7 @@ const turtleErase = createAction('TURTLE_ERASE', (id) => id)
 const turtleMove = createAction('TURTLE_MOVE', (id, location) => ({location, id}))
 const setActive = createAction('SET_TURTLE_ACTIVE', (id) => id)
 const addCode = createAction('ADD_CODE', (id, fn) => ({id, fn}))
-const reset = createAction('RESET', (id) => id)
+const reset = createAction('RESET')
 const removeLine = createAction('REMOVE_LINE', (id, idx) => ({id, idx}))
 const startRun = createAction('START_RUN')
 const stopRun = createAction('STOP_RUN')
@@ -16,18 +16,18 @@ const moveError = createAction('MOVE_ERROR')
 const setActiveLine = createAction('SET_ACTIVE_LINE', (idx) => idx)
 
 export {
-  turtleForward,
   turtleTurnRight,
   turtleTurnLeft,
+  turtleForward,
+  setActiveLine,
   turtleErase,
   turtlePaint,
+  removeLine,
   turtleMove,
   setActive,
-  addCode,
-  reset,
-  removeLine,
+  moveError,
   startRun,
   stopRun,
-  setActiveLine,
-  moveError
+  addCode,
+  reset
 }

@@ -1,6 +1,6 @@
 import createAction from '@f/create-action'
-import sleep from '@f/sleep'
 import autoYield from 'auto-yield'
+import sleep from '@f/sleep'
 
 import {
   turtleForward,
@@ -46,7 +46,7 @@ function codeRunner () {
 
     return (next) => (action) => {
       let state = getState()
-      if (action.type === runCode.type && !getState().running) {
+      if (action.type === runCode.type && !state.running) {
         const turtles = state.turtles
         for (var id in turtles) {
           dispatch(runner(turtles[id], id))
@@ -55,11 +55,11 @@ function codeRunner () {
 
       if (action.type === turtleForward.type) {
         const turtle = state.turtles[action.payload]
-        const location = getNewLocation(turtle.location, turtle.dir)
+        const location = getNewLocation(turtle.current.location, turtle.current.dir)
         if (checkBounds(location, state.levelSize)) {
           dispatch(turtleMove(action.payload, location))
         } else {
-          dispatch([stopRun() ,moveError()])
+          dispatch([stopRun(), moveError()])
         }
       }
 

@@ -20,20 +20,23 @@ const initialState = {
   active: 1,
   turtles: {
     1: {
-      location: [3, 0],
-      dir: 0,
-      sequence: [],
-      rot: 0
+      initial: {
+        location: [3, 0],
+        dir: 0,
+        rot: 0
+      },
+      current: {},
+      sequence: []
     }
   }
 }
 
-const config = {
-  apiKey: 'AIzaSyA1Ib5i5HZPCxnKp4ITiUoy5VEKaLMdsDY',
-  authDomain: 'play-ev3.firebaseapp.com',
-  databaseURL: 'https://play-ev3.firebaseio.com',
-  storageBucket: 'play-ev3.appspot.com'
-}
+// const config = {
+//   apiKey: 'AIzaSyA1Ib5i5HZPCxnKp4ITiUoy5VEKaLMdsDY',
+//   authDomain: 'play-ev3.firebaseapp.com',
+//   databaseURL: 'https://play-ev3.firebaseio.com',
+//   storageBucket: 'play-ev3.appspot.com'
+// }
 /**
  * App
  */

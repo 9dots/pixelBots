@@ -1,18 +1,18 @@
 import equal from '@f/equal'
+import map from '@f/map'
 
 import {
   turtleTurnRight,
   turtleTurnLeft,
-  turtleForward,
   turtlePaint,
   turtleErase,
   turtleMove,
   setActive,
-  runCode,
   addCode,
   removeLine,
   startRun,
   stopRun,
+  reset,
   setActiveLine
 } from './actions'
 
@@ -26,7 +26,10 @@ function reducer (state, action) {
           ...state.turtles,
           [id]: {
             ...state.turtles[id],
-            location
+            current: {
+              ...state.turtles[id].current,
+              location
+            }
           }
         }
       }
@@ -38,24 +41,30 @@ function reducer (state, action) {
           ...state.turtles,
           [id]: {
             ...state.turtles[id],
-            dir: (state.turtles[id].dir + 1) % 4,
-            rot: state.turtles[id].rot + 1
+            current: {
+              ...state.turtles[id].current,
+              dir: (state.turtles[id].current.dir + 1) % 4,
+              rot: state.turtles[id].current.rot + 1
+            }
           }
         }
       }
     case turtleTurnLeft.type:
-        var id = action.payload
-        return {
-          ...state,
-          turtles: {
-            ...state.turtles,
-            [id]: {
-              ...state.turtles[id],
-              dir: (state.turtles[id].dir + 3) % 4,
-              rot: state.turtles[id].rot - 1
+      var id = action.payload
+      return {
+        ...state,
+        turtles: {
+          ...state.turtles,
+          [id]: {
+            ...state.turtles[id],
+            current: {
+              ...state.turtles[id].current,
+              dir: (state.turtles[id].current.dir + 3) % 4,
+              rot: state.turtles[id].current.rot - 1
             }
           }
         }
+      }
     case turtlePaint.type:
       var id = action.payload
       var loc = state.turtles[id].location
@@ -115,6 +124,15 @@ function reducer (state, action) {
       return {
         ...state,
         activeLine: action.payload
+      }
+    case reset.type:
+      return {
+        ...state,
+        running: false,
+        turtles: map((turtle) => ({
+          ...turtle,
+          current: turtle.initial
+        }), state.turtles)
       }
   }
   return state
