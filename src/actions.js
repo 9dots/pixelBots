@@ -3,7 +3,7 @@ import createAction from '@f/create-action'
 const turtleForward = createAction('TURTLE_FORWARD', (id) => id)
 const turtleTurnRight = createAction('TURTLE_TURN_RIGHT', (id) => id)
 const turtleTurnLeft = createAction('TURTLE_TURN_LEFT', (id) => id)
-const turtlePaint = createAction('TURTLE_PAINT', (id) => id)
+const turtlePaint = createAction('TURTLE_PAINT', (id, color) => ({id, color}))
 const turtleErase = createAction('TURTLE_ERASE', (id) => id)
 const turtleMove = createAction('TURTLE_MOVE', (id, location) => ({location, id}))
 const setActive = createAction('SET_TURTLE_ACTIVE', (id) => id)

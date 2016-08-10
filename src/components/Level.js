@@ -31,12 +31,12 @@ function render ({props}) {
   )
 
   function getPainted (idx) {
-    return painted.reduce((cur, loc) => {
-      if (idx === loc[0]) {
-        cur.push(loc[1])
+    return painted.reduce((cur, paint) => {
+      if (idx === paint.loc[0]) {
+        cur[paint.loc[1]] = paint.color
       }
       return cur
-    }, [])
+    }, {})
   }
 }
 

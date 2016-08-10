@@ -1,25 +1,38 @@
 import element from 'vdux/element'
-import {Block, Text} from 'vdux-ui'
+import {Block} from 'vdux-ui'
+import CodeIcon from './CodeIcon'
 import {removeLine} from '../actions'
 
 function render ({props}) {
   const {turtles, active, activeLine, running} = props
+  const names = {
+    forward: 'arrow_upward',
+    turnRight: 'rotate_right',
+    turnLeft: 'rotate_left',
+    paint: 'brush'
+  }
 
   const code = turtles[active].sequence.map((line, i) => {
     const isActive = activeLine === i && running
-    return <Text
-      wide
-      p='0 2px'
-      background={isActive ? '#8fa5c9' : 'transparent'}
+    const icon = line.split('\(')[0]
+    const color = line.match(/\'([a-z]*?)\'/gi)
+
+    return <CodeIcon
+      iconName={names[icon]}
+      bgColor={isActive ? '#8fa5c9' : 'white'}
+      color={icon === 'paint' ? color[0].replace(/\'/gi, '') : 'darkblue'}
+      fs='40px'
+      p='15px'
       cursor='pointer'
-      onClick={() => removeLine(active, i)}>
-        {line}
-      </Text>
+      m='2px'
+      onClick={() => removeLine(active, i)}/>
   })
 
   return (
-    <Block wide p='22px' fs='22px' fontFamily='Monaco' color='white' column>
-      {code}
+    <Block wide tall overflowY='scroll'>
+      <Block p='22px' fs='22px' fontFamily='Monaco' color='white' column>
+        {code}
+      </Block>
     </Block>
   )
 }

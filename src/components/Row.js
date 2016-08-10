@@ -3,11 +3,11 @@ import Cell from './cell'
 import {Flex} from 'vdux-ui'
 
 function render ({props}) {
-  const {num, active, painted, row, turtles, size} = props
+  const {painted, row, size} = props
   let cells = []
 
-  for (var i=0; i < props.num; i++) {
-    cells.push(<Cell size={size} coordinates={[row, i]} color={checkPainted(i) > -1 ? 'lightblue' : 'white'}/>)
+  for (var i = 0; i < props.num; i++) {
+    cells.push(<Cell size={size} coordinates={[row, i]} color={getColor(i)}/>)
   }
 
   return (
@@ -16,8 +16,8 @@ function render ({props}) {
     </Flex>
   )
 
-  function checkPainted (idx) {
-    return painted.indexOf(idx)
+  function getColor (idx) {
+    return painted[idx] ? painted[idx] : 'white'
   }
 }
 

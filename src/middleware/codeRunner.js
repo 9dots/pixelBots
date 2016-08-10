@@ -20,18 +20,13 @@ const TIMEOUT = 500
 
 function codeRunner () {
   return ({getState, dispatch}) => {
-    const turnLeft = (id) => turtleTurnLeft(id)
-    const turnRight = (id) => turtleTurnRight(id)
-    const setLine = (num) => setActiveLine(num)
-    const forward = (id) => turtleForward(id)
-    const paint = (id) => turtlePaint(id)
-    const erase = (id) => turtleErase(id)
-    const start = () => startRun()
-    const stop = () => stopRun()
-
     function runner (turtle, id) {
       let {sequence} = turtle
-      sequence = sequence.map((line, i) => `${line.split('\(')[0]}(${id})\nsetLine(${i})\nsleep(${TIMEOUT})`)
+      sequence = sequence.map((line, i) => {
+        return `${line}
+        setLine(${i})
+        sleep(${TIMEOUT})`
+      })
       let code = autoYield(sequence.join('\n'), ['forward', 'turnLeft', 'turnRight', 'paint', 'erase', 'sleep', 'setLine'])
       let fn = `var sleep = require('@f/sleep')
       function * codeRunner () {
@@ -41,6 +36,15 @@ function codeRunner () {
       }
       codeRunner()
       `
+      const turnLeft = () => turtleTurnLeft(id)
+      const turnRight = () => turtleTurnRight(id)
+      const setLine = (num) => setActiveLine(num)
+      const forward = () => turtleForward(id)
+      const paint = (color) => turtlePaint(id, color)
+      const erase = () => turtleErase(id)
+      const start = () => startRun()
+      const stop = () => stopRun()
+
       return eval(fn)
     }
 

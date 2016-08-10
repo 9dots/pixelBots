@@ -66,12 +66,13 @@ function reducer (state, action) {
         }
       }
     case turtlePaint.type:
-      var id = action.payload
-      var loc = state.turtles[id].location
+      var {id, color} = action.payload
+      var loc = state.turtles[id].current.location
+      console.log(id, color)
 
       return {
         ...state,
-        painted: [...state.painted, loc]
+        painted: [...state.painted, {loc, color}]
       }
     case turtleErase.type:
       var id = action.payload
@@ -129,6 +130,7 @@ function reducer (state, action) {
       return {
         ...state,
         running: false,
+        painted: [],
         turtles: map((turtle) => ({
           ...turtle,
           current: turtle.initial
