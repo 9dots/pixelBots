@@ -1,10 +1,10 @@
+/** @jsx element */
+
 import element from 'vdux/element'
 import {Block} from 'vdux-ui'
-import Turtle from './Turtle'
-import equal from '@f/equal'
 
 function render ({props}) {
-  const {h = '50px', w = '50px', color = 'white', turtles, coordinates, active, size} = props
+  const {color = 'white', size} = props
 
   return (
     <Block
