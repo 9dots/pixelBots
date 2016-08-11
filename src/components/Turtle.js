@@ -23,6 +23,7 @@ function render ({props}) {
       borderColor={'red'}
       transform={`rotate(${deg}deg)`}
       transition='all .4s ease-in-out'
+      boxShadow='0 0 1px 2px rgba(0,0,0,0.2)'
       left={pos.left}
       top={pos.top}
       h={turtleSize}

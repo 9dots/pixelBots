@@ -30,7 +30,7 @@ function render ({props}) {
 
   return (
     <Block wide tall overflowY='scroll'>
-      <Block p='22px' fs='22px' fontFamily='Monaco' color='white' column>
+      <Block p='15px' fs='22px' fontFamily='Monaco' color='white' column>
         {code}
       </Block>
     </Block>

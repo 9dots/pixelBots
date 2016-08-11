@@ -7,9 +7,10 @@ const setColor = createAction('SET_COLOR')
 
 const palette = [
   'lightblue',
-  'lightgreen',
+  'green',
   'red',
-  'brown'
+  'brown',
+  'black'
 ]
 
 function initialState () {
@@ -43,6 +44,7 @@ function render ({props, state, local}) {
           p='5px'
           m='5px'
           bgColor={name}
+          boxShadow='0 0 2px 2px rgba(0,0,0,0.2)'
           onClick={[local(() => setColor(name))]}/>
         )}
       </ColorDropdown>
