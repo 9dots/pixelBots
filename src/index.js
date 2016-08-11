@@ -15,8 +15,9 @@ var app = require('./app').default
 
 const initialState = {
   url: '/',
-  levelSize: [4, 4],
+  levelSize: [5, 6],
   painted: [],
+  initialPainted: [{loc: [2, 2], color: 'lightblue'}],
   active: 1,
   turtles: {
     1: {

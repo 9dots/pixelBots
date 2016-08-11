@@ -4,9 +4,9 @@ import {runCode} from '../middleware/codeRunner'
 import {reset} from '../actions'
 
 function render ({props}) {
-  const {h, running} = props
+  const {h, wide, running} = props
   return (
-    <Block h={h} align='center center' bgColor='white' boxShadow='0px 3px 2px -2px rgba(0,0,0,0.3)'>
+    <Block h={h} wide={wide} align='center center' bgColor='white' boxShadow='0px 3px 2px -2px rgba(0,0,0,0.3)'>
       <Block w='50%' borderRight='1px solid rgba(0,0,0,0.3)'>
         <Button disabled={running} wide icon='play_arrow' fs='24px' bgColor='transparent' color='primary' p='15px' onClick={runCode}/>
       </Block>
