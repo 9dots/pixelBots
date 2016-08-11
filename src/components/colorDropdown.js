@@ -1,3 +1,5 @@
+/** @jsx element */
+
 /**
  * Imports
  */
@@ -26,6 +28,7 @@ function render ({props, state, local, children}) {
   const {open} = state
   const {btn, closeOnEsc = true, disabled} = props
   const api = {toggle: local(toggle), close: local(close)}
+  console.log('children', children)
 
   if (props.ref) props.ref(api)
   if (!props.btn) throw new Error('Forgot to pass required `btn` prop to <Dropdown/>')

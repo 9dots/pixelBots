@@ -1,5 +1,7 @@
+/** @jsx element */
+
 import element from 'vdux/element'
-import {Block, Button} from 'vdux-ui'
+import {Block} from 'vdux-ui'
 import Buttons from './Buttons'
 import Runner from './Runner'
 import Code from './Code'

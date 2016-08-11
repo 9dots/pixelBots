@@ -1,3 +1,5 @@
+/** @jsx element */
+
 import element from 'vdux/element'
 import {Block} from 'vdux-ui'
 import {setActive} from '../actions'

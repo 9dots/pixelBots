@@ -1,3 +1,5 @@
+/** @jsx element */
+
 import element from 'vdux/element'
 import Cell from './cell'
 import {Flex} from 'vdux-ui'

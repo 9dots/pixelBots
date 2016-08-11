@@ -1,3 +1,5 @@
+/** @jsx element */
+
 import element from 'vdux/element'
 import {Block, Button} from 'vdux-containers'
 import {runCode} from '../middleware/codeRunner'

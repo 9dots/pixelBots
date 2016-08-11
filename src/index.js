@@ -13,6 +13,14 @@ import theme from './theme'
 
 var app = require('./app').default
 
+const palette = [
+  'lightblue',
+  'green',
+  'red',
+  'brown',
+  'black'
+]
+
 const initialState = {
   url: '/',
   levelSize: [5, 6],
@@ -55,7 +63,7 @@ const {subscribe, render, replaceReducer} = vdux({
 
 domready(() => {
   subscribe((state) => {
-    render(app(state), {uiTheme: theme})
+    render(app(state), {uiTheme: theme, palette})
   })
 })
 

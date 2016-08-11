@@ -27,7 +27,8 @@ function render ({props}) {
       p='15px'
       cursor='pointer'
       m='2px'
-      onClick={() => removeLine(active, i)}/>
+      id={active}
+      lineNum={i}/>
   })
 
   return (
