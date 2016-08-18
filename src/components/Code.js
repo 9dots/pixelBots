@@ -3,33 +3,44 @@
 import element from 'vdux/element'
 import {Block} from 'vdux-ui'
 import CodeIcon from './CodeIcon'
-import {removeLine} from '../actions'
+import {nameToIcon} from '../utils'
+import {removeLine, selectLine} from '../actions'
+
+let prevLength = 0
+let lastSelected = 0
 
 function render ({props}) {
-  const {turtles, active, activeLine, running} = props
-  const names = {
-    forward: 'arrow_upward',
-    turnRight: 'rotate_right',
-    turnLeft: 'rotate_left',
-    paint: 'brush'
-  }
+  const {animals, active, activeLine, running, selectedLine} = props
 
-  const code = turtles[active].sequence.map((line, i) => {
+  const code = animals[active].sequence.map((line, i, arr) => {
     const isActive = activeLine === i && running
-    const icon = line.split('\(')[0]
+    const name = line.split('\(')[0]
     const color = line.match(/\'([a-z]*?)\'/gi)
+    const type = animals[active].type
+    const addedLine = arr.length > prevLength
 
-    return <CodeIcon
-      iconName={names[icon]}
-      bgColor={isActive ? '#8fa5c9' : 'white'}
-      color={icon === 'paint' ? color[0].replace(/\'/gi, '') : 'darkblue'}
-      fs='40px'
-      p='15px'
-      cursor='pointer'
-      m='2px'
-      id={active}
-      lineNum={i}/>
+    return (
+      <CodeIcon
+        iconName={nameToIcon(name)}
+        focus={selectedLine === i}
+        shouldTransition={!addedLine}
+        newElement={i === lastSelected && addedLine}
+        name={name}
+        type={type}
+        bgColor={isActive ? '#B43C3C' : '#666'}
+        color={name === 'paint' ? color[0].replace(/\'/gi, '') : 'white'}
+        fs='40px'
+        p='15px'
+        h='50px'
+        cursor='pointer'
+        onClick={() => selectedLine === i ? selectLine(active, null) : selectLine(active, i)}
+        id={active}
+        lineNum={i}/>
+    )
   })
+
+  prevLength = animals[active].sequence.length
+  lastSelected = typeof(selectedLine) === 'number' ? selectedLine : -10
 
   return (
     <Block wide tall overflowY='scroll'>

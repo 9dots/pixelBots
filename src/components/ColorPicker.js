@@ -1,11 +1,12 @@
 /** @jsx element */
 
 import element from 'vdux/element'
-import ColorDropdown from './colorDropdown'
+import ColorDropdown from './ColorDropdown'
 import {Block, MenuItem} from 'vdux-containers'
 
 const palette = [
-  'lightblue',
+  'white',
+  'deepskyblue',
   'green',
   'red',
   'brown',
@@ -13,11 +14,11 @@ const palette = [
 ]
 
 function render ({props, local}) {
-  const {btn, clickHandler, right = '-10px', bottom = '-10px'} = props
+  const {btn, clickHandler, right = '-10px', bottom = '-10px', h, w} = props
 
   return (
-    <Block absolute right={right} bottom={bottom}>
-      <ColorDropdown btn={btn}>
+    <Block {...props}>
+      <ColorDropdown h={h} w={w} btn={btn}>
         {palette.map((name) => <MenuItem
           h='40px'
           w='40px'

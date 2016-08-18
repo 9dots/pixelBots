@@ -1,12 +1,8 @@
 import createAction from '@f/create-action'
 
-const turtleForward = createAction('TURTLE_FORWARD', (id) => id)
-const turtleTurnRight = createAction('TURTLE_TURN_RIGHT', (id) => id)
-const turtleTurnLeft = createAction('TURTLE_TURN_LEFT', (id) => id)
-const turtlePaint = createAction('TURTLE_PAINT', (id, color) => ({id, color}))
-const turtleErase = createAction('TURTLE_ERASE', (id) => id)
-const turtleMove = createAction('TURTLE_MOVE', (id, location) => ({location, id}))
-const setActive = createAction('SET_TURTLE_ACTIVE', (id) => id)
+const animalPaint = createAction('ANIMAL_PAINT', (id, color) => ({id, color}))
+const animalMove = createAction('ANIMAL_MOVE', (id, location) => ({location, id}))
+const setActive = createAction('SET_ANIMAL_ACTIVE', (id) => id)
 const addCode = createAction('ADD_CODE', (id, fn) => ({id, fn}))
 const reset = createAction('RESET')
 const removeLine = createAction('REMOVE_LINE', (id, idx) => ({id, idx}))
@@ -14,16 +10,16 @@ const startRun = createAction('START_RUN')
 const stopRun = createAction('STOP_RUN')
 const moveError = createAction('MOVE_ERROR')
 const setActiveLine = createAction('SET_ACTIVE_LINE', (idx) => idx)
+const updateLine = createAction('UPDATE_LINE', (id, lineNum, code) => ({id, lineNum, code}))
+const selectLine = createAction('SELECT_LINE', (id, idx) => ({id, idx}))
 
 export {
-  turtleTurnRight,
-  turtleTurnLeft,
-  turtleForward,
   setActiveLine,
-  turtleErase,
-  turtlePaint,
+  animalPaint,
   removeLine,
-  turtleMove,
+  animalMove,
+  updateLine,
+  selectLine,
   setActive,
   moveError,
   startRun,

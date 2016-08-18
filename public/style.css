@@ -2,3 +2,15 @@
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
 }
+
+@keyframes flash {
+  0% {opacity: 1;}
+  50% {opacity: 0.6;}
+  100% {opacity: 1;}
+}
+
+.flash {
+  animation-name: flash;
+  animation-iteration-count: 1;
+  animation-duration: 2s;
+}

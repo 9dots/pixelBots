@@ -6,29 +6,37 @@ import Row from './Row'
 import Turtle from './Turtle'
 import {reset} from '../actions'
 
+const animalTypes = {
+  turtle: getTurtle
+}
+
+function getTurtle ({size, active, animal, id}) {
+  return <Turtle cellSize={size} active={active} animal={animal} id={id}/>
+}
+
 function onCreate () {
   return reset()
 }
 
 function render ({props}) {
-  let {turtles, numRows = 5, numColumns = 5, painted = [], active, height} = props
+  let {animals, numRows = 5, numColumns = 5, painted = [], active, height} = props
   let rows = []
-  let turtleArr = []
+  let animalArr = []
 
   const size = parseInt(height) / numRows + 'px'
 
   for (var i = 0; i < numRows; i++) {
-    rows.push(<Row size={size} height={height} active={active} turtles={turtles} row={i} painted={getPainted(i)} num={numColumns}/>)
+    rows.push(<Row size={size} height={height} active={active} row={i} painted={getPainted(i)} num={numColumns}/>)
   }
 
-  for (var turtle in turtles) {
-    turtleArr.push(<Turtle cellSize={size} active={active} turtle={turtles[turtle]} id={turtle}/>)
+  for (var id in animals) {
+    animalArr.push(animalTypes[animals[id].type]({size, active, id, animal: animals[id]}))
   }
 
   return (
     <Flex tall relative column>
       {rows}
-      {turtleArr}
+      {animalArr}
     </Flex>
   )
 

@@ -25,15 +25,16 @@ const initialState = {
   url: '/',
   levelSize: [5, 6],
   painted: [],
-  initialPainted: [{loc: [2, 2], color: 'lightblue'}],
+  initialPainted: [],
   active: 1,
-  turtles: {
+  animals: {
     1: {
       initial: {
         location: [3, 0],
         dir: 0,
         rot: 0
       },
+      type: 'turtle',
       current: {},
       sequence: []
     }

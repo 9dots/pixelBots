@@ -1,84 +1,45 @@
 import equal from '@f/equal'
 import map from '@f/map'
+import splice from '@f/splice'
 
 import {
-  turtleTurnRight,
-  turtleTurnLeft,
-  turtlePaint,
-  turtleErase,
-  turtleMove,
+  setActiveLine,
+  animalPaint,
+  removeLine,
+  animalMove,
+  updateLine,
+  selectLine,
   setActive,
   addCode,
-  removeLine,
   startRun,
   stopRun,
-  reset,
-  setActiveLine
+  reset
 } from './actions'
 
 function reducer (state, action) {
   switch (action.type) {
-    case turtleMove.type:
+    case animalMove.type:
       var {id, location} = action.payload
       return {
         ...state,
-        turtles: {
-          ...state.turtles,
+        animals: {
+          ...state.animals,
           [id]: {
-            ...state.turtles[id],
+            ...state.animals[id],
             current: {
-              ...state.turtles[id].current,
+              ...state.animals[id].current,
               location
             }
           }
         }
       }
-    case turtleTurnRight.type:
-      var id = action.payload
-      return {
-        ...state,
-        turtles: {
-          ...state.turtles,
-          [id]: {
-            ...state.turtles[id],
-            current: {
-              ...state.turtles[id].current,
-              dir: (state.turtles[id].current.dir + 1) % 4,
-              rot: state.turtles[id].current.rot + 1
-            }
-          }
-        }
-      }
-    case turtleTurnLeft.type:
-      var id = action.payload
-      return {
-        ...state,
-        turtles: {
-          ...state.turtles,
-          [id]: {
-            ...state.turtles[id],
-            current: {
-              ...state.turtles[id].current,
-              dir: (state.turtles[id].current.dir + 3) % 4,
-              rot: state.turtles[id].current.rot - 1
-            }
-          }
-        }
-      }
-    case turtlePaint.type:
+    case animalPaint.type:
       var {id, color} = action.payload
-      var loc = state.turtles[id].current.location
+      var loc = state.animals[id].current.location
 
       return {
         ...state,
         painted: [...state.painted, {loc, color}]
-      }
-    case turtleErase.type:
-      var id = action.payload
-      var loc = state.turtles[id].location
-      return {
-        ...state,
-        painted: state.painted.filter((paint) => !equal(paint, loc))
       }
     case setActive.type:
       var id = action.payload
@@ -86,15 +47,23 @@ function reducer (state, action) {
         ...state,
         active: id
       }
-    case addCode.type:
-      var {id, fn} = action.payload
+    case selectLine.type:
+      var {id, idx} = action.payload
       return {
         ...state,
-        turtles: {
-          ...state.turtles,
+        selectedLine: idx
+      }
+    case addCode.type:
+      var {id, fn, idx} = action.payload
+      var lineNum = typeof (state.selectedLine) === 'number' ? state.selectedLine : null
+      return {
+        ...state,
+        selectedLine: state.selectedLine + 1,
+        animals: {
+          ...state.animals,
           [id]: {
-            ...state.turtles[id],
-            sequence: [...state.turtles[id].sequence, fn]
+            ...state.animals[id],
+            sequence: lineNum ? splice(state.animals[id].sequence, lineNum, 0, fn)  : [...state.animals[id].sequence, fn]
           }
         }
       }
@@ -102,11 +71,11 @@ function reducer (state, action) {
       var {id, idx} = action.payload
       return {
         ...state,
-        turtles: {
-          ...state.turtles,
+        animals: {
+          ...state.animals,
           [id]: {
-            ...state.turtles[id],
-            sequence: state.turtles[id].sequence.filter((line, i) => i !== idx)
+            ...state.animals[id],
+            sequence: state.animals[id].sequence.filter((line, i) => i !== idx)
           }
         }
       }
@@ -125,18 +94,63 @@ function reducer (state, action) {
         ...state,
         activeLine: action.payload
       }
+    case updateLine.type:
+      var {id, lineNum, code} = action.payload
+      return {
+        ...state,
+        animals: {
+          ...state.animals,
+          [id]: {
+            ...state.animals[id],
+            sequence: splice(state.animals[id].sequence, lineNum, 1, code)
+          }
+        }
+      }
     case reset.type:
       return {
         ...state,
         running: false,
         painted: state.initialPainted,
-        turtles: map((turtle) => ({
-          ...turtle,
-          current: turtle.initial
-        }), state.turtles)
+        animals: map((animal) => ({
+          ...animal,
+          current: animal.initial
+        }), state.animals)
       }
   }
   return state
 }
+
+// case animalTurnRight.type:
+//   var id = action.payload
+//   return {
+//     ...state,
+//     animals: {
+//       ...state.animals,
+//       [id]: {
+//         ...state.animals[id],
+//         current: {
+//           ...state.animals[id].current,
+//           dir: (state.animals[id].current.dir + 1) % 4,
+//           rot: state.animals[id].current.rot + 1
+//         }
+//       }
+//     }
+//   }
+// case animalTurnLeft.type:
+//   var id = action.payload
+//   return {
+//     ...state,
+//     animals: {
+//       ...state.animals,
+//       [id]: {
+//         ...state.animals[id],
+//         current: {
+//           ...state.animals[id].current,
+//           dir: (state.animals[id].current.dir + 3) % 4,
+//           rot: state.animals[id].current.rot - 1
+//         }
+//       }
+//     }
+//   }
 
 export default reducer

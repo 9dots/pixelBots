@@ -10,11 +10,11 @@ function render ({props}) {
     <Block
       align='center center'
       border
-      borderColor='black'
+      borderColor='#666'
       borderWidth={1}
       h={size}
       w={size}
-      transition='all .4s ease-in-out'
+      transition='all .5s ease-in-out'
       bgColor={color} />
   )
 }

@@ -1,7 +1,7 @@
 /** @jsx element */
 
 import element from 'vdux/element'
-import {Button, Icon} from 'vdux-containers'
+import {Button, Icon, Block} from 'vdux-containers'
 import createAction from '@f/create-action'
 import ColorPicker from './ColorPicker'
 
@@ -9,27 +9,35 @@ const setColor = createAction('SET_COLOR')
 
 function initialState () {
   return {
-    color: 'lightblue'
+    color: 'white'
   }
 }
 
 function render ({props, state, local}) {
-  const {clickHandler} = props
+  const {clickHandler, w, h} = props
   const {color} = state
 
   const btn = (
     <Button
-      h='15px'
-      w='15px'
+      tall
+      wide
       bgColor={color}
     />
   )
 
   return (
-    <Button relative m='5px' p='14px' bgColor='primary' onClick={() => clickHandler(color)}>
-      <Icon fs='40px' name='brush'/>
-      <ColorPicker btn={btn} clickHandler={local(setColor)}/>
-    </Button>
+    <Block align='center center'>
+      <Button
+        h={h} w={w} m='5px'
+        hoverProps={{highlight: true, boxShadow: '0 2px 5px 0px rgba(0,0,0,0.6)'}}
+        transition='all .3s ease-in-out'
+        bgColor='primary'
+        onClick={() => clickHandler(color)}
+        boxShadow='0 2px 5px 0px rgba(0,0,0,0.8)'>
+        <Icon color={color} mr='5px' fs='32px' name='brush'/>
+        <ColorPicker h={`${parseInt(h)/3}px`} w={`${parseInt(h)/3}px`} btn={btn} clickHandler={local(setColor)}/>
+      </Button>
+    </Block>
   )
 }
 
