@@ -10,6 +10,8 @@ import effects from 'redux-effects'
 import flow from 'redux-flo'
 import codeRunner from './middleware/codeRunner'
 import theme from './theme'
+import scroll from './middleware/scroll'
+import addCode from './middleware/addCodeMW'
 
 var app = require('./app').default
 
@@ -27,10 +29,11 @@ const initialState = {
   painted: [],
   initialPainted: [],
   active: 1,
+  selectedLine: null,
   animals: {
     1: {
       initial: {
-        location: [3, 0],
+        location: [4, 0],
         dir: 0,
         rot: 0
       },
@@ -58,7 +61,9 @@ const {subscribe, render, replaceReducer} = vdux({
     flow(),
     effects,
     location(),
-    codeRunner()
+    codeRunner(),
+    scroll,
+    addCode
   ]
 })
 

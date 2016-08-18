@@ -1,4 +1,3 @@
-import equal from '@f/equal'
 import map from '@f/map'
 import splice from '@f/splice'
 
@@ -58,7 +57,7 @@ function reducer (state, action) {
       var lineNum = typeof (state.selectedLine) === 'number' ? state.selectedLine : null
       return {
         ...state,
-        selectedLine: state.selectedLine + 1,
+        selectedLine: state.selectedLine ? state.selectedLine + 1 : null,
         animals: {
           ...state.animals,
           [id]: {

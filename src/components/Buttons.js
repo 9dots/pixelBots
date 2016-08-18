@@ -1,10 +1,9 @@
 /** @jsx element */
 
 import element from 'vdux/element'
-import {Block, Button, Icon} from 'vdux-containers'
+import {Block} from 'vdux-containers'
 import PaintButton from './PaintButton'
-import * as animalApis from '../animalApis/index'
-import {nameToIcon} from '../utils'
+// import * as animalApis from '../animalApis/index'
 import TurtleCompass from './TurtleCompass'
 import Runner from './Runner'
 
@@ -14,8 +13,8 @@ import {
 
 function render ({props}) {
   const {active, type, running} = props
-  const api = animalApis[type](active)
-  const tools = Object.keys(api).filter((name) => name !== 'paint')
+  // const api = animalApis[type](active)
+  // const tools = Object.keys(api).filter((name) => name !== 'paint')
 
   return (
     <Block relative bgColor='#7689A9' column align='start center' p='10px' tall>

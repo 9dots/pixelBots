@@ -1,11 +1,14 @@
 import element from 'vdux/element'
 import {Block} from 'vdux-ui'
+import Delay from 'vdux-delay'
 
 function render ({props}) {
-  const {focus} = props
+  const {delay} = props
 
   return (
-    <Block {...props}/>
+    <Delay time={delay}>
+      <Block {...props}/>
+    </Delay>
   )
 }
 

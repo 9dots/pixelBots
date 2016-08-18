@@ -1,31 +1,27 @@
 /** @jsx element */
 
 import element from 'vdux/element'
-import {Icon, Block, Button, Text, wrap, CSSContainer} from 'vdux-containers'
+import {Icon, Block} from 'vdux-containers'
 import ColorPicker from './ColorPicker'
 import {removeLine, updateLine} from '../actions'
-import {nameToDirection} from '../utils'
-import createAction from '@f/create-action'
-import Outline from './Outline'
-import Delay from 'vdux-delay'
+import LineNumber from './LineNumber'
 
 function render ({props}) {
   let {
+    id,
     fs,
     name,
     iconName,
-    show,
     lineNum,
-    id,
+    animal,
     color,
-    type,
     focus,
     h,
-    w,
     shouldTransition,
-    newElement
+    newElement,
+    numLines,
+    removeOutline
   } = props
-  let opacity = 0
   const shouldFlash = !shouldTransition && newElement
 
   function getButton (name) {
@@ -47,33 +43,25 @@ function render ({props}) {
       class={[shouldFlash && 'flash']}
       align='center center'
       mt={focus ? `${parseInt(h) + 8}px` : '4px'}
-      transition={shouldTransition ? 'margin .3s ease-in-out': ''}
+      transition={shouldTransition ? 'margin .3s ease-in-out' : ''}
       {...props}>
+      <LineNumber fs='22px' absolute textAlign='right' numLines={numLines} lineNum={lineNum + 1} />
       {iconName === 'brush' ? (
         <ColorPicker
           btn={getButton(iconName)}
-          clickHandler={(newColor) => updateLine(id, lineNum, `paint('${newColor}')`)}/>
+          clickHandler={(newColor) => updateLine(animal, lineNum, `paint('${newColor}')`)}/>
       ) : (
         <Icon fs={fs} name={iconName}/>
       )}
-      {focus && <Block align='center center' absolute right='2%'>
+      <Block align='center center' absolute right='2%'>
         <Icon
           tall
           fs='40px'
-          onClick={() => removeLine(id, lineNum)}
+          onClick={[(e) => e.stopPropagation(), () => removeLine(animal, lineNum), () => removeOutline()]}
           transition='opacity .3s ease-in-out'
           color='black'
           name='delete'/>
-      </Block>}
-      {focus && (
-        <div>
-          <Outline opacity={0} transition='opacity .3s ease-in-out' absolute top={`-${parseInt(h) + 4}px`} h={h} wide border='2px dashed black'/>
-          <Delay time={300}>
-            <Outline opacity={1} left='0' transition='opacity .3s ease-in-out' absolute top={`-${parseInt(h) + 4}px`} h={h} wide border='2px dashed black'/>
-          </Delay>
-        </div>
-
-      )}
+      </Block>
     </Block>
   )
 }
