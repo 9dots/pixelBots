@@ -17,10 +17,14 @@ function render ({props}) {
   // const tools = Object.keys(api).filter((name) => name !== 'paint')
 
   return (
-    <Block relative bgColor='#7689A9' column align='start center' p='10px' tall>
-      {type === 'turtle' ? <TurtleCompass h='80px' w='80px' active={active}/> : null}
-      <PaintButton h='80px' w='80px' clickHandler={(color) => addCode(active, `paint('${color}')`)}/>
-      <Runner absolute bottom='0' wide running={running} h='10%'/>
+    <Block minWidth='200px' relative bgColor='#7689A9' tall>
+      <Block relative top='0' wide h='10%'>
+        <Runner wide relative running={running} />
+      </Block>
+      <Block absolute column align='start center' wide h='90%' overflowY='auto' p='10px' top='10%'>
+        {type === 'turtle' ? <TurtleCompass h='80px' w='80px' active={active}/> : null}
+        <PaintButton h='80px' w='80px' clickHandler={(color) => addCode(active, `paint('${color}')`)}/>
+      </Block>
     </Block>
   )
 }

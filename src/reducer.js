@@ -57,7 +57,7 @@ function reducer (state, action) {
       var lineNum = typeof (state.selectedLine) === 'number' ? state.selectedLine : null
       return {
         ...state,
-        selectedLine: state.selectedLine ? state.selectedLine + 1 : null,
+        selectedLine: state.selectedLine + 1,
         animals: {
           ...state.animals,
           [id]: {

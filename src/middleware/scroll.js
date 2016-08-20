@@ -27,7 +27,7 @@ function middleware () {
 * Helpers
 */
 
-function scrollToElement ({element, parent, duration, easing, offsetX = 0, offsetY = 0}) {
+function scrollToElement ({element, parent, duration = 0, easing, offsetX = 0, offsetY = 0}) {
   parent = asElement(parent)
   element = asElement(element)
   easing = typeof easing === 'string'
@@ -44,9 +44,7 @@ function scrollToElement ({element, parent, duration, easing, offsetX = 0, offse
     scrollTop: elemPosition
   }
 
-  animate(start, end, (props) => {
-    parent.scrollTop = props.scrollTop
-  }, duration, easing)
+  parent.scrollTop = elemPosition
 }
 
 function asElement (element) {

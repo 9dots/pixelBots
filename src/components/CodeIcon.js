@@ -8,19 +8,15 @@ import LineNumber from './LineNumber'
 
 function render ({props}) {
   let {
-    id,
     fs,
     name,
-    iconName,
-    lineNum,
-    animal,
     color,
-    focus,
-    h,
-    shouldTransition,
-    newElement,
+    animal,
+    lineNum,
+    iconName,
     numLines,
-    removeOutline
+    newElement,
+    shouldTransition
   } = props
   const shouldFlash = !shouldTransition && newElement
 
@@ -42,8 +38,6 @@ function render ({props}) {
       relative
       class={[shouldFlash && 'flash']}
       align='center center'
-      mt={focus ? `${parseInt(h) + 8}px` : '4px'}
-      transition={shouldTransition ? 'margin .3s ease-in-out' : ''}
       {...props}>
       <LineNumber fs='22px' absolute textAlign='right' numLines={numLines} lineNum={lineNum + 1} />
       {iconName === 'brush' ? (
@@ -57,7 +51,7 @@ function render ({props}) {
         <Icon
           tall
           fs='40px'
-          onClick={[(e) => e.stopPropagation(), () => removeLine(animal, lineNum), () => removeOutline()]}
+          onClick={[(e) => e.stopPropagation(), () => removeLine(animal, lineNum)]}
           transition='opacity .3s ease-in-out'
           color='black'
           name='delete'/>

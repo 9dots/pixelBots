@@ -1,14 +1,12 @@
+/** @jsx element */
+
 import element from 'vdux/element'
 import {Block} from 'vdux-ui'
-import Delay from 'vdux-delay'
 
 function render ({props}) {
-  const {delay} = props
-
+  const {width, color, style} = props
   return (
-    <Delay time={delay}>
-      <Block {...props}/>
-    </Delay>
+    <Block borderWidth={width} borderColor={color} borderStyle={style} {...props}/>
   )
 }
 

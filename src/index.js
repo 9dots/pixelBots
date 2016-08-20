@@ -29,7 +29,7 @@ const initialState = {
   painted: [],
   initialPainted: [],
   active: 1,
-  selectedLine: null,
+  selectedLine: 0,
   animals: {
     1: {
       initial: {
