@@ -62,7 +62,7 @@ function reducer (state, action) {
           ...state.animals,
           [id]: {
             ...state.animals[id],
-            sequence: lineNum ? splice(state.animals[id].sequence, lineNum, 0, fn)  : [...state.animals[id].sequence, fn]
+            sequence: splice(state.animals[id].sequence, lineNum, 0, fn)
           }
         }
       }
