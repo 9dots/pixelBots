@@ -1,5 +1,4 @@
 import createAction from '@f/create-action'
-import autoYield from 'auto-yield'
 import getIterator from '../getIterator.js'
 import * as animalApis from '../animalApis/index'
 import {
@@ -8,7 +7,6 @@ import {
 } from '../actions'
 
 const runCode = createAction('RUN_CODE')
-const runAction = createAction('RUN_ACTION')
 const abortRun = createAction('ABORT_RUN')
 
 const TIMEOUT = 500
@@ -33,7 +31,7 @@ function codeRunner () {
             it.throw(new Error(action.payload))
           } catch (e) {
             if (e.message !== 'STOP') {
-              alert(e)
+              window.alert(e)
             }
           }
         })

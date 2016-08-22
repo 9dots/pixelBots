@@ -68,8 +68,11 @@ function reducer (state, action) {
       }
     case removeLine.type:
       var {id, idx} = action.payload
+      var sl = state.selectedLine >= state.animals[id].sequence.length ? state.animals[id].sequence.length - 1 : state.selectedLine
+
       return {
         ...state,
+        selectedLine: sl,
         animals: {
           ...state.animals,
           [id]: {

@@ -2,7 +2,6 @@
 * Imports
 */
 
-import animate from '@f/animate'
 import createAction from '@f/create-action'
 import * as easingUtil from 'easing-utils'
 
@@ -35,14 +34,6 @@ function scrollToElement ({element, parent, duration = 0, easing, offsetX = 0, o
    : easing
 
   const elemPosition = element.offsetTop
-
-  const start = {
-    scrollTop: parent.scrollTop
-  }
-
-  const end = {
-    scrollTop: elemPosition
-  }
 
   parent.scrollTop = elemPosition
 }
