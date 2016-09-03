@@ -22,5 +22,9 @@ export default {
     divider: baseColors.grey_medium,
     text: baseColors.black
   },
+  fonts: {
+    code: 'Helvetica Neue, monospace',
+    ornate: 'Helvetica Neue, serif'
+  },
   spinnerAnimation: 'stuff'
 }

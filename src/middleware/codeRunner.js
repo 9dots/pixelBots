@@ -8,8 +8,8 @@ import {
 
 const runCode = createAction('RUN_CODE')
 const abortRun = createAction('ABORT_RUN')
+const throwError = createAction('THROW_ERROR')
 
-const TIMEOUT = 500
 let its = []
 
 function codeRunner () {
@@ -20,7 +20,7 @@ function codeRunner () {
         const animals = state.animals
         for (var id in animals) {
           const api = animalApis[animals[id].type]
-          let code = getIterator(animals[id], api(id, getState), TIMEOUT)
+          let code = getIterator(animals[id], api(id, getState))
           its.push(code)
           dispatch(code)
         }
@@ -31,7 +31,7 @@ function codeRunner () {
             it.throw(new Error(action.payload))
           } catch (e) {
             if (e.message !== 'STOP') {
-              window.alert(e)
+              dispatch(throwError(e))
             }
           }
         })
@@ -48,5 +48,6 @@ function codeRunner () {
 export default codeRunner
 export {
   runCode,
-  abortRun
+  abortRun,
+  throwError
 }

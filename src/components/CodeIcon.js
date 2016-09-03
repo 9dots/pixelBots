@@ -43,6 +43,8 @@ function render ({props}) {
       {iconName === 'brush' ? (
         <ColorPicker
           btn={getButton(iconName)}
+          h='40px'
+          w='40px'
           clickHandler={(newColor) => updateLine(animal, lineNum, `paint('${newColor}')`)}/>
       ) : (
         <Icon fs={fs} name={iconName}/>

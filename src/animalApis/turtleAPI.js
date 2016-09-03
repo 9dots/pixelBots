@@ -1,4 +1,3 @@
-import sleep from '@f/sleep'
 import {
   animalPaint,
   animalMove,
@@ -11,6 +10,7 @@ function wrap (id, getState = () => {}) {
   const back = () => move(2)
   const left = () => move(3)
   const paint = (color) => animalPaint(id, color)
+  const speed = 750
 
   function move (dir) {
     const state = getState()
@@ -28,7 +28,8 @@ function wrap (id, getState = () => {}) {
     right,
     back,
     left,
-    paint
+    paint,
+    speed
   }
 }
 

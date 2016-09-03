@@ -25,7 +25,7 @@ const palette = [
 
 const initialState = {
   url: '/',
-  levelSize: [5, 6],
+  levelSize: [3, 3],
   painted: [],
   initialPainted: [],
   active: 1,
@@ -33,7 +33,7 @@ const initialState = {
   animals: {
     1: {
       initial: {
-        location: [4, 0],
+        location: [2, 0],
         dir: 0,
         rot: 0
       },

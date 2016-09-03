@@ -8,12 +8,15 @@ import {
   animalMove,
   updateLine,
   selectLine,
+  clearError,
   setActive,
   addCode,
   startRun,
   stopRun,
   reset
 } from './actions'
+
+import {throwError} from './middleware/codeRunner'
 
 function reducer (state, action) {
   switch (action.type) {
@@ -84,7 +87,8 @@ function reducer (state, action) {
     case startRun.type:
       return {
         ...state,
-        running: true
+        running: true,
+        hasRun: true
       }
     case stopRun.type:
       return {
@@ -113,10 +117,21 @@ function reducer (state, action) {
         ...state,
         running: false,
         painted: state.initialPainted,
+        hasRun: false,
         animals: map((animal) => ({
           ...animal,
           current: animal.initial
         }), state.animals)
+      }
+    case throwError.type:
+      return {
+        ...state,
+        error: action.payload
+      }
+    case clearError.type:
+      return {
+        ...state,
+        error: undefined
       }
   }
   return state

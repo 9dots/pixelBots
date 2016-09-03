@@ -12,11 +12,11 @@ let prevLength = 0
 let lastSelected = 0
 
 function render ({props, local, state}) {
-  const {animals, active, activeLine, running, selectedLine} = props
+  const {animals, active, activeLine, selectedLine, hasRun} = props
   const lineHeight = '50px'
 
   const code = animals[active].sequence.map((line, i, arr) => {
-    const isActive = activeLine === i && running
+    const isActive = activeLine === i && hasRun
     const name = line.split('\(')[0]
     const color = line.match(/\'([a-z]*?)\'/gi)
     const type = animals[active].type

@@ -8,7 +8,6 @@ export default function ({dispatch, getState}) {
       const editor = document.querySelector('.code-editor')
       let {selectedLine} = getState()
       let numElements = Math.floor(editor.offsetHeight / lineHeight)
-      // let editorScroll = editor.scrollTop + editor.offsetHeight - (editor.scrollTop % lineHeight)
       let lastVisibleLinePos = editor.scrollTop + (editor.offsetHeight * ((numElements - 2) / numElements))
       let firstVisibleLinePos = editor.scrollTop + lineHeight * 2
 

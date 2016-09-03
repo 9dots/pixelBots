@@ -26,20 +26,25 @@ function initialState () {
 
 function render ({props, state, local, children}) {
   const {open} = state
-  const {btn, closeOnEsc = true, disabled} = props
+  const {btn, closeOnEsc = true, disabled, menuWidth} = props
   const api = {toggle: local(toggle), close: local(close)}
 
   if (props.ref) props.ref(api)
   if (!props.btn) throw new Error('Forgot to pass required `btn` prop to <Dropdown/>')
 
   return (
-    <Dropdown {...props} onKeyup={{esc: closeOnEsc && api.close}}>
+    <Dropdown relative {...props} onKeyup={{esc: closeOnEsc && api.close}}>
       {
         typeof btn === 'function'
           ? btn(api, open)
           : <Box tag='span' wide tall onClick={[(e) => e.stopPropagation(), !disabled && api.toggle]} pointer={!disabled}>{btn}</Box>
       }
-      <DropdownMenu zIndex='999' onClick={[(e) => e.stopPropagation(), !disabled && api.toggle]} open={open} onDismiss={[api.close, props.onDismiss]}>
+      <DropdownMenu
+        onClick={[(e) => e.stopPropagation(), !disabled && api.toggle]}
+        right={`-${menuWidth / 2 - (parseInt(props.w) / 2)}px`}
+        onDismiss={[api.close, props.onDismiss]}
+        zIndex='999'
+        open={open}>
         {children}
       </DropdownMenu>
     </Dropdown>

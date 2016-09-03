@@ -4,7 +4,8 @@
   "description": "Artbot test",
   "main": "src/index.js",
   "scripts": {
-    "dev": "firebase serve & watchify src/index.js -o public/bundle.js -d -t babelify -p browserify-hmr"
+    "dev": "firebase serve & watchify src/index.js -o public/bundle.js -d -t babelify -p browserify-hmr",
+    "build": "browserify src/index.js -o public/bundle.js -t babelify"
   },
   "repository": {
     "type": "git",

@@ -2,6 +2,7 @@
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   outline: none;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
 }
 
 body {

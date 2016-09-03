@@ -6,15 +6,13 @@ import {runCode, abortRun} from '../middleware/codeRunner'
 import {reset} from '../actions'
 
 function render ({props}) {
-  const {running} = props
+  const {hasRun} = props
   return (
-    <Block {...props} align='center center' bgColor='primary' boxShadow='0px 2px 5px -2px rgba(0,0,0,0.4)'>
-      <Block w='50%' borderRight='1px solid rgba(0,0,0,0.3)'>
-        <Button hoverProps={{highlight: true}} disabled={running} wide icon='play_arrow' fs='24px' bgColor='transparent' color='white' p='15px' onClick={runCode}/>
-      </Block>
-      <Block w='50%'>
-        <Button wide icon='refresh' fs='24px' bgColor='transparent' color='white' p='15px' onClick={[reset, () => abortRun('STOP')]}/>
-      </Block>
+    <Block {...props} align='center center' bgColor='primary' hoverProps={{highlight: true}} transition='all .3s ease-in-out' boxShadow='0px 2px 5px -2px rgba(0,0,0,0.4)'>
+      {!hasRun
+        ? <Button wide icon='play_arrow' fs='24px' color='white' p='15px' onClick={runCode}/>
+        : <Button wide icon='refresh' fs='24px' color='white' p='15px' onClick={[reset, () => abortRun('STOP')]}/>
+      }
     </Block>
   )
 }

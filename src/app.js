@@ -5,10 +5,11 @@ import {Block} from 'vdux-ui'
 import Level from './components/Level'
 import Controls from './components/Controls'
 import Header from './components/Header'
+import ErrorMessage from './components/ErrorMessage'
 
 function render (props) {
-  const {levelSize, animals, painted, active, running, activeLine, selectedLine} = props
-  let height = '400px'
+  const {levelSize, animals, painted, active, running, activeLine, selectedLine, hasRun, error} = props
+  let height = '600px'
 
   return (
     <Block bgColor='#e5e5e5' relative align='center start' tall wide>
@@ -17,8 +18,9 @@ function render (props) {
         <Block pt='20px' px='20px'>
           <Level animals={animals} height={height} active={active} painted={painted} numRows={levelSize[0]} numColumns={levelSize[1]}/>
         </Block>
-        <Controls selectedLine={selectedLine} activeLine={activeLine} running={running} active={active} animals={animals}/>
+        <Controls hasRun={hasRun} selectedLine={selectedLine} activeLine={activeLine} running={running} active={active} animals={animals}/>
       </Block>
+      {error && <ErrorMessage message='Out of bounds' lineNumber={activeLine + 1}/>}
     </Block>
   )
 }

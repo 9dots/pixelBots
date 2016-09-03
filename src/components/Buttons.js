@@ -12,16 +12,16 @@ import {
 } from '../actions'
 
 function render ({props}) {
-  const {active, type, running} = props
+  const {active, type, running, hasRun} = props
   // const api = animalApis[type](active)
   // const tools = Object.keys(api).filter((name) => name !== 'paint')
 
   return (
     <Block minWidth='200px' relative bgColor='#7689A9' tall>
       <Block relative top='0' wide h='10%'>
-        <Runner wide relative running={running} />
+        <Runner wide relative running={running} hasRun={hasRun} />
       </Block>
-      <Block absolute column align='start center' wide h='90%' overflowY='auto' p='10px' top='10%'>
+      <Block column align='start center' wide h='90%' p='10px' top='10%'>
         {type === 'turtle' ? <TurtleCompass h='80px' w='80px' active={active}/> : null}
         <PaintButton h='80px' w='80px' clickHandler={(color) => addCode(active, `paint('${color}')`)}/>
       </Block>

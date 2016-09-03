@@ -2,7 +2,7 @@
 
 import element from 'vdux/element'
 import ColorDropdown from './ColorDropdown'
-import {Block, MenuItem} from 'vdux-containers'
+import {Block, MenuItem, Flex} from 'vdux-containers'
 
 const palette = [
   'white',
@@ -13,21 +13,28 @@ const palette = [
   'black'
 ]
 
+const colorBlockSize = {
+  side: 40,
+  margin: 5
+}
+
 function render ({props, local}) {
-  const {btn, clickHandler, right = '-10px', bottom = '-10px', h, w} = props
+  const {btn, clickHandler, h, w} = props
+  const menuWidth = (palette.length * colorBlockSize.side) + (palette.length * (colorBlockSize.margin * 2))
 
   return (
     <Block {...props}>
-      <ColorDropdown h={h} w={w} btn={btn}>
-        {palette.map((name) => <MenuItem
-          h='40px'
-          w='40px'
-          p='5px'
-          m='5px'
-          bgColor={name}
-          boxShadow='0 0 2px 2px rgba(0,0,0,0.2)'
-          onClick={() => clickHandler(name)}/>
-        )}
+      <ColorDropdown menuWidth={menuWidth} h={h} w={w} btn={btn}>
+        <Flex relative row align='center center' >
+          {palette.map((name) => <MenuItem
+            sq={`${colorBlockSize.side}px`}
+            p='5px'
+            m={`${colorBlockSize.margin}px`}
+            bgColor={name}
+            boxShadow='0 0 2px 2px rgba(0,0,0,0.2)'
+            onClick={() => clickHandler(name)}/>
+          )}
+        </Flex>
       </ColorDropdown>
     </Block>
   )

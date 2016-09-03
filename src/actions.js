@@ -12,6 +12,7 @@ const moveError = createAction('MOVE_ERROR')
 const setActiveLine = createAction('SET_ACTIVE_LINE', (idx) => idx)
 const updateLine = createAction('UPDATE_LINE', (id, lineNum, code) => ({id, lineNum, code}))
 const selectLine = createAction('SELECT_LINE', (id, idx) => ({id, idx}))
+const clearError = createAction('CLEAR_ERROR')
 
 export {
   setActiveLine,
@@ -20,6 +21,7 @@ export {
   animalMove,
   updateLine,
   selectLine,
+  clearError,
   setActive,
   moveError,
   startRun,

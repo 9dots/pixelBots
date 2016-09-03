@@ -3,6 +3,7 @@
 import element from 'vdux/element'
 import {Block} from 'vdux-ui'
 import {setActive} from '../actions'
+import {turtle} from '../animalApis/index'
 
 function render ({props}) {
   let {animal, active, id, cellSize} = props
@@ -16,6 +17,7 @@ function render ({props}) {
 
   let animalSize = parseInt(cellSize) / 2 + 'px'
   let pos = getPosition()
+  let seconds = turtle(id).speed / 1000
 
   return (
     <Block
@@ -24,7 +26,7 @@ function render ({props}) {
       border={active === id}
       borderColor={'red'}
       transform={`rotate(${deg}deg)`}
-      transition='all .5s ease-in-out'
+      transition={`all ${seconds}s ease-in-out`}
       boxShadow='0 0 1px 2px rgba(0,0,0,0.2)'
       left={pos.left}
       top={pos.top}
@@ -37,8 +39,8 @@ function render ({props}) {
   )
 
   function getPosition () {
-    const MULT = parseInt(cellSize)
-    const OFFSET = (MULT - parseInt(animalSize)) / 2
+    const MULT = parseFloat(cellSize)
+    const OFFSET = (MULT - parseFloat(animalSize)) / 2
     return {
       top: animal.current.location[0] * MULT + OFFSET,
       left: animal.current.location[1] * MULT + OFFSET
