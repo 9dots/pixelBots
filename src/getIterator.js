@@ -20,16 +20,45 @@ const wrap = (code, api) => {
 `
 }
 
+var addedLines
+
+function matchApiString (api, line) {
+  let apiStrings = Object.keys(api)
+  for (var i in apiStrings) {
+    if (line.search(apiStrings[i]) > -1) {
+      return true
+    }
+  }
+  return false
+}
+
 function codeRunner (code, api, timeout) {
+  addedLines = 0
+
   let {sequence} = code
-  api = {...api, sleep, startRun, stopRun, setActiveLine, scrollTo}
+  if (typeof sequence === 'string') {
+    sequence = sequence.split('\n')
+  }
   sequence = sequence.map((line, i) => {
-    return `setActiveLine(${i})
-    scrollTo('.code-editor', '#code-icon-${i}')
-    ${line}
-    sleep(${api.speed})`
+    if (matchApiString(api, line)) {
+      addedLines += 3
+      return `setActiveLine(${i})
+      scrollTo('.code-editor', '#code-icon-${i}')
+      ${line}
+      sleep(${api.speed})`
+    } else {
+      return line
+    }
   }).join('\n')
-  return eval(wrap(autoYield(sequence, Object.keys(api)), api))
+  api = {...api, sleep, startRun, stopRun, setActiveLine, scrollTo}
+  try {
+    return eval(wrap(autoYield(sequence, Object.keys(api)), api))
+  } catch (e) {
+    return {
+      error: e,
+      addedLines
+    }
+  }
 }
 
 export default codeRunner

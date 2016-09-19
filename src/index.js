@@ -12,6 +12,7 @@ import codeRunner from './middleware/codeRunner'
 import theme from './theme'
 import scroll from './middleware/scroll'
 import addCode from './middleware/addCodeMW'
+import {throwError} from './actions'
 
 var app = require('./app').default
 
@@ -29,6 +30,7 @@ const initialState = {
   painted: [],
   initialPainted: [],
   active: 1,
+  inputType: 'code',
   selectedLine: 0,
   animals: {
     1: {

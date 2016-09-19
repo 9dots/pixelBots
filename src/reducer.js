@@ -10,6 +10,7 @@ import {
   selectLine,
   clearError,
   setActive,
+  aceUpdate,
   addCode,
   startRun,
   stopRun,
@@ -100,6 +101,18 @@ function reducer (state, action) {
         ...state,
         activeLine: action.payload
       }
+    case aceUpdate.type:
+      var {id, code} = action.payload
+      return {
+        ...state,
+        animals: {
+          ...state.animals,
+          [id]: {
+            ...state.animals[id],
+            sequence: code
+          }
+        }
+      }
     case updateLine.type:
       var {id, lineNum, code} = action.payload
       return {
@@ -124,14 +137,17 @@ function reducer (state, action) {
         }), state.animals)
       }
     case throwError.type:
+      var {message, lineNum} = action.payload
       return {
         ...state,
-        error: action.payload
+        error: message,
+        activeLine: lineNum
       }
     case clearError.type:
       return {
         ...state,
-        error: undefined
+        error: undefined,
+        activeLine: -1
       }
   }
   return state
