@@ -8,7 +8,7 @@ import Header from './components/Header'
 import ErrorMessage from './components/ErrorMessage'
 
 function render (props) {
-  const {levelSize, animals, painted, active, running, activeLine, selectedLine, hasRun, error} = props
+  const {levelSize, animals, painted, active, running, activeLine, selectedLine, hasRun, error, inputType} = props
   let height = '600px'
 
   return (
@@ -18,9 +18,9 @@ function render (props) {
         <Block pt='20px' px='20px'>
           <Level animals={animals} height={height} active={active} painted={painted} numRows={levelSize[0]} numColumns={levelSize[1]}/>
         </Block>
-        <Controls hasRun={hasRun} selectedLine={selectedLine} activeLine={activeLine} running={running} active={active} animals={animals}/>
+        <Controls inputType={inputType} hasRun={hasRun} selectedLine={selectedLine} activeLine={activeLine} running={running} active={active} animals={animals}/>
       </Block>
-      {error && <ErrorMessage message='Out of bounds' lineNumber={activeLine + 1}/>}
+      {error && <ErrorMessage message={error} lineNumber={activeLine + 1}/>}
     </Block>
   )
 }

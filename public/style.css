@@ -2,13 +2,13 @@
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   outline: none;
-  font-family: "Helvetica Neue", Helvetica, sans-serif;
 }
 
 body {
   height: 100vh;
   margin: 0;
   background-color: #e5e5e5;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
 }
 
 @keyframes fade-in {
@@ -27,6 +27,11 @@ body {
   0% {opacity: 1;}
   50% {opacity: 0;}
   100% {opacity: 1;}
+}
+
+#code-editor {
+  height: 100%;
+  width: 100%;
 }
 
 .flashing-cursor {
