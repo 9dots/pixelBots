@@ -6,7 +6,8 @@ const baseColors = {
   blue: '#2C4770',
   red: '#f52',
   orange: '#f70',
-  green: '#1c7'
+  green: '#1c7',
+  offblack: '#333'
 }
 
 export default {
@@ -23,7 +24,7 @@ export default {
     text: baseColors.black
   },
   fonts: {
-    code: 'Helvetica Neue, monospace',
+    code: 'Consolas, "Liberation Mono", Menlo, Courier, monospace',
     ornate: 'Helvetica Neue, serif'
   },
   spinnerAnimation: 'stuff'

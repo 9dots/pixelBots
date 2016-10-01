@@ -8,13 +8,12 @@ function render ({props}) {
 
   return (
     <Block
-      align='center center'
       border
       borderColor='#666'
       borderWidth={1}
       h={size}
       w={size}
-      transition='all .5s ease-in-out'
+      transition='all .75s ease-in-out'
       bgColor={color} />
   )
 }

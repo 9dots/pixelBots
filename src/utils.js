@@ -1,6 +1,6 @@
 const icons = {
-  forward: 'arrow_upward',
-  back: 'arrow_downward',
+  up: 'arrow_upward',
+  down: 'arrow_downward',
   left: 'arrow_back',
   right: 'arrow_forward',
   paint: 'brush'
@@ -21,7 +21,12 @@ function nameToDirection (name) {
   return directions[name]
 }
 
+function isLocal (url) {
+  return !/^(?:[a-z]+\:)?\/\//i.test(url)
+}
+
 export {
   nameToIcon,
-  nameToDirection
+  nameToDirection,
+  isLocal
 }

@@ -3,38 +3,50 @@
 import element from 'vdux/element'
 import {Flex} from 'vdux-ui'
 import Row from './Row'
-import Turtle from './Turtle'
+import Animal from './Animal'
 import {reset} from '../actions'
-
-const animalTypes = {
-  turtle: getTurtle
-}
-
-function getTurtle ({size, active, animal, id}) {
-  return <Turtle cellSize={size} active={active} animal={animal} id={id}/>
-}
+import reduce from '@f/reduce'
 
 function onCreate () {
   return reset()
 }
 
 function render ({props}) {
-  let {animals, numRows = 5, numColumns = 5, painted = [], active, height} = props
+  let {animals, numRows = 5, numColumns = 5, painted = [], active, levelSize} = props
   let rows = []
-  let animalArr = []
 
-  const size = parseInt(height) / numRows + 'px'
+  const size = parseFloat(levelSize) / numRows + 'px'
 
   for (var i = 0; i < numRows; i++) {
-    rows.push(<Row size={size} height={height} active={active} row={i} painted={getPainted(i)} num={numColumns}/>)
+    rows.push(
+      <Row
+        size={size}
+        active={active}
+        row={i}
+        painted={getPainted(i)}
+        num={numColumns} />
+    )
   }
 
-  for (var id in animals) {
-    animalArr.push(animalTypes[animals[id].type]({size, active, id, animal: animals[id]}))
+  const animalArr = reduce(
+    addToArray,
+    [],
+    animals
+  )
+
+  function addToArray (arr, animal, id) {
+    arr.push(
+      <Animal
+        cellSize={size}
+        active={active}
+        animal={animals[id]}
+        id={id}/>
+    )
+    return arr
   }
 
   return (
-    <Flex tall relative column>
+    <Flex wide tall relative column>
       {rows}
       {animalArr}
     </Flex>

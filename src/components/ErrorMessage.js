@@ -9,7 +9,7 @@ function render ({props}) {
   const {message, lineNumber} = props
 
   return (
-    <Modal onDismiss={clearError} onKeyup={{esc: clearError}}>
+    <Modal overlayProps={{left: 0}} onDismiss={clearError} onKeyup={{esc: clearError}}>
       <ModalHeader p='l' fs='xl'>{message}</ModalHeader>
       <ModalBody>
         <Block>

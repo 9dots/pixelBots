@@ -3,10 +3,12 @@
 import element from 'vdux/element'
 import {Block} from 'vdux-ui'
 import {setActive} from '../actions'
-import {turtle} from '../animalApis/index'
+import * as animalApis from '../animalApis/index'
 
 function render ({props}) {
   let {animal, active, id, cellSize} = props
+
+  let api = animalApis[animal.type](id)
 
   if (Object.keys(animal.current).length < 1) {
     return (<div/>)
@@ -15,9 +17,9 @@ function render ({props}) {
   let {rot} = animal.current
   let deg = rot * 90
 
-  let animalSize = parseInt(cellSize) / 2 + 'px'
+  let animalSize = parseFloat(cellSize) / 2 + 'px'
   let pos = getPosition()
-  let seconds = turtle(id).speed / 1000
+  let seconds = api.speed / 1000
 
   return (
     <Block
@@ -32,10 +34,9 @@ function render ({props}) {
       top={pos.top}
       h={animalSize}
       w={animalSize}
-      bgColor='green' >
-      <Block absolute h='10%' w='10%' top='10%' right='20%' bgColor='black'/>
-      <Block absolute h='10%' w='10%' top='10%' left='20%' bgColor='black'/>
-    </Block>
+      bgColor='green'
+      background={`url(${api.imageURL})`}
+      backgroundSize='cover'/>
   )
 
   function getPosition () {

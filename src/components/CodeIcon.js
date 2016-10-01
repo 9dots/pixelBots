@@ -5,11 +5,13 @@ import {Icon, Block} from 'vdux-containers'
 import ColorPicker from './ColorPicker'
 import {removeLine, updateLine} from '../actions'
 import LineNumber from './LineNumber'
+import * as animalApis from '../animalApis/index'
 
 function render ({props}) {
   let {
     fs,
     name,
+    type,
     color,
     animal,
     lineNum,
@@ -40,18 +42,18 @@ function render ({props}) {
       align='center center'
       {...props}>
       <LineNumber fs='22px' absolute textAlign='right' numLines={numLines} lineNum={lineNum + 1} />
-      {iconName === 'brush' ? (
+      {iconName === 'brush' && animalApis[type](animal).docs.paint.arguments
+        ? (
         <ColorPicker
           btn={getButton(iconName)}
           h='40px'
           w='40px'
           clickHandler={(newColor) => updateLine(animal, lineNum, `paint('${newColor}')`)}/>
-      ) : (
+        ) : (
         <Icon fs={fs} name={iconName}/>
       )}
-      <Block align='center center' absolute right='2%'>
+      <Block align='center center' absolute tall right='2%' top='0'>
         <Icon
-          tall
           fs='40px'
           onClick={[(e) => e.stopPropagation(), () => removeLine(animal, lineNum)]}
           transition='opacity .3s ease-in-out'

@@ -11,9 +11,11 @@ import {
   clearError,
   setActive,
   aceUpdate,
-  addCode,
+  swapMode,
+  newRoute,
   startRun,
   stopRun,
+  addCode,
   reset
 } from './actions'
 
@@ -148,6 +150,17 @@ function reducer (state, action) {
         ...state,
         error: undefined,
         activeLine: -1
+      }
+    case newRoute.type:
+      return {
+        ...state,
+        url: action.payload
+      }
+    case swapMode.type:
+      return {
+        ...state,
+        inputType: state.inputType === 'code' ? 'icons' : 'code',
+        animals: map((animal) => ({...animal, sequence: []}), state.animals)
       }
   }
   return state

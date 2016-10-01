@@ -13,7 +13,7 @@ function render ({props}) {
   }
 
   return (
-    <Flex>
+    <Flex alignItems='center center'>
       {cells}
     </Flex>
   )

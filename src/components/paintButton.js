@@ -9,12 +9,12 @@ const setColor = createAction('SET_COLOR')
 
 function initialState () {
   return {
-    color: 'white'
+    color: 'offblack'
   }
 }
 
 function render ({props, state, local}) {
-  const {clickHandler, w, h} = props
+  const {colorPicker, clickHandler, w, h} = props
   const {color} = state
 
   const btn = (
@@ -35,7 +35,11 @@ function render ({props, state, local}) {
         onClick={() => clickHandler(color)}
         boxShadow='0 2px 5px 0px rgba(0,0,0,0.8)'>
         <Icon color={color} mr='5px' fs='32px' name='brush'/>
-        <ColorPicker h={`${parseInt(h)/3}px`} w={`${parseInt(h)/3}px`} btn={btn} clickHandler={local(setColor)}/>
+        {colorPicker && <ColorPicker
+          h={`${parseInt(h) / 3}px`}
+          w={`${parseInt(h) / 3}px`}
+          btn={btn}
+          clickHandler={local(setColor)} />}
       </Button>
     </Block>
   )

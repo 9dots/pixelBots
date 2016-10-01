@@ -12,51 +12,43 @@ const wrap = (code, api) => {
   return `
   var {${Object.keys(api).join(', ')}} = api
   function * codeRunner () {
-    yield startRun()
     ${code}
-    yield stopRun()
   }
   codeRunner()
 `
 }
 
-var addedLines
-
 function matchApiString (api, line) {
   let apiStrings = Object.keys(api)
-  for (var i in apiStrings) {
-    if (line.search(apiStrings[i]) > -1) {
-      return true
+  return apiStrings.filter(function (term) {
+    if (line.search(term) > -1) {
+      return term
     }
-  }
-  return false
+  })
 }
 
 function codeRunner (code, api, timeout) {
-  addedLines = 0
-
   let {sequence} = code
   if (typeof sequence === 'string') {
-    sequence = sequence.split('\n')
+    sequence = sequence.split(/[\n]/gi)
   }
   sequence = sequence.map((line, i) => {
-    if (matchApiString(api, line)) {
-      addedLines += 3
-      return `setActiveLine(${i})
-      scrollTo('.code-editor', '#code-icon-${i}')
-      ${line}
-      sleep(${api.speed})`
-    } else {
-      return line
-    }
+    let updatedLine = line
+    matchApiString(api, line).forEach((match) => {
+      var re = new RegExp('(' + match + '\\()(.*)\\)', 'gi')
+      var results = re.exec(line)
+      if (results) {
+        updatedLine = updatedLine.replace(re, `$1${i}${results[2] ? ', ' : ''}${results[2]})`)
+      }
+    })
+    return updatedLine
   }).join('\n')
   api = {...api, sleep, startRun, stopRun, setActiveLine, scrollTo}
   try {
     return eval(wrap(autoYield(sequence, Object.keys(api)), api))
   } catch (e) {
     return {
-      error: e,
-      addedLines
+      error: e
     }
   }
 }

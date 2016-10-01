@@ -12,7 +12,6 @@ import codeRunner from './middleware/codeRunner'
 import theme from './theme'
 import scroll from './middleware/scroll'
 import addCode from './middleware/addCodeMW'
-import {throwError} from './actions'
 
 var app = require('./app').default
 
@@ -26,7 +25,7 @@ const palette = [
 
 const initialState = {
   url: '/',
-  levelSize: [3, 3],
+  levelSize: [5, 5],
   painted: [],
   initialPainted: [],
   active: 1,
@@ -35,11 +34,11 @@ const initialState = {
   animals: {
     1: {
       initial: {
-        location: [2, 0],
+        location: [4, 0],
         dir: 0,
         rot: 0
       },
-      type: 'turtle',
+      type: 'zebra',
       current: {},
       sequence: []
     }

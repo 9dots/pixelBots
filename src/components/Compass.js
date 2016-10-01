@@ -9,14 +9,14 @@ function render ({props}) {
   return (
     <Block column align='start center'>
       <Block>
-        {createButton('forward')}
+        {createButton('up')}
       </Block>
       <Block row align='center center'>
         {createButton('left')}
         {createButton('right')}
       </Block>
       <Block>
-        {createButton('back')}
+        {createButton('down')}
       </Block>
     </Block>
   )

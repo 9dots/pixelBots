@@ -22,9 +22,8 @@ const docs = {
     description: 'Move the zebra down one space.'
   },
   paint: {
-    usage: 'paint(color)',
-    description: 'Paint the square the zebra is currently on color.',
-    arguments: 'color'
+    usage: 'paint()',
+    description: 'Paint the square the zebra is currently on black.'
   }
 }
 
@@ -33,8 +32,9 @@ function wrap (id, getState = () => {}) {
   const right = (line) => move(1, line)
   const down = (line) => move(2, line)
   const left = (line) => move(3, line)
-  const paint = (line, color) => animalPaint(id, color, line)
+  const paint = (line) => animalPaint(id, '#333', line)
   const speed = 750
+  const imageURL = './animalImages/zebra.jpg'
 
   function move (dir, lineNum) {
     const state = getState()
@@ -54,6 +54,7 @@ function wrap (id, getState = () => {}) {
     left,
     paint,
     speed,
+    imageURL,
     docs
   }
 }
