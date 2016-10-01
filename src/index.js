@@ -12,8 +12,11 @@ import codeRunner from './middleware/codeRunner'
 import theme from './theme'
 import scroll from './middleware/scroll'
 import addCode from './middleware/addCodeMW'
+import rootEpic from './epics'
+import {createEpicMiddleware} from 'redux-observable'
 
 var app = require('./app').default
+const epicMiddleware = createEpicMiddleware(rootEpic)
 
 const palette = [
   'lightblue',
@@ -63,6 +66,7 @@ const {subscribe, render, replaceReducer} = vdux({
     effects,
     location(),
     codeRunner(),
+    epicMiddleware,
     scroll,
     addCode
   ]

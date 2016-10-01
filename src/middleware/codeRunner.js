@@ -41,22 +41,7 @@ function codeRunner () {
           if (code.error) {
             return dispatch(throwError(code.error.name, (code.error.loc.line) - 1))
           }
-          dispatch(startRun())
-          runners.push(createRunner(code, api.speed)
-            .subscribe(
-              function (action) {
-                if (action.type) {
-                  return dispatch([setActiveLine(action.meta.lineNum), action])
-                }
-              },
-              function (e) {
-                const lineNum = stackTrace.parse(e)[0].lineNumber - 4
-                return dispatch(throwError(e.name, lineNum))
-              },
-              function () {
-                return dispatch(stopRun())
-              }
-          ))
+          dispatch(startRun(code))
         }
       }
       if (action.type === abortRun.type || action.type === moveError.type) {
