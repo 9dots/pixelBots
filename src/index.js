@@ -2,18 +2,20 @@
  * Imports
  */
 
-import domready from '@f/domready'
-import vdux from 'vdux/dom'
-import reducer from './reducer'
-import location from 'redux-effects-location'
-import effects from 'redux-effects'
-import flow from 'redux-flo'
-import codeRunner from './middleware/codeRunner'
-import theme from './theme'
-import scroll from './middleware/scroll'
-import addCode from './middleware/addCodeMW'
-import rootEpic from './epics'
 import {createEpicMiddleware} from 'redux-observable'
+import handleError from './middleware/handleError'
+import codeRunner from './middleware/codeRunner'
+import moveAnimal from './middleware/moveAnimal'
+import location from 'redux-effects-location'
+import addCode from './middleware/addCodeMW'
+import scroll from './middleware/scroll'
+import effects from 'redux-effects'
+import domready from '@f/domready'
+import reducer from './reducer'
+import rootEpic from './epics'
+import flow from 'redux-flo'
+import vdux from 'vdux/dom'
+import theme from './theme'
 
 var app = require('./app').default
 const epicMiddleware = createEpicMiddleware(rootEpic)
@@ -66,6 +68,8 @@ const {subscribe, render, replaceReducer} = vdux({
     effects,
     location(),
     codeRunner(),
+    moveAnimal(),
+    handleError(),
     epicMiddleware,
     scroll,
     addCode

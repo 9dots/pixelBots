@@ -14,19 +14,6 @@ import {
 const runCode = createAction('RUN_CODE')
 const abortRun = createAction('ABORT_RUN')
 
-function createRunner (it, speed) {
-  let curVal = {
-    done: false
-  }
-  return Observable
-    .timer(0, speed)
-    .map((i) => {
-      curVal = it.next()
-      return curVal.value
-    })
-    .takeWhile(() => curVal.done === false)
-}
-
 var runners = []
 
 function codeRunner () {
@@ -36,7 +23,7 @@ function codeRunner () {
       if (action.type === runCode.type && !state.running) {
         const animals = state.animals
         for (var id in animals) {
-          const api = animalApis[animals[id].type](id, getState)
+          const api = animalApis[animals[id].type](id)
           let code = getIterator(animals[id], api)
           if (code.error) {
             return dispatch(throwError(code.error.name, (code.error.loc.line) - 1))
@@ -45,17 +32,7 @@ function codeRunner () {
         }
       }
       if (action.type === abortRun.type || action.type === moveError.type) {
-        let activeLine = getState().activeLine
-        if (action.type === moveError.type) {
-          dispatch(throwError('Move error', activeLine))
-        }
-        runners.forEach((runner) => {
-          runner.dispose()
-        })
         dispatch(stopRun())
-      }
-      if (action.type === stopRun.type) {
-        runners = []
       }
       return next(action)
     }

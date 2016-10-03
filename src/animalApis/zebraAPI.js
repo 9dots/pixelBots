@@ -1,6 +1,6 @@
 import {
   animalPaint,
-  animalMove,
+  moveAnimal,
   moveError
 } from '../actions'
 
@@ -37,14 +37,7 @@ function wrap (id, getState = () => {}) {
   const imageURL = './animalImages/zebra.jpg'
 
   function move (dir, lineNum) {
-    const state = getState()
-    const animal = state.animals[id]
-    const location = getNewLocation(animal.current.location, dir)
-    if (checkBounds(location, state.levelSize)) {
-      return animalMove(id, location, lineNum)
-    } else {
-      return moveError('Out of bounds', lineNum)
-    }
+    return moveAnimal({id, getLocation: getNewLocation(dir)}, lineNum)
   }
 
   return {
@@ -59,15 +52,15 @@ function wrap (id, getState = () => {}) {
   }
 }
 
-function getNewLocation (oldLoc, dir) {
+function getNewLocation (dir) {
   if (dir === 0) {
-    return [oldLoc[0] - 1, oldLoc[1]]
+    return (loc) => [loc[0] - 1, loc[1]]
   } else if (dir === 2) {
-    return [oldLoc[0] + 1, oldLoc[1]]
+    return (loc) => [loc[0] + 1, loc[1]]
   } else if (dir === 3) {
-    return [oldLoc[0], oldLoc[1] - 1]
+    return (loc) => [loc[0], loc[1] - 1]
   } else if (dir === 1) {
-    return [oldLoc[0], oldLoc[1] + 1]
+    return (loc) => [loc[0], loc[1] + 1]
   }
 }
 

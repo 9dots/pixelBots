@@ -29,6 +29,8 @@ const removeLine = createAction('REMOVE_LINE', (id, idx) => ({id, idx}))
 const setActiveLine = createAction('SET_ACTIVE_LINE', (idx) => idx)
 const addCode = createAction('ADD_CODE', (id, fn) => ({id, fn}))
 const setActive = createAction('SET_ANIMAL_ACTIVE', (id) => id)
+const handleError = createAction('HANDLE_ERROR')
+const moveAnimal = createAction('MOVE_ANIMAL', (opts) => opts, (opts, lineNum) => ({lineNum}))
 const clearError = createAction('CLEAR_ERROR')
 const aceUpdate = createAction('ACE_UPDATE')
 const swapMode = createAction('SWAP_MODE')
@@ -45,12 +47,14 @@ export {
   setActiveLine,
   initializeApp,
   animalPaint,
+  handleError,
   removeLine,
   throwError,
   animalMove,
   updateLine,
   selectLine,
   clearError,
+  moveAnimal,
   setActive,
   moveError,
   aceUpdate,

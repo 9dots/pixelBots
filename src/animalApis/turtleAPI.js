@@ -28,7 +28,7 @@ const docs = {
   }
 }
 
-function wrap (id, getState = () => {}) {
+function wrap (id) {
   const up = (line) => move(0, line)
   const right = (line) => move(1, line)
   const down = (line) => move(2, line)
@@ -68,15 +68,6 @@ function getNewLocation (oldLoc, dir) {
   } else if (dir === 1) {
     return [oldLoc[0], oldLoc[1] + 1]
   }
-}
-
-function checkBounds (location, level) {
-  for (var coord in location) {
-    if (location[coord] >= level[coord] || location[coord] < 0) {
-      return false
-    }
-  }
-  return true
 }
 
 export default wrap

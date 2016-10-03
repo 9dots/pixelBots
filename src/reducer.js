@@ -4,6 +4,7 @@ import splice from '@f/splice'
 import {
   setActiveLine,
   animalPaint,
+  handleError,
   removeLine,
   animalMove,
   updateLine,
@@ -18,8 +19,6 @@ import {
   addCode,
   reset
 } from './actions'
-
-import {throwError} from './middleware/codeRunner'
 
 function reducer (state, action) {
   switch (action.type) {
@@ -138,7 +137,7 @@ function reducer (state, action) {
           current: animal.initial
         }), state.animals)
       }
-    case throwError.type:
+    case handleError.type:
       var {message, lineNum} = action.payload
       return {
         ...state,

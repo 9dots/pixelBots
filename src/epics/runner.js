@@ -1,21 +1,25 @@
+import { startRun, stopRun, setActiveLine } from '../actions'
+import {scrollTo} from '../middleware/scroll'
+import * as animalApis from '../animalApis'
 import { Observable } from 'rxjs'
-import { startRun, stopRun } from '../actions'
 
-const delay = Observable.empty().delay(500)
+const highlighter = (lineNum) => Observable.of(setActiveLine(lineNum))
+const createDelay = (delay = 750) => Observable.empty().delay(delay)
+const addScroll = (lineNum) => Observable.of(scrollTo('.code-editor', `#code-icon-${lineNum}`))
 
 export default function runner (action$) {
   return action$.ofType(startRun.type)
-    .map((action) => {
-      console.log(action)
-      return Observable.from(action.payload)
-    })
+    .map((action) => Observable.from(action.payload))
     .switchMap((obs) =>
-      obs
-        .map((x) => {
-          console.log(x)
-          Observable.of(x).concat(delay)
-        })
-        .concatAll()
-        .takeUntil(action$.ofType(stopRun.type))
+      obs.map((x) => {
+        const addDelay = Observable.of(x).concat(createDelay())
+        return x.meta
+          ? addDelay
+            .merge(highlighter(x.meta.lineNum))
+            .merge(addScroll(x.meta.lineNum))
+          : addDelay
+      })
+         .concatAll()
+         .takeUntil(action$.ofType(stopRun.type))
     )
 }

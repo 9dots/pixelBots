@@ -12,7 +12,14 @@ const wrap = (code, api) => {
   return `
   var {${Object.keys(api).join(', ')}} = api
   function * codeRunner () {
-    ${code}
+    try {
+      ${code}
+    } catch (e) {
+      yield {
+        type: 'THROW_ERROR',
+        payload: e
+      }
+    }
   }
   codeRunner()
 `
