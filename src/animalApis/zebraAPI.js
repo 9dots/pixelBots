@@ -3,6 +3,7 @@ import {
   moveAnimal
 } from '../actions'
 
+const imageURL = './animalImages/zebra.jpg'
 const docs = {
   up: {
     usage: 'up()',
@@ -33,7 +34,6 @@ function wrap (id, getState = () => {}) {
   const left = (line) => move(3, line)
   const paint = (line) => animalPaint(id, '#333', line)
   const speed = 750
-  const imageURL = './animalImages/zebra.jpg'
 
   function move (dir, lineNum) {
     return moveAnimal({id, getLocation: getNewLocation(dir)}, lineNum)
@@ -64,3 +64,7 @@ function getNewLocation (dir) {
 }
 
 export default wrap
+export {
+  docs,
+  imageURL
+}

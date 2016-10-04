@@ -71,3 +71,6 @@ function getNewLocation (oldLoc, dir) {
 }
 
 export default wrap
+export {
+  docs
+}

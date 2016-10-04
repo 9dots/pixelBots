@@ -12,7 +12,7 @@ function onCreate () {
 }
 
 function render ({props}) {
-  let {animals, numRows = 5, numColumns = 5, painted = [], active, levelSize} = props
+  let {animals, numRows = 5, numColumns = 5, painted = [], active, levelSize, editMode} = props
   let rows = []
 
   const size = parseFloat(levelSize) / numRows + 'px'
@@ -20,6 +20,7 @@ function render ({props}) {
   for (var i = 0; i < numRows; i++) {
     rows.push(
       <Row
+        editMode
         size={size}
         active={active}
         row={i}

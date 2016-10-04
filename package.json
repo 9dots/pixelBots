@@ -41,6 +41,7 @@
     "vdux-containers": "^1.1.19",
     "vdux-css-transition": "^1.2.1",
     "vdux-delay": "^1.0.6",
+    "vdux-fire": "^0.1.4",
     "vdux-ui": "^1.2.29",
     "yoco": "^1.6.2"
   },

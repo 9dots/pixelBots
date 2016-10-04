@@ -9,10 +9,6 @@ import element from 'vdux/element'
 import {Block, Box} from 'vdux-ui'
 import Button from '../components/Button'
 
-function onCreate () {
-  return initializeApp()
-}
-
 function render ({props}) {
   const {
     painted,
@@ -23,6 +19,7 @@ function render ({props}) {
     activeLine,
     selectedLine,
     hasRun,
+    top,
     error,
     inputType
   } = props
@@ -30,16 +27,13 @@ function render ({props}) {
   const size = '550px'
 
   return (
-    <Block bgColor='#e5e5e5' relative align='center start' tall wide>
-      <Header h='60px' absolute top='0' left='0' right='0' title='Pixel Bots'>
-        <Button>Create</Button>
-      </Header>
+    <Block bgColor='#e5e5e5' relative h='calc(100% - 60px)' wide top={top}>
       <Block
-        absolute
-        top='60px'
-        h='calc(100% - 60px)'
+        relative
+        display='flex'
         left='0'
-        wide align='center start'>
+        minHeight='100%'
+        wide>
         <Block h={size} w={size} my='20px' mx='20px'>
           <Level
             animals={animals}
@@ -66,6 +60,5 @@ function render ({props}) {
 }
 
 export default {
-  onCreate,
   render
 }

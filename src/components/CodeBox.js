@@ -12,7 +12,7 @@ function render ({props}) {
   const {active, activeLine, running} = props
 
   return (
-    <Block wide tall fontFamily='code'>
+    <Block relative wide tall fontFamily='code'>
       <Ace
         name='code-editor'
         mode='javascript'

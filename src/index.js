@@ -14,11 +14,12 @@ import domready from '@f/domready'
 import reducer from './reducer'
 import rootEpic from './epics'
 import flow from 'redux-flo'
+import * as fire from 'vdux-fire'
 import vdux from 'vdux/dom'
 import theme from './theme'
 
-var app = require('./app').default
 const epicMiddleware = createEpicMiddleware(rootEpic)
+var app = require('./app').default
 
 const palette = [
   'lightblue',
@@ -50,15 +51,13 @@ const initialState = {
   }
 }
 
-// const config = {
-//   apiKey: 'AIzaSyA1Ib5i5HZPCxnKp4ITiUoy5VEKaLMdsDY',
-//   authDomain: 'play-ev3.firebaseapp.com',
-//   databaseURL: 'https://play-ev3.firebaseio.com',
-//   storageBucket: 'play-ev3.appspot.com'
-// }
-/**
- * App
- */
+const firebaseConfig = {
+  apiKey: "AIzaSyAj07kPi_C4eGAZBkV7ElSLEa_yg3sHoDc",
+  authDomain: "artbot-26016.firebaseapp.com",
+  databaseURL: "https://artbot-26016.firebaseio.com",
+  storageBucket: "artbot-26016.appspot.com",
+  messagingSenderId: "493804710533"
+}
 
 const {subscribe, render, replaceReducer} = vdux({
   reducer,
@@ -70,6 +69,7 @@ const {subscribe, render, replaceReducer} = vdux({
     codeRunner(),
     moveAnimal(),
     handleError(),
+    fire.middleware(firebaseConfig),
     epicMiddleware,
     scroll,
     addCode

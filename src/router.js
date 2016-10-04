@@ -1,60 +1,46 @@
 /** @jsx element */
 
-import element from 'vdux/element'
-import Window from 'vdux/window'
-import Document from 'vdux/document'
-import HomePage from './pages/Home'
-import enroute from 'enroute'
 import {setUrl} from 'redux-effects-location'
-import {isLocal} from './utils'
+import Header from './components/Header'
+import Button from './components/Button'
+import {initializeApp} from './actions'
+import Create from './pages/Create'
+import HomePage from './pages/Home'
+import element from 'vdux/element'
+import enroute from 'enroute'
+import {Block} from 'vdux-ui'
+import {firebaseSet} from 'vdux-fire'
 
-function initialState () {
-  return {
-    url: '/'
-  }
+const router = enroute({
+  '/': (params, props) => <HomePage top='60px '{...props} />,
+  '/:gameID/create/:slug': ({slug, gameID}, props) => <Create top='60px' gameID={gameID} params={slug} {...props} />
+})
+
+function onCreate () {
+  return initializeApp()
 }
 
 function render ({local, props}) {
-  const router = enroute({
-    '*': () => <HomePage {...props} />
-  })
-
   return (
-    <Window onPopstate={local(setUrl)}>
-      <Document onClick={handleLinkClicks(local(setUrl))}>
-        {
-          router(props.url)
-        }
-      </Document>
-    </Window>
+    <Block tall wide>
+      <Header h='60px' absolute top='0' left='0' right='0' title='Pixel Bots'>
+        {props.url === '/' && (
+          <Button onClick={setId}>Create</Button>
+        )}
+      </Header>
+      {
+        router(props.url, props)
+      }
+    </Block>
   )
 }
 
-function handleLinkClicks (setUrl) {
-  return (e) => {
-    if (e.target.nodeName === 'A') {
-      const href = e.getAttribute('href')
-      if (isLocal(href)) {
-        e.preventDefault()
-        return setUrl(href)
-      }
-    }
-  }
-}
-
-function reducer (state, action) {
-  switch (action.type) {
-    case setUrl.type:
-      return {
-        ...state,
-        url: action.payload
-      }
-  }
-  return state
+function * setId () {
+  const id = yield firebaseSet({method: 'push', ref: 'games', value: '1234'})
+  yield setUrl(`/${id}/create/animal`)
 }
 
 export default {
-  initialState,
-  reducer,
+  onCreate,
   render
 }

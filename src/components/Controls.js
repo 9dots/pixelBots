@@ -10,7 +10,7 @@ function render ({props}) {
   let {active, animals, running, selectedLine, hasRun, inputType} = props
 
   return (
-    <Block relative bgColor='#A7B4CB' wide tall>
+    <Block absolute bgColor='#A7B4CB' wide tall>
       <Block tall relative align='start start'>
         <Buttons
           hasRun={hasRun}
