@@ -1,7 +1,6 @@
 import {
   animalPaint,
-  moveAnimal,
-  moveError
+  moveAnimal
 } from '../actions'
 
 const docs = {
@@ -62,15 +61,6 @@ function getNewLocation (dir) {
   } else if (dir === 1) {
     return (loc) => [loc[0], loc[1] + 1]
   }
-}
-
-function checkBounds (location, level) {
-  for (var coord in location) {
-    if (location[coord] >= level[coord] || location[coord] < 0) {
-      return false
-    }
-  }
-  return true
 }
 
 export default wrap

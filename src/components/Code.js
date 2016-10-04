@@ -13,7 +13,7 @@ let lastSelected = 0
 
 function render ({props, local, state}) {
   const {animals, active, activeLine, selectedLine, hasRun} = props
-  const lineHeight = '50px'
+  const lineHeight = '36px'
 
   const code = animals[active].sequence.map((line, i, arr) => {
     const isActive = activeLine === i && hasRun
@@ -24,7 +24,7 @@ function render ({props, local, state}) {
 
     return (
       <Block id={`code-icon-${i}`} cursor='pointer' onClick={() => selectLine(active, i)}>
-        <Cursor h='18px' active={selectedLine === i}/>
+        <Cursor h='14px' active={selectedLine === i}/>
         <CodeIcon
           iconName={nameToIcon(name)}
           focus={selectedLine === i}
@@ -35,7 +35,7 @@ function render ({props, local, state}) {
           type={type}
           bgColor={isActive ? '#B43C3C' : '#666'}
           color={name === 'paint' ? color[0].replace(/\'/gi, '') : 'white'}
-          fs='40px'
+          fs='28px'
           p='15px'
           h={lineHeight}
           animal={active}

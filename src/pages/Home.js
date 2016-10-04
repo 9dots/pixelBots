@@ -1,13 +1,13 @@
 /** @jsx element */
 
 import ErrorMessage from '../components/ErrorMessage'
-import SwapMode from '../components/SwapMode'
 import Controls from '../components/Controls'
 import Header from '../components/Header'
 import {initializeApp} from '../actions'
 import Level from '../components/Level'
 import element from 'vdux/element'
 import {Block, Box} from 'vdux-ui'
+import Button from '../components/Button'
 
 function onCreate () {
   return initializeApp()
@@ -32,7 +32,7 @@ function render ({props}) {
   return (
     <Block bgColor='#e5e5e5' relative align='center start' tall wide>
       <Header h='60px' absolute top='0' left='0' right='0' title='Pixel Bots'>
-        <SwapMode/>
+        <Button>Create</Button>
       </Header>
       <Block
         absolute

@@ -1,10 +1,7 @@
 import createAction from '@f/create-action'
 import getIterator from '../getIterator.js'
-import {Observable} from 'rx-lite'
-import stackTrace from 'stack-trace'
 import * as animalApis from '../animalApis/index'
 import {
-  setActiveLine,
   throwError,
   moveError,
   startRun,
@@ -13,8 +10,6 @@ import {
 
 const runCode = createAction('RUN_CODE')
 const abortRun = createAction('ABORT_RUN')
-
-var runners = []
 
 function codeRunner () {
   return ({getState, dispatch}) => {

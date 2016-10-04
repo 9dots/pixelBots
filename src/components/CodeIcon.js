@@ -9,16 +9,16 @@ import * as animalApis from '../animalApis/index'
 
 function render ({props}) {
   let {
-    fs,
-    name,
-    type,
-    color,
-    animal,
-    lineNum,
-    iconName,
-    numLines,
+    shouldTransition,
     newElement,
-    shouldTransition
+    numLines,
+    iconName,
+    lineNum,
+    animal,
+    color,
+    type,
+    name,
+    fs
   } = props
   const shouldFlash = !shouldTransition && newElement
 
@@ -54,7 +54,7 @@ function render ({props}) {
       )}
       <Block align='center center' absolute tall right='2%' top='0'>
         <Icon
-          fs='40px'
+          fs={props.fs}
           onClick={[(e) => e.stopPropagation(), () => removeLine(animal, lineNum)]}
           transition='opacity .3s ease-in-out'
           color='black'

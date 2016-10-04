@@ -1,7 +1,7 @@
 import {animalMove, moveAnimal, throwError} from '../actions'
 
 export default function () {
-  return ({getState, dispatch}) => next => action => {
+  return ({getState, dispatch}) => (next) => (action) => {
     if (action.type === moveAnimal.type) {
       const {levelSize, animals} = getState()
       const {id, getLocation} = action.payload
