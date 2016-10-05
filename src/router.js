@@ -12,7 +12,7 @@ import {Block} from 'vdux-ui'
 import {firebaseSet} from 'vdux-fire'
 
 const router = enroute({
-  '/': (params, props) => <HomePage top='60px '{...props} />,
+  '/': (params, props) => <HomePage top='60px' {...props} />,
   '/:gameID/create/:slug': ({slug, gameID}, props) => <Create top='60px' gameID={gameID} params={slug} {...props} />
 })
 

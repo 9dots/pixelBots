@@ -3,7 +3,8 @@ import {animalMove, moveAnimal, throwError} from '../actions'
 export default function () {
   return ({getState, dispatch}) => (next) => (action) => {
     if (action.type === moveAnimal.type) {
-      const {levelSize, animals} = getState()
+      const {game} = getState()
+      const {levelSize, animals} = game
       const {id, getLocation} = action.payload
       const {lineNum} = action.meta
       const newLocation = getLocation(animals[id].current.location)

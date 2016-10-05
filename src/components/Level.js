@@ -12,7 +12,18 @@ function onCreate () {
 }
 
 function render ({props}) {
-  let {animals, numRows = 5, numColumns = 5, painted = [], active, levelSize, editMode} = props
+  let {
+    animals,
+    numRows = 5,
+    numColumns = 5,
+    painted = [],
+    active,
+    levelSize,
+    clickHandler = () => {},
+    editMode,
+    w = '100%',
+    h = '100%'
+  } = props
   let rows = []
 
   const size = parseFloat(levelSize) / numRows + 'px'
@@ -20,7 +31,8 @@ function render ({props}) {
   for (var i = 0; i < numRows; i++) {
     rows.push(
       <Row
-        editMode
+        editMode={editMode}
+        clickHandler={clickHandler}
         size={size}
         active={active}
         row={i}
@@ -47,7 +59,7 @@ function render ({props}) {
   }
 
   return (
-    <Flex wide tall relative column>
+    <Flex w={w} h={h} relative column>
       {rows}
       {animalArr}
     </Flex>

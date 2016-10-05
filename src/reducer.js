@@ -1,5 +1,6 @@
 import map from '@f/map'
 import splice from '@f/splice'
+import setProp from '@f/set-prop'
 
 import {
   setActiveLine,
@@ -21,29 +22,29 @@ import {
 } from './actions'
 
 function reducer (state, action) {
+  console.log(action)
   switch (action.type) {
     case animalMove.type:
       var {id, location} = action.payload
       return {
         ...state,
-        animals: {
-          ...state.animals,
-          [id]: {
-            ...state.animals[id],
-            current: {
-              ...state.animals[id].current,
-              location
-            }
-          }
-        }
+        game: setProp(
+          `animals.${id}.current.location`,
+          state.game,
+          location
+        )
       }
     case animalPaint.type:
       var {id, color} = action.payload
-      var loc = state.animals[id].current.location
+      var loc = state.game.animals[id].current.location
 
       return {
         ...state,
-        painted: [...state.painted, {loc, color}]
+        game: setProp(
+          'painted',
+          state.game,
+          [...state.game.painted, {loc, color}]
+        )
       }
     case setActive.type:
       var id = action.payload
@@ -106,36 +107,35 @@ function reducer (state, action) {
       var {id, code} = action.payload
       return {
         ...state,
-        animals: {
-          ...state.animals,
-          [id]: {
-            ...state.animals[id],
-            sequence: code
-          }
-        }
+        game: setProp(
+          `animals.${id}.sequence`,
+          state.game,
+          code
+        )
       }
     case updateLine.type:
       var {id, lineNum, code} = action.payload
       return {
         ...state,
-        animals: {
-          ...state.animals,
-          [id]: {
-            ...state.animals[id],
-            sequence: splice(state.animals[id].sequence, lineNum, 1, code)
-          }
-        }
+        game: setProp(
+          `animals[${id}].sequence`,
+          state.game,
+          splice(state.animals[id].sequence, lineNum, 1, code)
+        )
       }
     case reset.type:
       return {
         ...state,
         running: false,
-        painted: state.initialPainted,
         hasRun: false,
-        animals: map((animal) => ({
-          ...animal,
-          current: animal.initial
-        }), state.animals)
+        game: {
+          ...state.game,
+          painted: state.game.initialPainted,
+          animals: map((animal) => ({
+            ...animal,
+            current: animal.initial
+          }), state.game.animals)
+        }
       }
     case handleError.type:
       var {message, lineNum} = action.payload

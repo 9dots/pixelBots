@@ -31,32 +31,34 @@ const palette = [
 
 const initialState = {
   url: '/',
-  levelSize: [5, 5],
-  painted: [],
-  initialPainted: [],
-  active: 1,
+  active: 0,
   inputType: 'code',
   selectedLine: 0,
-  animals: {
-    1: {
-      initial: {
-        location: [4, 0],
-        dir: 0,
-        rot: 0
-      },
-      type: 'zebra',
-      current: {},
-      sequence: []
-    }
+  game: {
+    levelSize: [5, 5],
+    painted: [],
+    initialPainted: [],
+    animals: [
+      {
+        initial: {
+          location: [4, 0],
+          dir: 0,
+          rot: 0
+        },
+        type: 'zebra',
+        current: {},
+        sequence: []
+      }
+    ]
   }
 }
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAj07kPi_C4eGAZBkV7ElSLEa_yg3sHoDc",
-  authDomain: "artbot-26016.firebaseapp.com",
-  databaseURL: "https://artbot-26016.firebaseio.com",
-  storageBucket: "artbot-26016.appspot.com",
-  messagingSenderId: "493804710533"
+  apiKey: 'AIzaSyAj07kPi_C4eGAZBkV7ElSLEa_yg3sHoDc',
+  authDomain: 'artbot-26016.firebaseapp.com',
+  databaseURL: 'https://artbot-26016.firebaseio.com',
+  storageBucket: 'artbot-26016.appspot.com',
+  messagingSenderId: '493804710533'
 }
 
 const {subscribe, render, replaceReducer} = vdux({

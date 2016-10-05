@@ -2,27 +2,28 @@
 
 import ErrorMessage from '../components/ErrorMessage'
 import Controls from '../components/Controls'
-import Header from '../components/Header'
-import {initializeApp} from '../actions'
 import Level from '../components/Level'
 import element from 'vdux/element'
 import {Block, Box} from 'vdux-ui'
-import Button from '../components/Button'
 
 function render ({props}) {
   const {
-    painted,
-    levelSize,
-    animals,
-    active,
-    running,
-    activeLine,
     selectedLine,
+    activeLine,
+    inputType,
+    running,
+    active,
     hasRun,
-    top,
     error,
-    inputType
+    game,
+    top
   } = props
+
+  const {
+    levelSize,
+    painted,
+    animals
+  } = game
 
   const size = '550px'
 

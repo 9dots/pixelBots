@@ -2,11 +2,10 @@
 
 import element from 'vdux/element'
 import {Block, Flex, Text} from 'vdux-ui'
-import {Button, Card} from 'vdux-containers'
+import {Card} from 'vdux-containers'
 import {setUrl} from 'redux-effects-location'
 import animalDescriptions from '../animalApis/animalDescriptions'
 import reduce from '@f/reduce'
-import addClass from '@f/add-class'
 import {firebaseSet} from 'vdux-fire'
 
 function render ({props}) {
@@ -56,7 +55,7 @@ function render ({props}) {
       },
       ref: `/games/${gameID}`
     })
-    yield setUrl(`/${gameID}/create/level`)
+    yield setUrl(`/${gameID}/create/options`)
   }
 }
 

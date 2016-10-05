@@ -15,7 +15,7 @@ const router = enroute({
 
 function render ({props}) {
   return (
-    <Block relative top={props.top} h='calc(100% - 60px)' wide>
+    <Block absolute top={props.top} h='calc(100% - 60px)' wide>
       {router(props.params, props)}
     </Block>
   )

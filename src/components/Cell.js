@@ -4,7 +4,7 @@ import element from 'vdux/element'
 import {Block} from 'vdux-ui'
 
 function render ({props}) {
-  const {color = 'white', size} = props
+  const {color = 'white', size, clickHandler} = props
 
   return (
     <Block
@@ -14,6 +14,7 @@ function render ({props}) {
       h={size}
       w={size}
       transition='all .75s ease-in-out'
+      onClick={clickHandler}
       bgColor={color} />
   )
 }

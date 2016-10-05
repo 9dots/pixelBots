@@ -9,8 +9,8 @@ const addScroll = (lineNum) => Observable.of(
   scrollTo('.code-editor', `#code-icon-${lineNum}`)
 )
 const getTimeout = (animals, id) => id
-? animalApis[animals[id].type](id).speed
-: undefined
+  ? animalApis[animals[id].type](id).speed
+  : undefined
 
 export default function runner (action$, store) {
   return action$.ofType(startRun.type)
@@ -20,7 +20,7 @@ export default function runner (action$, store) {
         const addDelay = Observable
           .of(x)
           .concat(
-            createDelay(getTimeout(store.getState().animals, x.payload.id)
+            createDelay(getTimeout(store.getState().game.animals, x.payload.id)
           ))
         return x.meta
           ? addDelay

@@ -16,7 +16,7 @@ function codeRunner () {
     return (next) => (action) => {
       let state = getState()
       if (action.type === runCode.type && !state.running) {
-        const animals = state.animals
+        const {animals} = state.game
         for (var id in animals) {
           const api = animalApis[animals[id].type](id)
           let code = getIterator(animals[id], api)
