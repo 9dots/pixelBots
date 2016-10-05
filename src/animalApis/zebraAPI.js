@@ -3,7 +3,7 @@ import {
   moveAnimal
 } from '../actions'
 
-const imageURL = './animalImages/zebra.jpg'
+const imageURL = '/animalImages/zebra.jpg'
 const docs = {
   up: {
     usage: 'up()',

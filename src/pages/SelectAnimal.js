@@ -17,6 +17,7 @@ function render ({props}) {
   )
 
   function makeCard (cur, next, key) {
+    console.log(key)
     return [
       ...cur,
       (<Card
@@ -44,11 +45,12 @@ function render ({props}) {
   }
 
   function * setAnimal (animal) {
+    console.log(animal)
     yield firebaseSet({
       method: 'set',
       value: {
         animals: {
-          1: {
+          0: {
             type: animal
           }
         }

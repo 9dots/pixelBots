@@ -1,25 +1,44 @@
 /** @jsx element */
 
-import element from 'vdux/element'
-import {Block, Card, Text} from 'vdux-ui'
 import {Button, debounceAction, Dropdown, Icon, Input, MenuItem} from 'vdux-containers'
+import CodeSelectDropdown from './CodeSelectDropdown'
+import Number from '../components/Numbered'
 import {setUrl} from 'redux-effects-location'
-import Level from '../components/Level'
 import createAction from '@f/create-action'
+import {Block, Card, Text} from 'vdux-ui'
+import Level from '../components/Level'
+import {firebaseSet} from 'vdux-fire'
+import element from 'vdux/element'
 import debounce from '@f/debounce'
 
-const setSquares = createAction('SET_SQUARES')
+const setAnimalPosition = createAction('SET_ANIMAL_POSITION')
 const setInputType = createAction('SET_INPUT_TYPE')
+const setSquares = createAction('SET_SQUARES')
+
+const inputProps = {
+  h: '42px',
+  textIndent: '8px',
+  borderRadius: '2px',
+  border: '2px solid #ccc'
+}
 
 function initialState () {
   return {
     size: 5,
-    inputType: 'icons'
+    inputType: 'icons',
+    animal: {}
   }
 }
 
 function render ({props, state, local}) {
-  const {size, inputType} = state
+  const {size, inputType, animal} = state
+  const {newGame, gameID} = props
+
+  if (newGame.loading) {
+    return <div>... loading</div>
+  }
+
+  const game = newGame.value
 
   const dropdownBtn = (
     <Button h='42px' mt='10px' fs='16px' wide>
@@ -31,49 +50,62 @@ function render ({props, state, local}) {
   return (
     <Block minHeight='500px' align='center center' tall wide>
       <Card p='24px' mr='10px' h='500px'>
-        <Block>
-          <Text fontWeight='800'>input type</Text>
-          <Dropdown
-            btn={dropdownBtn}
-            zIndex='999'
-            value={size}
-            onKeyUp={local((e) => setSquares(e.target.value), 2000)}>
-            <MenuItem
-              onClick={local(() => setInputType('icons'))}>
-              icons
-            </MenuItem>
-            <MenuItem
-              onClick={local(() => setInputType('code'))}>
-              code
-            </MenuItem>
-          </Dropdown>
+        <Block align='flex-start center'>
+          <Number complete={inputType}>1</Number>
+          <Block style={{flex: 1}}>
+            <Text fontWeight='800'>input type</Text>
+            <CodeSelectDropdown
+              size={size}
+              btn={dropdownBtn}
+              setInputType={local((type) => setInputType(type))}/>
+          </Block>
         </Block>
-        <Block mt='20px'>
-          <Text fontWeight='800'>grid size</Text>
-          <Input
-            h='42px'
-            mt='10px'
-            inputProps={{
-              h: '42px',
-              textIndent: '8px',
-              borderRadius: '2px',
-              border: '2px solid #ccc'
-            }}
-            value={size}
-            onKeyUp={local((e) => setSquares(e.target.value))}/>
+        <Block align='flex-start center' mt='20px'>
+          <Number complete={size > 0 && size < 40 && typeof(parseInt(size)) === 'number'}>2</Number>
+          <Block style={{flex: 1}}>
+            <Text fontWeight='800'>grid size</Text>
+            <Input
+              h='42px'
+              mt='10px'
+              inputProps={inputProps}
+              value={size}
+              onKeyUp={local((e) => setSquares(e.target.value))}/>
+          </Block>
         </Block>
-        <Button h='42px' mt='10px' fs='16px' wide onClick={() => setUrl('/')}>Save</Button>
+        <Block align='flex-start center' mt='20px'>
+          <Number complete={animal.type && animal.current.location}>3</Number>
+          <Block style={{flex: 1}}>
+            <Text fontWeight='800'>Click the grid to set the starting position</Text>
+          </Block>
+        </Block>
+        <Button h='42px' mt='20px' fs='16px' wide onClick={save}>Save</Button>
       </Card>
       <Level
         editMode
         painted={[]}
+        clickHandler={local((coords) => setAnimalPosition({type: game.animals[0].type, coords}))}
         levelSize='500px'
         numRows={size}
+        animals={animal.type ? [animal] : []}
         w='auto'
         h='auto'
         numColumns={size}/>
     </Block>
   )
+
+  function * save () {
+    yield firebaseSet({
+      method: 'update',
+      ref: `/games/${gameID}`,
+      value: {
+        inputType,
+        levelSize: [size, size],
+        'animals/0': animal
+      }
+    })
+    yield setUrl(`/${gameID}/create/level`)
+  }
+
 }
 
 function reducer (state, action) {
@@ -91,6 +123,25 @@ function reducer (state, action) {
       return {
         ...state,
         inputType: action.payload
+      }
+    case setAnimalPosition.type:
+      const {coords, type} = action.payload
+      return {
+        ...state,
+        animal: {
+          type,
+          initial: {
+            location: coords,
+            dir: 0,
+            rot: 0
+          },
+          current: {
+            location: coords,
+            dir: 0,
+            rot: 0
+          },
+          sequence: []
+        }
       }
   }
   return state

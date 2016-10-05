@@ -50,6 +50,7 @@ function render ({props}) {
   function addToArray (arr, animal, id) {
     arr.push(
       <Animal
+        editMode={editMode}
         cellSize={size}
         active={active}
         animal={animals[id]}

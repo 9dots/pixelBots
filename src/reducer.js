@@ -22,7 +22,6 @@ import {
 } from './actions'
 
 function reducer (state, action) {
-  console.log(action)
   switch (action.type) {
     case animalMove.type:
       var {id, location} = action.payload

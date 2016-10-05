@@ -20,6 +20,7 @@
   "homepage": "https://github.com/danleavitt0/artbot#readme",
   "dependencies": {
     "@f/animate": "^1.0.1",
+    "@f/set-prop": "^1.0.0",
     "@f/sleep": "^1.0.0",
     "@f/splice": "^1.0.0",
     "auto-yield": "^0.2.3",
