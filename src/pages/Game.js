@@ -5,12 +5,21 @@ import Controls from '../components/Controls'
 import Level from '../components/Level'
 import element from 'vdux/element'
 import {Block, Box} from 'vdux-ui'
+import {initializeGame} from '../actions'
+import {once} from 'vdux-fire'
+
+function * onCreate ({props}) {
+  const {gameID} = props
+  const playSnapshot = yield once({ref: `/play/${gameID}`})
+  const gameCode = playSnapshot.val()
+  const gameSnapshot = yield once({ref: `/games/${gameCode}`})
+  return yield initializeGame(gameSnapshot.val())
+}
 
 function render ({props}) {
   const {
     selectedLine,
     activeLine,
-    inputType,
     running,
     active,
     hasRun,
@@ -20,12 +29,15 @@ function render ({props}) {
   } = props
 
   const {
+    inputType,
     levelSize,
     painted,
     animals
   } = game
 
   const size = '550px'
+
+  console.log(levelSize)
 
   return (
     <Block bgColor='#e5e5e5' relative h='calc(100% - 60px)' wide top={top}>
@@ -62,5 +74,6 @@ function render ({props}) {
 }
 
 export default {
+  onCreate,
   render
 }

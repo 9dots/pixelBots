@@ -3,6 +3,7 @@ import splice from '@f/splice'
 import setProp from '@f/set-prop'
 
 import {
+  initializeGame,
   setActiveLine,
   animalPaint,
   handleError,
@@ -59,17 +60,17 @@ function reducer (state, action) {
       }
     case addCode.type:
       var {id, fn, idx} = action.payload
-      var lineNum = typeof (state.selectedLine) === 'number' ? state.selectedLine : null
+      var lineNum = typeof (state.selectedLine) === 'number'
+        ? state.selectedLine
+        : null
       return {
         ...state,
         selectedLine: state.selectedLine + 1,
-        animals: {
-          ...state.animals,
-          [id]: {
-            ...state.animals[id],
-            sequence: splice(state.animals[id].sequence, lineNum, 0, fn)
-          }
-        }
+        game: setProp(
+          `animals.${id}.sequence`,
+          state.game,
+          splice(state.game.animals[id].sequence || [], lineNum, 0, fn)
+        )
       }
     case removeLine.type:
       var {id, idx} = action.payload
@@ -159,6 +160,11 @@ function reducer (state, action) {
         ...state,
         inputType: state.inputType === 'code' ? 'icons' : 'code',
         animals: map((animal) => ({...animal, sequence: []}), state.animals)
+      }
+    case initializeGame.type:
+      return {
+        ...state,
+        game: action.payload
       }
   }
   return state

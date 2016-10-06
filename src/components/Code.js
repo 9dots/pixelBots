@@ -14,8 +14,9 @@ let lastSelected = 0
 function render ({props, local, state}) {
   const {animals, active, activeLine, selectedLine, hasRun} = props
   const lineHeight = '36px'
+  const sequence = animals[active].sequence || []
 
-  const code = animals[active].sequence.map((line, i, arr) => {
+  const code = sequence.map((line, i, arr) => {
     const isActive = activeLine === i && hasRun
     const name = line.split('\(')[0]
     const color = line.match(/\'([a-z]*?)\'/gi)
@@ -44,7 +45,7 @@ function render ({props, local, state}) {
     )
   })
 
-  prevLength = animals[active].sequence.length
+  prevLength = sequence.length
   lastSelected = typeof (selectedLine) === 'number' ? selectedLine : -10
 
   return (

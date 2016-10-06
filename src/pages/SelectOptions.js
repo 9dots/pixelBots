@@ -103,7 +103,6 @@ function render ({props, state, local}) {
     })
     yield setUrl(`/${gameID}/create/level`)
   }
-
 }
 
 function reducer (state, action) {
@@ -128,6 +127,7 @@ function reducer (state, action) {
         ...state,
         animal: {
           type,
+          sequence: [],
           initial: {
             location: coords,
             dir: 0,
@@ -137,8 +137,7 @@ function reducer (state, action) {
             location: coords,
             dir: 0,
             rot: 0
-          },
-          sequence: []
+          }
         }
       }
   }

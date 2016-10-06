@@ -96,6 +96,7 @@ function render ({props, state, local}) {
       ref: `/games/${gameID}`,
       value: {
         initialPainted: painted.start,
+        painted: painted.start,
         targetPainted: painted.finished
       }
     })

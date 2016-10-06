@@ -8,7 +8,6 @@ import codeRunner from './middleware/codeRunner'
 import moveAnimal from './middleware/moveAnimal'
 import location from 'redux-effects-location'
 import addCode from './middleware/addCodeMW'
-import initializeGame from './middleware/initializeGame'
 import scroll from './middleware/scroll'
 import effects from 'redux-effects'
 import domready from '@f/domready'
@@ -72,7 +71,6 @@ const {subscribe, render, replaceReducer} = vdux({
     codeRunner(),
     moveAnimal(),
     handleError(),
-    initializeGame(),
     fire.middleware(firebaseConfig),
     epicMiddleware,
     scroll,
