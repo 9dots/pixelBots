@@ -1,6 +1,6 @@
 /** @jsx element */
 
-import {Button, debounceAction, Dropdown, Icon, Input, MenuItem} from 'vdux-containers'
+import {Button, Icon, Input} from 'vdux-containers'
 import CodeSelectDropdown from './CodeSelectDropdown'
 import Number from '../components/Numbered'
 import {setUrl} from 'redux-effects-location'
@@ -9,7 +9,6 @@ import {Block, Card, Text} from 'vdux-ui'
 import Level from '../components/Level'
 import {firebaseSet} from 'vdux-fire'
 import element from 'vdux/element'
-import debounce from '@f/debounce'
 
 const setAnimalPosition = createAction('SET_ANIMAL_POSITION')
 const setInputType = createAction('SET_INPUT_TYPE')
@@ -50,23 +49,22 @@ function render ({props, state, local}) {
   return (
     <Block minHeight='500px' align='center center' tall wide>
       <Card p='24px' mr='10px' h='500px'>
-        <Block align='flex-start center'>
+        <Block align='flex-start'>
           <Number complete={inputType}>1</Number>
           <Block style={{flex: 1}}>
-            <Text fontWeight='800'>input type</Text>
+            <Text lineHeight='40px' fontWeight='800'>input type</Text>
             <CodeSelectDropdown
               size={size}
               btn={dropdownBtn}
               setInputType={local((type) => setInputType(type))}/>
           </Block>
         </Block>
-        <Block align='flex-start center' mt='20px'>
-          <Number complete={size > 0 && size < 40 && typeof(parseInt(size)) === 'number'}>2</Number>
+        <Block align='flex-start' mt='20px'>
+          <Number complete={size > 0 && size < 40 && typeof (parseInt(size)) === 'number'}>2</Number>
           <Block style={{flex: 1}}>
-            <Text fontWeight='800'>grid size</Text>
+            <Text lineHeight='40px' fontWeight='800'>grid size</Text>
             <Input
               h='42px'
-              mt='10px'
               inputProps={inputProps}
               value={size}
               onKeyUp={local((e) => setSquares(e.target.value))}/>

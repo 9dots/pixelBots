@@ -67,12 +67,13 @@ function render ({props}) {
   )
 
   function getPainted (idx) {
-    return painted.reduce((cur, paint) => {
-      if (idx === paint.loc[0]) {
-        cur[paint.loc[1]] = paint.color
+    return reduce((cur, next, key) => {
+      const loc = key.split(',').map((num) => Number(num))
+      if (idx === loc[0]) {
+        cur[loc[1]] = next
       }
       return cur
-    }, {})
+    }, {}, painted)
   }
 }
 

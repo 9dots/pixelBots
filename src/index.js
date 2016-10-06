@@ -8,6 +8,7 @@ import codeRunner from './middleware/codeRunner'
 import moveAnimal from './middleware/moveAnimal'
 import location from 'redux-effects-location'
 import addCode from './middleware/addCodeMW'
+import initializeGame from './middleware/initializeGame'
 import scroll from './middleware/scroll'
 import effects from 'redux-effects'
 import domready from '@f/domready'
@@ -32,12 +33,12 @@ const palette = [
 const initialState = {
   url: '/',
   active: 0,
-  inputType: 'code',
   selectedLine: 0,
   game: {
     levelSize: [5, 5],
     painted: [],
     initialPainted: [],
+    inputType: 'icons',
     animals: [
       {
         initial: {
@@ -71,6 +72,7 @@ const {subscribe, render, replaceReducer} = vdux({
     codeRunner(),
     moveAnimal(),
     handleError(),
+    initializeGame(),
     fire.middleware(firebaseConfig),
     epicMiddleware,
     scroll,

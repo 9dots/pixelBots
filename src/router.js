@@ -9,10 +9,12 @@ import HomePage from './pages/Home'
 import element from 'vdux/element'
 import enroute from 'enroute'
 import {Block} from 'vdux-ui'
+import Game from './pages/Game'
 import {firebaseSet} from 'vdux-fire'
 
 const router = enroute({
   '/': (params, props) => <HomePage top='60px' {...props} />,
+  '/play/:gameID': (params, props) => <Game {...props} gameID={params.gameID}/>,
   '/:gameID/create/:slug': ({slug, gameID}, props) => <Create top='60px' gameID={gameID} params={slug} {...props} />
 })
 

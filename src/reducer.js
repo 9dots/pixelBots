@@ -42,7 +42,7 @@ function reducer (state, action) {
         game: setProp(
           'painted',
           state.game,
-          [...state.game.painted, {loc, color}]
+          {...state.game.painted, [loc]: color}
         )
       }
     case setActive.type:

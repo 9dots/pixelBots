@@ -19,13 +19,13 @@ const colorBlockSize = {
 }
 
 function render ({props, local}) {
-  const {btn, clickHandler, h, w} = props
+  const {btn, clickHandler, h, w, column, row} = props
   const menuWidth = (palette.length * colorBlockSize.side) + (palette.length * (colorBlockSize.margin * 2))
 
   return (
     <Block {...props}>
       <ColorDropdown menuWidth={menuWidth} h={h} w={w} btn={btn}>
-        <Flex relative row align='center center' >
+        <Flex relative column={column} row={row} align='center center' >
           {palette.map((name) => <MenuItem
             sq={`${colorBlockSize.side}px`}
             p='5px'
