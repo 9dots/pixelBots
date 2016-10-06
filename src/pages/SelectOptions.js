@@ -23,8 +23,8 @@ const inputProps = {
 
 function initialState () {
   return {
-    size: 5,
-    inputType: 'icons',
+    size: 0,
+    inputType: 'choose',
     animal: {}
   }
 }
@@ -48,9 +48,9 @@ function render ({props, state, local}) {
 
   return (
     <Block minHeight='500px' align='center center' tall wide>
-      <Card p='24px' mr='10px' h='500px'>
+      <Card relative p='24px' mr='10px' h='500px'>
         <Block align='flex-start'>
-          <Number complete={inputType}>1</Number>
+          <Number complete={inputType && inputType !== 'choose'}>1</Number>
           <Block style={{flex: 1}}>
             <Text lineHeight='40px' fontWeight='800'>input type</Text>
             <CodeSelectDropdown
@@ -70,13 +70,14 @@ function render ({props, state, local}) {
               onKeyUp={local((e) => setSquares(e.target.value))}/>
           </Block>
         </Block>
-        <Block align='flex-start center' mt='20px'>
+        <Block align='flex-start center' my='20px'>
           <Number complete={animal.type && animal.current.location}>3</Number>
           <Block style={{flex: 1}}>
             <Text fontWeight='800'>Click the grid to set the starting position</Text>
           </Block>
         </Block>
-        <Button h='42px' mt='20px' fs='16px' wide onClick={save}>Save</Button>
+        <hr/>
+        <Button absolute bottom='24px' h='42px' fs='16px' w='360px' onClick={save}>Save</Button>
       </Card>
       <Level
         editMode

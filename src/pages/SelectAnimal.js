@@ -45,7 +45,6 @@ function render ({props}) {
   }
 
   function * setAnimal (animal) {
-    console.log(animal)
     yield firebaseSet({
       method: 'set',
       value: {
