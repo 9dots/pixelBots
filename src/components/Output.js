@@ -15,20 +15,21 @@ function render ({props, local, state}) {
     levelSize,
     running,
     targetPainted,
-    handleTabClick
+    handleTabClick,
+    tabs
   } = props
 
   return (
     <Block minHeight='630px' bgColor='#c5c5c5' my='20px' mx='20px'>
       <Block wide align='flex-start center'>
-        {targetPainted && <Tab
-          name='target'
-          active={tab}
-          handleClick={(name) => handleTabClick(name)}/>}
-        <Tab
-          name='actual'
-          active={tab}
-          handleClick={(name) => handleTabClick(name)}/>
+        {
+          tabs.map((tabName) => (
+            <Tab
+              name={tabName}
+              active={tab}
+              handleClick={(name) => handleTabClick(name)}/>
+          ))
+        }
       </Block>
       {tab === 'actual' && <Block p='20px'>
         <Block h={size} w={size}>
@@ -47,6 +48,18 @@ function render ({props, local, state}) {
           <Level
             editMode
             animals={animals.map((animal) => getAnimalStart(animal))}
+            active={active}
+            painted={targetPainted}
+            levelSize={size}
+            numRows={levelSize[0]}
+            numColumns={levelSize[1]}/>
+        </Block>
+      </Block>}
+      {tab === 'sanbox' && <Block p='20px'>
+        <Block h={size} w={size}>
+          <Level
+            editMode
+            animals={animals}
             active={active}
             painted={targetPainted}
             levelSize={size}
