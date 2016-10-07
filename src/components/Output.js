@@ -58,9 +58,9 @@ function render ({props, local, state}) {
       {tab === 'sanbox' && <Block p='20px'>
         <Block h={size} w={size}>
           <Level
-            editMode
             animals={animals}
             active={active}
+            running={running}
             painted={targetPainted}
             levelSize={size}
             numRows={levelSize[0]}

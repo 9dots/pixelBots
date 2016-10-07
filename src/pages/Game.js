@@ -57,7 +57,7 @@ function render ({props, state, local}) {
         wide>
         <Output
           handleTabClick={local((name) => changeTab(name))}
-          tabs={['actual', 'target']}
+          tabs={['target', 'actual']}
           tab={tab}
           size={size}
           {...game}

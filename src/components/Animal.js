@@ -21,6 +21,8 @@ function render ({props}) {
   let pos = getPosition()
   let seconds = api.speed / 1000
 
+  console.log(editMode, running)
+
   return (
     <Block
       absolute
