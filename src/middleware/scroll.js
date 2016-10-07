@@ -17,7 +17,7 @@ const SCROLL_TO = 'SCROLL_TO'
 
 function middleware ({getState}) {
   return (next) => (action) =>
-    action.type === SCROLL_TO && getState().inputType === 'icons'
+    action.type === SCROLL_TO && getState().game.inputType === 'icons'
       ? scrollToElement(action.payload)
       : next(action)
 }

@@ -4,16 +4,17 @@ import {scrollTo} from './middleware/scroll'
 
 import {
   startRun,
-  stopRun,
+  endRun,
   setActiveLine
 } from './actions'
 
-const wrap = (code, api) => {
+const wrap = (code, api, id) => {
   return `
   var {${Object.keys(api).join(', ')}} = api
   function * codeRunner () {
     try {
       ${code}
+      yield endRun({id: ${id}})
     } catch (e) {
       yield {
         type: 'THROW_ERROR',
@@ -34,7 +35,7 @@ function matchApiString (api, line) {
   })
 }
 
-function codeRunner (code, api, timeout) {
+function codeRunner (code, api, id) {
   let {sequence} = code
   if (typeof sequence === 'string') {
     sequence = sequence.split(/[\n]/gi)
@@ -50,9 +51,9 @@ function codeRunner (code, api, timeout) {
     })
     return updatedLine
   }).join('\n')
-  api = {...api, sleep, startRun, stopRun, setActiveLine, scrollTo}
+  api = {...api, endRun}
   try {
-    return eval(wrap(autoYield(sequence, Object.keys(api)), api))
+    return eval(wrap(autoYield(sequence, Object.keys(api)), api, id))
   } catch (e) {
     return {
       error: e

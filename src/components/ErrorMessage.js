@@ -1,25 +1,14 @@
 /** @jsx element */
 
 import element from 'vdux/element'
-import {Modal, ModalHeader, ModalFooter, ModalBody, Button} from 'vdux-containers'
-import {Block, Text} from 'vdux-ui'
-import {clearError} from '../actions'
+import ModalMessage from './ModalMessage'
 
 function render ({props}) {
   const {message, lineNumber} = props
+  const body = `Check the code at line number ${lineNumber}`
 
   return (
-    <Modal overlayProps={{left: 0}} onDismiss={clearError} onKeyup={{esc: clearError}}>
-      <ModalHeader p='l' fs='xl'>{message}</ModalHeader>
-      <ModalBody>
-        <Block>
-          <Text fs='m' fontFamily='ornate'>Check the code at line number {lineNumber}.</Text>
-        </Block>
-      </ModalBody>
-      <ModalFooter>
-        <Button fs='m' p='8px' onClick={clearError}>Okay</Button>
-      </ModalFooter>
-    </Modal>
+    <ModalMessage header={message} body={body}/>
   )
 }
 

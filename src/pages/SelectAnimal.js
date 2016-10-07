@@ -17,7 +17,6 @@ function render ({props}) {
   )
 
   function makeCard (cur, next, key) {
-    console.log(key)
     return [
       ...cur,
       (<Card

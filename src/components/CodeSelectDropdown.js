@@ -1,8 +1,10 @@
+/** @jsx element */
+
 import element from 'vdux/element'
 import {Dropdown, MenuItem} from 'vdux-containers'
 
 function render ({props}) {
-  const {setSquares, setInputType, size, btn} = props
+  const {setInputType, size, btn} = props
   return (
     <Dropdown
       btn={btn}

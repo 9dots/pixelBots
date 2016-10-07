@@ -24,7 +24,7 @@ function render ({props, local, state}) {
     const addedLine = arr.length > prevLength
 
     return (
-      <Block id={`code-icon-${i}`} cursor='pointer' onClick={() => selectLine(active, i)}>
+      <Block w='250px' id={`code-icon-${i}`} cursor='pointer' onClick={() => selectLine(active, i)}>
         <Cursor h='14px' active={selectedLine === i}/>
         <CodeIcon
           iconName={nameToIcon(name)}
@@ -49,11 +49,11 @@ function render ({props, local, state}) {
   lastSelected = typeof (selectedLine) === 'number' ? selectedLine : -10
 
   return (
-    <Block class='code-editor' relative wide tall overflowY='scroll'>
+    <Block class='code-editor' bgColor='#A7B4CB' wide relative tall overflowY='scroll'>
       <Block absolute w='50px' left='0' tall/>
       <Block p='4px 15px' ml='50px' fs='22px' fontFamily='Monaco' color='white' column>
         {code}
-        <Block cursor='pointer' onClick={() => selectLine(active, prevLength)}>
+        <Block w='250px' cursor='pointer' onClick={() => selectLine(active, prevLength)}>
           <Cursor h='18px' active={selectedLine === prevLength}/>
           <Outline color='black' width='2px' style='dashed' wide h={lineHeight}/>
         </Block>

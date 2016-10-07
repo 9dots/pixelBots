@@ -1,12 +1,21 @@
 /** @jsx element */
 
-import ErrorMessage from '../components/ErrorMessage'
+import ModalMessage from '../components/ModalMessage'
 import Controls from '../components/Controls'
-import Level from '../components/Level'
 import element from 'vdux/element'
-import {Block, Box} from 'vdux-ui'
+import {Block} from 'vdux-ui'
 import {initializeGame} from '../actions'
 import {once} from 'vdux-fire'
+import Output from '../components/Output'
+import createAction from '@f/create-action'
+
+const changeTab = createAction('CHANGE_TAB')
+
+function initialState ({props}) {
+  return {
+    tab: 'target'
+  }
+}
 
 function * onCreate ({props}) {
   const {gameID} = props
@@ -16,31 +25,29 @@ function * onCreate ({props}) {
   return yield initializeGame(gameSnapshot.val())
 }
 
-function render ({props}) {
+function render ({props, state, local}) {
   const {
     selectedLine,
     activeLine,
     running,
     active,
     hasRun,
-    error,
+    message,
     game,
-    top
+    left
   } = props
 
   const {
     inputType,
-    levelSize,
-    painted,
     animals
   } = game
 
+  const {tab} = state
+
   const size = '550px'
 
-  console.log(levelSize)
-
   return (
-    <Block bgColor='#e5e5e5' relative h='calc(100% - 60px)' wide top={top}>
+    <Block bgColor='#e5e5e5' relative w='calc(100% - 60px)' tall left={left}>
       <Block
         relative
         display='flex'
@@ -48,32 +55,44 @@ function render ({props}) {
         minHeight='100%'
         h='100%'
         wide>
-        <Block h={size} w={size} my='20px' mx='20px'>
-          <Level
-            animals={animals}
-            active={active}
-            painted={painted}
-            levelSize={size}
-            numRows={levelSize[0]}
-            numColumns={levelSize[1]}/>
-        </Block>
-        <Box tall style={{flex: 1}}>
-          <Controls
-            selectedLine={selectedLine}
-            activeLine={activeLine}
-            inputType={inputType}
-            running={running}
-            hasRun={hasRun}
-            active={active}
-            animals={animals}/>
-        </Box>
+        <Output
+          handleTabClick={local((name) => changeTab(name))}
+          tab={tab}
+          size={size}
+          {...game}
+          {...props}/>
+        <Controls
+          onRun={local(() => changeTab('actual'))}
+          selectedLine={selectedLine}
+          activeLine={activeLine}
+          inputType={inputType}
+          running={running}
+          hasRun={hasRun}
+          active={active}
+          animals={animals}/>
       </Block>
-      {error && <ErrorMessage message={error} lineNumber={activeLine + 1}/>}
+      {message && <ModalMessage
+        header={message.header}
+        body={message.body}lineNumber={activeLine + 1}/>
+      }
     </Block>
   )
 }
 
+function reducer (state, action) {
+  switch (action.type) {
+    case changeTab.type:
+      return {
+        ...state,
+        tab: action.payload
+      }
+  }
+  return state
+}
+
 export default {
+  initialState,
+  reducer,
   onCreate,
   render
 }

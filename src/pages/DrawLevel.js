@@ -3,32 +3,55 @@
 import ColorPicker from '../components/ColorPicker'
 import {setUrl} from 'redux-effects-location'
 import createAction from '@f/create-action'
-import {Block, Card, Modal, ModalBody, ModalFooter, ModalHeader, Text} from 'vdux-ui'
 import Level from '../components/Level'
 import {Button} from 'vdux-containers'
 import {firebaseSet} from 'vdux-fire'
 import element from 'vdux/element'
 import setProp from '@f/set-prop'
 import Hashids from 'hashids'
+import {
+  Block,
+  Card,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Text
+} from 'vdux-ui'
 
-
-const hashids = new Hashids('Oranges never ripen in the winter', 5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789')
+const hashids = new Hashids(
+  'Oranges never ripen in the winter',
+  5,
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789'
+)
 const setFillColor = createAction('SET_FILL_COLOR')
 const addPainted = createAction('ADD_PAINTED')
 const showID = createAction('SHOW_ID')
 
-function initialState () {
+function initialState ({props}) {
+  const {game} = props
+  const {levelSize} = game
   return {
     color: 'black',
-    painted: {start: {}, finished: {}},
+    painted: {start: whiteOut(levelSize[0]), finished: whiteOut(levelSize[0])},
     show: ''
   }
 }
 
-const overlayProps={
+function whiteOut (size) {
+  let grid = {}
+  for (let i = 0; i < size[0]; i++) {
+    for (let j = 0; j < size[1]; j++) {
+      grid[`${i},${j}`] = 'white'
+    }
+  }
+  return grid
+}
+
+const overlayProps = {
   fixed: true,
   left: '0',
-  top:'0',
+  top: '0',
   tall: true,
   wide: true
 }
@@ -57,7 +80,7 @@ function render ({props, state, local}) {
           <Button fs='m' p='m' onClick={() => setUrl('/')}>Save & Close</Button>
         </ModalFooter>
       </Modal>}
-      <Card p='12px' height='100px' w='180px' left='0' top='225px' fixed >
+      <Card p='12px' height='100px' w='180px' right='0' top='225px' fixed >
         <Block mb='20px' align='flex-start center'>
           <Text wide fs='m' color='black'>
             Fill color
@@ -137,7 +160,7 @@ function render ({props, state, local}) {
   }
 
   function generateID () {
-    let hex = Buffer(gameID.substr(4, 5)).toString('hex').substr(0,4)
+    let hex = Buffer(gameID.substr(4, 5)).toString('hex').substr(0, 4)
     return hashids.encodeHex(hex)
   }
 }

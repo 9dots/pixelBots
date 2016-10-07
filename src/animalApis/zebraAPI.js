@@ -32,7 +32,7 @@ function wrap (id, getState = () => {}) {
   const right = (line) => move(1, line)
   const down = (line) => move(2, line)
   const left = (line) => move(3, line)
-  const paint = (line) => animalPaint(id, '#333', line)
+  const paint = (line) => animalPaint(id, 'black', line)
   const speed = 750
 
   function move (dir, lineNum) {

@@ -14,7 +14,9 @@ const getTimeout = (animals, id) => id
 
 export default function runner (action$, store) {
   return action$.ofType(startRun.type)
-    .map((action) => Observable.from(action.payload))
+    .map((action) =>
+      Observable.from(action.payload).delay(800)
+    )
     .switchMap((obs) =>
       obs.map((x) => {
         const addDelay = Observable

@@ -25,6 +25,7 @@
     "@f/splice": "^1.0.0",
     "auto-yield": "^0.2.3",
     "brace": "^0.8.0",
+    "deep-diff": "^0.3.4",
     "domready": "^1.0.8",
     "easing-utils": "0.0.5",
     "enroute": "^1.0.1",
@@ -44,6 +45,7 @@
     "vdux-css-transition": "^1.2.1",
     "vdux-delay": "^1.0.6",
     "vdux-fire": "^0.1.7",
+    "vdux-form": "^1.0.11",
     "vdux-ui": "^1.2.29",
     "yoco": "^1.6.2"
   },

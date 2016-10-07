@@ -18,6 +18,7 @@ function render ({props}) {
     numColumns = 5,
     painted = [],
     active,
+    running,
     levelSize,
     clickHandler = () => {},
     editMode,
@@ -50,6 +51,7 @@ function render ({props}) {
   function addToArray (arr, animal, id) {
     arr.push(
       <Animal
+        running={running}
         editMode={editMode}
         cellSize={size}
         active={active}

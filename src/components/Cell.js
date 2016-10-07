@@ -20,7 +20,7 @@ function render ({props}) {
       h={size}
       w={size}
       onClick={() => clickHandler(coordinates)}
-      transition='all .75s ease-in-out'
+      transition={!editMode && 'backgroundColor .75s ease-in-out'}
       bgColor={color} />
   )
 }

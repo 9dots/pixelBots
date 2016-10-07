@@ -19,9 +19,11 @@ function codeRunner () {
         const {animals} = state.game
         for (var id in animals) {
           const api = animalApis[animals[id].type](id)
-          let code = getIterator(animals[id], api)
+          let code = getIterator(animals[id], api, id)
           if (code.error) {
-            return dispatch(throwError(code.error.name, (code.error.loc.line) - 1))
+            return dispatch(
+              throwError(code.error.name, (code.error.loc.line) - 1)
+            )
           }
           dispatch(startRun(code))
         }

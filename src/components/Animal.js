@@ -6,7 +6,7 @@ import {setActive} from '../actions'
 import * as animalApis from '../animalApis/index'
 
 function render ({props}) {
-  let {animal, active, id, cellSize, editMode} = props
+  let {animal, active, id, cellSize, editMode, running} = props
 
   let api = animalApis[animal.type](id)
 
@@ -28,7 +28,7 @@ function render ({props}) {
       border={active === id}
       borderColor={'red'}
       transform={`rotate(${deg}deg)`}
-      transition={!editMode && `all ${seconds}s ease-in-out`}
+      transition={!editMode && running && `all ${seconds}s ease-in-out`}
       boxShadow='0 0 1px 2px rgba(0,0,0,0.2)'
       left={pos.left}
       top={pos.top}

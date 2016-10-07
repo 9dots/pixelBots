@@ -1,39 +1,40 @@
 import map from '@f/map'
 import splice from '@f/splice'
 import setProp from '@f/set-prop'
+import reduce from '@f/reduce'
 
 import {
   initializeGame,
   setActiveLine,
+  endRunMessage,
   animalPaint,
   handleError,
   removeLine,
   animalMove,
   updateLine,
   selectLine,
-  clearError,
+  clearMessage,
   setActive,
   aceUpdate,
-  swapMode,
   newRoute,
   startRun,
   stopRun,
   addCode,
+  endRun,
   reset
 } from './actions'
 
 function reducer (state, action) {
-  console.log(action)
   switch (action.type) {
     case animalMove.type:
       var {id, location} = action.payload
       return {
         ...state,
-        game: setProp(
+        game: toArray(setProp(
           `animals.${id}.current.location`,
           state.game,
           location
-        )
+        ), 'animals')
       }
     case animalPaint.type:
       var {id, color} = action.payload
@@ -41,11 +42,11 @@ function reducer (state, action) {
 
       return {
         ...state,
-        game: setProp(
+        game: toArray(setProp(
           'painted',
           state.game,
           {...state.game.painted, [loc]: color}
-        )
+        ), 'animals')
       }
     case setActive.type:
       var id = action.payload
@@ -67,26 +68,27 @@ function reducer (state, action) {
       return {
         ...state,
         selectedLine: state.selectedLine + 1,
-        game: setProp(
+        game: toArray(setProp(
           `animals.${id}.sequence`,
           state.game,
           splice(state.game.animals[id].sequence || [], lineNum, 0, fn)
-        )
+        ), 'animals')
       }
     case removeLine.type:
       var {id, idx} = action.payload
-      var sl = state.selectedLine >= state.animals[id].sequence.length ? state.animals[id].sequence.length - 1 : state.selectedLine
+      var sequence = state.game.animals[id].sequence
+      var sl = state.selectedLine >= sequence.length
+        ? sequence.length - 1
+        : state.selectedLine
 
       return {
         ...state,
         selectedLine: sl,
-        animals: {
-          ...state.animals,
-          [id]: {
-            ...state.animals[id],
-            sequence: state.animals[id].sequence.filter((line, i) => i !== idx)
-          }
-        }
+        game: toArray(setProp(
+          `animals.${id}.sequence`,
+          state.game,
+          state.game.animals[id].sequence.filter((line, i) => i !== idx)
+        ), 'animals')
       }
     case startRun.type:
       return {
@@ -108,21 +110,21 @@ function reducer (state, action) {
       var {id, code} = action.payload
       return {
         ...state,
-        game: setProp(
+        game: toArray(setProp(
           `animals.${id}.sequence`,
           state.game,
           code
-        )
+        ), 'animals')
       }
     case updateLine.type:
       var {id, lineNum, code} = action.payload
       return {
         ...state,
-        game: setProp(
-          `animals[${id}].sequence`,
+        game: toArray(setProp(
+          `animals.${id}.sequence`,
           state.game,
           splice(state.animals[id].sequence, lineNum, 1, code)
-        )
+        ), 'animals')
       }
     case reset.type:
       return {
@@ -142,13 +144,25 @@ function reducer (state, action) {
       var {message, lineNum} = action.payload
       return {
         ...state,
-        error: message,
+        message: {
+          header: message,
+          body: `Check the code at line ${lineNum + 1}`
+        },
         activeLine: lineNum
       }
-    case clearError.type:
+    case endRunMessage.type:
+      var {header, body} = action.payload
       return {
         ...state,
-        error: undefined,
+        message: {
+          header,
+          body
+        }
+      }
+    case clearMessage.type:
+      return {
+        ...state,
+        message: undefined,
         activeLine: -1
       }
     case newRoute.type:
@@ -156,19 +170,33 @@ function reducer (state, action) {
         ...state,
         url: action.payload
       }
-    case swapMode.type:
-      return {
-        ...state,
-        inputType: state.inputType === 'code' ? 'icons' : 'code',
-        animals: map((animal) => ({...animal, sequence: []}), state.animals)
-      }
     case initializeGame.type:
       return {
         ...state,
         game: action.payload
       }
+    case endRun.type:
+      return {
+        ...state,
+        running: false
+      }
+    // case swapMode.type:
+    //   return {
+    //     ...state,
+    //     inputType: state.inputType === 'code' ? 'icons' : 'code',
+    //     animals: map((animal) => ({...animal, sequence: []}), state.animals)
+    //   }
   }
   return state
+}
+
+function toArray (obj, at) {
+  return map((elem, key) => {
+    if (key === at) {
+      return reduce((arr, next, k) => [...arr, next], [], elem)
+    }
+    return elem
+  }, obj)
 }
 
 // case animalTurnRight.type:

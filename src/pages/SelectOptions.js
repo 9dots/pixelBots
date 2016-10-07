@@ -1,7 +1,7 @@
 /** @jsx element */
 
 import {Button, Icon, Input} from 'vdux-containers'
-import CodeSelectDropdown from './CodeSelectDropdown'
+import CodeSelectDropdown from '../components/CodeSelectDropdown'
 import Number from '../components/Numbered'
 import {setUrl} from 'redux-effects-location'
 import createAction from '@f/create-action'
