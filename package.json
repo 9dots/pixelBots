@@ -42,12 +42,12 @@
     "stack-trace": "0.0.9",
     "vdux": "^2.4.9",
     "vdux-ace": "^0.2.13",
-    "vdux-containers": "^1.1.19",
+    "vdux-containers": "^1.1.22",
     "vdux-css-transition": "^1.2.1",
     "vdux-delay": "^1.0.6",
     "vdux-fire": "^0.1.7",
     "vdux-form": "^1.0.11",
-    "vdux-ui": "^1.2.29",
+    "vdux-ui": "^1.2.34",
     "yoco": "^1.6.2"
   },
   "devDependencies": {

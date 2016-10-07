@@ -1,7 +1,7 @@
 /** @jsx element */
 
 import element from 'vdux/element'
-import {Block} from 'vdux-ui'
+import {Block, Text} from 'vdux-ui'
 import Level from './Level'
 import Tab from './Tab'
 
