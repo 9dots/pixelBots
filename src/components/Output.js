@@ -31,9 +31,10 @@ function render ({props, local, state}) {
           ))
         }
       </Block>
-      {tab === 'actual' && <Block p='20px'>
+      {tab === 'actual' && <Block p='20px 10px'>
         <Block h={size} w={size}>
           <Level
+            editMode={!running}
             animals={animals}
             running={running}
             active={active}
@@ -43,7 +44,7 @@ function render ({props, local, state}) {
             numColumns={levelSize[1]}/>
         </Block>
       </Block>}
-      {tab === 'target' && <Block p='20px'>
+      {tab === 'target' && <Block p='20px 10px'>
         <Block h={size} w={size}>
           <Level
             editMode
@@ -55,13 +56,13 @@ function render ({props, local, state}) {
             numColumns={levelSize[1]}/>
         </Block>
       </Block>}
-      {tab === 'sanbox' && <Block p='20px'>
+      {tab === 'sandbox' && <Block p='20px 10px'>
         <Block h={size} w={size}>
           <Level
             animals={animals}
             active={active}
             running={running}
-            painted={targetPainted}
+            painted={painted}
             levelSize={size}
             numRows={levelSize[0]}
             numColumns={levelSize[1]}/>

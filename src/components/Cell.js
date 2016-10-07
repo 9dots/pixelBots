@@ -12,6 +12,8 @@ function render ({props}) {
     size
   } = props
 
+  console.log(editMode)
+
   return (
     <Block
       border
@@ -20,7 +22,7 @@ function render ({props}) {
       h={size}
       w={size}
       onClick={() => clickHandler(coordinates)}
-      transition={!editMode && 'backgroundColor .75s ease-in-out'}
+      transition={!editMode && 'background-color .75s ease-in-out'}
       bgColor={color} />
   )
 }

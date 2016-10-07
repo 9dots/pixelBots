@@ -131,6 +131,7 @@ function reducer (state, action) {
         ...state,
         running: false,
         hasRun: false,
+        activeLine: -1,
         game: {
           ...state.game,
           painted: state.game.initialPainted,

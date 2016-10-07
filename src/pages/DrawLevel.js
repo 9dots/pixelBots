@@ -33,7 +33,7 @@ function initialState ({props}) {
   const {levelSize} = game
   return {
     color: 'black',
-    painted: {start: whiteOut(levelSize[0]), finished: whiteOut(levelSize[0])},
+    painted: {start: whiteOut(levelSize), finished: whiteOut(levelSize)},
     show: ''
   }
 }
@@ -45,6 +45,7 @@ function whiteOut (size) {
       grid[`${i},${j}`] = 'white'
     }
   }
+  console.log(grid)
   return grid
 }
 
