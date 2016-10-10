@@ -1,5 +1,9 @@
 public/bundle.js
 
+.tags
+
+.tags_swap
+
 # Logs
 logs
 *.log
