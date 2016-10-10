@@ -4,7 +4,7 @@ import element from 'vdux/element'
 import {Block, Text} from 'vdux-ui'
 import CodeTool from './CodeTool'
 import reduce from '@f/reduce'
-import * as animalApis from '../animalApis/index'
+import animalApis from '../animalApis/index'
 
 function render ({props}) {
   const {type, active} = props

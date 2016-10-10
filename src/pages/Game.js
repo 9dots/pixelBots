@@ -17,12 +17,13 @@ function initialState ({props}) {
   }
 }
 
-function * onCreate ({props}) {
+function * onCreate ({props, local}) {
   const {gameID} = props
   const playSnapshot = yield once({ref: `/play/${gameID}`})
   const gameCode = playSnapshot.val()
   const gameSnapshot = yield once({ref: `/games/${gameCode}`})
-  return yield initializeGame(gameSnapshot.val())
+  yield initializeGame(gameSnapshot.val())
+  yield gameLoaded()
 }
 
 function render ({props, state, local}) {
@@ -43,7 +44,6 @@ function render ({props, state, local}) {
   } = game
 
   const {tab} = state
-
   const size = '550px'
 
   return (

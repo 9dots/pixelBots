@@ -6,7 +6,7 @@ import {Block, Text} from 'vdux-ui'
 import {clearMessage} from '../actions'
 
 function render ({props}) {
-  const {header, body, clickHandler = []} = props
+  const {header, body, footer, clickHandler = []} = props
   const onClick = [clearMessage, ...clickHandler]
 
   return (
@@ -18,7 +18,7 @@ function render ({props}) {
         </Block>
       </ModalBody>
       <ModalFooter>
-        <Button fs='m' p='8px' onClick={onClick}>Okay</Button>
+        {footer ? footer : <Button fs='m' p='8px' onClick={onClick}>Okay</Button>}
       </ModalFooter>
     </Modal>
   )

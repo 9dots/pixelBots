@@ -9,7 +9,7 @@ function render ({props}) {
   return (
     <MenuItem
       p='10px'
-      w='120px'
+      w='200px'
       bgColor='#c5c5c5'
       textAlign='center'
       fontWeight='800'

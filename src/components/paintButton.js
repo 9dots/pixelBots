@@ -26,9 +26,9 @@ function render ({props, state, local}) {
   )
 
   return (
-    <Block align='center center'>
+    <Block wide align='center center'>
       <Button
-        h={h} w={w} m='5px'
+        h={h} w={w} my='5px'
         hoverProps={{highlight: true, boxShadow: '0 2px 5px 0px rgba(0,0,0,0.6)'}}
         transition='all .3s ease-in-out'
         bgColor='primary'

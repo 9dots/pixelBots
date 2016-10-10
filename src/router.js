@@ -2,7 +2,7 @@
 
 import {setUrl} from 'redux-effects-location'
 import Header from './components/Header'
-import {initializeApp} from './actions'
+import {initializeApp, createNew} from './actions'
 import Create from './pages/Create'
 import HomePage from './pages/Home'
 import element from 'vdux/element'
@@ -41,7 +41,7 @@ function render ({local, props}) {
             backgroundSize='contain'/>
           <Text w='150px' absolute color='white' fs='m' top='10px' left='63px'>Pixel Bots</Text>
         </Block>
-        <Block relative cursor='pointer' onClick={setId}>
+        <Block relative cursor='pointer' onClick={createNew}>
           <Block
             h='40px'
             borderWidth='0'
@@ -62,11 +62,6 @@ function render ({local, props}) {
       }
     </Block>
   )
-}
-
-function * setId () {
-  const id = yield firebaseSet({method: 'push', ref: 'games', value: '1234'})
-  yield setUrl(`/${id}/create/animal`)
 }
 
 export default {

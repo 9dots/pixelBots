@@ -3,7 +3,7 @@
 import element from 'vdux/element'
 import {Block} from 'vdux-ui'
 import {setActive} from '../actions'
-import * as animalApis from '../animalApis/index'
+import animalApis from '../animalApis/index'
 
 function render ({props}) {
   let {animal, active, id, cellSize, editMode, running} = props
@@ -20,8 +20,6 @@ function render ({props}) {
   let animalSize = parseFloat(cellSize) / 2 + 'px'
   let pos = getPosition()
   let seconds = api.speed / 1000
-
-  console.log(editMode, running)
 
   return (
     <Block

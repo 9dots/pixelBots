@@ -1,11 +1,13 @@
 /** @jsx element */
 
+import ModalMessage from '../components/ModalMessage'
 import ColorPicker from '../components/ColorPicker'
 import {setUrl} from 'redux-effects-location'
 import createAction from '@f/create-action'
+import Button from '../components/Button'
 import Level from '../components/Level'
-import {Button} from 'vdux-containers'
 import {firebaseSet} from 'vdux-fire'
+import {createNew} from '../actions'
 import element from 'vdux/element'
 import setProp from '@f/set-prop'
 import Hashids from 'hashids'
@@ -45,7 +47,6 @@ function whiteOut (size) {
       grid[`${i},${j}`] = 'white'
     }
   }
-  console.log(grid)
   return grid
 }
 
@@ -69,18 +70,22 @@ function render ({props, state, local}) {
   const btn = (
     <Block border='2px solid #333' bgColor={color} align='center center' w='40px' h='40px' />
   )
+  const modalFooter = (
+    <Block>
+      <Button bgColor='secondary' onClick={createNew}>Make Another</Button>
+      <Button ml='m' onClick={() => setUrl(`/`)}>Done</Button>
+    </Block>
+  )
 
   const url = window.location.host + '/play/'
 
   return (
     <Block p='60px' column align='center center'>
-      {show && <Modal overlayProps={overlayProps} show={false}>
-        <ModalHeader>Link To This Game</ModalHeader>
-        <ModalBody>{url}{show}</ModalBody>
-        <ModalFooter>
-          <Button fs='m' p='m' onClick={() => setUrl('/')}>Save & Close</Button>
-        </ModalFooter>
-      </Modal>}
+      {show && <ModalMessage
+        header='Link to game'
+        body={<a href={`http://${url}${show}`} target='_blank'>{`${url}${show}`}</a>}
+        footer={modalFooter}/>
+      }
       <Card p='12px' height='100px' w='180px' right='0' top='225px' fixed >
         <Block mb='20px' align='flex-start center'>
           <Text wide fs='m' color='black'>

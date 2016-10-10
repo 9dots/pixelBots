@@ -1,6 +1,6 @@
 import { startRun, stopRun, setActiveLine } from '../actions'
 import {scrollTo} from '../middleware/scroll'
-import * as animalApis from '../animalApis'
+import animalApis from '../animalApis'
 import { Observable } from 'rxjs'
 
 const highlighter = (lineNum) => Observable.of(setActiveLine(lineNum))

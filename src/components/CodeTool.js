@@ -6,7 +6,6 @@ import {Text, Tooltip} from 'vdux-ui'
 
 function render ({props}) {
   const {tool, show} = props
-  console.log(tool.description)
   return (
     <Text cursor='zoom-in' fontFamily='code' fw='300' fs='l' pr='10px'>
       {tool.usage}

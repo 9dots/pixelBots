@@ -123,7 +123,7 @@ function reducer (state, action) {
         game: toArray(setProp(
           `animals.${id}.sequence`,
           state.game,
-          splice(state.animals[id].sequence, lineNum, 1, code)
+          splice(state.game.animals[id].sequence, lineNum, 1, code)
         ), 'animals')
       }
     case reset.type:

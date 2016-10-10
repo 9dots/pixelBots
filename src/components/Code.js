@@ -19,12 +19,14 @@ function render ({props, local, state}) {
   const code = sequence.map((line, i, arr) => {
     const isActive = activeLine === i && hasRun
     const name = line.split('\(')[0]
-    const color = line.match(/\'([a-z]*?)\'/gi)
+    const re = /\((.*?)(?:\))/gi
+    const argMatch = re.exec(line)
+    const argument = argMatch ? argMatch[1] : ''
     const type = animals[active].type
     const addedLine = arr.length > prevLength
 
     return (
-      <Block w='250px' id={`code-icon-${i}`} cursor='pointer' onClick={() => selectLine(active, i)}>
+      <Block id={`code-icon-${i}`} cursor='pointer' onClick={() => selectLine(active, i)}>
         <Cursor h='14px' active={selectedLine === i}/>
         <CodeIcon
           iconName={nameToIcon(name)}
@@ -35,9 +37,10 @@ function render ({props, local, state}) {
           name={name}
           type={type}
           bgColor={isActive ? '#B43C3C' : '#666'}
-          color={name === 'paint' ? color[0].replace(/\'/gi, '') : 'white'}
+          argument={argument}
           fs='28px'
           p='15px'
+          w='250px'
           h={lineHeight}
           animal={active}
           lineNum={i}/>
@@ -49,9 +52,9 @@ function render ({props, local, state}) {
   lastSelected = typeof (selectedLine) === 'number' ? selectedLine : -10
 
   return (
-    <Block class='code-editor' bgColor='#A7B4CB' wide relative tall overflowY='scroll'>
+    <Block style={{'flex': 1}} class='code-editor' bgColor='#A7B4CB' relative tall overflowY='scroll'>
       <Block absolute w='50px' left='0' tall/>
-      <Block p='4px 15px' ml='50px' fs='22px' fontFamily='Monaco' color='white' column>
+      <Block p='4px 15px' ml='50px' fs='22px' fontFamily='Monaco' color='white' column wide>
         {code}
         <Block w='250px' cursor='pointer' onClick={() => selectLine(active, prevLength)}>
           <Cursor h='18px' active={selectedLine === prevLength}/>

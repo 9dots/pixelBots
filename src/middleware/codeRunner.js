@@ -1,6 +1,6 @@
 import createAction from '@f/create-action'
 import getIterator from '../getIterator.js'
-import * as animalApis from '../animalApis/index'
+import animalApis from '../animalApis/index'
 import {
   throwError,
   moveError,

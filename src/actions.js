@@ -1,5 +1,6 @@
 import createAction from '@f/create-action'
-import {bindUrl} from 'redux-effects-location'
+import {bindUrl, setUrl} from 'redux-effects-location'
+import {firebaseSet} from 'vdux-fire'
 
 const animalMove = createAction(
   'ANIMAL_MOVE',
@@ -35,6 +36,7 @@ const moveAnimal = createAction('MOVE_ANIMAL', (opts) => opts, (opts, lineNum) =
 const initializeGame = createAction('INITIALIZE_GAME')
 const clearMessage = createAction('CLEAR_MESSAGE')
 const setGameData = createAction('SET_GAME_DATA')
+const gameLoaded = createAction('GAME_LOADED')
 const aceUpdate = createAction('ACE_UPDATE')
 const swapMode = createAction('SWAP_MODE')
 const startRun = createAction('START_RUN')
@@ -47,11 +49,17 @@ function initializeApp () {
   return bindUrl(newRoute)
 }
 
+function * createNew () {
+  const id = yield firebaseSet({method: 'push', ref: 'games', value: '1234'})
+  yield setUrl(`/${id}/create/animal`)
+}
+
 export {
   initializeGame,
   setActiveLine,
   endRunMessage,
   initializeApp,
+  clearMessage,
   setGameData,
   animalPaint,
   handleError,
@@ -59,10 +67,11 @@ export {
   throwError,
   animalMove,
   updateLine,
+  gameLoaded,
   selectLine,
-  clearMessage,
   moveAnimal,
   setActive,
+  createNew,
   moveError,
   aceUpdate,
   swapMode,

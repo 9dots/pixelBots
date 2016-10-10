@@ -12,8 +12,6 @@ function render ({props}) {
     size
   } = props
 
-  console.log(editMode)
-
   return (
     <Block
       border

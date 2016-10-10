@@ -19,7 +19,7 @@ export default function ({dispatch, getState}) {
           selectedLine = selectedLine || 1
           dispatch(scrollTo('.code-editor', `#code-icon-${(selectedLine - 1)}`))
         }
-      }, 50)
+      }, 200)
     }
     return next(action)
   }

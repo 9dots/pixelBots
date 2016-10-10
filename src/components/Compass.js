@@ -7,17 +7,11 @@ import {addCode} from '../actions'
 function render ({props}) {
   const {active, h, w} = props
   return (
-    <Block column align='start center'>
-      <Block>
-        {createButton('up')}
-      </Block>
-      <Block row align='center center'>
-        {createButton('left')}
-        {createButton('right')}
-      </Block>
-      <Block>
-        {createButton('down')}
-      </Block>
+    <Block w={w} column align='start center'>
+      {createButton('up')}
+      {createButton('left')}
+      {createButton('right')}
+      {createButton('down')}
     </Block>
   )
 
@@ -34,7 +28,7 @@ function render ({props}) {
         boxShadow='0 2px 5px 0px rgba(0,0,0,.8)'
         transition='all .3s ease-in-out'
         onClick={() => [addCode(active, `${name}()`)]}>
-        <Icon bold fs='40px' name={nameToIcon(name)} />
+        <Icon bold fs='30px' name={nameToIcon(name)} />
       </Button>
     )
   }

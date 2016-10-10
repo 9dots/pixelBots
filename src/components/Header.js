@@ -17,6 +17,7 @@ function render ({props, children}) {
       py='10px'
       px='10px'
       transition='width .2s ease-in-out'
+      focusProps={{w: '60px'}}
       lingerProps={{w: '250px'}}
       {...props}>
       {children}

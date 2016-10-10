@@ -28,7 +28,7 @@ function render ({props}) {
           textAlign='center'
           highlight
           p='10px'
-          w='120px'
+          w='200px'
           h='40px'>
           <Text textAlign='center' fontWeight='800'>input</Text>
         </MenuItem>
