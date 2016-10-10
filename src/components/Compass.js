@@ -1,3 +1,5 @@
+/** @jsx element */
+
 import element from 'vdux/element'
 import {Button, Icon} from 'vdux-containers'
 import {Block} from 'vdux-ui'

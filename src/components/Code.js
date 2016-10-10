@@ -52,9 +52,16 @@ function render ({props, local, state}) {
   lastSelected = typeof (selectedLine) === 'number' ? selectedLine : -10
 
   return (
-    <Block style={{'flex': 1}} class='code-editor' bgColor='#A7B4CB' relative tall overflowY='scroll'>
+    <Block
+      style={{'flex': 1}}
+      class='code-editor'
+      bgColor='#A7B4CB'
+      minWidth='480px'
+      relative
+      tall
+      overflowY='scroll'>
       <Block absolute w='50px' left='0' tall/>
-      <Block p='4px 15px' ml='50px' fs='22px' fontFamily='Monaco' color='white' column wide>
+      <Block p='4px 15px' pl='66px' fs='22px' fontFamily='Monaco' color='white' column wide>
         {code}
         <Block w='250px' cursor='pointer' onClick={() => selectLine(active, prevLength)}>
           <Cursor h='18px' active={selectedLine === prevLength}/>

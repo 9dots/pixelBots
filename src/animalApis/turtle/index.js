@@ -1,10 +1,9 @@
 import {
   animalPaint,
-  moveAnimal
-} from '../actions'
+  animalMove,
+  moveError
+} from '../../actions'
 
-const imageURL = '/animalImages/zebra.jpg'
-const speed = 750
 const docs = {
   up: {
     usage: 'up()',
@@ -23,20 +22,29 @@ const docs = {
     description: 'Move the zebra down one space.'
   },
   paint: {
-    usage: 'paint()',
-    description: 'Paint the square the zebra is currently on black.'
+    usage: 'paint(color)',
+    description: 'Paint the square the zebra is currently on color.',
+    arguments: 'color'
   }
 }
 
-function wrap (id, getState = () => {}) {
+function wrap (id) {
   const up = (line) => move(0, line)
   const right = (line) => move(1, line)
   const down = (line) => move(2, line)
   const left = (line) => move(3, line)
-  const paint = (line) => animalPaint(id, 'black', line)
+  const paint = (line, color) => animalPaint(id, color, line)
+  const speed = 750
 
   function move (dir, lineNum) {
-    return moveAnimal({id, getLocation: getNewLocation(dir)}, lineNum)
+    const state = getState()
+    const animal = state.animals[id]
+    const location = getNewLocation(animal.current.location, dir)
+    if (checkBounds(location, state.levelSize)) {
+      return animalMove(id, location, lineNum)
+    } else {
+      return moveError('Out of bounds', lineNum)
+    }
   }
 
   return {
@@ -46,26 +54,23 @@ function wrap (id, getState = () => {}) {
     left,
     paint,
     speed,
-    imageURL,
     docs
   }
 }
 
-function getNewLocation (dir) {
+function getNewLocation (oldLoc, dir) {
   if (dir === 0) {
-    return (loc) => [loc[0] - 1, loc[1]]
+    return [oldLoc[0] - 1, oldLoc[1]]
   } else if (dir === 2) {
-    return (loc) => [loc[0] + 1, loc[1]]
+    return [oldLoc[0] + 1, oldLoc[1]]
   } else if (dir === 3) {
-    return (loc) => [loc[0], loc[1] - 1]
+    return [oldLoc[0], oldLoc[1] - 1]
   } else if (dir === 1) {
-    return (loc) => [loc[0], loc[1] + 1]
+    return [oldLoc[0], oldLoc[1] + 1]
   }
 }
 
 export default wrap
 export {
-  docs,
-  imageURL,
-  speed
+  docs
 }

@@ -3,39 +3,42 @@
 import element from 'vdux/element'
 import {Block} from 'vdux-ui'
 import {setActive} from '../actions'
-import animalApis from '../animalApis/index'
+import animalApis from '../animalApis'
 
 function render ({props}) {
   let {animal, active, id, cellSize, editMode, running} = props
 
-  let api = animalApis[animal.type](id)
-
   if (Object.keys(animal.current).length < 1) {
     return (<div/>)
   }
+
+  const thisAnimal = animalApis[animal.type]
 
   let {rot} = animal.current
   let deg = rot * 90
 
   let animalSize = parseFloat(cellSize) / 2 + 'px'
   let pos = getPosition()
-  let seconds = api.speed / 1000
+  let seconds = thisAnimal.speed / 1000
+
+  const border = animal.type !== 'star' ? active === id : ''
+  const boxShadow = animal.type !== 'star' ? '0 0 1px 2px rgba(0,0,0,0.2)' : ''
 
   return (
     <Block
       absolute
       onClick={() => setActive(id)}
-      border={active === id}
+      border={border}
       borderColor={'red'}
       transform={`rotate(${deg}deg)`}
-      transition={!editMode && running && `all ${seconds}s ease-in-out`}
-      boxShadow='0 0 1px 2px rgba(0,0,0,0.2)'
+      transition={(!editMode && running) && `all ${seconds}s ease-in-out`}
+      boxShadow={boxShadow}
       left={pos.left}
       top={pos.top}
       h={animalSize}
       w={animalSize}
       bgColor='green'
-      background={`url(${api.imageURL})`}
+      background={`url(${thisAnimal.imageURL})`}
       backgroundSize='cover'/>
   )
 

@@ -1,4 +1,7 @@
+import {palette} from './utils'
+
 const baseColors = {
+  ...palette,
   black: '#111',
   white: '#fff',
   grey: '#ddd',

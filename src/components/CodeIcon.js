@@ -2,9 +2,8 @@
 
 import {removeLine, updateLine} from '../actions'
 import animalApis from '../animalApis/index'
+import {Icon, Block} from 'vdux-containers'
 import IconArgument from './IconArgument'
-import {Icon, Button, IconButton, Block} from 'vdux-containers'
-import ColorPicker from './ColorPicker'
 import LineNumber from './LineNumber'
 import element from 'vdux/element'
 
@@ -22,20 +21,8 @@ function render ({props}) {
     fs
   } = props
   const shouldFlash = !shouldTransition && newElement
-  const api = animalApis.docs[type]
-
-  function getButton (name) {
-    return (
-      <Icon
-        fs='40px'
-        h='40px'
-        w='40px'
-        align='center center'
-        name={name}
-        color='white'
-      />
-    )
-  }
+  const docs = animalApis[type].docs
+  const args = docs[name].arguments
 
   return (
     <Block relative wide>
@@ -47,11 +34,14 @@ function render ({props}) {
         <LineNumber fs='22px' absolute textAlign='right' numLines={numLines} lineNum={lineNum + 1} />
         <Block align='center center'>
           <Icon fs={fs} name={iconName}/>
-          {api[name].arguments && api[name].arguments.map((arg, i) => (
-            <IconArgument
-              argument={argument.split(',')[i]}
-              changeHandler={(val) => updateLine(animal, lineNum, `${name}(${val})`)}
-              type={arg}/>
+          {
+            args && args.map((arg, i) => (
+              <IconArgument
+                argument={argument.split(',')[i]}
+                changeHandler={(val) => (
+                  updateLine(animal, lineNum, `${name}(${val})`)
+                )}
+                arg={arg}/>
           ))}
         </Block>
       </Block>

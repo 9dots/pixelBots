@@ -23,7 +23,6 @@ function render ({props}) {
   )
 }
 
-
 export default wrap(CSSContainer, {
   lingerProps: {
     show: true

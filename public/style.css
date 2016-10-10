@@ -4,6 +4,11 @@
   outline: none;
 }
 
+p {
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+}
+
 body {
   height: 100vh;
   margin: 0;

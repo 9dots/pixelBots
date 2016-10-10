@@ -1,7 +1,7 @@
 /** @jsx element */
 
 import element from 'vdux/element'
-import {Block, Text} from 'vdux-ui'
+import {Block} from 'vdux-ui'
 import Level from './Level'
 import Tab from './Tab'
 
@@ -48,7 +48,7 @@ function render ({props, local, state}) {
         <Block h={size} w={size}>
           <Level
             editMode
-            animals={animals.map((animal) => getAnimalStart(animal))}
+            animals={animals.map((animal) => convertToStar(animal))}
             active={active}
             painted={targetPainted}
             levelSize={size}
@@ -72,9 +72,9 @@ function render ({props, local, state}) {
   )
 }
 
-function getAnimalStart (animal) {
+function convertToStar (animal) {
   return {
-    ...animal,
+    type: 'star',
     current: animal.initial
   }
 }

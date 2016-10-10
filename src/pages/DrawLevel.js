@@ -11,13 +11,11 @@ import {createNew} from '../actions'
 import element from 'vdux/element'
 import setProp from '@f/set-prop'
 import Hashids from 'hashids'
+import animalApis from '../animalApis'
+import {palette} from '../utils'
 import {
   Block,
   Card,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
   Text
 } from 'vdux-ui'
 
@@ -50,14 +48,6 @@ function whiteOut (size) {
   return grid
 }
 
-const overlayProps = {
-  fixed: true,
-  left: '0',
-  top: '0',
-  tall: true,
-  wide: true
-}
-
 function render ({props, state, local}) {
   const {newGame, gameID} = props
   const {color, painted, show} = state
@@ -73,11 +63,16 @@ function render ({props, state, local}) {
   const modalFooter = (
     <Block>
       <Button bgColor='secondary' onClick={createNew}>Make Another</Button>
-      <Button ml='m' onClick={() => setUrl(`/`)}>Done</Button>
+      <Button ml='m' onClick={() => setUrl('/')}>Done</Button>
     </Block>
   )
 
   const url = window.location.host + '/play/'
+  const canPaintColor = animalApis[game.animals[0].type].docs.paint.arguments
+  const blackAndWhite = [
+    {name: 'black', value: '#111'},
+    {name: 'white', value: '#FFF'}
+  ]
 
   return (
     <Block p='60px' column align='center center'>
@@ -92,9 +87,9 @@ function render ({props, state, local}) {
             Fill color
           </Text>
           <ColorPicker
-            column
-            pickerTop='138px'
+            zIndex='999'
             clickHandler={local((color) => setFillColor(color))}
+            palette={canPaintColor ? palette : blackAndWhite}
             btn={btn}/>
         </Block>
         <hr/>
@@ -130,8 +125,8 @@ function render ({props, state, local}) {
           <Block mb='10px' fs='l' fontWeight='800'>Finished Grid</Block>
           <Level
             editMode
+            animals={game.animals.map((animal) => convertToStar(animal))}
             painted={painted.finished}
-            animals={game.animals}
             levelSize='500px'
             w='auto'
             h='auto'
@@ -171,7 +166,15 @@ function render ({props, state, local}) {
   }
 }
 
+function convertToStar (animal) {
+  return {
+    type: 'star',
+    current: animal.initial
+  }
+}
+
 function reducer (state, action) {
+  console.log(action)
   switch (action.type) {
     case setFillColor.type:
       return {

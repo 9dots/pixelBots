@@ -23,7 +23,6 @@ function * onCreate ({props, local}) {
   const gameCode = playSnapshot.val()
   const gameSnapshot = yield once({ref: `/games/${gameCode}`})
   yield initializeGame(gameSnapshot.val())
-  yield gameLoaded()
 }
 
 function render ({props, state, local}) {
@@ -44,7 +43,7 @@ function render ({props, state, local}) {
   } = game
 
   const {tab} = state
-  const size = '550px'
+  const size = '400px'
 
   return (
     <Block bgColor='#e5e5e5' relative w='calc(100% - 60px)' tall left={left}>

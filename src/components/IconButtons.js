@@ -2,17 +2,15 @@
 
 import element from 'vdux/element'
 import {Block} from 'vdux-ui'
-import Compass from './Compass'
-import PaintButton from './PaintButton'
 import {addCode} from '../actions'
-import animalApis from '../animalApis/index'
+import animalApis from '../animalApis'
 import {Button, Icon} from 'vdux-containers'
 import {nameToIcon} from '../utils'
 import reduce from '@f/reduce'
 
 function render ({props}) {
   const {active, type} = props
-  const docs = animalApis.docs[type]
+  const docs = animalApis[type].docs
 
   return (
     <Block column align='start center' wide tall>

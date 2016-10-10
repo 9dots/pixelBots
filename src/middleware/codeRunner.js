@@ -1,6 +1,6 @@
 import createAction from '@f/create-action'
 import getIterator from '../getIterator.js'
-import animalApis from '../animalApis/index'
+import animalApis from '../animalApis'
 import {
   throwError,
   moveError,
@@ -18,7 +18,7 @@ function codeRunner () {
       if (action.type === runCode.type && !state.running) {
         const {animals} = state.game
         for (var id in animals) {
-          const api = animalApis[animals[id].type](id)
+          const api = animalApis[animals[id].type].default(id)
           let code = getIterator(animals[id], api, id)
           if (code.error) {
             return dispatch(

@@ -9,7 +9,7 @@ const addScroll = (lineNum) => Observable.of(
   scrollTo('.code-editor', `#code-icon-${lineNum}`)
 )
 const getTimeout = (animals, id) => id
-  ? animalApis[animals[id].type](id).speed
+  ? animalApis[animals[id].type].speed
   : undefined
 
 export default function runner (action$, store) {
