@@ -9,7 +9,6 @@ import element from 'vdux/element'
 import enroute from 'enroute'
 import {Block, Icon, Text} from 'vdux-ui'
 import Game from './pages/Game'
-import {firebaseSet} from 'vdux-fire'
 
 const router = enroute({
   '/': (params, props) => <HomePage left='60px' {...props} />,
@@ -28,8 +27,8 @@ function onCreate () {
 function render ({local, props}) {
   return (
     <Block tall wide>
-      <Header w='60px' bgColor='secondary' top='0' left='0'>
-        <Block mt='10px' cursor='pointer' relative>
+      <Header w='60px' bgColor='primary' top='0' left='0'>
+        <Block mt='10px' cursor='pointer' onClick={() => setUrl('/')} relative>
           <Block
             h='40px'
             w='40px'
@@ -37,7 +36,7 @@ function render ({local, props}) {
             display='inline-block'
             bgColor='transparent'
             cursor='pointer'
-            onClick={() => setUrl('/')} background={'url(/animalImages/zebra.jpg)'}
+            background={'url(/animalImages/zebra.jpg)'}
             backgroundSize='contain'/>
           <Text w='150px' absolute color='white' fs='m' top='10px' left='63px'>Pixel Bots</Text>
         </Block>

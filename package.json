@@ -10,8 +10,8 @@
     "deploy": "npm run build; npm run minify; firebase deploy;"
   },
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/danleavitt0/artbot.git"
+    "url": "git+https://github.com/danleavitt0/artbot.git",
+    "type": "git"
   },
   "author": "danleavitt0",
   "license": "MIT",

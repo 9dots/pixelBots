@@ -1,13 +1,15 @@
 /** @jsx element */
 
 import element from 'vdux/element'
-import {Block} from 'vdux-ui'
+import {Block, Tooltip} from 'vdux-ui'
+import {CSSContainer, wrap} from 'vdux-containers'
 
 function render ({props}) {
   const {
     color = 'white',
     clickHandler,
     coordinates,
+    showColor,
     editMode,
     size
   } = props
@@ -21,10 +23,16 @@ function render ({props}) {
       w={size}
       onClick={() => clickHandler(coordinates)}
       transition={!editMode && 'background-color .75s ease-in-out'}
-      bgColor={color} />
+      bgColor={color}>
+      <Tooltip relative show={showColor}>{color}</Tooltip>
+    </Block>
   )
 }
 
-export default {
+export default wrap(CSSContainer, {
+  lingerProps: {
+    showColor: true
+  }
+})({
   render
-}
+})

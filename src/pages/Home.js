@@ -26,7 +26,7 @@ function render ({props}) {
   const size = '550px'
 
   return (
-    <Block bgColor='#e5e5e5' relative w='calc(100% - 60px)' tall left={left}>
+    <Block bgColor='background' relative w='calc(100% - 60px)' tall left={left}>
       <Block
         relative
         display='flex'

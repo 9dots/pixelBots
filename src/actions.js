@@ -38,6 +38,7 @@ const clearMessage = createAction('CLEAR_MESSAGE')
 const setGameData = createAction('SET_GAME_DATA')
 const gameLoaded = createAction('GAME_LOADED')
 const aceUpdate = createAction('ACE_UPDATE')
+const codeAdded = createAction('CODE_ADDED')
 const swapMode = createAction('SWAP_MODE')
 const startRun = createAction('START_RUN')
 const newRoute = createAction('NEW_ROUTE')
@@ -70,6 +71,7 @@ export {
   gameLoaded,
   selectLine,
   moveAnimal,
+  codeAdded,
   setActive,
   createNew,
   moveError,

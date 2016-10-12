@@ -9,7 +9,7 @@ function render ({props, local}) {
   let close
 
   return (
-    <Dropdown ref={(api) => close = api.close} btn={btn} {...props}>
+    <Dropdown zIndex='999' ref={(api) => close = api.close} btn={btn} {...props}>
       <Grid itemsPerRow='4' rowAlign='center center' columnAlign='start center'>
         {palette.map(({value, name}) => <Block
           onClick={[(e) => close(), (e) => clickHandler(name)]}

@@ -38,7 +38,7 @@ function render ({props, local, state}) {
         p='10px'
         onFocus={local(showTooltip)}
         onBlur={local(hideTooltip)}
-        inputProps={{textAlign: 'center', w: 'auto'}}
+        inputProps={{textAlign: 'center', w: '60px'}}
         value={argument}
         onClick={(e) => !propogate && e.stopPropagation()}
         onKeyup={(e) => keyUpHandler(e.target.value)} />
@@ -49,7 +49,13 @@ function render ({props, local, state}) {
     values === 'color'
       ? (<ColorPicker
         w='200px'
-        btn={<Block wide tall align='center center'>{getInput(true)}</Block>}
+        btn={<Block
+          p='10px'
+          h='20px'
+          w='60px'
+          boxShadow='inset 0 0 2px 1px rgba(0,0,0,0.2)'
+          bgColor={argument.replace(/\'/gi, '') || 'white'}
+          align='center center'/>}
         clickHandler={(value) => keyUpHandler(`'${value}'`)}
         palette={palette}
       />)

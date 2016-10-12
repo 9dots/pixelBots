@@ -20,13 +20,21 @@ function render ({props, local, state}) {
   } = props
 
   return (
-    <Block minHeight='630px' bgColor='#c5c5c5' my='20px' mx='20px'>
-      <Block wide align='flex-start center'>
+    <Block
+      minHeight='630px'
+      bgColor='light'
+      boxShadow='0 0 2px 1px rgba(0,0,0,0.2)'
+      my='20px'
+      mx='20px'>
+      <Block bgColor='secondary' wide align='flex-end center'>
         {
           tabs.map((tabName) => (
             <Tab
               name={tabName}
-              active={tab}
+              bgColor='secondary'
+              color='white'
+              fs='s'
+              active={tab === tabName}
               handleClick={(name) => handleTabClick(name)}/>
           ))
         }

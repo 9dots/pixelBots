@@ -10,8 +10,8 @@ function render ({props}) {
   const {active, type, running, hasRun, inputType, onRun} = props
 
   return (
-    <Block w='200px' relative bgColor='#7689A9' tall>
-      <Block relative top='0' wide>
+    <Block w='200px' relative bgColor='offSecondary' tall>
+      <Block absolute bottom='0' wide>
         <Runner onRun={onRun} wide relative running={running} hasRun={hasRun} />
       </Block>
       <Block wide h='90%' p='10px' top='10%'>

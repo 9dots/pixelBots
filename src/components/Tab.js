@@ -5,7 +5,6 @@ import {MenuItem} from 'vdux-containers'
 
 function render ({props}) {
   const {name, active, handleClick} = props
-  const selected = name === active
   return (
     <MenuItem
       p='10px'
@@ -13,9 +12,9 @@ function render ({props}) {
       bgColor='#c5c5c5'
       textAlign='center'
       fontWeight='800'
-      hoverProps={!selected && {color: '#555'}}
+      hoverProps={!active && {color: '#e5e5e5'}}
       onClick={() => handleClick(name)}
-      highlight={selected}
+      highlight={active}
       {...props}>
       {name}
     </MenuItem>

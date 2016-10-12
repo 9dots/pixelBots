@@ -4,7 +4,7 @@ import element from 'vdux/element'
 import {Block} from 'vdux-ui'
 import {addCode} from '../actions'
 import animalApis from '../animalApis'
-import {Button, Icon} from 'vdux-containers'
+import {Button, Icon, Text} from 'vdux-containers'
 import {nameToIcon} from '../utils'
 import reduce from '@f/reduce'
 
@@ -14,6 +14,10 @@ function render ({props}) {
 
   return (
     <Block column align='start center' wide tall>
+      <Block>
+        <Text align='center' fw='800' fs='l'>{type} buttons</Text>
+      </Block>
+      <hr style={{width: '100%'}}/>
       {reduce((arr, val, key) => [...arr, createButton(key)], [], docs)}
     </Block>
   )
@@ -26,7 +30,7 @@ function render ({props}) {
         h='40px'
         m='5px'
         fs='14px'
-        bgColor='primary'
+        bgColor='buttons'
         align='center center'
         boxShadow='0 2px 5px 0px rgba(0,0,0,.8)'
         transition='all .3s ease-in-out'

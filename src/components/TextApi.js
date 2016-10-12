@@ -7,15 +7,15 @@ import reduce from '@f/reduce'
 import animalApis from '../animalApis/index'
 
 function render ({props}) {
-  const {type, active} = props
-  const api = animalApis[type](active)
+  const {type} = props
+  const api = animalApis[type].docs
   return (
-    <Block color='white' wide tall px='10px'>
+    <Block color='black' wide tall px='10px'>
       <Block>
         <Text align='center' fw='800' fs='xl'>{type} API</Text>
       </Block>
       <hr/>
-      {reduce(getApiDocs, [], api.docs)}
+      {reduce(getApiDocs, [], api)}
     </Block>
   )
 }

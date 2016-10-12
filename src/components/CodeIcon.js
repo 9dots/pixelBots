@@ -1,11 +1,15 @@
 /** @jsx element */
 
-import {removeLine, updateLine} from '../actions'
+import {removeLine, updateLine, codeAdded} from '../actions'
 import animalApis from '../animalApis/index'
 import {Icon, Block} from 'vdux-containers'
 import IconArgument from './IconArgument'
 import LineNumber from './LineNumber'
 import element from 'vdux/element'
+
+function onCreate () {
+  return codeAdded()
+}
 
 function render ({props}) {
   let {
@@ -56,5 +60,6 @@ function render ({props}) {
 }
 
 export default {
+  onCreate,
   render
 }

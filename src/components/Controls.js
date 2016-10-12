@@ -5,6 +5,7 @@ import {Block, Text, MenuItem} from 'vdux-containers'
 import Buttons from './Buttons'
 import CodeBox from './CodeBox'
 import Code from './Code'
+import Tab from './Tab'
 
 function render ({props}) {
   const {
@@ -19,19 +20,17 @@ function render ({props}) {
   const sequence = animals[active].sequence || []
 
   return (
-    <Block minHeight='600px' wide bgColor='#c5c5c5' my='20px' mx='20px'>
-      <Block wide align='flex-start center'>
-        <MenuItem
-          cursor='default'
-          hoverProps={{}}
-          bgColor='#c5c5c5'
-          textAlign='center'
-          highlight
-          p='10px'
-          w='200px'
-          h='40px'>
-          <Text textAlign='center' fontWeight='800'>input</Text>
-        </MenuItem>
+    <Block
+      minHeight='600px'
+      boxShadow='0 0 2px 1px rgba(0,0,0,0.2)'
+      wide
+      bgColor='secondary'
+      color='white'
+      my='20px'
+      mx='20px'>
+      <Block wide align='flex-end center'>
+        <Tab bgColor='secondary' color='white' active name='code' fs='s'>code</Tab>
+        <Tab bgColor='secondary' color='white' name='documentation' fs='s'>documentation</Tab>
       </Block>
       <Block h='calc(100% - 40px)' wide relative align='start start'>
         <Buttons

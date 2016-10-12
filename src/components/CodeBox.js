@@ -6,7 +6,7 @@ import {Block} from 'vdux-ui'
 import Ace from 'vdux-ace'
 
 require('brace/mode/javascript')
-require('brace/theme/tomorrow_night')
+require('brace/theme/tomorrow')
 
 function render ({props}) {
   const {active, activeLine, running} = props
@@ -22,7 +22,7 @@ function render ({props}) {
         highlightActiveLine={false}
         activeLine={running ? activeLine : -1}
         onChange={(code) => aceUpdate({id: active, code})}
-        theme='tomorrow_night' />
+        theme='tomorrow' />
     </Block>
   )
 }

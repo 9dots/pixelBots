@@ -1,7 +1,7 @@
 /** @jsx element */
 
 import element from 'vdux/element'
-import {Block} from 'vdux-ui'
+import {Block, Box} from 'vdux-ui'
 import CodeIcon from './CodeIcon'
 import {nameToIcon} from '../utils'
 import {selectLine} from '../actions'
@@ -52,14 +52,14 @@ function render ({props, local, state}) {
   lastSelected = typeof (selectedLine) === 'number' ? selectedLine : -10
 
   return (
-    <Block
-      style={{'flex': 1}}
+    <Box
+      flex
       class='code-editor'
       bgColor='#A7B4CB'
       minWidth='480px'
       relative
       tall
-      overflowY='scroll'>
+      overflowY='auto'>
       <Block absolute w='50px' left='0' tall/>
       <Block p='4px 15px' pl='66px' fs='22px' fontFamily='Monaco' color='white' column wide>
         {code}
@@ -68,7 +68,7 @@ function render ({props, local, state}) {
           <Outline color='black' width='2px' style='dashed' wide h={lineHeight}/>
         </Block>
       </Block>
-    </Block>
+    </Box>
   )
 }
 
