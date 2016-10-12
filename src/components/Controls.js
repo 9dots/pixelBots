@@ -1,9 +1,10 @@
 /** @jsx element */
 
 import element from 'vdux/element'
-import {Block, Text, MenuItem} from 'vdux-containers'
+import {Block, Box, Text, MenuItem} from 'vdux-containers'
 import Buttons from './Buttons'
 import CodeBox from './CodeBox'
+import Runner from './Runner'
 import Code from './Code'
 import Tab from './Tab'
 
@@ -29,8 +30,19 @@ function render ({props}) {
       my='20px'
       mx='20px'>
       <Block bgColor='secondary' wide align='flex-end center'>
-        <Tab bgColor='secondary' color='white' active name='code' fs='s'>code</Tab>
-        <Tab bgColor='secondary' color='white' name='documentation' fs='s'>documentation</Tab>
+        <Block h='80%'>
+          <Runner
+            onRun={onRun}
+            relative
+            tall
+            ml='10px'
+            running={running}
+            hasRun={hasRun} />
+        </Block>
+        <Box flex align='flex-end center'>
+          <Tab bgColor='secondary' color='white' name='documentation' fs='s'/>
+          <Tab bgColor='secondary' color='white' active name='code' fs='s'/>
+        </Box>
       </Block>
       <Block h='calc(100% - 40px)' p='10px' wide relative align='start start'>
         <Buttons

@@ -8,10 +8,10 @@ import {reset} from '../actions'
 function render ({props}) {
   const {hasRun, onRun} = props
   return (
-    <Block {...props} align='center center' bgColor='primary' hoverProps={{highlight: true}} transition='all .3s ease-in-out' boxShadow='0px -2px 5px -2px rgba(0,0,0,0.4)'>
+    <Block {...props} align='center center' bgColor='primary' hoverProps={{highlight: true}} transition='all .3s ease-in-out'>
       {!hasRun
-        ? <Button wide icon='play_arrow' fs='24px' color='white' p='15px' onClick={[runCode, onRun]}/>
-        : <Button wide icon='refresh' fs='24px' color='white' p='15px' onClick={[reset, () => abortRun('STOP')]}/>
+        ? <Button wide icon='play_arrow' fs='24px' color='white' p='2px 88px' onClick={[runCode, onRun]}/>
+      : <Button wide icon='refresh' fs='24px' color='white' p='2px 88px' onClick={[reset, () => abortRun('STOP')]}/>
       }
     </Block>
   )
