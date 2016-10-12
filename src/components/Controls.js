@@ -24,15 +24,15 @@ function render ({props}) {
       minHeight='600px'
       boxShadow='0 0 2px 1px rgba(0,0,0,0.2)'
       wide
-      bgColor='secondary'
+      bgColor='light'
       color='white'
       my='20px'
       mx='20px'>
-      <Block wide align='flex-end center'>
+      <Block bgColor='secondary' wide align='flex-end center'>
         <Tab bgColor='secondary' color='white' active name='code' fs='s'>code</Tab>
         <Tab bgColor='secondary' color='white' name='documentation' fs='s'>documentation</Tab>
       </Block>
-      <Block h='calc(100% - 40px)' wide relative align='start start'>
+      <Block h='calc(100% - 40px)' p='10px' wide relative align='start start'>
         <Buttons
           onRun={onRun}
           hasRun={hasRun}
