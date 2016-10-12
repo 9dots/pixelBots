@@ -10,9 +10,9 @@ function render ({props}) {
   const {type} = props
   const api = animalApis[type].docs
   return (
-    <Block color='black' wide tall px='10px'>
+    <Block color='white' wide tall px='10px'>
       <Block>
-        <Text align='center' fw='800' fs='xl'>{type} API</Text>
+        <Text align='center' fw='800' fs='l'>{type} API</Text>
       </Block>
       <hr/>
       {reduce(getApiDocs, [], api)}
