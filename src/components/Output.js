@@ -21,11 +21,11 @@ function render ({props, local, state}) {
 
   return (
     <Block
-      minHeight='630px'
+      minHeight='600px'
       bgColor='light'
       boxShadow='0 0 2px 1px rgba(0,0,0,0.2)'
-      my='20px'
-      mx='20px'>
+      m='20px'
+      mr='0'>
       <Block bgColor='secondary' wide align='flex-end center'>
         {
           tabs.map((tabName) => (

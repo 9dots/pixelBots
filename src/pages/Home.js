@@ -23,7 +23,7 @@ function render ({props}) {
     inputType
   } = game
 
-  const size = '550px'
+  const size = '400px'
 
   return (
     <Block bgColor='background' relative w='calc(100% - 60px)' tall left={left}>

@@ -3576,16 +3576,6 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.3.6"
 
-jss-simple@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/jss-simple/-/jss-simple-0.3.1.tgz#b2ecd52daf45f02f31fe21cf42fdd1b59afcab51"
-  dependencies:
-    jss "^3.2.0"
-
-jss@^3.2.0:
-  version "3.11.1"
-  resolved "https://registry.yarnpkg.com/jss/-/jss-3.11.1.tgz#8b56f437f35d3371f276af679200df84ef31a23d"
-
 jwa@^1.1.2:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/jwa/-/jwa-1.1.3.tgz#fa9f2f005ff0c630e7c41526a31f37f79733cd6d"
