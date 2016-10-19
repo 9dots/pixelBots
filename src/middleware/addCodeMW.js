@@ -6,6 +6,7 @@ export default function ({dispatch, getState}) {
   return (next) => (action) => {
     if (action.type === codeAdded.type) {
       const editor = document.querySelector('.code-editor')
+      if (!editor) return next(action)
       let {selectedLine} = getState()
       let numElements = Math.floor(editor.offsetHeight / lineHeight)
       let lastVisibleLinePos = editor.scrollTop + (editor.offsetHeight * ((numElements - 2) / numElements))

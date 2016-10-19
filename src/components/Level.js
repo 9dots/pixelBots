@@ -4,12 +4,7 @@ import element from 'vdux/element'
 import {Flex} from 'vdux-ui'
 import Row from './Row'
 import Animal from './Animal'
-import {reset} from '../actions'
 import reduce from '@f/reduce'
-
-function onCreate () {
-  return reset()
-}
 
 function render ({props}) {
   let {
@@ -80,6 +75,5 @@ function render ({props}) {
 }
 
 export default {
-  onCreate,
   render
 }

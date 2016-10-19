@@ -4,8 +4,8 @@ export default {
   up: {
     usage: 'up(steps)',
     description: 'Move the toucan up `steps` space.',
-    arguments: [{
-      name: 'up(*steps*)',
+    args: [{
+      name: 'steps',
       type: 'number',
       values: range(1, 10),
       description: 'The number of steps up to move the toucan.'
@@ -14,8 +14,8 @@ export default {
   left: {
     usage: 'left(steps)',
     description: 'Move the toucan left `steps` space.',
-    arguments: [{
-      name: 'left(*steps*)',
+    args: [{
+      name: 'steps',
       type: 'number',
       values: range(1, 10),
       description: 'The number of steps left to move the toucan.'
@@ -24,8 +24,8 @@ export default {
   right: {
     usage: 'right(steps)',
     description: 'Move the toucan right `steps` space.',
-    arguments: [{
-      name: 'right(*steps*)',
+    args: [{
+      name: 'steps',
       type: 'number',
       values: range(1, 10),
       description: 'The number of steps right to move the toucan.'
@@ -34,8 +34,8 @@ export default {
   down: {
     usage: 'down(steps)',
     description: 'Move the toucan down `steps` space.',
-    arguments: [{
-      name: 'down(*steps*)',
+    args: [{
+      name: 'steps',
       type: 'number',
       values: range(1, 10),
       description: 'The number of steps down to move the toucan.'
@@ -44,8 +44,8 @@ export default {
   paint: {
     usage: 'paint(color)',
     description: 'Paint the square the toucan is currently on `color`.',
-    arguments: [{
-      name: 'paint(*color*)',
+    args: [{
+      name: 'color',
       type: 'string',
       values: 'color',
       description: 'The color to paint.'

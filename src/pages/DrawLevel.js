@@ -29,8 +29,9 @@ const addPainted = createAction('ADD_PAINTED')
 const showID = createAction('SHOW_ID')
 
 function initialState ({props}) {
-  const {game} = props
-  const {levelSize} = game
+  const {newGame} = props
+  const {value} = newGame
+  const {levelSize} = value
   return {
     color: 'black',
     painted: {start: whiteOut(levelSize), finished: whiteOut(levelSize)},
@@ -68,7 +69,7 @@ function render ({props, state, local}) {
   )
 
   const url = window.location.host + '/play/'
-  const canPaintColor = animalApis[game.animals[0].type].docs.paint.arguments
+  const canPaintColor = animalApis[game.animals[0].type].docs.paint.args
   const blackAndWhite = [
     {name: 'black', value: '#111'},
     {name: 'white', value: '#FFF'}
@@ -174,7 +175,6 @@ function convertToStar (animal) {
 }
 
 function reducer (state, action) {
-  console.log(action)
   switch (action.type) {
     case setFillColor.type:
       return {

@@ -24,7 +24,7 @@ const docs = {
   paint: {
     usage: 'paint(color)',
     description: 'Paint the square the zebra is currently on color.',
-    arguments: 'color'
+    args: 'color'
   }
 }
 

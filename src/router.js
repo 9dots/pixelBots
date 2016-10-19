@@ -2,8 +2,9 @@
 
 import {setUrl} from 'redux-effects-location'
 import Header from './components/Header'
-import {initializeApp, createNew} from './actions'
+import {initializeApp, createNew, refresh} from './actions'
 import Create from './pages/Create'
+import CreateSandbox from './pages/CreateSandbox'
 import HomePage from './pages/Home'
 import element from 'vdux/element'
 import enroute from 'enroute'
@@ -11,7 +12,7 @@ import {Block, Icon, Text} from 'vdux-ui'
 import Game from './pages/Game'
 
 const router = enroute({
-  '/': (params, props) => <HomePage left='60px' {...props} />,
+  '/': homePage,
   '/play/:gameID': (params, props) => (
     <Game {...props} left='60px' gameID={params.gameID}/>
   ),
@@ -19,6 +20,14 @@ const router = enroute({
     <Create left='60px' gameID={gameID} params={slug} {...props} />
   )
 })
+
+function homePage (params, props) {
+  if (props.game) {
+    return <HomePage left='60px' {...props} />
+  } else {
+    return <CreateSandbox left='60px' {...props}/>
+  }
+}
 
 function onCreate () {
   return initializeApp()
@@ -28,7 +37,7 @@ function render ({local, props}) {
   return (
     <Block tall wide>
       <Header w='60px' bgColor='primary' top='0' left='0'>
-        <Block mt='10px' cursor='pointer' onClick={() => setUrl('/')} relative>
+        <Block mt='10px' cursor='pointer' onClick={[() => setUrl('/'), refresh]} relative>
           <Block
             h='40px'
             w='40px'

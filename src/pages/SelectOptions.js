@@ -31,7 +31,7 @@ function initialState () {
 
 function render ({props, state, local}) {
   const {size, inputType, animal} = state
-  const {newGame, gameID} = props
+  const {newGame, gameID, handleSave = save} = props
 
   if (newGame.loading) {
     return <div>... loading</div>
@@ -77,7 +77,15 @@ function render ({props, state, local}) {
           </Block>
         </Block>
         <hr/>
-        <Button absolute bottom='24px' h='42px' fs='16px' w='360px' onClick={save}>Save</Button>
+        <Button
+          absolute
+          bottom='24px'
+          h='42px'
+          fs='16px'
+          w='360px'
+          onClick={() => handleSave({size, inputType, animal})}>
+          Save
+        </Button>
       </Card>
       <Level
         editMode

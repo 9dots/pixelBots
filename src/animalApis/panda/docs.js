@@ -1,38 +1,44 @@
+import {range} from '../../utils'
+
 export default {
   up: {
     usage: 'up(steps)',
     description: 'Move the panda up `steps` space.',
-    arguments: [{
-      name: 'up(*steps*)',
+    args: [{
+      name: 'steps',
       type: 'number',
-      description: 'The number of steps right to move the toucan.'
+      values: range(1, 10),
+      description: 'The number of steps right to move the panda.'
     }]
   },
   left: {
     usage: 'left(steps)',
     description: 'Move the panda left `steps` space.',
-    arguments: [{
-      name: 'left(*steps*)',
+    args: [{
+      name: 'steps',
       type: 'number',
-      description: 'The number of steps right to move the toucan.'
+      values: range(1, 10),
+      description: 'The number of steps right to move the panda.'
     }]
   },
   right: {
     usage: 'right(steps)',
     description: 'Move the panda right `steps` space.',
-    arguments: [{
-      name: 'right(*steps*)',
+    args: [{
+      name: 'steps',
       type: 'number',
-      description: 'The number of steps right to move the toucan.'
+      values: range(1, 10),
+      description: 'The number of steps right to move the panda.'
     }]
   },
   down: {
     usage: 'down(steps)',
     description: 'Move the panda down `steps` space.',
-    arguments: [{
-      name: 'down(*steps*)',
+    args: [{
+      name: 'steps',
       type: 'number',
-      description: 'The number of steps right to move the toucan.'
+      values: range(1, 10),
+      description: 'The number of steps right to move the panda.'
     }]
   },
   paint: {

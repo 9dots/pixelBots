@@ -1,14 +1,24 @@
 /** @jsx element */
 
+import createAction from '@f/create-action'
+import Documentation from './Documentation'
+import {Block, Box} from 'vdux-containers'
 import element from 'vdux/element'
-import {Block, Box, Text, MenuItem} from 'vdux-containers'
 import Buttons from './Buttons'
 import CodeBox from './CodeBox'
 import Runner from './Runner'
 import Code from './Code'
 import Tab from './Tab'
 
-function render ({props}) {
+const changeTab = createAction('CHANGE_TAB: controls')
+
+function initialState () {
+  return {
+    tab: 'code'
+  }
+}
+
+function render ({props, state, local}) {
   const {
     active,
     animals,
@@ -19,6 +29,7 @@ function render ({props}) {
     onRun
   } = props
   const sequence = animals[active].sequence || []
+  const {tab} = state
 
   return (
     <Block
@@ -40,24 +51,53 @@ function render ({props}) {
             hasRun={hasRun} />
         </Block>
         <Box flex align='flex-end center'>
-          <Tab bgColor='secondary' color='white' name='documentation' fs='s'/>
-          <Tab bgColor='secondary' color='white' active name='code' fs='s'/>
+          <Tab
+            bgColor='secondary'
+            onClick={local(() => changeTab('documentation'))}
+            color='white'
+            name='documentation'
+            active={tab === 'documentation'}
+            fs='s'/>
+          <Tab
+            bgColor='secondary'
+            onClick={local(() => changeTab('code'))}
+            color='white'
+            active={tab === 'code'}
+            name='code'
+            fs='s'/>
         </Box>
       </Block>
-      <Block h='calc(100% - 40px)' p='10px' wide relative align='start start'>
+      <Block h='calc(100% - 40px)' wide relative align='start start'>
         <Buttons
           onRun={onRun}
           hasRun={hasRun}
           running={running}
+          changeTab={local(() => changeTab('documentation'))}
           active={active}
           inputType={inputType}
           cursor={selectedLine || sequence.length - 1} type={animals[active].type}/>
-        {inputType === 'icons' ? <Code {...props}/> : <CodeBox {...props} />}
+        {tab === 'code'
+          ? inputType === 'icons' ? <Code {...props}/> : <CodeBox {...props} />
+          : <Documentation animal={animals[active]}/>
+        }
       </Block>
     </Block>
   )
 }
 
+function reducer (state, action) {
+  switch (action.type) {
+    case changeTab.type:
+      return {
+        ...state,
+        tab: action.payload
+      }
+  }
+  return state
+}
+
 export default {
+  initialState,
+  reducer,
   render
 }

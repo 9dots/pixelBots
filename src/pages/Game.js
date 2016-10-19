@@ -37,6 +37,10 @@ function render ({props, state, local}) {
     left
   } = props
 
+  if (!game) {
+    return <div>loading...</div>
+  }
+
   const {
     inputType,
     animals

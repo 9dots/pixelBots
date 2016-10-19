@@ -8,10 +8,14 @@ const createDelay = (delay = 750) => Observable.empty().delay(delay)
 const addScroll = (lineNum) => Observable.of(
   scrollTo('.code-editor', `#code-icon-${lineNum}`)
 )
-const getTimeout = (animals, id) => id
-  ? animalApis[animals[id].type].speed
-  : undefined
 
+console.log(animalApis)
+const getTimeout = (animals, id) => {
+  console.log(animalApis[animals[id].type].speed)
+  return id
+    ? animalApis[animals[id].type].speed
+    : undefined
+}
 export default function runner (action$, store) {
   return action$.ofType(startRun.type)
     .map((action) =>

@@ -25,17 +25,21 @@ const throwError = createAction(
   'THROW_ERROR',
   (message, lineNum) => ({message, lineNum})
 )
+const moveAnimal = createAction(
+  'MOVE_ANIMAL',
+  (opts) => opts,
+  (opts, lineNum) => ({lineNum})
+)
 const selectLine = createAction('SELECT_LINE', (id, idx) => ({id, idx}))
 const removeLine = createAction('REMOVE_LINE', (id, idx) => ({id, idx}))
 const setActiveLine = createAction('SET_ACTIVE_LINE', (idx) => idx)
-const endRunMessage = createAction('END_RUN_MESSAGE')
 const addCode = createAction('ADD_CODE', (id, fn) => ({id, fn}))
 const setActive = createAction('SET_ANIMAL_ACTIVE', (id) => id)
-const handleError = createAction('HANDLE_ERROR')
-const moveAnimal = createAction('MOVE_ANIMAL', (opts) => opts, (opts, lineNum) => ({lineNum}))
 const initializeGame = createAction('INITIALIZE_GAME')
+const endRunMessage = createAction('END_RUN_MESSAGE')
 const clearMessage = createAction('CLEAR_MESSAGE')
 const setGameData = createAction('SET_GAME_DATA')
+const handleError = createAction('HANDLE_ERROR')
 const gameLoaded = createAction('GAME_LOADED')
 const aceUpdate = createAction('ACE_UPDATE')
 const codeAdded = createAction('CODE_ADDED')
@@ -43,6 +47,7 @@ const swapMode = createAction('SWAP_MODE')
 const startRun = createAction('START_RUN')
 const newRoute = createAction('NEW_ROUTE')
 const stopRun = createAction('STOP_RUN')
+const refresh = createAction('refresh')
 const endRun = createAction('END_RUN')
 const reset = createAction('RESET')
 
@@ -81,6 +86,7 @@ export {
   newRoute,
   stopRun,
   addCode,
+  refresh,
   endRun,
   reset
 }

@@ -26,7 +26,7 @@ function render ({props}) {
   } = props
   const shouldFlash = !shouldTransition && newElement
   const docs = animalApis[type].docs
-  const args = docs[name].arguments
+  const args = docs[name].args
 
   return (
     <Block relative wide>

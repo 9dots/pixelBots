@@ -9,7 +9,8 @@ import reduce from '@f/reduce'
 import {firebaseSet} from 'vdux-fire'
 
 function render ({props}) {
-  const {gameID} = props
+  const {gameID, handleSave = [setAnimal]} = props
+
   return (
     <Flex absolute align='center center' tall wide>
       {reduce(makeCard, [], animalDescriptions)}
@@ -23,7 +24,7 @@ function render ({props}) {
         bgColor='secondary'
         hoverProps={{highlight: true}}
         cursor='pointer'
-        onClick={() => setAnimal(key)}
+        onClick={() => handleSave.map((handler) => handler(key))}
         sq='300px'
         mx='20px'
         color='white'>

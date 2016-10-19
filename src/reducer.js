@@ -20,6 +20,7 @@ import {
   startRun,
   stopRun,
   addCode,
+  refresh,
   endRun,
   reset
 } from './actions'
@@ -30,11 +31,10 @@ function reducer (state, action) {
       var {id, location} = action.payload
       return {
         ...state,
-        game: toArray(setProp(
-          `animals.${id}.current.location`,
-          state.game,
-          location
-        ), 'animals')
+        game: arrayAt(
+          setProp(`animals.${id}.current.location`, state.game, location),
+         'animals'
+       )
       }
     case animalPaint.type:
       var {id, color} = action.payload
@@ -42,7 +42,7 @@ function reducer (state, action) {
 
       return {
         ...state,
-        game: toArray(setProp(
+        game: arrayAt(setProp(
           'painted',
           state.game,
           {...state.game.painted, [loc]: color}
@@ -68,7 +68,7 @@ function reducer (state, action) {
       return {
         ...state,
         selectedLine: state.selectedLine + 1,
-        game: toArray(setProp(
+        game: arrayAt(setProp(
           `animals.${id}.sequence`,
           state.game,
           splice(state.game.animals[id].sequence || [], lineNum, 0, fn)
@@ -84,7 +84,7 @@ function reducer (state, action) {
       return {
         ...state,
         selectedLine: sl,
-        game: toArray(setProp(
+        game: arrayAt(setProp(
           `animals.${id}.sequence`,
           state.game,
           state.game.animals[id].sequence.filter((line, i) => i !== idx)
@@ -110,7 +110,7 @@ function reducer (state, action) {
       var {id, code} = action.payload
       return {
         ...state,
-        game: toArray(setProp(
+        game: arrayAt(setProp(
           `animals.${id}.sequence`,
           state.game,
           code
@@ -120,11 +120,19 @@ function reducer (state, action) {
       var {id, lineNum, code} = action.payload
       return {
         ...state,
-        game: toArray(setProp(
+        game: arrayAt(setProp(
           `animals.${id}.sequence`,
           state.game,
           splice(state.game.animals[id].sequence, lineNum, 1, code)
         ), 'animals')
+      }
+    case refresh.type:
+      return {
+        ...state,
+        running: false,
+        hasRun: false,
+        activeLine: -1,
+        game: null
       }
     case reset.type:
       return {
@@ -191,7 +199,7 @@ function reducer (state, action) {
   return state
 }
 
-function toArray (obj, at) {
+function arrayAt (obj, at) {
   return map((elem, key) => {
     if (key === at) {
       return reduce((arr, next, k) => [...arr, next], [], elem)

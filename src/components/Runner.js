@@ -10,8 +10,8 @@ function render ({props}) {
   return (
     <Block {...props} align='center center' bgColor='primary' hoverProps={{highlight: true}} transition='all .3s ease-in-out'>
       {!hasRun
-        ? <Button wide icon='play_arrow' fs='24px' color='white' p='2px 88px' onClick={[runCode, onRun]}/>
-      : <Button wide icon='refresh' fs='24px' color='white' p='2px 88px' onClick={[reset, () => abortRun('STOP')]}/>
+        ? <Button wide icon='play_arrow' fs='24px' color='white' p='2px 78px' onClick={[runCode, onRun]}/>
+      : <Button wide icon='refresh' fs='24px' color='white' p='2px 78px' onClick={[reset, () => abortRun('STOP')]}/>
       }
     </Block>
   )

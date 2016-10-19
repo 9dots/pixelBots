@@ -1,11 +1,7 @@
-import autoYield from 'auto-yield'
-import sleep from '@f/sleep'
-import {scrollTo} from './middleware/scroll'
+import autoYield from 'auto-yield-delegate'
 
 import {
-  startRun,
-  endRun,
-  setActiveLine
+  endRun
 } from './actions'
 
 const wrap = (code, api, id) => {

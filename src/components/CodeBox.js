@@ -2,7 +2,7 @@
 
 import {aceUpdate} from '../actions'
 import element from 'vdux/element'
-import {Block} from 'vdux-ui'
+import {Box} from 'vdux-ui'
 import Ace from 'vdux-ace'
 
 require('brace/mode/javascript')
@@ -12,7 +12,7 @@ function render ({props}) {
   const {active, activeLine, running} = props
 
   return (
-    <Block relative wide tall fontFamily='code'>
+    <Box relative flex tall fontFamily='code'>
       <Ace
         name='code-editor'
         mode='javascript'
@@ -23,7 +23,7 @@ function render ({props}) {
         activeLine={running ? activeLine : -1}
         onChange={(code) => aceUpdate({id: active, code})}
         theme='tomorrow_night' />
-    </Block>
+    </Box>
   )
 }
 
