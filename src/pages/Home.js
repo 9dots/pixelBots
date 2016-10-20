@@ -25,6 +25,14 @@ function render ({props}) {
 
   const size = '400px'
 
+  const outputProps = {
+    inputType,
+    animals,
+    running,
+    active,
+    size
+  }
+
   return (
     <Block bgColor='background' relative w='calc(100% - 60px)' tall left={left}>
       <Block
@@ -39,8 +47,9 @@ function render ({props}) {
           tabs={['sandbox']}
           tab='sandbox'
           options
+          {...outputProps}
           {...game}
-          {...props} />
+        />
         <Controls
           selectedLine={selectedLine}
           activeLine={activeLine}
