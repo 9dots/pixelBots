@@ -1,31 +1,26 @@
 /** @jsx element */
 
-import {Button, Icon, Input} from 'vdux-containers'
-import CodeSelectDropdown from '../components/CodeSelectDropdown'
-import Number from '../components/Numbered'
 import {setUrl} from 'redux-effects-location'
 import createAction from '@f/create-action'
 import {Block, Card, Text} from 'vdux-ui'
+import {Input} from 'vdux-containers'
+import validator from '../schema/level'
 import Level from '../components/Level'
 import {firebaseSet} from 'vdux-fire'
+import Numbered from '../components/Numbered'
 import element from 'vdux/element'
+import OptionsForm from './OptionsForm'
 
 const setAnimalPosition = createAction('SET_ANIMAL_POSITION')
 const setInputType = createAction('SET_INPUT_TYPE')
 const setSquares = createAction('SET_SQUARES')
 
-const inputProps = {
-  h: '42px',
-  textIndent: '8px',
-  borderRadius: '2px',
-  border: '2px solid #ccc'
-}
-
 function initialState () {
   return {
-    size: 0,
+    size: 1,
     inputType: 'choose',
-    animal: {}
+    animal: {},
+    errors: []
   }
 }
 
@@ -38,65 +33,44 @@ function render ({props, state, local}) {
   }
 
   const game = newGame.value
-
-  const dropdownBtn = (
-    <Button h='42px' mt='10px' fs='16px' wide>
-      <Text style={{flex: 1}}>{inputType}</Text>
-      <Icon float='right' mt='3px' name='keyboard_arrow_down'/>
-    </Button>
-  )
+  const numberSize = isNaN(size) ? size : Number(size)
+  const valid = validator.levelSize(numberSize)
 
   return (
     <Block minHeight='500px' align='center center' tall wide>
       <Card relative p='24px' mr='10px' h='500px'>
-        <Block align='flex-start'>
-          <Number complete={inputType && inputType !== 'choose'}>1</Number>
-          <Block style={{flex: 1}}>
-            <Text lineHeight='40px' fontWeight='800'>input type</Text>
-            <CodeSelectDropdown
-              size={size}
-              btn={dropdownBtn}
-              setInputType={local((type) => setInputType(type))}/>
+        <OptionsForm
+          game={game}
+          valid={valid}
+          {...state}
+          handleSave={() => handleSave({size, inputType, animal})}
+          setInputType={local((type) => setInputType(type))}
+          setSquares={local((value) => setSquares(value))}
+          setAnimalPosition={local(() => setAnimalPosition({
+            type: game.animals[0].type,
+            coords: undefined
+          }))}>
+          <Block align='flex-start center' my='20px'>
+            <Numbered complete={animal.type && animal.current.location}>3</Numbered>
+            <Block style={{flex: 1}}>
+              <Text fontWeight='800'>Click the grid to set the starting position</Text>
+            </Block>
+            <Input hide name='animal' value={JSON.stringify(animal)}/>
           </Block>
-        </Block>
-        <Block align='flex-start' mt='20px'>
-          <Number complete={size > 0 && size < 40 && typeof (parseInt(size)) === 'number'}>2</Number>
-          <Block style={{flex: 1}}>
-            <Text lineHeight='40px' fontWeight='800'>grid size</Text>
-            <Input
-              h='42px'
-              inputProps={inputProps}
-              value={size}
-              onKeyUp={local((e) => setSquares(e.target.value))}/>
-          </Block>
-        </Block>
-        <Block align='flex-start center' my='20px'>
-          <Number complete={animal.type && animal.current.location}>3</Number>
-          <Block style={{flex: 1}}>
-            <Text fontWeight='800'>Click the grid to set the starting position</Text>
-          </Block>
-        </Block>
-        <hr/>
-        <Button
-          absolute
-          bottom='24px'
-          h='42px'
-          fs='16px'
-          w='360px'
-          onClick={() => handleSave({size, inputType, animal})}>
-          Save
-        </Button>
+        </OptionsForm>
       </Card>
       <Level
         editMode
         painted={[]}
-        clickHandler={local((coords) => setAnimalPosition({type: game.animals[0].type, coords}))}
+        clickHandler={local((coords) => (
+          setAnimalPosition({type: game.animals[0].type, coords}))
+        )}
         levelSize='500px'
-        numRows={size}
+        numRows={valid.valid ? size : 1}
         animals={animal.type ? [animal] : []}
         w='auto'
         h='auto'
-        numColumns={size}/>
+        numColumns={valid.valid ? size : 1}/>
     </Block>
   )
 
@@ -117,14 +91,10 @@ function render ({props, state, local}) {
 function reducer (state, action) {
   switch (action.type) {
     case setSquares.type:
-      const num = parseInt(action.payload)
-      if (num > 0 && num < 40) {
-        return {
-          ...state,
-          size: action.payload
-        }
+      return {
+        ...state,
+        size: action.payload
       }
-      break
     case setInputType.type:
       return {
         ...state,
@@ -134,23 +104,27 @@ function reducer (state, action) {
       const {coords, type} = action.payload
       return {
         ...state,
-        animal: {
-          type,
-          sequence: [],
-          initial: {
-            location: coords,
-            dir: 0,
-            rot: 0
-          },
-          current: {
-            location: coords,
-            dir: 0,
-            rot: 0
-          }
-        }
+        animal: coords ? setAnimal(coords, type) : {}
       }
   }
   return state
+}
+
+function setAnimal (coords, type) {
+  return {
+    type,
+    sequence: [],
+    initial: {
+      location: coords,
+      dir: 0,
+      rot: 0
+    },
+    current: {
+      location: coords,
+      dir: 0,
+      rot: 0
+    }
+  }
 }
 
 export default {

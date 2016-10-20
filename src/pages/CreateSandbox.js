@@ -1,80 +1,52 @@
 /** @jsx element */
 
-import createAction from '@f/create-action'
-import SelectOptions from './SelectOptions'
 import SelectAnimal from './SelectAnimal'
 import {initializeGame} from '../actions'
 import element from 'vdux/element'
 import {Block} from 'vdux-ui'
-import enroute from 'enroute'
-
-const setAnimal = createAction('SET_ANIMAL')
-const setSection = createAction('SET_SECTION')
-
-function initialState () {
-  return {
-    section: 'animal',
-    game: {}
-  }
-}
 
 function render ({props, state, local}) {
-  const {game, section} = state
-
-  const router = enroute({
-    'animal': (params, props) => <SelectAnimal
-      handleSave={[local(selectAnimal), local(() => setSection('options'))]}
-      title=''
-      {...props} />,
-    'options': (params, props) => <SelectOptions
-      handleSave={saveOptions}
-      {...props}/>
-  })
-
   return (
     <Block absolute top={props.top} h='calc(100% - 60px)' wide>
-      {router(section, {...props, newGame: {value: game}})}
+      <SelectAnimal
+        handleSave={(type) => initializeGame(completeGame(type))}
+        title=''
+        {...props} />
     </Block>
   )
 
-  function selectAnimal (animal) {
-    return setAnimal(animal)
-  }
-
-  function * saveOptions (options) {
-    const {size, inputType, animal} = options
-    const completeGame = {
-      levelSize: [size, size],
-      inputType,
-      animals: [animal]
-    }
-    yield initializeGame(completeGame)
-  }
+  // function * saveOptions (options) {
+  //   const {size, inputType, animal} = options
+  //   const completeGame = {
+  //     levelSize: [size, size],
+  //     inputType,
+  //     animals: [animal]
+  //   }
+  //   yield initializeGame(completeGame)
+  // }
 }
 
-function reducer (state, action) {
-  switch (action.type) {
-    case setAnimal.type:
-      return {
-        ...state,
-        game: {
-          ...state.game,
-          animals: [{
-            type: action.payload
-          }]
-        }
+function completeGame (type) {
+  return {
+    levelSize: [5, 5],
+    inputType: 'icons',
+    animals: [{
+      type,
+      sequence: [],
+      current: {
+        location: [0, 0],
+        dir: 0,
+        rot: 0
+      },
+      initial: {
+        location: [0, 0],
+        dir: 0,
+        rot: 0
       }
-    case setSection.type:
-      return {
-        ...state,
-        section: action.payload
-      }
+    }]
   }
-  return state
 }
 
 export default {
-  initialState,
-  reducer,
   render
 }

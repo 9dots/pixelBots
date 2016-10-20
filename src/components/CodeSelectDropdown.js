@@ -1,15 +1,16 @@
 /** @jsx element */
 
 import element from 'vdux/element'
-import {Dropdown, MenuItem} from 'vdux-containers'
+import {Dropdown, MenuItem, Input} from 'vdux-containers'
 
 function render ({props}) {
-  const {setInputType, size, btn} = props
+  const {setInputType, value, btn, name} = props
   return (
     <Dropdown
       btn={btn}
       zIndex='999'
-      value={size}>
+      value={value}>
+      <Input hide name={name} value={value}/>
       <MenuItem
         onClick={() => setInputType('icons')}>
         icons

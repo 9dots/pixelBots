@@ -34,7 +34,13 @@ function render ({props}) {
         minHeight='100%'
         h='100%'
         wide>
-        <Output size={size} tabs={['sandbox']} tab='sandbox' {...game} {...props}/>
+        <Output
+          size={size}
+          tabs={['sandbox']}
+          tab='sandbox'
+          options
+          {...game}
+          {...props} />
         <Controls
           selectedLine={selectedLine}
           activeLine={activeLine}

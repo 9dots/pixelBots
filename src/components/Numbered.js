@@ -3,6 +3,31 @@
 import element from 'vdux/element'
 import {Block} from 'vdux-ui'
 
+const colors = {
+  none: {
+    bgColor: 'white',
+    color: '#333'
+  },
+  complete: {
+    bgColor: 'green',
+    color: 'white'
+  },
+  error: {
+    bgColor: 'red',
+    color: 'white'
+  }
+}
+
+function getCurrent (c, e) {
+  if (e) {
+    return colors['error']
+  } else if (c) {
+    return colors['complete']
+  } else {
+    return colors['none']
+  }
+}
+
 function render ({props, children}) {
   const {
     size = '40px',
@@ -10,6 +35,8 @@ function render ({props, children}) {
     error,
     number
   } = props
+
+  const current = getCurrent(complete, error)
 
   return (
     <Block
@@ -19,9 +46,9 @@ function render ({props, children}) {
       mr='10px'
       circle
       lineHeight={size}
-      bgColor={complete ? 'green' : 'white'}
-      color={complete ? 'white' : '#333'}
-      border={complete ? 'none' : '2px solid #333'}
+      bgColor={current.bgColor}
+      color={current.color}
+      border={complete || error ? 'none' : '2px solid #333'}
       transition='all .3s ease-in-out'
       fontWeight='800'
       align='center center'

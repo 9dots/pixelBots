@@ -24,7 +24,12 @@ var app = require('./app').default
 const initialState = {
   url: '/',
   active: 0,
-  selectedLine: 0
+  selectedLine: 0,
+  game: {
+    inputType: 'icons',
+    levelSize: [5, 5],
+    animals: []
+  }
 }
 
 const firebaseConfig = {

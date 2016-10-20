@@ -1,0 +1,89 @@
+/** @jsx element */
+
+import CodeSelectDropdown from './CodeSelectDropdown'
+import {Button, Input} from 'vdux-containers'
+import {Block, Card, Icon, Text} from 'vdux-ui'
+import {swapMode, updateSize} from '../actions'
+import createAction from '@f/create-action'
+import element from 'vdux/element'
+
+const min = 2
+const max = 40
+const setError = createAction('SET_ERROR')
+
+function initialState () {
+  return {
+    message: ''
+  }
+}
+
+function render ({props, local, state}) {
+  const {inputType, levelSize} = props
+  const {message} = state
+
+  const dropdownBtn = (
+    <Button w='120px' h='42px' fs='16px'>
+      <Text style={{flex: 1}}>{inputType}</Text>
+      <Icon float='right' mt='3px' name='keyboard_arrow_down'/>
+    </Button>
+  )
+
+  return (
+    <Card wide p='22px'>
+      <Text fs='m' fontWeight='800'>Control Panel</Text>
+      <hr/>
+      <Block mt='20px' align='start center'>
+        <Text w='120px' lineHeight='40px' fontWeight='800' mr='10px'>input type:</Text>
+        <CodeSelectDropdown
+          name='inputType'
+          value={inputType}
+          btn={dropdownBtn}
+          setInputType={((type) => swapMode(type))}/>
+      </Block>
+      <Block mt='20px' align='start center'>
+        <Text w='120px' lineHeight='40px' fontWeight='800' mr='10px'>level size:</Text>
+        <Input
+          inputProps={{h: '42px', textIndent: '8px'}}
+          w='120px'
+          h='42px'
+          invalid={message}
+          message={message}
+          errorPlacement='right'
+          onKeyUp={[local(checkError), sizeUpdate]}
+          value={levelSize}/>
+      </Block>
+    </Card>
+  )
+
+  function sizeUpdate (e) {
+    const val = e.target.value
+    if (within(val)) return updateSize(val)
+  }
+
+  function checkError (e) {
+    return within(e.target.value)
+      ? setError('')
+      : setError('Please choose a number between 2 and 40')
+  }
+}
+
+function within (val) {
+  return val >= min && val <= max
+}
+
+function reducer (state, action) {
+  switch (action.type) {
+    case setError.type:
+      return {
+        ...state,
+        message: action.payload
+      }
+  }
+  return state
+}
+
+export default {
+  reducer,
+  initialState,
+  render
+}

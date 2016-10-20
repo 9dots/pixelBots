@@ -37,7 +37,7 @@ function render ({props, state, local}) {
     left
   } = props
 
-  if (!game) {
+  if (!game.animals || game.animals.length === 0) {
     return <div>loading...</div>
   }
 
@@ -45,6 +45,8 @@ function render ({props, state, local}) {
     inputType,
     animals
   } = game
+
+  console.log(animals)
 
   const {tab} = state
   const size = '400px'

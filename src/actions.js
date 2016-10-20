@@ -37,10 +37,12 @@ const addCode = createAction('ADD_CODE', (id, fn) => ({id, fn}))
 const setActive = createAction('SET_ANIMAL_ACTIVE', (id) => id)
 const initializeGame = createAction('INITIALIZE_GAME')
 const endRunMessage = createAction('END_RUN_MESSAGE')
+const setAnimalPos = createAction('SET_ANIMAL_POS')
 const clearMessage = createAction('CLEAR_MESSAGE')
 const setGameData = createAction('SET_GAME_DATA')
 const handleError = createAction('HANDLE_ERROR')
 const gameLoaded = createAction('GAME_LOADED')
+const updateSize = createAction('UPDATE_SIZE')
 const aceUpdate = createAction('ACE_UPDATE')
 const codeAdded = createAction('CODE_ADDED')
 const swapMode = createAction('SWAP_MODE')
@@ -66,6 +68,7 @@ export {
   endRunMessage,
   initializeApp,
   clearMessage,
+  setAnimalPos,
   setGameData,
   animalPaint,
   handleError,
@@ -74,6 +77,7 @@ export {
   animalMove,
   updateLine,
   gameLoaded,
+  updateSize,
   selectLine,
   moveAnimal,
   codeAdded,

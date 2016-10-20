@@ -9,7 +9,8 @@ require('brace/mode/javascript')
 require('brace/theme/tomorrow_night')
 
 function render ({props}) {
-  const {active, activeLine, running} = props
+  const {active, activeLine, running, animals} = props
+  const sequence = animals[active].sequence || []
 
   return (
     <Box relative flex tall fontFamily='code'>
@@ -22,6 +23,7 @@ function render ({props}) {
         highlightActiveLine={false}
         activeLine={running ? activeLine : -1}
         onChange={(code) => aceUpdate({id: active, code})}
+        value={sequence.length > 0 ? sequence : ''}
         theme='tomorrow_night' />
     </Box>
   )

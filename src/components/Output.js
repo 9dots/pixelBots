@@ -1,22 +1,26 @@
 /** @jsx element */
 
+import ControlPanel from './ControlPanel'
 import element from 'vdux/element'
 import {Block} from 'vdux-ui'
+import {setAnimalPos} from '../actions'
 import Level from './Level'
 import Tab from './Tab'
 
 function render ({props, local, state}) {
   const {
-    animals,
-    active,
-    painted,
-    size,
-    tab,
-    levelSize,
-    running,
-    targetPainted,
     handleTabClick,
-    tabs
+    targetPainted,
+    inputType,
+    levelSize,
+    animals,
+    running,
+    options,
+    painted,
+    active,
+    size,
+    tabs,
+    tab
   } = props
 
   return (
@@ -71,10 +75,14 @@ function render ({props, local, state}) {
             active={active}
             running={running}
             painted={painted}
+            clickHandler={(coords) => !running && setAnimalPos(coords)}
             levelSize={size}
             numRows={levelSize[0]}
             numColumns={levelSize[1]}/>
         </Block>
+      </Block>}
+      {options && <Block p='10px'>
+        <ControlPanel levelSize={levelSize[0]} inputType={inputType}/>
       </Block>}
     </Block>
   )

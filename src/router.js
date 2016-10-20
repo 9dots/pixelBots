@@ -1,15 +1,15 @@
 /** @jsx element */
 
-import {setUrl} from 'redux-effects-location'
-import Header from './components/Header'
 import {initializeApp, createNew, refresh} from './actions'
-import Create from './pages/Create'
 import CreateSandbox from './pages/CreateSandbox'
+import {setUrl} from 'redux-effects-location'
+import {Block, Icon, Text} from 'vdux-ui'
+import Header from './components/Header'
+import Create from './pages/Create'
 import HomePage from './pages/Home'
 import element from 'vdux/element'
-import enroute from 'enroute'
-import {Block, Icon, Text} from 'vdux-ui'
 import Game from './pages/Game'
+import enroute from 'enroute'
 
 const router = enroute({
   '/': homePage,
@@ -22,7 +22,7 @@ const router = enroute({
 })
 
 function homePage (params, props) {
-  if (props.game) {
+  if (props.game.animals.length > 0) {
     return <HomePage left='60px' {...props} />
   } else {
     return <CreateSandbox left='60px' {...props}/>
@@ -62,7 +62,7 @@ function render ({local, props}) {
             align='center center'>
             <Icon transition={'all .3s ease-in-out'} fs='30px' name='add'/>
           </Block>
-          <Text w='150px' absolute color='white' fs='m' top='10px' left='63px'>Create</Text>
+          <Text w='150px' absolute color='white' fs='m' top='10px' left='63px'>Challenge</Text>
         </Block>
       </Header>
       {

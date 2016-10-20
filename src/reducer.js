@@ -7,15 +7,18 @@ import {
   initializeGame,
   setActiveLine,
   endRunMessage,
+  clearMessage,
+  setAnimalPos,
   animalPaint,
   handleError,
   removeLine,
   animalMove,
   updateLine,
+  updateSize,
   selectLine,
-  clearMessage,
   setActive,
   aceUpdate,
+  swapMode,
   newRoute,
   startRun,
   stopRun,
@@ -132,7 +135,10 @@ function reducer (state, action) {
         running: false,
         hasRun: false,
         activeLine: -1,
-        game: null
+        game: {
+          ...state.game,
+          animals: []
+        }
       }
     case reset.type:
       return {
@@ -189,12 +195,46 @@ function reducer (state, action) {
         ...state,
         running: false
       }
-    // case swapMode.type:
-    //   return {
-    //     ...state,
-    //     inputType: state.inputType === 'code' ? 'icons' : 'code',
-    //     animals: map((animal) => ({...animal, sequence: []}), state.animals)
-    //   }
+    case swapMode.type:
+      return {
+        ...state,
+        game: {
+          ...state.game,
+          inputType: action.payload,
+          painted: state.game.initialPainted,
+          animals: map((animal) => ({
+            ...animal,
+            current: animal.initial
+          }), state.game.animals)
+        }
+      }
+    case updateSize.type:
+      return {
+        ...state,
+        game: setProp('levelSize', state.game, [action.payload, action.payload])
+      }
+    case setAnimalPos.type:
+      return {
+        ...state,
+        game: {
+          ...state.game,
+          animals: state.game.animals.map((animal) => {
+            return {
+              ...animal,
+              current: {
+                dir: 0,
+                rot: 0,
+                location: action.payload
+              },
+              initial: {
+                dir: 0,
+                rot: 0,
+                location: action.payload
+              }
+            }
+          })
+        }
+      }
   }
   return state
 }

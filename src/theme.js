@@ -9,6 +9,7 @@ const pal = palette.reduce((obj, {name, value}) => {
 
 const baseColors = {
   ...pal,
+  red: '#f52',
   black: '#111',
   white: '#fff',
   grey: '#ddd',
