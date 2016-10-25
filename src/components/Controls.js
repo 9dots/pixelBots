@@ -12,13 +12,16 @@ import Tab from './Tab'
 
 const changeTab = createAction('CHANGE_TAB: controls')
 
-function initialState () {
+function initialState ({local}) {
   return {
-    tab: 'code'
+    tab: 'code',
+    actions: {
+      tabChanged: (name) => local(() => changeTab(name))
+    }
   }
 }
 
-function render ({props, state, local}) {
+function render ({props, state}) {
   const {
     active,
     animals,
@@ -29,7 +32,8 @@ function render ({props, state, local}) {
     onRun
   } = props
   const sequence = animals[active].sequence || []
-  const {tab} = state
+  const {tab, actions} = state
+  const {tabChanged} = actions
 
   return (
     <Block
@@ -53,14 +57,14 @@ function render ({props, state, local}) {
         <Box flex align='flex-end center'>
           <Tab
             bgColor='secondary'
-            onClick={local(() => changeTab('documentation'))}
+            onClick={tabChanged('documentation')}
             color='white'
             name='documentation'
             active={tab === 'documentation'}
             fs='s'/>
           <Tab
             bgColor='secondary'
-            onClick={local(() => changeTab('code'))}
+            onClick={tabChanged('code')}
             color='white'
             active={tab === 'code'}
             name='code'
@@ -72,7 +76,7 @@ function render ({props, state, local}) {
           onRun={onRun}
           hasRun={hasRun}
           running={running}
-          changeTab={local(() => changeTab('documentation'))}
+          changeTab={tabChanged('documentation')}
           active={active}
           inputType={inputType}
           cursor={selectedLine || sequence.length - 1} type={animals[active].type}/>

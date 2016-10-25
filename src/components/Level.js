@@ -20,10 +20,27 @@ function render ({props}) {
     w = '100%',
     h = '100%'
   } = props
-  let rows = []
 
   const size = parseFloat(levelSize) / numRows + 'px'
 
+  return (
+    <Flex w={w} h={h} relative column>
+      {getRows({...props, size})}
+      {animals.map((animal, i) => (
+        <Animal
+          running={running}
+          editMode={editMode}
+          cellSize={size}
+          active={active}
+          animal={animal}
+          id={i}/>
+      ))}
+    </Flex>
+  )
+}
+
+function getRows ({editMode, clickHandler, size, active, numColumns, numRows, painted}) {
+  let rows = []
   for (var i = 0; i < numRows; i++) {
     rows.push(
       <Row
@@ -32,47 +49,23 @@ function render ({props}) {
         size={size}
         active={active}
         row={i}
-        painted={getPainted(i)}
+        painted={getPainted(i, painted)}
         num={numColumns} />
     )
   }
-
-  const animalArr = reduce(
-    addToArray,
-    [],
-    animals
-  )
-
-  function addToArray (arr, animal, id) {
-    arr.push(
-      <Animal
-        running={running}
-        editMode={editMode}
-        cellSize={size}
-        active={active}
-        animal={animals[id]}
-        id={id}/>
-    )
-    return arr
-  }
-
-  return (
-    <Flex w={w} h={h} relative column>
-      {rows}
-      {animalArr}
-    </Flex>
-  )
-
-  function getPainted (idx) {
-    return reduce((cur, next, key) => {
-      const loc = key.split(',').map((num) => Number(num))
-      if (idx === loc[0]) {
-        cur[loc[1]] = next
-      }
-      return cur
-    }, {}, painted)
-  }
+  return rows
 }
+
+function getPainted (idx, painted) {
+  return reduce((cur, next, key) => {
+    const loc = key.split(',').map((num) => Number(num))
+    if (idx === loc[0]) {
+      cur[loc[1]] = next
+    }
+    return cur
+  }, {}, painted)
+}
+
 
 export default {
   render

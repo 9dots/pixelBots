@@ -8,18 +8,22 @@ import createAction from '@f/create-action'
 import element from 'vdux/element'
 
 const min = 2
-const max = 40
+const max = 20
 const setError = createAction('SET_ERROR')
 
-function initialState () {
+function initialState ({local}) {
   return {
-    message: ''
+    message: '',
+    actions: {
+      checkE: local(checkError)
+    }
   }
 }
 
-function render ({props, local, state}) {
+function render ({props, state}) {
   const {inputType, levelSize} = props
-  const {message} = state
+  const {message, actions} = state
+  const {checkE} = actions
 
   const dropdownBtn = (
     <Button w='120px' h='42px' fs='16px'>
@@ -49,7 +53,7 @@ function render ({props, local, state}) {
           invalid={message}
           message={message}
           errorPlacement='right'
-          onKeyUp={[local(checkError), sizeUpdate]}
+          onKeyUp={[checkE, sizeUpdate]}
           value={levelSize}/>
       </Block>
     </Card>
@@ -59,12 +63,12 @@ function render ({props, local, state}) {
     const val = e.target.value
     if (within(val)) return updateSize(val)
   }
+}
 
-  function checkError (e) {
-    return within(e.target.value)
-      ? setError('')
-      : setError('Please choose a number between 2 and 40')
-  }
+function checkError (e) {
+  return within(e.target.value)
+    ? setError('')
+    : setError(`Please choose a number between ${min} and ${max}`)
 }
 
 function within (val) {

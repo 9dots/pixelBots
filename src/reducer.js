@@ -204,7 +204,8 @@ function reducer (state, action) {
           painted: state.game.initialPainted,
           animals: map((animal) => ({
             ...animal,
-            current: animal.initial
+            current: animal.initial,
+            sequence: ''
           }), state.game.animals)
         }
       }

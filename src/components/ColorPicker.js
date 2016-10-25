@@ -3,7 +3,7 @@
 import element from 'vdux/element'
 import {Block, Dropdown, Grid} from 'vdux-containers'
 
-function render ({props, local}) {
+function render ({props}) {
   const {btn, clickHandler, palette, swatchSize = '24px'} = props
 
   let close

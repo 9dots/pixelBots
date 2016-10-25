@@ -33,7 +33,8 @@ function onCreate () {
   return initializeApp()
 }
 
-function render ({local, props}) {
+function render ({props}) {
+  console.log('render router')
   return (
     <Block tall wide>
       <Header w='60px' bgColor='primary' top='0' left='0'>

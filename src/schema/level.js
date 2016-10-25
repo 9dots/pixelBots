@@ -7,7 +7,7 @@ const inputType = Schema('string')
 
 const size = Schema('number')
   .min(1)
-  .max(50)
+  .max(20)
 
 const animalType = Schema('string')
 

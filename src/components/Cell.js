@@ -14,6 +14,9 @@ function render ({props}) {
     size
   } = props
 
+
+  console.log('render cell')
+
   return (
     <Block
       border

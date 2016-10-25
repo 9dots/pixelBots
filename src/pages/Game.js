@@ -11,9 +11,12 @@ import createAction from '@f/create-action'
 
 const changeTab = createAction('CHANGE_TAB')
 
-function initialState ({props}) {
+function initialState ({props, local}) {
   return {
-    tab: 'target'
+    tab: 'target',
+    actions: {
+      tabChanged: local((name) => changeTab(name))
+    }
   }
 }
 
@@ -46,9 +49,8 @@ function render ({props, state, local}) {
     animals
   } = game
 
-  console.log(animals)
-
-  const {tab} = state
+  const {tab, actions} = state
+  const {tabChanged} = actions
   const size = '400px'
 
   return (
@@ -61,7 +63,7 @@ function render ({props, state, local}) {
         h='100%'
         wide>
         <Output
-          handleTabClick={local((name) => changeTab(name))}
+          handleTabClick={() => tabChanged(name)}
           tabs={['target', 'actual']}
           tab={tab}
           size={size}

@@ -13,16 +13,20 @@ import ColorPicker from './ColorPicker'
 const showTooltip = createAction('SHOW_TOOLTIP')
 const hideTooltip = createAction('HIDE_TOOLTIP')
 
-function initialState () {
+function initialState ({local}) {
   return {
-    show: false
+    show: false,
+    actions: {
+      showTip: local(showTooltip),
+      hideTip: local(hideTooltip)
+    }
   }
 }
-
-function render ({props, local, state}) {
+function render ({props, state}) {
   const {arg, changeHandler, argument} = props
   const {name, type, values, description} = arg
-  const {show} = state
+  const {show, actions} = state
+  const {showTip, hideTip} = actions
 
   let close
 
@@ -36,8 +40,8 @@ function render ({props, local, state}) {
         h='20px'
         color='#333'
         p='10px'
-        onFocus={local(showTooltip)}
-        onBlur={local(hideTooltip)}
+        onFocus={showTip}
+        onBlur={hideTip}
         inputProps={{textAlign: 'center', w: '60px'}}
         value={argument}
         onClick={(e) => !propogate && e.stopPropagation()}

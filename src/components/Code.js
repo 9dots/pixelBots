@@ -11,7 +11,7 @@ import Cursor from './Cursor'
 let prevLength = 0
 let lastSelected = 0
 
-function render ({props, local, state}) {
+function render ({props, state}) {
   const {animals, active, activeLine, selectedLine, hasRun} = props
   const lineHeight = '36px'
   const sequence = animals[active].sequence || []

@@ -49,7 +49,7 @@
     "stack-trace": "0.0.9",
     "type": "0.0.3",
     "vdux": "^2.4.9",
-    "vdux-ace": "^0.2.13",
+    "vdux-ace": "^0.2.18",
     "vdux-containers": "^1.1.19",
     "vdux-css-transition": "^1.2.1",
     "vdux-delay": "^1.0.6",

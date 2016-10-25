@@ -21,6 +21,8 @@ import theme from './theme'
 const epicMiddleware = createEpicMiddleware(rootEpic)
 var app = require('./app').default
 
+let oldState = {}
+
 const initialState = {
   url: '/',
   active: 0,
@@ -59,7 +61,7 @@ const {subscribe, render, replaceReducer} = vdux({
 
 domready(() => {
   subscribe((state) => {
-    render(app(state), {uiTheme: theme})
+    return render(app(state), {uiTheme: theme})
   })
 })
 

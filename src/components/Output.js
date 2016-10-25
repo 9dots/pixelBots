@@ -7,9 +7,9 @@ import {setAnimalPos} from '../actions'
 import Level from './Level'
 import Tab from './Tab'
 
-function render ({props, local, state}) {
+function render ({props}) {
   const {
-    handleTabClick,
+    handleTabClick = () => {},
     targetPainted,
     inputType,
     levelSize,
@@ -22,6 +22,8 @@ function render ({props, local, state}) {
     tabs,
     tab
   } = props
+
+  console.log('render output')
 
   return (
     <Block

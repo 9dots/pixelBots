@@ -5,7 +5,7 @@ import {initializeGame} from '../actions'
 import element from 'vdux/element'
 import {Block} from 'vdux-ui'
 
-function render ({props, state, local}) {
+function render ({props, state}) {
   return (
     <Block absolute top={props.top} h='calc(100% - 60px)' wide>
       <SelectAnimal
@@ -14,17 +14,8 @@ function render ({props, state, local}) {
         {...props} />
     </Block>
   )
-
-  // function * saveOptions (options) {
-  //   const {size, inputType, animal} = options
-  //   const completeGame = {
-  //     levelSize: [size, size],
-  //     inputType,
-  //     animals: [animal]
-  //   }
-  //   yield initializeGame(completeGame)
-  // }
 }
+
 
 function completeGame (type) {
   return {
