@@ -4,6 +4,7 @@
 
 import {createEpicMiddleware} from 'redux-observable'
 import handleError from './middleware/handleError'
+import paintSquare from './middleware/paintSquare'
 import codeRunner from './middleware/codeRunner'
 import moveAnimal from './middleware/moveAnimal'
 import location from 'redux-effects-location'
@@ -51,6 +52,7 @@ const {subscribe, render, replaceReducer} = vdux({
     location(),
     codeRunner(),
     moveAnimal(),
+    paintSquare(),
     handleError(),
     fire.middleware(firebaseConfig),
     epicMiddleware,

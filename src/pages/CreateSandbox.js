@@ -10,7 +10,7 @@ function render ({props, state}) {
     <Block absolute top={props.top} h='calc(100% - 60px)' wide>
       <SelectAnimal
         handleSave={(type) => initializeGame(completeGame(type))}
-        title=''
+        title='Sandbox'
         {...props} />
     </Block>
   )

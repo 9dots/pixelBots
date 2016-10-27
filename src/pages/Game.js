@@ -63,7 +63,7 @@ function render ({props, state, local}) {
         h='100%'
         wide>
         <Output
-          handleTabClick={() => tabChanged(name)}
+          handleTabClick={tabChanged}
           tabs={['target', 'actual']}
           tab={tab}
           size={size}

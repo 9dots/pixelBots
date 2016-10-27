@@ -9,11 +9,16 @@ import reduce from '@f/reduce'
 import {firebaseSet} from 'vdux-fire'
 
 function render ({props}) {
-  const {gameID, handleSave = setAnimal} = props
+  const {gameID, title, handleSave = setAnimal} = props
 
   return (
-    <Flex absolute align='center center' tall wide>
-      {reduce(makeCard, [], animalDescriptions)}
+    <Flex absolute column align='center center'  tall wide>
+      <Block absolute top='1em'>
+        <Text color='#666' fs='l'>{title}</Text>
+      </Block>
+      <Flex align='center center'>
+        {reduce(makeCard, [], animalDescriptions)}
+      </Flex>
     </Flex>
   )
 

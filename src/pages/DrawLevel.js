@@ -28,6 +28,13 @@ const setFillColor = createAction('SET_FILL_COLOR')
 const addPainted = createAction('ADD_PAINTED')
 const showID = createAction('SHOW_ID')
 
+const modalFooter = (
+  <Block>
+    <Button bgColor='secondary' onClick={createNew}>Make Another</Button>
+    <Button ml='m' onClick={() => setUrl('/')}>Done</Button>
+  </Block>
+)
+
 function initialState ({props}) {
   const {newGame} = props
   const {value} = newGame
@@ -60,12 +67,6 @@ function render ({props, state, local}) {
   const game = newGame.value
   const btn = (
     <Block border='2px solid #333' bgColor={color} align='center center' w='40px' h='40px' />
-  )
-  const modalFooter = (
-    <Block>
-      <Button bgColor='secondary' onClick={createNew}>Make Another</Button>
-      <Button ml='m' onClick={() => setUrl('/')}>Done</Button>
-    </Block>
   )
 
   const url = window.location.host + '/play/'
@@ -116,7 +117,7 @@ function render ({props, state, local}) {
             w='auto'
             h='auto'
             clickHandler={local((coord) => (
-              addPainted({grid: 'start', coord, color})
+              addPainted({grid: 'start', coord})
             ))}
             animals={game.animals}
             numRows={game.levelSize[0]}
@@ -132,7 +133,7 @@ function render ({props, state, local}) {
             w='auto'
             h='auto'
             clickHandler={local((coord) => (
-              addPainted({grid: 'finished', coord, color})
+              addPainted({grid: 'finished', coord})
             ))}
             numRows={game.levelSize[0]}
             numColumns={game.levelSize[1]}/>
@@ -182,13 +183,13 @@ function reducer (state, action) {
         color: action.payload
       }
     case addPainted.type:
-      const {grid, coord, color} = action.payload
+      const {grid, coord} = action.payload
       return {
         ...state,
         painted: setProp(
             grid,
             state.painted,
-            {...state.painted[grid], [coord]: color}
+            {...state.painted[grid], [coord]: state.color}
           )
       }
     case showID.type:

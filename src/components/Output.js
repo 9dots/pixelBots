@@ -9,14 +9,6 @@ import Tab from './Tab'
 import deepEqual from '@f/deep-equal'
 import omit from '@f/omit'
 
-function shouldUpdate (prev, next) {
-  const prevTabClick = prev.props.handleTabClick || function () {}
-  const nextTabClick = next.props.handleTabClick || function () {}
-  return !deepEqual(omit('handleTabClick', prev.props), omit('handleTabClick',next.props))
-    || !deepEqual(prev.children, next.children)
-    || prevTabClick.toString() !== nextTabClick.toString()
-}
-
 function render ({props}) {
   const {
     handleTabClick = () => {},
@@ -32,8 +24,6 @@ function render ({props}) {
     tabs,
     tab
   } = props
-
-  console.log('render output')
 
   return (
     <Block
@@ -51,7 +41,7 @@ function render ({props}) {
               color='white'
               fs='s'
               active={tab === tabName}
-              handleClick={(name) => handleTabClick(name)}/>
+              handleClick={handleTabClick}/>
           ))
         }
       </Block>
@@ -108,6 +98,5 @@ function convertToStar (animal) {
 }
 
 export default {
-  render,
-  shouldUpdate
+  render
 }

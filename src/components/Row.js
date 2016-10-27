@@ -7,16 +7,12 @@ import deepEqual from '@f/deep-equal'
 import omit from '@f/omit'
 
 function shouldUpdate (prev, next) {
-  console.log(!deepEqual(omit('clickHandler', prev.props), omit('clickHandler', next.props))
-    || !deepEqual(prev.children, next.children)
-    || prev.props.clickHandler.toString() !== next.props.clickHandler.toString())
   return !deepEqual(omit('clickHandler', prev.props), omit('clickHandler', next.props))
     || !deepEqual(prev.children, next.children)
     || prev.props.clickHandler.toString() !== next.props.clickHandler.toString()
 }
 
 function render ({props}) {
-  console.log('render row')
   return (
     <Flex alignItems='center center'>
       {getCells(props)}

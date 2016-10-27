@@ -15,7 +15,7 @@ function shouldUpdate (prev, next) {
 function render ({props}) {
   const {
     color = 'white',
-    clickHandler = () => {},
+    clickHandler,
     coordinates,
     showColor,
     editMode,

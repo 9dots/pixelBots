@@ -15,11 +15,12 @@ const setAnimalPosition = createAction('SET_ANIMAL_POSITION')
 const setInputType = createAction('SET_INPUT_TYPE')
 const setSquares = createAction('SET_SQUARES')
 
-function initialState () {
+function initialState ({props}) {
+  const {type} = props.newGame.value.animals[0]
   return {
-    size: 1,
-    inputType: 'choose',
-    animal: {},
+    size: 5,
+    inputType: 'icons',
+    animal: setAnimal([4,0], type),
     errors: []
   }
 }

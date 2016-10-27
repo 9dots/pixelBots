@@ -30,6 +30,7 @@ const moveAnimal = createAction(
   (opts) => opts,
   (opts, lineNum) => ({lineNum})
 )
+const paintSquare = createAction('PAINT_SQUARE', (opts) => opts, (opts, lineNum) => ({lineNum}))
 const selectLine = createAction('SELECT_LINE', (id, idx) => ({id, idx}))
 const removeLine = createAction('REMOVE_LINE', (id, idx) => ({id, idx}))
 const setActiveLine = createAction('SET_ACTIVE_LINE', (idx) => idx)
@@ -71,6 +72,7 @@ export {
   setAnimalPos,
   setGameData,
   animalPaint,
+  paintSquare,
   handleError,
   removeLine,
   throwError,

@@ -1,5 +1,5 @@
 import {
-  animalPaint,
+  paintSquare,
   moveAnimal
 } from '../../actions'
 
@@ -13,7 +13,7 @@ function wrap (id, getState = () => {}) {
   const right = (line) => move(1, line)
   const down = (line) => move(2, line)
   const left = (line) => move(3, line)
-  const paint = (line) => animalPaint(id, 'black', line)
+  const paint = (line) => paintSquare({id, getPaintColor}, line)
 
   function move (dir, lineNum) {
     return moveAnimal({id, getLocation: getNewLocation(dir)}, lineNum)
@@ -26,6 +26,12 @@ function wrap (id, getState = () => {}) {
     left,
     paint
   }
+}
+
+function getPaintColor (state, id) {
+  const painted = state.game.painted || {}
+  const location = state.game.animals[id].current.location
+  return painted[location] !== 'black' ? 'black' : 'white'
 }
 
 function getNewLocation (dir) {

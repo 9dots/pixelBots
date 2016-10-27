@@ -9,7 +9,7 @@ import enroute from 'enroute'
 import fire from 'vdux-fire'
 
 const router = enroute({
-  'animal': (params, props) => <SelectAnimal {...props} />,
+  'animal': (params, props) => <SelectAnimal title='Challenge' {...props} />,
   'options': (params, props) => <SelectOptions {...props}/>,
   'level': (params, props) => <DrawLevel {...props} />
 })

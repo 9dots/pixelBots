@@ -39,7 +39,7 @@ function render ({props}) {
   )
 }
 
-function getRows ({editMode, clickHandler, size, active, numColumns, numRows, painted}) {
+function getRows ({editMode, clickHandler = () => {}, size, active, numColumns, numRows, painted}) {
   let rows = []
   for (var i = 0; i < numRows; i++) {
     rows.push(
