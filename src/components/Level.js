@@ -15,7 +15,7 @@ function render ({props}) {
     active,
     running,
     levelSize,
-    clickHandler = () => {},
+    clickHandler,
     editMode,
     w = '100%',
     h = '100%'
@@ -47,7 +47,6 @@ function getRows ({editMode, clickHandler, size, active, numColumns, numRows, pa
         editMode={editMode}
         clickHandler={clickHandler}
         size={size}
-        active={active}
         row={i}
         painted={getPainted(i, painted)}
         num={numColumns} />

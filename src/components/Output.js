@@ -6,6 +6,16 @@ import {Block} from 'vdux-ui'
 import {setAnimalPos} from '../actions'
 import Level from './Level'
 import Tab from './Tab'
+import deepEqual from '@f/deep-equal'
+import omit from '@f/omit'
+
+function shouldUpdate (prev, next) {
+  const prevTabClick = prev.props.handleTabClick || function () {}
+  const nextTabClick = next.props.handleTabClick || function () {}
+  return !deepEqual(omit('handleTabClick', prev.props), omit('handleTabClick',next.props))
+    || !deepEqual(prev.children, next.children)
+    || prevTabClick.toString() !== nextTabClick.toString()
+}
 
 function render ({props}) {
   const {
@@ -77,7 +87,7 @@ function render ({props}) {
             active={active}
             running={running}
             painted={painted}
-            clickHandler={(coords) => !running && setAnimalPos(coords)}
+            clickHandler={!running ? (coords) => setAnimalPos(coords) : () => {}}
             levelSize={size}
             numRows={levelSize[0]}
             numColumns={levelSize[1]}/>
@@ -98,5 +108,6 @@ function convertToStar (animal) {
 }
 
 export default {
-  render
+  render,
+  shouldUpdate
 }

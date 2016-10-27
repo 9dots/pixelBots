@@ -74,7 +74,7 @@
     "@f/is-array" "^1.1.1"
     "@f/slice" "^1.1.2"
 
-"@f/combine-reducers@^1.2.1":
+"@f/combine-reducers@^1.2.0", "@f/combine-reducers@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@f/combine-reducers/-/combine-reducers-1.2.1.tgz#b85cadaefb507b0d77b73e0572b7ff50d551aae6"
   dependencies:
@@ -506,7 +506,14 @@
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@f/offset-parent/-/offset-parent-1.0.1.tgz#fbc109fe95d7f25ce5ec674159526747d553071a"
 
-"@f/omit@^2.2.3":
+"@f/omit-prop@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@f/omit-prop/-/omit-prop-1.1.2.tgz#6636d54076836ced466de995017e24cb0f293a76"
+  dependencies:
+    "@f/omit" "^2.0.0"
+    "@f/set-prop" "^1.0.0"
+
+"@f/omit@^2.0.0", "@f/omit@^2.2.3":
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@f/omit/-/omit-2.2.3.tgz#a3dc9bc4bb646dc75cb9c1586e229b14e13c0c80"
   dependencies:
@@ -744,24 +751,6 @@
 "@f/zip-obj@^1.0.0":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@f/zip-obj/-/zip-obj-1.1.1.tgz#efbdfd3e890db2ad9d63c772d1622665fe065743"
-
-"@micro-js/foreach@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@micro-js/foreach/-/foreach-1.1.0.tgz#939aeebf2d04236bfbb9b3c97aea2b5006d0619f"
-
-"@micro-js/is-object@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@micro-js/is-object/-/is-object-1.0.0.tgz#009d43ee65957c8aa4bf18810b87c778a5ea6983"
-
-"@micro-js/keychord@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@micro-js/keychord/-/keychord-1.0.0.tgz#d4a199b9105763f4246d0fb9f501e03c15c71256"
-  dependencies:
-    "@micro-js/keycodes" "^1.0.0"
-
-"@micro-js/keycodes@^1.0.0":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@micro-js/keycodes/-/keycodes-1.0.1.tgz#e854897a244fcdd55be7dd9da58f084221905184"
 
 abab@^1.0.0:
   version "1.0.3"
@@ -1720,12 +1709,6 @@ brace-expansion@^1.0.0:
   dependencies:
     balanced-match "^0.4.1"
     concat-map "0.0.1"
-
-brace@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/brace/-/brace-0.7.0.tgz#90651da5bd486edbb41888dec78afdcd07375b21"
-  dependencies:
-    w3c-blob "0.0.1"
 
 brace@^0.8.0:
   version "0.8.0"
@@ -4491,6 +4474,10 @@ readline2@^1.0.1:
     is-fullwidth-code-point "^1.0.0"
     mute-stream "0.0.5"
 
+redux-effects-events@^0.2.5:
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/redux-effects-events/-/redux-effects-events-0.2.7.tgz#5519a93e28afec2f3763050708a63961001ece64"
+
 redux-effects-location@^0.2.5:
   version "0.2.5"
   resolved "https://registry.yarnpkg.com/redux-effects-location/-/redux-effects-location-0.2.5.tgz#9bdeeaa0685e11e04820ef5293e76608d124ddb0"
@@ -4504,11 +4491,18 @@ redux-effects-media@^1.0.1:
     "@f/foreach-obj" "^1.1.1"
     matchmedia-polyfill "^0.3.0"
 
-redux-effects@^0.4.3:
+redux-effects@^0.4.0, redux-effects@^0.4.3:
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/redux-effects/-/redux-effects-0.4.3.tgz#147302d90a2674e6201dd9fe92e2ee9f5f16b0c6"
   dependencies:
     is-promise "^2.1.0"
+
+redux-ephemeral@^0.1.9:
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/redux-ephemeral/-/redux-ephemeral-0.1.9.tgz#90a0ea90b6472e9bd5383e932c35a853c3433a56"
+  dependencies:
+    "@f/omit-prop" "^1.1.2"
+    "@f/set-prop" "^1.0.0"
 
 redux-ephemeral@^0.3.7:
   version "0.3.7"
@@ -5171,10 +5165,6 @@ to-fast-properties@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/to-fast-properties/-/to-fast-properties-1.0.2.tgz#f3f5c0c3ba7299a7ef99427e44633257ade43320"
 
-to-style@^1.3.3:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/to-style/-/to-style-1.3.3.tgz#63a2b70a6f4a7d4fdc2ed57a0be4e7235cb6699c"
-
 tough-cookie@^2.3.1, tough-cookie@>=0.12.0, tough-cookie@~2.3.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.3.1.tgz#99c77dfbb7d804249e8a299d4cb0fd81fef083fd"
@@ -5221,6 +5211,10 @@ type-is@~1.6.13:
   dependencies:
     media-typer "0.3.0"
     mime-types "~2.1.11"
+
+type@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/type/-/type-0.0.3.tgz#0eacb2438a9935614d9f351bd91250890ce4d533"
 
 typedarray@~0.0.5:
   version "0.0.6"
@@ -5337,12 +5331,19 @@ vary@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.0.tgz#e1e5affbbd16ae768dd2674394b9ad3022653140"
 
-vdux-ace@^0.2.13:
-  version "0.2.13"
-  resolved "https://registry.yarnpkg.com/vdux-ace/-/vdux-ace-0.2.13.tgz#aee0146e7d12d2218166e2de5ece4dd34d554b82"
+vdux-ace@^0.2.18:
+  version "0.2.18"
+  resolved "https://registry.yarnpkg.com/vdux-ace/-/vdux-ace-0.2.18.tgz#c919ab0d6494bf18cd3980e0bb0d73c35d1ee119"
   dependencies:
-    brace "^0.7.0"
-    virtex-element "^0.1.5"
+    "@f/combine-reducers" "^1.2.0"
+    "@f/create-action" "^1.1.1"
+    "@f/handle-actions" "^1.1.1"
+    brace "^0.8.0"
+    domready "^1.0.8"
+    redux-effects "^0.4.0"
+    redux-effects-events "^0.2.5"
+    redux-ephemeral "^0.1.9"
+    vdux "^2.4.9"
 
 vdux-containers@^1.1.19:
   version "1.1.24"
@@ -5549,16 +5550,6 @@ virtex-dom@^0.3.12:
     "@f/set-attribute" "^1.0.1"
     "@f/set-value" "^1.0.0"
     virtex "^0.3.6"
-
-virtex-element@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/virtex-element/-/virtex-element-0.1.5.tgz#bf05c4f741f85058d8ab2adb4eee817b464175b6"
-  dependencies:
-    "@micro-js/foreach" "^1.1.0"
-    "@micro-js/is-object" "^1.0.0"
-    "@micro-js/keychord" "^1.0.0"
-    ev-store "^7.0.0"
-    to-style "^1.3.3"
 
 virtex-element@^0.3.0, virtex-element@^0.3.6:
   version "0.3.6"

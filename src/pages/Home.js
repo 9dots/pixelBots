@@ -5,6 +5,7 @@ import Controls from '../components/Controls'
 import element from 'vdux/element'
 import {Block} from 'vdux-ui'
 import Output from '../components/Output'
+import omit from '@f/omit'
 
 function render ({props}) {
   const {
@@ -27,7 +28,7 @@ function render ({props}) {
 
   const outputProps = {
     inputType,
-    animals,
+    animals: animals.map((animal) => omit('sequence', animal)),
     running,
     active,
     size
@@ -47,8 +48,8 @@ function render ({props}) {
           tabs={['sandbox']}
           tab='sandbox'
           options
-          {...outputProps}
           {...game}
+          {...outputProps}
         />
         <Controls
           selectedLine={selectedLine}

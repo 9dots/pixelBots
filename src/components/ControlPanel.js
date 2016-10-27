@@ -8,7 +8,7 @@ import createAction from '@f/create-action'
 import element from 'vdux/element'
 
 const min = 2
-const max = 20
+const max = 50
 const setError = createAction('SET_ERROR')
 
 function initialState ({local}) {
