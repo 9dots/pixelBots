@@ -9,7 +9,7 @@ import enroute from 'enroute'
 import fire from 'vdux-fire'
 
 const router = enroute({
-  'animal': (params, props) => <SelectAnimal title='Challenge' {...props} />,
+  'animal': (params, props) => <SelectAnimal title='create a challenge' {...props} />,
   'options': (params, props) => <SelectOptions {...props}/>,
   'level': (params, props) => <DrawLevel {...props} />
 })
@@ -20,6 +20,7 @@ function render ({props}) {
   if (newGame.loading) {
     return <div>...loading</div>
   }
+
   return (
     <Block absolute top={props.top} h='calc(100% - 60px)' wide>
       {router(props.params, props)}

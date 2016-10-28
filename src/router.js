@@ -14,7 +14,9 @@ import enroute from 'enroute'
 const router = enroute({
   '/': homePage,
   '/play/:gameID': (params, props) => (
-    <Game {...props} left='60px' gameID={params.gameID}/>
+    <div id={params.gameID}>
+    <Game key={params.gameID} {...props} left='60px' gameID={params.gameID}/>
+    </div>
   ),
   '/:gameID/create/:slug': ({slug, gameID}, props) => (
     <Create left='60px' gameID={gameID} params={slug} {...props} />
@@ -22,11 +24,7 @@ const router = enroute({
 })
 
 function homePage (params, props) {
-  if (props.game.animals.length > 0) {
-    return <HomePage left='60px' {...props} />
-  } else {
-    return <CreateSandbox left='60px' {...props}/>
-  }
+  return <HomePage left='60px' {...props} />
 }
 
 function onCreate () {
@@ -60,7 +58,7 @@ function render ({props}) {
             my='10px'
             w='40px'
             align='center center'>
-            <Icon transition={'all .3s ease-in-out'} fs='30px' name='add'/>
+            <Icon transition={'all .3s ease-in-out'} fs='30px' name='note_add'/>
           </Block>
           <Text w='150px' absolute color='white' fs='m' top='10px' left='63px'>Challenge</Text>
         </Block>

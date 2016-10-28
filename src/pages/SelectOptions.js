@@ -16,11 +16,9 @@ const setInputType = createAction('SET_INPUT_TYPE')
 const setSquares = createAction('SET_SQUARES')
 
 function initialState ({props}) {
-  const {type} = props.newGame.value.animals[0]
   return {
     size: 5,
     inputType: 'icons',
-    animal: setAnimal([4,0], type),
     errors: []
   }
 }
@@ -36,6 +34,7 @@ function render ({props, state, local}) {
   const game = newGame.value
   const numberSize = isNaN(size) ? size : Number(size)
   const valid = validator.levelSize(numberSize)
+  const myAnimal = animal && animal.type ? animal : game.animals[0]
 
   return (
     <Block minHeight='500px' align='center center' tall wide>
@@ -44,19 +43,19 @@ function render ({props, state, local}) {
           game={game}
           valid={valid}
           {...state}
-          handleSave={() => handleSave({size, inputType, animal})}
+          handleSave={() => handleSave({size, inputType, myAnimal})}
           setInputType={local((type) => setInputType(type))}
           setSquares={local((value) => setSquares(value))}
           setAnimalPosition={local(() => setAnimalPosition({
-            type: game.animals[0].type,
+            type: myAnimal.type,
             coords: undefined
           }))}>
           <Block align='flex-start center' my='20px'>
-            <Numbered complete={animal.type && animal.current.location}>3</Numbered>
+            <Numbered complete={myAnimal.type && myAnimal.current.location}>3</Numbered>
             <Block style={{flex: 1}}>
               <Text fontWeight='800'>Click the grid to set the starting position</Text>
             </Block>
-            <Input hide name='animal' value={JSON.stringify(animal)}/>
+            <Input hide name='animal' value={JSON.stringify(myAnimal)}/>
           </Block>
         </OptionsForm>
       </Card>
@@ -64,11 +63,11 @@ function render ({props, state, local}) {
         editMode
         painted={[]}
         clickHandler={local((coords) => (
-          setAnimalPosition({type: game.animals[0].type, coords}))
+          setAnimalPosition({type: myAnimal.type, coords}))
         )}
         levelSize='500px'
         numRows={valid.valid ? size : 1}
-        animals={animal.type ? [animal] : []}
+        animals={myAnimal.type ? [myAnimal] : []}
         w='auto'
         h='auto'
         numColumns={valid.valid ? size : 1}/>
@@ -82,7 +81,7 @@ function render ({props, state, local}) {
       value: {
         inputType,
         levelSize: [size, size],
-        'animals/0': animal
+        'animals/0': myAnimal
       }
     })
     yield setUrl(`/${gameID}/create/level`)

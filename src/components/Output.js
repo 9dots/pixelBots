@@ -84,7 +84,7 @@ function render ({props}) {
         </Block>
       </Block>}
       {options && <Block p='10px'>
-        <ControlPanel levelSize={levelSize[0]} inputType={inputType}/>
+        <ControlPanel type={animals[active].type} levelSize={levelSize[0]} inputType={inputType}/>
       </Block>}
     </Block>
   )

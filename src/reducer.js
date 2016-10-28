@@ -2,6 +2,7 @@ import map from '@f/map'
 import splice from '@f/splice'
 import setProp from '@f/set-prop'
 import reduce from '@f/reduce'
+import {initGame} from './utils'
 
 import {
   initializeGame,
@@ -17,6 +18,7 @@ import {
   updateSize,
   selectLine,
   setActive,
+  setAnimal,
   aceUpdate,
   swapMode,
   newRoute,
@@ -135,10 +137,7 @@ function reducer (state, action) {
         running: false,
         hasRun: false,
         activeLine: -1,
-        game: {
-          ...state.game,
-          animals: []
-        }
+        game: initGame()
       }
     case reset.type:
       return {
@@ -213,6 +212,11 @@ function reducer (state, action) {
       return {
         ...state,
         game: setProp('levelSize', state.game, [action.payload, action.payload])
+      }
+    case setAnimal.type:
+      return {
+        ...state,
+        game: setProp('animals', state.game, state.game.animals.map((animal) => ({...animal, type: action.payload})))
       }
     case setAnimalPos.type:
       return {

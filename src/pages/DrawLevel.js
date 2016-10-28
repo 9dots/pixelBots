@@ -5,6 +5,7 @@ import ColorPicker from '../components/ColorPicker'
 import {setUrl} from 'redux-effects-location'
 import createAction from '@f/create-action'
 import Button from '../components/Button'
+import {Input} from 'vdux-containers'
 import Level from '../components/Level'
 import {firebaseSet} from 'vdux-fire'
 import {createNew} from '../actions'
@@ -34,6 +35,8 @@ const modalFooter = (
     <Button ml='m' onClick={() => setUrl('/')}>Done</Button>
   </Block>
 )
+
+let borderColor = '#ccc'
 
 function initialState ({props}) {
   const {newGame} = props
@@ -80,10 +83,17 @@ function render ({props, state, local}) {
     <Block p='60px' column align='center center'>
       {show && <ModalMessage
         header='Link to game'
-        body={<a href={`http://${url}${show}`} target='_blank'>{`${url}${show}`}</a>}
+        body={<Input
+          readonly
+          inputProps={{p: '12px', borderWidth: '2px', border: borderColor}}
+          id='url-input'
+          fs='18px'
+          onFocus={() => document.getElementById('url-input').children[0].select()}
+          value={`http://${url}${show}`}>{`${url}${show}`}
+        </Input>}
         footer={modalFooter}/>
       }
-      <Card p='12px' height='100px' w='180px' right='0' top='225px' fixed >
+      <Card p='12px' height='100px' w='180px' right='0' top='225px' fixed>
         <Block mb='20px' align='flex-start center'>
           <Text wide fs='m' color='black'>
             Fill color

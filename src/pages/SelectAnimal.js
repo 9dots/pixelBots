@@ -55,7 +55,18 @@ function render ({props}) {
       value: {
         animals: {
           0: {
-            type: animal
+            type: animal,
+            sequence: [],
+            initial: {
+              location: [0, 0],
+              dir: 0,
+              rot: 0
+            },
+            current: {
+              location: [0, 0],
+              dir: 0,
+              rot: 0
+            }
           }
         }
       },

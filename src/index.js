@@ -13,6 +13,7 @@ import scroll from './middleware/scroll'
 import effects from 'redux-effects'
 import domready from '@f/domready'
 import reducer from './reducer'
+import {initGame} from './utils'
 import rootEpic from './epics'
 import flow from 'redux-flo'
 import * as fire from 'vdux-fire'
@@ -28,11 +29,7 @@ const initialState = {
   url: '/',
   active: 0,
   selectedLine: 0,
-  game: {
-    inputType: 'icons',
-    levelSize: [5, 5],
-    animals: []
-  }
+  game: initGame()
 }
 
 const firebaseConfig = {

@@ -7,10 +7,10 @@ import {clearMessage} from '../actions'
 
 function render ({props}) {
   const {header, body, footer, clickHandler = []} = props
-  const onClick = [clearMessage, ...clickHandler]
+  const dismiss = clearMessage
 
   return (
-    <Modal overlayProps={{fixed: true, top: 0, left: 0}} onDismiss={onClick} onKeyup={{esc: onClick}}>
+    <Modal overlayProps={{fixed: true, top: 0, left: 0}} onDismiss={dismiss} onKeyup={{esc: dismiss}}>
       <ModalHeader p='l' fs='xl'>{header}</ModalHeader>
       <ModalBody>
         <Block>
@@ -18,7 +18,7 @@ function render ({props}) {
         </Block>
       </ModalBody>
       <ModalFooter>
-        {footer ? footer : <Button fs='m' p='8px' onClick={onClick}>Okay</Button>}
+        {footer ? footer : <Button fs='m' p='8px' onClick={dismiss}>Okay</Button>}
       </ModalFooter>
     </Modal>
   )

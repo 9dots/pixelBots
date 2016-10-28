@@ -45,6 +45,7 @@ const handleError = createAction('HANDLE_ERROR')
 const gameLoaded = createAction('GAME_LOADED')
 const updateSize = createAction('UPDATE_SIZE')
 const aceUpdate = createAction('ACE_UPDATE')
+const setAnimal = createAction('SET_ANIMAL')
 const codeAdded = createAction('CODE_ADDED')
 const swapMode = createAction('SWAP_MODE')
 const startRun = createAction('START_RUN')
@@ -84,6 +85,7 @@ export {
   moveAnimal,
   codeAdded,
   setActive,
+  setAnimal,
   createNew,
   moveError,
   aceUpdate,

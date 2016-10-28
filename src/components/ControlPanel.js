@@ -1,9 +1,10 @@
 /** @jsx element */
 
 import CodeSelectDropdown from './CodeSelectDropdown'
+import AnimalDropdown from './AnimalDropdown'
 import {Button, Input} from 'vdux-containers'
 import {Block, Card, Icon, Text} from 'vdux-ui'
-import {swapMode, updateSize} from '../actions'
+import {swapMode, updateSize, setAnimal} from '../actions'
 import createAction from '@f/create-action'
 import element from 'vdux/element'
 
@@ -21,7 +22,7 @@ function initialState ({local}) {
 }
 
 function render ({props, state}) {
-  const {inputType, levelSize} = props
+  const {inputType, levelSize, type} = props
   const {message, actions} = state
   const {checkE} = actions
 
@@ -32,10 +33,26 @@ function render ({props, state}) {
     </Button>
   )
 
+  const animalBtn = (
+    <Button w='120px' h='42px' fs='16px'>
+      <Text style={{flex: 1}}>{type}</Text>
+      <Icon float='right' mt='3px' name='keyboard_arrow_down'/>
+    </Button>
+  )
+
   return (
     <Card wide p='22px'>
       <Text fs='m' fontWeight='800'>Control Panel</Text>
       <hr/>
+      <Block mt='20px' align='start center'>
+        <Text w='120px' lineHeight='40px' fontWeight='800' mr='10px'>select animal:</Text>
+        <AnimalDropdown
+          btn={animalBtn}
+          clickHandler={(name) => setAnimal(name)}
+          value={type}
+          name='setAnimal'
+          />
+      </Block>
       <Block mt='20px' align='start center'>
         <Text w='120px' lineHeight='40px' fontWeight='800' mr='10px'>input type:</Text>
         <CodeSelectDropdown

@@ -49,10 +49,32 @@ function range (low, hi) {
   return rangeRec(low, hi, [])
 }
 
+function initGame () {
+  return {
+    inputType: 'icons',
+    levelSize: [5, 5],
+    animals: [{
+      type: 'zebra',
+      sequence: [],
+      initial: {
+        location: [4, 0],
+        dir: 0,
+        rot: 0
+      },
+      current: {
+        location: [4, 0],
+        dir: 0,
+        rot: 0
+      }
+    }]
+  }
+}
+
 export {
   nameToIcon,
   nameToDirection,
   range,
+  initGame,
   palette,
   isLocal
 }
