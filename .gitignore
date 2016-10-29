@@ -43,3 +43,7 @@ jspm_packages
 .node_repl_history
 
 .firebaserc
+
+.DS_Store
+
+src/.DS_Store
