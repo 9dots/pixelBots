@@ -28,15 +28,15 @@ function render ({props, state}) {
 
   const dropdownBtn = (
     <Button w='120px' h='42px' fs='16px'>
-      <Text style={{flex: 1}}>{inputType}</Text>
-      <Icon float='right' mt='3px' name='keyboard_arrow_down'/>
+      <Text flex>{inputType}</Text>
+      <Icon relative right='0' mt='3px' name='keyboard_arrow_down'/>
     </Button>
   )
 
   const animalBtn = (
     <Button w='120px' h='42px' fs='16px'>
-      <Text style={{flex: 1}}>{type}</Text>
-      <Icon float='right' mt='3px' name='keyboard_arrow_down'/>
+      <Text flex>{type}</Text>
+      <Icon relative right='0' mt='3px' name='keyboard_arrow_down'/>
     </Button>
   )
 

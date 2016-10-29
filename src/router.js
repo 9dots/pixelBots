@@ -14,9 +14,7 @@ import enroute from 'enroute'
 const router = enroute({
   '/': homePage,
   '/play/:gameID': (params, props) => (
-    <div id={params.gameID}>
     <Game key={params.gameID} {...props} left='60px' gameID={params.gameID}/>
-    </div>
   ),
   '/:gameID/create/:slug': ({slug, gameID}, props) => (
     <Create left='60px' gameID={gameID} params={slug} {...props} />
@@ -47,7 +45,7 @@ function render ({props}) {
             backgroundSize='contain'/>
           <Text w='150px' absolute color='white' fs='m' top='10px' left='63px'>Pixel Bots</Text>
         </Block>
-        <Block relative cursor='pointer' onClick={createNew}>
+        <Block relative cursor='pointer' hoverProps={{highlight: true}} onClick={createNew}>
           <Block
             h='40px'
             borderWidth='0'

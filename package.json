@@ -4,10 +4,12 @@
   "description": "Artbot test",
   "main": "src/index.js",
   "scripts": {
-    "dev": "firebase serve & watchify src/index.js -o public/bundle.js -d -t babelify -p browserify-hmr",
+    "config-dev": "firebase use artbot-dev; cross-env NODE_ENV=dev node config.js",
+    "config-prod": "firebase use arbot; cross-env NODE_ENV=production node config.js",
+    "dev": "yarn run config-dev; firebase serve & watchify src/index.js -o public/bundle.js -d -t babelify -p browserify-hmr",
     "minify": "cat public/bundle.js | uglifyjs -o public/bundle.js",
-    "build": "browserify src/index.js -o public/bundle.js -t babelify",
-    "deploy": "npm run build; npm run minify; firebase deploy;"
+    "build": "cross-env NODE_ENV=production browserify src/index.js -o public/bundle.js -t babelify",
+    "deploy": "yarn run config-prod; yarn run build; npm run minify; firebase deploy;"
   },
   "repository": {
     "url": "git+https://github.com/danleavitt0/artbot.git",

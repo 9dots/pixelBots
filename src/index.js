@@ -8,6 +8,7 @@ import paintSquare from './middleware/paintSquare'
 import codeRunner from './middleware/codeRunner'
 import moveAnimal from './middleware/moveAnimal'
 import location from 'redux-effects-location'
+import firebaseConfig from './firebaseConfig'
 import addCode from './middleware/addCodeMW'
 import scroll from './middleware/scroll'
 import effects from 'redux-effects'
@@ -30,14 +31,6 @@ const initialState = {
   active: 0,
   selectedLine: 0,
   game: initGame()
-}
-
-const firebaseConfig = {
-  apiKey: 'AIzaSyAj07kPi_C4eGAZBkV7ElSLEa_yg3sHoDc',
-  authDomain: 'artbot-26016.firebaseapp.com',
-  databaseURL: 'https://artbot-26016.firebaseio.com',
-  storageBucket: 'artbot-26016.appspot.com',
-  messagingSenderId: '493804710533'
 }
 
 const {subscribe, render, replaceReducer} = vdux({
