@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "config-dev": "firebase use artbot-dev; cross-env NODE_ENV=dev node config.js",
-    "config-prod": "firebase use arbot; cross-env NODE_ENV=production node config.js",
+    "config-prod": "firebase use artbot-26016; cross-env NODE_ENV=production node config.js",
     "dev": "yarn run config-dev; firebase serve & watchify src/index.js -o public/bundle.js -d -t babelify -p browserify-hmr",
     "minify": "cat public/bundle.js | uglifyjs -o public/bundle.js",
     "build": "cross-env NODE_ENV=production browserify src/index.js -o public/bundle.js -t babelify",
