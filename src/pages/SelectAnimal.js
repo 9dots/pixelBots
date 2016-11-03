@@ -51,6 +51,7 @@ function render ({props}) {
   }
 
   function * setAnimal (animal) {
+    console.log(gameID)
     try {
       yield firebaseSet({
         method: 'set',
