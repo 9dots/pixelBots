@@ -1,6 +1,7 @@
 /** @jsx element */
 
 import {initializeApp, createNew, refresh} from './actions'
+import ModalMessage from './components/ModalMessage'
 import CreateSandbox from './pages/CreateSandbox'
 import {setUrl} from 'redux-effects-location'
 import {Block, Icon, Text} from 'vdux-ui'
@@ -30,6 +31,7 @@ function onCreate () {
 }
 
 function render ({props}) {
+  const {message} = props
   return (
     <Block tall wide>
       <Header w='60px' bgColor='primary' top='0' left='0'>
@@ -63,6 +65,10 @@ function render ({props}) {
       </Header>
       {
         router(props.url, props)
+      }
+      {message && <ModalMessage
+        header={message.header}
+        body={message.body}/>
       }
     </Block>
   )

@@ -4,6 +4,7 @@ import {removeLine, updateLine, codeAdded} from '../actions'
 import animalApis from '../animalApis/index'
 import {Icon, Block} from 'vdux-containers'
 import IconArgument from './IconArgument'
+import {nameToColor} from '../utils'
 import LineNumber from './LineNumber'
 import element from 'vdux/element'
 
@@ -37,7 +38,7 @@ function render ({props}) {
         align='center center'>
         <LineNumber fs='22px' absolute textAlign='right' numLines={numLines} lineNum={lineNum + 1} />
         <Block align='center center'>
-          <Icon fs={fs} name={iconName}/>
+          <Icon fs={fs} name={iconName} color={nameToColor(name)}/>
           {
             args && args.map((arg, i) => (
               <IconArgument

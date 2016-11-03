@@ -36,7 +36,7 @@ function render ({props, state}) {
           numLines={arr.length}
           name={name}
           type={type}
-          bgColor={isActive ? '#B43C3C' : '#666'}
+          bgColor={isActive ? '#B43C3C' : '#555'}
           argument={argument}
           fs='28px'
           p='15px'

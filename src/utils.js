@@ -10,6 +10,13 @@ const icons = {
   paint: 'brush'
 }
 
+const colors = {
+  up: 'blue',
+  right: 'yellow',
+  down: 'green',
+  left: 'red'
+}
+
 const directions = {
   forward: 'N',
   back: 'S',
@@ -32,6 +39,10 @@ function nameToIcon (name) {
 
 function nameToDirection (name) {
   return directions[name]
+}
+
+function nameToColor (name) {
+  return colors[name] || 'white'
 }
 
 function isLocal (url) {
@@ -71,10 +82,11 @@ function initGame () {
 }
 
 export {
-  nameToIcon,
   nameToDirection,
-  range,
+  nameToColor,
+  nameToIcon,
   initGame,
   palette,
-  isLocal
+  isLocal,
+  range
 }

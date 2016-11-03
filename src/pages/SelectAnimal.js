@@ -1,10 +1,11 @@
 /** @jsx element */
 
 import element from 'vdux/element'
-import {Block, Flex, Text} from 'vdux-ui'
+import {Block, Flex, Grid, Text} from 'vdux-ui'
 import {Card} from 'vdux-containers'
 import {setUrl} from 'redux-effects-location'
 import animalDescriptions from '../animalApis/animalDescriptions'
+import {endRunMessage} from '../actions'
 import reduce from '@f/reduce'
 import {firebaseSet} from 'vdux-fire'
 
@@ -12,13 +13,13 @@ function render ({props}) {
   const {gameID, title, handleSave = setAnimal} = props
 
   return (
-    <Flex absolute column align='center center'  tall wide>
+    <Flex relative m='0 auto' column align='center center' minHeight='100%' w='96%'>
       <Block absolute top='1em'>
         <Text color='#666' fs='l'>{title}</Text>
       </Block>
-      <Flex align='center center'>
+      <Grid itemsPerRow='3' tall mt='3em' columnAlign='start center'>
         {reduce(makeCard, [], animalDescriptions)}
-      </Flex>
+      </Grid>
     </Flex>
   )
 
@@ -31,7 +32,7 @@ function render ({props}) {
         cursor='pointer'
         onClick={() => handleSave(key)}
         sq='300px'
-        mx='20px'
+        m='20px'
         color='white'>
         <Block p='20px' column align='center center'>
           <Block
@@ -50,29 +51,37 @@ function render ({props}) {
   }
 
   function * setAnimal (animal) {
-    yield firebaseSet({
-      method: 'set',
-      value: {
-        animals: {
-          0: {
-            type: animal,
-            sequence: [],
-            initial: {
-              location: [0, 0],
-              dir: 0,
-              rot: 0
-            },
-            current: {
-              location: [0, 0],
-              dir: 0,
-              rot: 0
-            }
-          }
+    try {
+      yield firebaseSet({
+        method: 'set',
+        value: buildAnimal(animal),
+        ref: `/games/${gameID}`
+      })
+      yield setUrl(`/${gameID}/create/options`)
+    } catch (e) {
+      yield endRunMessage({header: 'Error', body: e.message})
+    }
+  }
+}
+
+function buildAnimal (animal) {
+  return {
+    animals: {
+      0: {
+        type: animal,
+        sequence: [],
+        initial: {
+          location: [0, 0],
+          dir: 0,
+          rot: 0
+        },
+        current: {
+          location: [0, 0],
+          dir: 0,
+          rot: 0
         }
-      },
-      ref: `/games/${gameID}`
-    })
-    yield setUrl(`/${gameID}/create/options`)
+      }
+    }
   }
 }
 

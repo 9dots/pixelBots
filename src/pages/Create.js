@@ -22,7 +22,7 @@ function render ({props}) {
   }
 
   return (
-    <Block absolute top={props.top} h='calc(100% - 60px)' wide>
+    <Block absolute m='0 auto' ml='60px' top={props.top} tall w='calc(100% - 60px)'>
       {router(props.params, props)}
     </Block>
   )
