@@ -11,12 +11,17 @@ import Code from './Code'
 import Tab from './Tab'
 
 const changeTab = createAction('CHANGE_TAB: controls')
+const addLoop = createAction('ADD_LOOP: controls')
+const loopAdded = createAction('LOOP_ADDED: controls')
 
 function initialState ({local}) {
   return {
     tab: 'code',
+    waitingForLoop: false,
     actions: {
-      tabChanged: (name) => local(() => changeTab(name))
+      tabChanged: (name) => local(() => changeTab(name)),
+      startAddLoop: local(() => addLoop()),
+      finishAddLoop: local(() => loopAdded())
     }
   }
 }
@@ -32,8 +37,8 @@ function render ({props, state}) {
     onRun
   } = props
   const sequence = animals[active].sequence || []
-  const {tab, actions} = state
-  const {tabChanged} = actions
+  const {tab, actions, waitingForLoop} = state
+  const {tabChanged, startAddLoop, finishAddLoop} = actions
 
   return (
     <Block
@@ -75,13 +80,16 @@ function render ({props, state}) {
         <Buttons
           onRun={onRun}
           hasRun={hasRun}
+          startAddLoop={startAddLoop}
           running={running}
           changeTab={tabChanged('documentation')}
           active={active}
           inputType={inputType}
           cursor={selectedLine || sequence.length - 1} type={animals[active].type}/>
         {tab === 'code'
-          ? inputType === 'icons' ? <Code {...props}/> : <CodeBox {...props} />
+          ? inputType === 'icons'
+            ? <Code waitingForLoop={waitingForLoop} finishAddLoop={finishAddLoop} {...props}/>
+            : <CodeBox {...props} />
           : <Documentation animal={animals[active]}/>
         }
       </Block>
@@ -95,6 +103,16 @@ function reducer (state, action) {
       return {
         ...state,
         tab: action.payload
+      }
+    case addLoop.type:
+      return {
+        ...state,
+        waitingForLoop: true
+      }
+    case loopAdded.type:
+      return {
+        ...state,
+        waitingForLoop: false
       }
   }
   return state

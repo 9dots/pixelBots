@@ -7,7 +7,10 @@ const icons = {
   down: 'arrow_downward',
   left: 'arrow_back',
   right: 'arrow_forward',
-  paint: 'brush'
+  paint: 'brush',
+  comment: 'comment',
+  loop: 'loop',
+  loop_end: 'loop'
 }
 
 const colors = {

@@ -6,10 +6,10 @@ import {Block} from 'vdux-ui'
 function render ({props}) {
   const {lineNum, numLines} = props
   const digits = numLines.toString().length
-  const offset = digits * 12
+  const offset = digits * 6
 
   return (
-    <Block color='#333' {...props} w='30px' left={`-${79 - offset}px`}>
+    <Block mt='5px' color='#333' {...props} w='30px' left={`${offset}px`}>
       {lineNum}
     </Block>
   )

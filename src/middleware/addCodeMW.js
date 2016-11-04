@@ -1,6 +1,6 @@
 import {codeAdded} from '../actions'
 import {scrollTo} from './scroll'
-const lineHeight = 68
+const lineHeight = 50
 
 export default function ({dispatch, getState}) {
   return (next) => (action) => {
@@ -11,6 +11,7 @@ export default function ({dispatch, getState}) {
       let numElements = Math.floor(editor.offsetHeight / lineHeight)
       let lastVisibleLinePos = editor.scrollTop + (editor.offsetHeight * ((numElements - 2) / numElements))
       let firstVisibleLinePos = editor.scrollTop + lineHeight * 2
+      selectedLine--
 
       setTimeout(scroll)
 

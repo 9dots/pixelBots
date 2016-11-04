@@ -1,4 +1,5 @@
 import {range} from '../../utils'
+import comment from '../comment'
 
 export default {
   up: {
@@ -44,5 +45,6 @@ export default {
   paint: {
     usage: 'paint()',
     description: 'Paint the square the panda is currently on black.'
-  }
+  },
+  comment
 }

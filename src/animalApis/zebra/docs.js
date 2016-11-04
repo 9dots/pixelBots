@@ -1,3 +1,5 @@
+import comment from '../comment'
+
 export default {
   up: {
     usage: 'up()',
@@ -18,5 +20,6 @@ export default {
   paint: {
     usage: 'paint()',
     description: 'Paint the square the zebra is currently on black.'
-  }
+  },
+  comment
 }

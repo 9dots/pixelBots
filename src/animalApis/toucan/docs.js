@@ -1,4 +1,5 @@
 import {range} from '../../utils'
+import comment from '../comment'
 
 export default {
   up: {
@@ -50,5 +51,6 @@ export default {
       values: 'color',
       description: 'The color to paint.'
     }]
-  }
+  },
+  comment
 }

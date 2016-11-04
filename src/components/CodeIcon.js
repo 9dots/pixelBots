@@ -20,11 +20,13 @@ function render ({props}) {
     numLines,
     iconName,
     lineNum,
+    indent,
     animal,
     type,
     name,
     fs
   } = props
+
   const shouldFlash = !shouldTransition && newElement
   const docs = animalApis[type].docs
   const args = docs[name].args
@@ -36,7 +38,6 @@ function render ({props}) {
         {...props}
         class={[shouldFlash && 'flash']}
         align='center center'>
-        <LineNumber fs='22px' absolute textAlign='right' numLines={numLines} lineNum={lineNum + 1} />
         <Block align='center center'>
           <Icon fs={fs} name={iconName} color={nameToColor(name)}/>
           {

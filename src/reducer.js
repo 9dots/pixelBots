@@ -67,7 +67,7 @@ function reducer (state, action) {
       }
     case addCode.type:
       var {id, fn, idx} = action.payload
-      var lineNum = typeof (state.selectedLine) === 'number'
+      var lineNum = idx || typeof (state.selectedLine) === 'number'
         ? state.selectedLine
         : null
       return {
@@ -204,7 +204,7 @@ function reducer (state, action) {
           animals: map((animal) => ({
             ...animal,
             current: animal.initial,
-            sequence: ''
+            sequence: typeof(animal.sequence) === 'string' && action.payload === 'icons' ? animal.sequence.split('\n') : animal.sequence.join('\n')
           }), state.game.animals)
         }
       }
