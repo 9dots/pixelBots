@@ -7,7 +7,7 @@ import {setUrl} from 'redux-effects-location'
 import animalDescriptions from '../animalApis/animalDescriptions'
 import {endRunMessage} from '../actions'
 import reduce from '@f/reduce'
-import {firebaseSet} from 'vdux-fire'
+import {refMethod} from 'vdux-fire'
 
 function render ({props}) {
   const {gameID, title, handleSave = setAnimal} = props
@@ -51,9 +51,8 @@ function render ({props}) {
   }
 
   function * setAnimal (animal) {
-    console.log(gameID)
     try {
-      yield firebaseSet({
+      yield refMethod({
         method: 'set',
         value: buildAnimal(animal),
         ref: `/games/${gameID}`

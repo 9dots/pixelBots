@@ -16,8 +16,10 @@ const icons = {
 const colors = {
   up: 'blue',
   right: 'yellow',
-  down: 'green',
-  left: 'red'
+  down: 'pink',
+  left: 'red',
+  comment: 'green',
+  loop: 'deepPurple'
 }
 
 const directions = {

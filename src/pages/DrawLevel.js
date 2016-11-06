@@ -7,7 +7,7 @@ import createAction from '@f/create-action'
 import Button from '../components/Button'
 import {Input} from 'vdux-containers'
 import Level from '../components/Level'
-import {firebaseSet} from 'vdux-fire'
+import {refMethod} from 'vdux-fire'
 import {createNew} from '../actions'
 import element from 'vdux/element'
 import setProp from '@f/set-prop'
@@ -153,7 +153,7 @@ function render ({props, state, local}) {
   )
 
   function save (playID) {
-    return firebaseSet({
+    return refMethod({
       method: 'set',
       ref: `/play/${playID}`,
       value: gameID
@@ -161,7 +161,7 @@ function render ({props, state, local}) {
   }
 
   function updateGame () {
-    return firebaseSet({
+    return refMethod({
       method: 'update',
       ref: `/games/${gameID}`,
       value: {

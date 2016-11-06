@@ -6,7 +6,7 @@ import {Block, Card, Text} from 'vdux-ui'
 import {Input} from 'vdux-containers'
 import validator from '../schema/level'
 import Level from '../components/Level'
-import {firebaseSet} from 'vdux-fire'
+import {refMethod} from 'vdux-fire'
 import Numbered from '../components/Numbered'
 import element from 'vdux/element'
 import OptionsForm from './OptionsForm'
@@ -75,7 +75,7 @@ function render ({props, state, local}) {
   )
 
   function * save () {
-    yield firebaseSet({
+    yield refMethod({
       method: 'update',
       ref: `/games/${gameID}`,
       value: {

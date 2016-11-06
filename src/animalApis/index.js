@@ -3,7 +3,7 @@ import * as zebra from './zebra'
 import * as panda from './panda'
 import * as toucan from './toucan'
 import * as chameleon from './chameleon'
-import * as penguin from './penguin'
+// import * as penguin from './penguin'
 
 export default {
   turtle,
@@ -11,7 +11,7 @@ export default {
   panda,
   chameleon,
   toucan,
-  penguin,
+  // penguin,
   star: {
     imageURL: '/animalImages/star.jpg',
     speed: 1000

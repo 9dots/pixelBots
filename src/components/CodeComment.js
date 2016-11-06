@@ -24,7 +24,6 @@ function render ({props}) {
         class={[shouldFlash && 'flash']}
         fs='18px'
         align='center center'>
-        <LineNumber fs='22px' absolute textAlign='right' numLines={numLines} lineNum={lineNum + 1} />
         <Block color='white'>//</Block>
         <Input
         		m='0'

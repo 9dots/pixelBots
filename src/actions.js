@@ -1,6 +1,6 @@
 import createAction from '@f/create-action'
 import {bindUrl, setUrl} from 'redux-effects-location'
-import {firebaseSet} from 'vdux-fire'
+import {refMethod} from 'vdux-fire'
 
 const animalMove = createAction(
   'ANIMAL_MOVE',
@@ -60,8 +60,8 @@ function initializeApp () {
 }
 
 function * createNew () {
-  const id = yield firebaseSet({method: 'push', ref: 'games', value: '1234'})
-  yield setUrl(`/${id}/create/animal`)
+  const {key} = yield refMethod({method: 'push', ref: 'games', value: '1234'})
+  yield setUrl(`/${key}/create/animal`)
 }
 
 export {
