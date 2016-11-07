@@ -12,6 +12,7 @@ import location from 'redux-effects-location'
 import firebaseConfig from './firebaseConfig'
 import addCode from './middleware/addCodeMW'
 import scroll from './middleware/scroll'
+import auth from './middleware/auth'
 import effects from 'redux-effects'
 import domready from '@f/domready'
 import reducer from './reducer'
@@ -30,6 +31,7 @@ let oldState = {}
 const initialState = {
   url: '/',
   active: 0,
+  user: {},
   selectedLine: 0,
   game: initGame()
 }
@@ -46,6 +48,7 @@ const {subscribe, render, replaceReducer} = vdux({
     paintSquare(),
     handleError(),
     fire.middleware(firebaseConfig),
+    auth,
     epicMiddleware,
     scroll,
     addCode,

@@ -4,6 +4,8 @@ import setProp from '@f/set-prop'
 import reduce from '@f/reduce'
 import {initGame} from './utils'
 
+import {setUserId} from './middleware/auth'
+
 import {
   initializeGame,
   setActiveLine,
@@ -207,6 +209,11 @@ function reducer (state, action) {
             sequence: typeof(animal.sequence) === 'string' && action.payload === 'icons' ? animal.sequence.split('\n') : animal.sequence.join('\n')
           }), state.game.animals)
         }
+      }
+    case setUserId.type:
+      return {
+        ...state,
+        user: action.payload
       }
     case updateSize.type:
       return {

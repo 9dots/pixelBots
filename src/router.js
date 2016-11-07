@@ -2,10 +2,12 @@
 
 import {initializeApp, createNew, refresh} from './actions'
 import ModalMessage from './components/ModalMessage'
+import LoginButton from './components/LoginButton'
 import CreateSandbox from './pages/CreateSandbox'
 import {setUrl} from 'redux-effects-location'
 import {Block, Icon, Text} from 'vdux-ui'
 import Header from './components/Header'
+import {Button} from 'vdux-containers'
 import Create from './pages/Create'
 import HomePage from './pages/Home'
 import element from 'vdux/element'
@@ -31,7 +33,7 @@ function onCreate () {
 }
 
 function render ({props}) {
-  const {message} = props
+  const {message, user} = props
   return (
     <Block tall wide>
       <Header w='60px' bgColor='primary' top='0' left='0'>
@@ -62,6 +64,7 @@ function render ({props}) {
           </Block>
           <Text w='150px' absolute color='white' fs='m' top='10px' left='63px'>Challenge</Text>
         </Block>
+        <LoginButton user={user}/>
       </Header>
       {
         router(props.url, props)
