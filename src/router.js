@@ -1,6 +1,7 @@
 /** @jsx element */
 
-import {initializeApp, createNew, refresh} from './actions'
+import {initializeApp, createNew, refresh, saveProgress} from './actions'
+import HeaderElement from './components/HeaderElement'
 import ModalMessage from './components/ModalMessage'
 import CreateSandbox from './pages/CreateSandbox'
 import {setUrl} from 'redux-effects-location'
@@ -12,14 +13,22 @@ import element from 'vdux/element'
 import Game from './pages/Game'
 import enroute from 'enroute'
 
+let gameID
+let saveID
+
 const router = enroute({
-  '/': homePage,
-  '/play/:gameID': (params, props) => (
-    <Game key={params.gameID} {...props} left='60px' gameID={params.gameID}/>
-  ),
+  '/play/:gameID': (params, props) => {
+    gameID = params.gameID
+    return <Game key={params.gameID} {...props} left='60px' gameID={params.gameID}/>
+  },
+  '/saved/:saveID': (params, props) => {
+    saveID = params.saveID
+    return <Game key={params.gameID} {...props} left='60px' gameID={params.gameID} saveID={saveID}/>
+  },
   '/:gameID/create/:slug': ({slug, gameID}, props) => (
     <Create left='60px' gameID={gameID} params={slug} {...props} />
-  )
+  ),
+  '/': homePage
 })
 
 function homePage (params, props) {
@@ -31,40 +40,23 @@ function onCreate () {
 }
 
 function render ({props}) {
-  const {message} = props
+  const {message, url, game} = props
+  const {animals} = game
+
   return (
     <Block tall wide>
       <Header w='60px' bgColor='primary' top='0' left='0'>
-        <Block mt='10px' cursor='pointer' onClick={[() => setUrl('/'), refresh]} relative>
-          <Block
-            h='40px'
-            w='40px'
-            mb='10px'
-            display='inline-block'
-            bgColor='transparent'
-            cursor='pointer'
-            background={'url(/animalImages/zebra.jpg)'}
-            backgroundSize='contain'/>
-          <Text w='150px' absolute color='white' fs='m' top='10px' left='63px'>Pixel Bots</Text>
-        </Block>
-        <Block relative cursor='pointer' hoverProps={{highlight: true}} onClick={createNew}>
-          <Block
-            h='40px'
-            borderWidth='0'
-            hoverProps={{color: 'white'}}
-            cursor='pointer'
-            bgColor='transparent'
-            color='#e5e5e5'
-            my='10px'
-            w='40px'
-            align='center center'>
-            <Icon transition={'all .3s ease-in-out'} fs='30px' name='note_add'/>
-          </Block>
-          <Text w='150px' absolute color='white' fs='m' top='10px' left='63px'>Challenge</Text>
-        </Block>
+        <HeaderElement background='url(/animalImages/zebra.jpg)' handleClick={[() => setUrl('/'), refresh]} text='Pixel Bots'/>
+        <HeaderElement handleClick={createNew} text='Challenge' icon='note_add'/>
+        {url.search(/\/(play|saved)\//gi) > -1 && <HeaderElement
+          handleClick={() => saveProgress(animals, gameID, saveID)}
+          absolute
+          bottom='10px'
+          text='Save'
+          icon='save'/>}
       </Header>
       {
-        router(props.url, props)
+        router(url, props)
       }
       {message && <ModalMessage
         header={message.header}

@@ -3,17 +3,18 @@
 import ModalMessage from '../components/ModalMessage'
 import ColorPicker from '../components/ColorPicker'
 import {setUrl} from 'redux-effects-location'
+import {palette, createCode} from '../utils'
 import createAction from '@f/create-action'
 import Button from '../components/Button'
-import {Input} from 'vdux-containers'
+import {once, refMethod} from 'vdux-fire'
 import Level from '../components/Level'
-import {refMethod} from 'vdux-fire'
+import animalApis from '../animalApis'
+import {Input} from 'vdux-containers'
 import {createNew} from '../actions'
 import element from 'vdux/element'
 import setProp from '@f/set-prop'
+import firebase from 'firebase'
 import Hashids from 'hashids'
-import animalApis from '../animalApis'
-import {palette} from '../utils'
 import {
   Block,
   Card,
@@ -38,14 +39,17 @@ const modalFooter = (
 
 let borderColor = '#ccc'
 
-function initialState ({props}) {
+function initialState ({props, local}) {
   const {newGame} = props
   const {value} = newGame
   const {levelSize} = value
   return {
     color: 'black',
     painted: {start: whiteOut(levelSize), finished: whiteOut(levelSize)},
-    show: ''
+    show: '',
+    actions: {
+      displayID: local((id) => showID(id))
+    }
   }
 }
 
@@ -61,7 +65,8 @@ function whiteOut (size) {
 
 function render ({props, state, local}) {
   const {newGame, gameID} = props
-  const {color, painted, show} = state
+  const {color, painted, show, actions} = state
+  const {displayID} = actions
 
   if (newGame.loading) {
     return <div>... loading</div>
@@ -110,14 +115,10 @@ function render ({props, state, local}) {
           wide
           h='40px'
           fs='m'
-          onClick={[
-            updateGame,
-            () => save(generateID(gameID)),
-            local(() => showID(generateID(gameID)))
-          ]}>Save</Button>
+          onClick={() => save(gameID)}>Save</Button>
       </Card>
       <Text fs='xl' fontWeight='800'>Click the squares to paint the grids</Text>
-      <Block mt='20px' column align='center center' wide tall>
+      <Block mt='20px' column align='flex-start center' wide>
         <Block mt='20px' textAlign='center'>
           <Block mb='10px' fs='l' fontWeight='800'>Starting Grid</Block>
           <Level
@@ -152,29 +153,28 @@ function render ({props, state, local}) {
     </Block>
   )
 
-  function save (playID) {
-    return refMethod({
-      method: 'set',
-      ref: `/play/${playID}`,
-      value: gameID
-    })
-  }
-
   function updateGame () {
     return refMethod({
-      method: 'update',
       ref: `/games/${gameID}`,
-      value: {
-        initialPainted: painted.start,
-        painted: painted.start,
-        targetPainted: painted.finished
+      updates: {
+        method: 'update',
+        value: {
+          initialPainted: painted.start,
+          painted: painted.start,
+          targetPainted: painted.finished
+        }
       }
     })
   }
 
-  function generateID () {
-    let hex = Buffer(gameID.substr(4, 5)).toString('hex').substr(0, 4)
-    return hashids.encodeHex(hex)
+  function * save (gameID) {
+    yield updateGame()
+    const code = yield createCode('/play')
+    yield refMethod({
+      ref: `/play/${code}`,
+      updates: {method: 'set', value: gameID}
+    })
+    yield displayID(code)
   }
 }
 

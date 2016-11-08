@@ -204,7 +204,7 @@ function reducer (state, action) {
           animals: map((animal) => ({
             ...animal,
             current: animal.initial,
-            sequence: typeof(animal.sequence) === 'string' && action.payload === 'icons' ? animal.sequence.split('\n') : animal.sequence.join('\n')
+            sequence: ''
           }), state.game.animals)
         }
       }

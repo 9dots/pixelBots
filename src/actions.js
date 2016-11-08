@@ -1,6 +1,7 @@
 import createAction from '@f/create-action'
 import {bindUrl, setUrl} from 'redux-effects-location'
 import {refMethod} from 'vdux-fire'
+import {createCode} from './utils'
 
 const animalMove = createAction(
   'ANIMAL_MOVE',
@@ -59,8 +60,32 @@ function initializeApp () {
   return bindUrl(newRoute)
 }
 
+function * saveProgress (animals, gameID, saveID) {
+  const id = saveID ? saveID : yield createCode('/saved')
+  yield refMethod({
+    ref: 'saved/' + id,
+    updates: {
+      method: 'transaction',
+      value: (cur) => {
+        if (saveID && cur === null) {
+          return 0
+        }
+        if (gameID) {
+          cur = {}
+          cur.gameID = gameID
+        }
+        console.log(animals)
+        cur.animals = animals.map((animal) => ({...animal, current: animal.initial}))
+        return cur
+      }
+    }
+  })
+  yield endRunMessage({header: 'Saved Game', body: 'http://pixelbots.io/saved/' + id})
+  yield setUrl(`/saved/${id}`)
+}
+
 function * createNew () {
-  const {key} = yield refMethod({method: 'push', ref: 'games', value: '1234'})
+  const {key} = yield refMethod({updates: {method: 'push', value: ' '}, ref: '/games'})
   yield setUrl(`/${key}/create/animal`)
 }
 
@@ -70,6 +95,7 @@ export {
   endRunMessage,
   initializeApp,
   clearMessage,
+  saveProgress,
   setAnimalPos,
   setGameData,
   animalPaint,

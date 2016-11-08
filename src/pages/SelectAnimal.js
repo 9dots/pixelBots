@@ -14,10 +14,10 @@ function render ({props}) {
 
   return (
     <Flex relative m='0 auto' column align='center center' minHeight='100%' w='96%'>
-      <Block absolute top='1em'>
+      <Block absolute textAlign='center' top='1em' left='0' right='0'>
         <Text color='#666' fs='l'>{title}</Text>
       </Block>
-      <Grid itemsPerRow='3' tall mt='3em' columnAlign='start center'>
+      <Grid itemsPerRow='3' mt='3em' columnAlign='start center'>
         {reduce(makeCard, [], animalDescriptions)}
       </Grid>
     </Flex>
@@ -53,9 +53,11 @@ function render ({props}) {
   function * setAnimal (animal) {
     try {
       yield refMethod({
-        method: 'set',
-        value: buildAnimal(animal),
-        ref: `/games/${gameID}`
+        ref: `/games/${gameID}`,
+        updates: {
+          method: 'set',
+          value: buildAnimal(animal)
+        },
       })
       yield setUrl(`/${gameID}/create/options`)
     } catch (e) {

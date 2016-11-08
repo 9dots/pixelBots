@@ -76,12 +76,14 @@ function render ({props, state, local}) {
 
   function * save () {
     yield refMethod({
-      method: 'update',
       ref: `/games/${gameID}`,
-      value: {
-        inputType,
-        levelSize: [size, size],
-        'animals/0': myAnimal
+      updates: {
+        method: 'update',
+        value: {
+          inputType,
+          levelSize: [size, size],
+          'animals/0': myAnimal
+        }
       }
     })
     yield setUrl(`/${gameID}/create/level`)

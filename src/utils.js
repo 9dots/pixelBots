@@ -1,6 +1,40 @@
 import gPalette from 'google-material-color-palette-json'
+import {refMethod} from 'vdux-fire'
 import reduce from '@f/reduce'
+import Hashids from 'hashids'
 import _ from 'lodash'
+
+const hashids = new Hashids(
+  'Oranges never ripen in the winter',
+  5,
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789'
+)
+
+function generateID () {
+  return hashids.encode(Math.floor(Math.random() * 10000) + 1)
+}
+
+function * checkForExisting (ref, id) {
+  const snap = yield refMethod({
+    ref,
+    updates: [
+      {method: 'orderByKey'},
+      {method: 'equalTo', value: id},
+      {method: 'once', value: 'value'}
+    ]
+  })
+  return snap.val()
+}
+
+function * createCode (ref) {
+  const id = generateID()
+  const exists = yield checkForExisting(ref, id)
+  if (exists) {
+    yield createCode(ref)
+  } else {
+    return id
+  }
+}
 
 const icons = {
   up: 'arrow_upward',
@@ -16,9 +50,9 @@ const icons = {
 const colors = {
   up: 'blue',
   right: 'yellow',
-  down: 'pink',
+  down: 'green',
   left: 'red',
-  comment: 'green',
+  comment: '#666',
   loop: 'deepPurple'
 }
 
@@ -90,6 +124,7 @@ export {
   nameToDirection,
   nameToColor,
   nameToIcon,
+  createCode,
   initGame,
   palette,
   isLocal,
