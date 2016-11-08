@@ -19,7 +19,6 @@ function codeRunner () {
         const {animals} = state.game
         for (var id in animals) {
           const api = animalApis[animals[id].type].default(id, getState)
-          console.log(animals[id].sequence)
           let code = getIterator(animals[id], api, id)
           if (code.error) {
             return dispatch(

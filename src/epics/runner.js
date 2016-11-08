@@ -30,10 +30,19 @@ export default function runner (action$, store) {
 
 function mapObserver (obs, store) {
   return obs.map((x) => {
-    console.log(isGeneratorObject(x.payload))
-    if (x.payload && isGeneratorObject(x.payload)) {
-      return Observable.from(x.payload).map((action) => Observable.of(action).concat(createDelay(getTimeout(store.getState().game.animals, x.payload.id))))
-    }
+    return isGen(x) ? flattenGen(x) : addDelayAction(x)
+  })
+
+  function flattenGen (x) {
+    return Observable.from(x.payload).concatMap((obs) => {
+      if (isGen(obs)) {
+        return flattenGen(obs)
+      }
+      return addDelayAction(obs)
+    })
+  }
+
+  function addDelayAction (x) {
     const addDelay = Observable
       .of(x)
       .concat(
@@ -44,5 +53,9 @@ function mapObserver (obs, store) {
         .merge(highlighter(x.meta.lineNum))
         .merge(addScroll(x.meta.lineNum))
       : addDelay
-  })
+  }
+}
+
+function isGen (x) {
+  return x.payload && isGeneratorObject(x.payload)
 }
