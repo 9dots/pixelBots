@@ -7,17 +7,17 @@ import {setUrl} from 'redux-effects-location'
 import animalDescriptions from '../animalApis/animalDescriptions'
 import {endRunMessage} from '../actions'
 import reduce from '@f/reduce'
-import {firebaseSet} from 'vdux-fire'
+import {refMethod} from 'vdux-fire'
 
 function render ({props}) {
   const {gameID, title, handleSave = setAnimal} = props
 
   return (
     <Flex relative m='0 auto' column align='center center' minHeight='100%' w='96%'>
-      <Block absolute top='1em'>
+      <Block absolute textAlign='center' top='1em' left='0' right='0'>
         <Text color='#666' fs='l'>{title}</Text>
       </Block>
-      <Grid itemsPerRow='3' tall mt='3em' columnAlign='start center'>
+      <Grid itemsPerRow='3' mt='3em' columnAlign='start center'>
         {reduce(makeCard, [], animalDescriptions)}
       </Grid>
     </Flex>
@@ -51,11 +51,12 @@ function render ({props}) {
   }
 
   function * setAnimal (animal) {
-    console.log(gameID)
     try {
-      yield firebaseSet({
-        method: 'set',
-        value: buildAnimal(animal),
+      yield refMethod({
+        updates: {
+          method: 'set',
+          value: buildAnimal(animal)
+        },
         ref: `/games/${gameID}`
       })
       yield setUrl(`/${gameID}/create/options`)

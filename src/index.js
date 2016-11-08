@@ -25,8 +25,6 @@ import theme from './theme'
 const epicMiddleware = createEpicMiddleware(rootEpic)
 var app = require('./app').default
 
-let oldState = {}
-
 const initialState = {
   url: '/',
   active: 0,

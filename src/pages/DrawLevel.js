@@ -5,15 +5,16 @@ import ColorPicker from '../components/ColorPicker'
 import {setUrl} from 'redux-effects-location'
 import createAction from '@f/create-action'
 import Button from '../components/Button'
-import {Input} from 'vdux-containers'
+import {once, refMethod} from 'vdux-fire'
 import Level from '../components/Level'
-import {firebaseSet} from 'vdux-fire'
+import animalApis from '../animalApis'
+import {Input} from 'vdux-containers'
 import {createNew} from '../actions'
 import element from 'vdux/element'
 import setProp from '@f/set-prop'
-import Hashids from 'hashids'
-import animalApis from '../animalApis'
 import {palette} from '../utils'
+import firebase from 'firebase'
+import Hashids from 'hashids'
 import {
   Block,
   Card,
@@ -38,14 +39,17 @@ const modalFooter = (
 
 let borderColor = '#ccc'
 
-function initialState ({props}) {
+function initialState ({props, local}) {
   const {newGame} = props
   const {value} = newGame
   const {levelSize} = value
   return {
     color: 'black',
     painted: {start: whiteOut(levelSize), finished: whiteOut(levelSize)},
-    show: ''
+    show: '',
+    actions: {
+      displayID: local((id) => showID(id))
+    }
   }
 }
 
@@ -61,7 +65,8 @@ function whiteOut (size) {
 
 function render ({props, state, local}) {
   const {newGame, gameID} = props
-  const {color, painted, show} = state
+  const {color, painted, show, actions} = state
+  const {displayID} = actions
 
   if (newGame.loading) {
     return <div>... loading</div>
@@ -110,14 +115,10 @@ function render ({props, state, local}) {
           wide
           h='40px'
           fs='m'
-          onClick={[
-            updateGame,
-            () => save(generateID(gameID)),
-            local(() => showID(generateID(gameID)))
-          ]}>Save</Button>
+          onClick={() => save(gameID)}>Save</Button>
       </Card>
       <Text fs='xl' fontWeight='800'>Click the squares to paint the grids</Text>
-      <Block mt='20px' column align='center center' wide tall>
+      <Block mt='20px' column align='flex-start center' wide>
         <Block mt='20px' textAlign='center'>
           <Block mb='10px' fs='l' fontWeight='800'>Starting Grid</Block>
           <Level
@@ -152,36 +153,61 @@ function render ({props, state, local}) {
     </Block>
   )
 
-  function save (playID) {
-    return firebaseSet({
-      method: 'set',
-      ref: `/play/${playID}`,
-      value: gameID
-    })
-  }
-
   function updateGame () {
-    return firebaseSet({
-      method: 'update',
+    return refMethod({
       ref: `/games/${gameID}`,
-      value: {
-        initialPainted: painted.start,
-        painted: painted.start,
-        targetPainted: painted.finished
+      updates: {
+        method: 'update',
+        value: {
+          initialPainted: painted.start,
+          painted: painted.start,
+          targetPainted: painted.finished
+        }
       }
     })
   }
 
-  function generateID () {
-    let hex = Buffer(gameID.substr(4, 5)).toString('hex').substr(0, 4)
-    return hashids.encodeHex(hex)
+  function * save (gameID) {
+    yield updateGame()
+    const code = yield createCode(gameID)
+    yield refMethod({
+      ref: `/play/${code}`,
+      updates: {method: 'set', value: gameID}
+    })
+    yield displayID(code)
   }
+}
+
+function generateID (gameID) {
+  return hashids.encode(Math.floor(Math.random() * 10000) + 1)
 }
 
 function convertToStar (animal) {
   return {
     type: 'star',
     current: animal.initial
+  }
+}
+
+function * checkForExisting (id) {
+  const snap = yield refMethod({
+    ref: '/play',
+    updates: [
+      {method: 'orderByKey'},
+      {method: 'equalTo', value: id},
+      {method: 'once', value: 'value'}
+    ]
+  })
+  return snap.val()
+}
+
+function * createCode (gameID) {
+  const id = generateID(gameID)
+  const exists = yield checkForExisting(id)
+  if (exists) {
+    yield createCode(gameID)
+  } else {
+    return id
   }
 }
 

@@ -17,7 +17,9 @@ const colors = {
   up: 'blue',
   right: 'yellow',
   down: 'green',
-  left: 'red'
+  left: 'red',
+  comment: '#666',
+  loop: 'deepPurple'
 }
 
 const directions = {

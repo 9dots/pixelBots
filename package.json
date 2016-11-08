@@ -25,6 +25,7 @@
     "@f/animate": "^1.0.1",
     "@f/deep-equal": "^1.0.2",
     "@f/equal-obj": "^1.2.1",
+    "@f/is-generator-object": "^1.3.0",
     "@f/set-prop": "^1.0.0",
     "@f/sleep": "^1.0.0",
     "@f/splice": "^1.0.0",
@@ -57,7 +58,7 @@
     "vdux-containers": "^1.1.19",
     "vdux-css-transition": "^1.2.1",
     "vdux-delay": "^1.0.6",
-    "vdux-fire": "^0.1.11",
+    "vdux-fire": "^0.1.13",
     "vdux-form": "^1.0.11",
     "vdux-ui": "^1.2.36",
     "yoco": "^1.6.2"

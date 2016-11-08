@@ -44,6 +44,7 @@ function render ({props, state}) {
     <Block
       minHeight='600px'
       boxShadow='0 0 2px 1px rgba(0,0,0,0.2)'
+      relative
       wide
       bgColor='light'
       color='white'
@@ -76,7 +77,7 @@ function render ({props, state}) {
             fs='s'/>
         </Box>
       </Block>
-      <Block h='calc(100% - 40px)' wide relative align='start start'>
+      <Block h='calc(100% - 40px)' wide absolute align='start start'>
         <Buttons
           onRun={onRun}
           hasRun={hasRun}

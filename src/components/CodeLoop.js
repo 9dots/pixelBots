@@ -38,7 +38,7 @@ function render ({props}) {
 		        p='10px'
 		        inputProps={{textAlign: 'center', w: '60px'}}
 		        onClick={(e) => e.stopPropagation()}
-		        onKeyup={(e) => updateLine(animal, lineNum, `for (let i = 0; i < ${e.target.value}; i++) {`)}/>
+		        onKeyup={(e) => updateLine(animal, lineNum, `loop(${e.target.value || 1}, function () {`)}/>
       </Block>
       <Block align='center center' absolute right='0' top='5px'>
         <Icon
