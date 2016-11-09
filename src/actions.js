@@ -2,6 +2,7 @@ import createAction from '@f/create-action'
 import {bindUrl, setUrl} from 'redux-effects-location'
 import {refMethod} from 'vdux-fire'
 import {createCode} from './utils'
+import sleep from '@f/sleep'
 
 const animalMove = createAction(
   'ANIMAL_MOVE',
@@ -51,6 +52,7 @@ const codeAdded = createAction('CODE_ADDED')
 const swapMode = createAction('SWAP_MODE')
 const startRun = createAction('START_RUN')
 const newRoute = createAction('NEW_ROUTE')
+const setToast = createAction('SET_TOAST')
 const stopRun = createAction('STOP_RUN')
 const refresh = createAction('refresh')
 const endRun = createAction('END_RUN')
@@ -74,14 +76,18 @@ function * saveProgress (animals, gameID, saveID) {
           cur = {}
           cur.gameID = gameID
         }
-        console.log(animals)
         cur.animals = animals.map((animal) => ({...animal, current: animal.initial}))
         return cur
       }
     }
   })
-  yield endRunMessage({header: 'Saved Game', body: 'http://pixelbots.io/saved/' + id})
-  yield setUrl(`/saved/${id}`)
+  if (!saveID) {
+    yield setUrl(`/saved/${id}`)
+    yield endRunMessage({header: 'Saved Game', body: 'http://pixelbots.io/saved/' + id})
+  }
+  yield setToast('Saved')
+  yield sleep(3000)
+  yield setToast('')
 }
 
 function * createNew () {
@@ -115,6 +121,7 @@ export {
   createNew,
   moveError,
   aceUpdate,
+  setToast,
   swapMode,
   startRun,
   newRoute,

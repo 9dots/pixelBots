@@ -55,7 +55,7 @@ function render ({props, state}) {
     const addedLine = arr.length > prevLength
     indent += getIndent(line)
 
-    const opts = {lastSelected, addedLine, arr, indent, lineHeight, active, i, type, argument, isActive, selectedLine}
+    const opts = {line, lastSelected, addedLine, arr, indent, lineHeight, active, i, type, argument, isActive, selectedLine}
 
     return (
       <Block id={`code-icon-${i}`} cursor='pointer' onClick={() => handleClick(active, i)}>
@@ -101,7 +101,7 @@ function render ({props, state}) {
 }
 
 function getElement (name, opts) {
-  const {lastSelected, selectedLine, addedLine, arr, lineHeight, active, i, type, argument, isActive} = opts
+  const {lastSelected, line, selectedLine, addedLine, arr, lineHeight, active, i, type, argument, isActive} = opts
   let {indent} = opts
   if (name === 'comment') {
     return <CodeComment
@@ -110,6 +110,7 @@ function getElement (name, opts) {
               numLines={arr.length}
               h={lineHeight}
               bgColor='#666'
+              line={line}
               animal={active}
               color='#333'
               fs='28px'

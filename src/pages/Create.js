@@ -1,5 +1,6 @@
 /** @jsx element */
 
+import IndeterminateProgress from '../components/IndeterminateProgress'
 import SelectOptions from './SelectOptions'
 import SelectAnimal from './SelectAnimal'
 import DrawLevel from './DrawLevel'
@@ -18,7 +19,7 @@ function render ({props}) {
   const {newGame} = props
 
   if (newGame.loading) {
-    return <div>...loading</div>
+    return <IndeterminateProgress/>
   }
 
   return (

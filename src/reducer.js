@@ -23,6 +23,7 @@ import {
   swapMode,
   newRoute,
   startRun,
+  setToast,
   stopRun,
   addCode,
   refresh,
@@ -185,9 +186,12 @@ function reducer (state, action) {
         url: action.payload
       }
     case initializeGame.type:
+      var {game, saveID, gameID} = action.payload
       return {
         ...state,
-        game: action.payload
+        game,
+        saveID,
+        gameID
       }
     case endRun.type:
       return {
@@ -239,6 +243,11 @@ function reducer (state, action) {
             }
           })
         }
+      }
+    case setToast.type:
+      return {
+        ...state,
+        toast: action.payload
       }
   }
   return state

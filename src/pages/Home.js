@@ -8,7 +8,6 @@ import Output from '../components/Output'
 import omit from '@f/omit'
 
 function render ({props}) {
-  console.log('render home')
   const {
     selectedLine,
     activeLine,

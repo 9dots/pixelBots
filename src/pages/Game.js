@@ -1,16 +1,18 @@
 /** @jsx element */
 
+import IndeterminateProgress from '../components/IndeterminateProgress'
 import ModalMessage from '../components/ModalMessage'
 import Controls from '../components/Controls'
-import element from 'vdux/element'
-import {Block} from 'vdux-ui'
-import {initializeGame} from '../actions'
-import {once} from 'vdux-fire'
-import Output from '../components/Output'
 import createAction from '@f/create-action'
+import Output from '../components/Output'
+// import {setGameID, setSaveID} from ''
+import {initializeGame} from '../actions'
+import element from 'vdux/element'
+import {once} from 'vdux-fire'
+import {Block} from 'vdux-ui'
 
-const changeTab = createAction('CHANGE_TAB')
 const setDoneLoading = createAction('SET_DONE_LOADING')
+const changeTab = createAction('CHANGE_TAB')
 
 function initialState ({props, local}) {
   return {
@@ -37,7 +39,7 @@ function * onCreate ({props, local, state}) {
   if (!animals) {
     var {animals} = game
   }
-  yield initializeGame({...game, animals})
+  yield initializeGame({game: {...game, animals}, gameID, saveID})
   yield loadingDone()
 }
 
@@ -54,7 +56,7 @@ function render ({props, state, local}) {
   } = props
 
   if (!game.animals || game.animals.length === 0) {
-    return <div>loading...</div>
+    return <IndeterminateProgress/>
   }
 
   const {
@@ -67,7 +69,7 @@ function render ({props, state, local}) {
   const size = '400px'
 
   if (loading) {
-    return <div>loading...</div>
+    return <IndeterminateProgress/>
   }
 
   console.log('render')

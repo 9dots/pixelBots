@@ -1,5 +1,6 @@
 /** @jsx element */
 
+import IndeterminateProgress from '../components/IndeterminateProgress'
 import ModalMessage from '../components/ModalMessage'
 import ColorPicker from '../components/ColorPicker'
 import {setUrl} from 'redux-effects-location'
@@ -69,7 +70,7 @@ function render ({props, state, local}) {
   const {displayID} = actions
 
   if (newGame.loading) {
-    return <div>... loading</div>
+    return <IndeterminateProgress/>
   }
 
   const game = newGame.value

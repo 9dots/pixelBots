@@ -1,5 +1,6 @@
 /** @jsx element */
 
+import IndeterminateProgress from '../components/IndeterminateProgress'
 import {setUrl} from 'redux-effects-location'
 import createAction from '@f/create-action'
 import {Block, Card, Text} from 'vdux-ui'
@@ -28,7 +29,7 @@ function render ({props, state, local}) {
   const {newGame, gameID, handleSave = save} = props
 
   if (newGame.loading) {
-    return <div>... loading</div>
+    return <IndeterminateProgress/>
   }
 
   const game = newGame.value
