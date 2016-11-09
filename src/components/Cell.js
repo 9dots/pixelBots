@@ -31,7 +31,7 @@ function render ({props}) {
       h={size}
       w={size}
       onClick={() => clickHandler(coordinates)}
-      transition={!editMode && 'background-color .2s ease-in-out'}
+      transition={!editMode && 'background-color .5s ease-in-out'}
       bgColor={color}>
       <Tooltip relative show={showColor}>{color}</Tooltip>
     </Block>
