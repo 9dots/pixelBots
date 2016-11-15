@@ -37,6 +37,7 @@
     "domready": "^1.0.8",
     "easing-utils": "0.0.5",
     "enroute": "^1.0.1",
+    "firebase": "^3.6.0",
     "firebase-tools": "^3.0.4",
     "google-material-color-palette-json": "^1.1.1",
     "hashids": "^1.1.1",

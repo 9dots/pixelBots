@@ -2,17 +2,25 @@
 
 import {initializeApp, createNew, refresh} from './actions'
 import ModalMessage from './components/ModalMessage'
-import LoginButton from './components/LoginButton'
 import CreateSandbox from './pages/CreateSandbox'
 import {setUrl} from 'redux-effects-location'
 import {Block, Icon, Text} from 'vdux-ui'
+import {signOut} from './middleware/auth'
 import Header from './components/Header'
 import {Button} from 'vdux-containers'
 import Create from './pages/Create'
+import Auth from './components/Auth'
 import HomePage from './pages/Home'
 import element from 'vdux/element'
 import Game from './pages/Game'
 import enroute from 'enroute'
+
+import createAction from '@f/create-action'
+
+const startLogin = createAction('START_LOGIN')
+const endLogin = createAction('END_LOGIN')
+
+const initialState = () => ({loggingIn: false})
 
 const router = enroute({
   '/': homePage,
@@ -32,8 +40,9 @@ function onCreate () {
   return initializeApp()
 }
 
-function render ({props}) {
+function render ({props, state, local}) {
   const {message, user} = props
+  const {loggingIn} = state
   return (
     <Block tall wide>
       <Header w='60px' bgColor='primary' top='0' left='0'>
@@ -64,7 +73,10 @@ function render ({props}) {
           </Block>
           <Text w='150px' absolute color='white' fs='m' top='10px' left='63px'>Challenge</Text>
         </Block>
-        <LoginButton user={user}/>
+        {user.isAnonymous
+          ? <Button onClick={local(startLogin)}>Login</Button>
+          : <Button onClick={signOut}>Logout</Button>
+        }
       </Header>
       {
         router(props.url, props)
@@ -73,11 +85,31 @@ function render ({props}) {
         header={message.header}
         body={message.body}/>
       }
+      {
+        loggingIn && <Auth handleDismiss={() => local(endLogin)}/>
+      }
     </Block>
   )
 }
 
+function reducer (state, action) {
+  console.log(action)
+  if (action.type === startLogin.type) {
+    return {
+      ...state,
+      loggingIn: true
+    }
+  } else if (action.type === endLogin.type) {
+    return {
+      ...state,
+      loggingIn: false
+    }
+  }
+}
+
 export default {
+  initialState,
+  reducer,
   onCreate,
   render
 }
