@@ -1,4 +1,4 @@
-import {animalMove, moveAnimal, throwError} from '../actions'
+import {animalMove, moveAnimal, turnAnimal, animalTurn, throwError} from '../actions'
 
 export default function () {
   return ({getState, dispatch}) => (next) => (action) => {
@@ -7,10 +7,18 @@ export default function () {
       const {levelSize, animals} = game
       const {id, getLocation} = action.payload
       const {lineNum} = action.meta
-      const newLocation = getLocation(animals[id].current.location)
+      const newLocation = getLocation(animals[id].current.location, animals[id].current.rot)
       checkBounds(newLocation, levelSize)
         ? dispatch(animalMove(id, newLocation, lineNum))
         : dispatch(throwError('Out of bounds', lineNum))
+    }
+    if (action.type === turnAnimal.type) {
+      const {game} = getState()
+      const {levelSize, animals} = game
+      const {id, turn} = action.payload
+      const {lineNum} = action.meta
+      const rot = animals[id].current.rot + turn
+      dispatch(animalTurn(id, rot, lineNum))
     }
     return next(action)
   }

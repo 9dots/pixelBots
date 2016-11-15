@@ -12,6 +12,7 @@ import {
   setAnimalPos,
   animalPaint,
   handleError,
+  animalTurn,
   removeLine,
   animalMove,
   updateLine,
@@ -41,6 +42,15 @@ function reducer (state, action) {
           setProp(`animals.${id}.current.location`, state.game, location),
          'animals'
        )
+      }
+    case animalTurn.type:
+      var {id, rot} = action.payload
+      return {
+        ...state,
+        game: arrayAt(
+          setProp(`animals.${id}.current.rot`, state.game, rot),
+          'animals'
+        )
       }
     case animalPaint.type:
       var {id, color} = action.payload
@@ -262,37 +272,5 @@ function arrayAt (obj, at) {
   }, obj)
 }
 
-// case animalTurnRight.type:
-//   var id = action.payload
-//   return {
-//     ...state,
-//     animals: {
-//       ...state.animals,
-//       [id]: {
-//         ...state.animals[id],
-//         current: {
-//           ...state.animals[id].current,
-//           dir: (state.animals[id].current.dir + 1) % 4,
-//           rot: state.animals[id].current.rot + 1
-//         }
-//       }
-//     }
-//   }
-// case animalTurnLeft.type:
-//   var id = action.payload
-//   return {
-//     ...state,
-//     animals: {
-//       ...state.animals,
-//       [id]: {
-//         ...state.animals[id],
-//         current: {
-//           ...state.animals[id].current,
-//           dir: (state.animals[id].current.dir + 3) % 4,
-//           rot: state.animals[id].current.rot - 1
-//         }
-//       }
-//     }
-//   }
 
 export default reducer

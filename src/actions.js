@@ -9,6 +9,11 @@ const animalMove = createAction(
   (id, location) => ({location, id}),
   (id, location, lineNum) => ({lineNum})
 )
+const animalTurn = createAction(
+  'ANIMAL_TURN',
+  (id, rot) => ({id, rot}),
+  (id, rot, lineNum) => ({lineNum})
+)
 const animalPaint = createAction(
   'ANIMAL_PAINT',
   (id, color) => ({id, color}),
@@ -29,6 +34,11 @@ const throwError = createAction(
 )
 const moveAnimal = createAction(
   'MOVE_ANIMAL',
+  (opts) => opts,
+  (opts, lineNum) => ({lineNum})
+)
+const turnAnimal = createAction(
+  'TURN_ANIMAL',
   (opts) => opts,
   (opts, lineNum) => ({lineNum})
 )
@@ -110,6 +120,8 @@ export {
   removeLine,
   throwError,
   animalMove,
+  animalTurn,
+  turnAnimal,
   updateLine,
   gameLoaded,
   updateSize,

@@ -11,6 +11,8 @@ p {
 
 body {
   height: 100vh;
+  width: 100vw;
+  position: fixed;
   margin: 0;
   background-color: white;
   font-family: "Helvetica Neue", Helvetica, sans-serif;

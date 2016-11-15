@@ -14,6 +14,10 @@ export default {
   toucan: {
     description: 'The toucan moves faster and can use arguments to move and paint many colors.',
     image: '/animalImages/toucan.jpg'
+  },
+  crocodile: {
+    description: 'The crocodile moves on space at a time and can change the direction it is facing.',
+    image: '/animalImages/crocodile.jpg'
   }
   // penguin: {
   //   description: 'The penguin is the first animal that can use LOOPS.',

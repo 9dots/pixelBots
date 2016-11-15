@@ -36,6 +36,19 @@ function * createCode (ref) {
   }
 }
 
+function getRotation (rot) {
+  const circles = Math.floor(Math.abs(rot) / 360)
+  if (rot < 0) {
+    return rot + (360 * (circles + 1))
+  } else {
+    return rot - (360 * circles)
+  }
+}
+
+function getDirection  (rot) {
+  return (getRotation(rot) / 90) % 4
+}
+
 const icons = {
   up: 'arrow_upward',
   down: 'arrow_downward',
@@ -44,7 +57,10 @@ const icons = {
   paint: 'brush',
   comment: 'comment',
   loop: 'loop',
-  loop_end: 'loop'
+  loop_end: 'loop',
+  move: 'arrow_upward',
+  turnRight: 'rotate_right',
+  turnLeft: 'rotate_left  '
 }
 
 const colors = {
@@ -122,6 +138,7 @@ function initGame () {
 
 export {
   nameToDirection,
+  getDirection,
   nameToColor,
   nameToIcon,
   createCode,
