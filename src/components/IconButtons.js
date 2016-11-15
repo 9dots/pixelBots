@@ -47,7 +47,7 @@ function render ({props}) {
     if (name === 'comment') {
       return () => [addCode(active, `// comment`)]
     } else if (name === 'loop') {
-      return () => [addCode(active, `for (var i = 0; i < 1; i++) {`), startAddLoop()]
+      return () => [addCode(active, `loop(1, function () {`), startAddLoop()]
     } else {
       return () => [addCode(active, `${name}(${args})`)]
     }

@@ -1,31 +1,46 @@
 /** @jsx element */
 
+import IndeterminateProgress from '../components/IndeterminateProgress'
 import ModalMessage from '../components/ModalMessage'
 import Controls from '../components/Controls'
-import element from 'vdux/element'
-import {Block} from 'vdux-ui'
-import {initializeGame} from '../actions'
-import {once} from 'vdux-fire'
-import Output from '../components/Output'
 import createAction from '@f/create-action'
+import Output from '../components/Output'
+// import {setGameID, setSaveID} from ''
+import {initializeGame} from '../actions'
+import element from 'vdux/element'
+import {once} from 'vdux-fire'
+import {Block} from 'vdux-ui'
 
+const setDoneLoading = createAction('SET_DONE_LOADING')
 const changeTab = createAction('CHANGE_TAB')
 
 function initialState ({props, local}) {
   return {
     tab: 'target',
+    loading: true,
     actions: {
-      tabChanged: local((name) => changeTab(name))
+      tabChanged: local((name) => changeTab(name)),
+      loadingDone: local(() => setDoneLoading())
     }
   }
 }
 
-function * onCreate ({props, local}) {
-  const {gameID} = props
+function * onCreate ({props, local, state}) {
+  const {loadingDone} = state.actions
+  var {gameID, saveID} = props
+  if (saveID) {
+    const saveGame = yield once({ref: `/saved/${saveID}`})
+    var {animals, gameID} = saveGame.val()
+  }
   const playSnapshot = yield once({ref: `/play/${gameID}`})
   const gameCode = playSnapshot.val()
   const gameSnapshot = yield once({ref: `/games/${gameCode}`})
-  yield initializeGame(gameSnapshot.val())
+  const game = gameSnapshot.val()
+  if (!animals) {
+    var {animals} = game
+  }
+  yield initializeGame({game: {...game, animals}, gameID, saveID})
+  yield loadingDone()
 }
 
 function render ({props, state, local}) {
@@ -41,7 +56,7 @@ function render ({props, state, local}) {
   } = props
 
   if (!game.animals || game.animals.length === 0) {
-    return <div>loading...</div>
+    return <IndeterminateProgress/>
   }
 
   const {
@@ -49,9 +64,15 @@ function render ({props, state, local}) {
     animals
   } = game
 
-  const {tab, actions} = state
+  const {tab, actions, loading} = state
   const {tabChanged} = actions
   const size = '400px'
+
+  if (loading) {
+    return <IndeterminateProgress/>
+  }
+
+  console.log('render')
 
   return (
     <Block bgColor='#e5e5e5' relative w='calc(100% - 60px)' tall left={left}>
@@ -93,6 +114,11 @@ function reducer (state, action) {
       return {
         ...state,
         tab: action.payload
+      }
+    case setDoneLoading.type:
+      return {
+        ...state,
+        loading: false
       }
   }
   return state

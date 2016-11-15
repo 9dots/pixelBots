@@ -1,6 +1,53 @@
 import gPalette from 'google-material-color-palette-json'
+import {refMethod} from 'vdux-fire'
 import reduce from '@f/reduce'
+import Hashids from 'hashids'
 import _ from 'lodash'
+
+const hashids = new Hashids(
+  'Oranges never ripen in the winter',
+  5,
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789'
+)
+
+function generateID () {
+  return hashids.encode(Math.floor(Math.random() * 10000) + 1)
+}
+
+function * checkForExisting (ref, id) {
+  const snap = yield refMethod({
+    ref,
+    updates: [
+      {method: 'orderByKey'},
+      {method: 'equalTo', value: id},
+      {method: 'once', value: 'value'}
+    ]
+  })
+  return snap.val()
+}
+
+function * createCode (ref) {
+  const id = generateID()
+  const exists = yield checkForExisting(ref, id)
+  if (exists) {
+    yield createCode(ref)
+  } else {
+    return id
+  }
+}
+
+function getRotation (rot) {
+  const circles = Math.floor(Math.abs(rot) / 360)
+  if (rot < 0) {
+    return rot + (360 * (circles + 1))
+  } else {
+    return rot - (360 * circles)
+  }
+}
+
+function getDirection  (rot) {
+  return (getRotation(rot) / 90) % 4
+}
 
 const icons = {
   up: 'arrow_upward',
@@ -10,15 +57,18 @@ const icons = {
   paint: 'brush',
   comment: 'comment',
   loop: 'loop',
-  loop_end: 'loop'
+  loop_end: 'loop',
+  move: 'arrow_upward',
+  turnRight: 'rotate_right',
+  turnLeft: 'rotate_left  '
 }
 
 const colors = {
   up: 'blue',
   right: 'yellow',
-  down: 'pink',
+  down: 'green',
   left: 'red',
-  comment: 'green',
+  comment: '#666',
   loop: 'deepPurple'
 }
 
@@ -88,8 +138,10 @@ function initGame () {
 
 export {
   nameToDirection,
+  getDirection,
   nameToColor,
   nameToIcon,
+  createCode,
   initGame,
   palette,
   isLocal,

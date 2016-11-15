@@ -3,6 +3,7 @@ import {
   moveAnimal
 } from '../../actions'
 
+import {loopAction, loopFn} from '../loop'
 import docs from './docs'
 
 const imageURL = '/animalImages/penguin.png'
@@ -14,6 +15,7 @@ function wrap (id, getState = () => {}) {
   const down = (line) => move(2, line)
   const left = (line) => move(3, line)
   const paint = (line) => paintSquare({id, getPaintColor}, line)
+  const loop = (line, max, fn) => loopAction(loopFn(max, fn))
 
   function move (dir, lineNum) {
     return moveAnimal({id, getLocation: getNewLocation(dir)}, lineNum)
@@ -24,7 +26,8 @@ function wrap (id, getState = () => {}) {
     right,
     down,
     left,
-    paint
+    paint,
+    loop
   }
 }
 

@@ -14,7 +14,6 @@ function render ({props}) {
     running,
     active,
     hasRun,
-    message,
     game,
     left
   } = props
@@ -60,10 +59,6 @@ function render ({props}) {
           active={active}
           animals={animals}/>
       </Block>
-      {message && <ModalMessage
-        header={message.header}
-        body={message.body}lineNumber={activeLine + 1}/>
-      }
     </Block>
   )
 }

@@ -14,6 +14,7 @@ import {
   setAnimalPos,
   animalPaint,
   handleError,
+  animalTurn,
   removeLine,
   animalMove,
   updateLine,
@@ -25,6 +26,7 @@ import {
   swapMode,
   newRoute,
   startRun,
+  setToast,
   stopRun,
   addCode,
   refresh,
@@ -42,6 +44,15 @@ function reducer (state, action) {
           setProp(`animals.${id}.current.location`, state.game, location),
          'animals'
        )
+      }
+    case animalTurn.type:
+      var {id, rot} = action.payload
+      return {
+        ...state,
+        game: arrayAt(
+          setProp(`animals.${id}.current.rot`, state.game, rot),
+          'animals'
+        )
       }
     case animalPaint.type:
       var {id, color} = action.payload
@@ -187,9 +198,12 @@ function reducer (state, action) {
         url: action.payload
       }
     case initializeGame.type:
+      var {game, saveID, gameID} = action.payload
       return {
         ...state,
-        game: action.payload
+        game,
+        saveID,
+        gameID
       }
     case endRun.type:
       return {
@@ -206,7 +220,7 @@ function reducer (state, action) {
           animals: map((animal) => ({
             ...animal,
             current: animal.initial,
-            sequence: typeof(animal.sequence) === 'string' && action.payload === 'icons' ? animal.sequence.split('\n') : animal.sequence.join('\n')
+            sequence: ''
           }), state.game.animals)
         }
       }
@@ -247,6 +261,11 @@ function reducer (state, action) {
           })
         }
       }
+    case setToast.type:
+      return {
+        ...state,
+        toast: action.payload
+      }
   }
   return state
 }
@@ -260,37 +279,5 @@ function arrayAt (obj, at) {
   }, obj)
 }
 
-// case animalTurnRight.type:
-//   var id = action.payload
-//   return {
-//     ...state,
-//     animals: {
-//       ...state.animals,
-//       [id]: {
-//         ...state.animals[id],
-//         current: {
-//           ...state.animals[id].current,
-//           dir: (state.animals[id].current.dir + 1) % 4,
-//           rot: state.animals[id].current.rot + 1
-//         }
-//       }
-//     }
-//   }
-// case animalTurnLeft.type:
-//   var id = action.payload
-//   return {
-//     ...state,
-//     animals: {
-//       ...state.animals,
-//       [id]: {
-//         ...state.animals[id],
-//         current: {
-//           ...state.animals[id].current,
-//           dir: (state.animals[id].current.dir + 3) % 4,
-//           rot: state.animals[id].current.rot - 1
-//         }
-//       }
-//     }
-//   }
 
 export default reducer

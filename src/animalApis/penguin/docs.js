@@ -1,3 +1,4 @@
+import {range} from '../../utils'
 import comment from '../comment'
 
 export default {
@@ -22,8 +23,20 @@ export default {
     description: 'Paint the square the penguin is currently on black.'
   },
   loop: {
-    usage: 'for (var i = 0; i < n; i++) {\n\t\n}',
-    description: 'Repeat the actions inside of the loop.'
+    usage: 'loop(num, function () {\n\t// code to repeat\n})',
+    description: 'Repeat the actions inside of the loop.',
+    args: [{
+      name: 'num',
+      type: 'number',
+      values: range(1, 10),
+      description: 'The number of times to repeat the loop.'
+    },
+    {
+      name: 'fn',
+      type: 'function',
+      values: 'fn',
+      description: 'The function to be repeated'
+    }]
   },
   comment
 }

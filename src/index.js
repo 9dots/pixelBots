@@ -11,6 +11,7 @@ import moveAnimal from './middleware/moveAnimal'
 import location from 'redux-effects-location'
 import firebaseConfig from './firebaseConfig'
 import addCode from './middleware/addCodeMW'
+import saveCode from './middleware/saveCode'
 import scroll from './middleware/scroll'
 import auth from './middleware/auth'
 import effects from 'redux-effects'
@@ -26,10 +27,9 @@ import theme from './theme'
 const epicMiddleware = createEpicMiddleware(rootEpic)
 var app = require('./app').default
 
-let oldState = {}
-
 const initialState = {
-  url: '/',
+  url: '',
+  toast: '',
   active: 0,
   user: {},
   selectedLine: 0,
@@ -52,6 +52,7 @@ const {subscribe, render, replaceReducer} = vdux({
     epicMiddleware,
     scroll,
     addCode,
+    saveCode,
     removeBlock
   ]
 })

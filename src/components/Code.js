@@ -1,18 +1,18 @@
 /** @jsx element */
 
 import CodeComment from './CodeComment'
-import CodeLoop from './CodeLoop'
-import Indent from './Indent'
-import LineNumber from './LineNumber'
 import CodeEndLoop from './CodeEndLoop'
+import LineNumber from './LineNumber'
 import {selectLine} from '../actions'
 import {nameToIcon} from '../utils'
 import element from 'vdux/element'
 import {Block, Box} from 'vdux-ui'
+import {addCode} from '../actions'
+import CodeLoop from './CodeLoop'
 import CodeIcon from './CodeIcon'
 import Outline from './Outline'
+import Indent from './Indent'
 import Cursor from './Cursor'
-import {addCode} from '../actions'
 
 let prevLength = 0
 let lastSelected = 0
@@ -20,9 +20,9 @@ let lastSelected = 0
 function getName (line) {
   if (line.search(/\/\//g) > -1) {
     return 'comment'
-  } else if (line.search(/for\s\(/g) > -1) {
+  } else if (line.search(/^loop\(/g) > -1) {
     return 'loop'
-  } else if (line.trim() === '}') {
+  } else if (line.trim() === '}' || line.trim() === '})') {
     return 'endLoop'
   } else {
     return line.split('\(')[0]
@@ -30,9 +30,9 @@ function getName (line) {
 }
 
 function getIndent (line) {
-  if (line.search(/for\s\(/g) > -1) {
+  if (line.search(/^loop\(/g) > -1) {
     return 1
-  } else if (line.trim() === '}') {
+  } else if (line.trim() === '}' || line.trim() === '})') {
     return -1
   } else {
     return 0
@@ -55,14 +55,14 @@ function render ({props, state}) {
     const addedLine = arr.length > prevLength
     indent += getIndent(line)
 
-    const opts = {lastSelected, addedLine, arr, indent, lineHeight, active, i, type, argument, isActive, selectedLine}
+    const opts = {line, lastSelected, addedLine, arr, indent, lineHeight, active, i, type, argument, isActive, selectedLine}
 
     return (
       <Block id={`code-icon-${i}`} cursor='pointer' onClick={() => handleClick(active, i)}>
         <Cursor h='14px' active={selectedLine === i}/>
         <Block align='center'>
           <LineNumber fs='22px' absolute textAlign='right' numLines={arr.length} lineNum={i + 1} />
-          <Indent w='30px' level={name !== 'loop' ? indent : indent - 1} borderLeft='1px dotted deepPurple'/>
+          <Indent w='30px' level={name !== 'loop' && !waitingForLoop ? indent : indent - 1} borderLeft='1px dotted deepPurple'/>
           {getElement(name, opts)}
         </Block>
       </Block>
@@ -86,7 +86,6 @@ function render ({props, state}) {
         {code}
         <Block w='250px' cursor='pointer' onClick={() => handleClick(active, prevLength)}>
           <Cursor h='18px' active={selectedLine === prevLength}/>
-          <Outline color='black' width='2px' style='dashed' wide h={lineHeight}/>
         </Block>
       </Block>
     </Box>
@@ -96,13 +95,13 @@ function render ({props, state}) {
     yield selectLine(active, idx)
     if (waitingForLoop) {
       yield finishAddLoop()
-      yield addCode(active, `}`, idx)
+      yield addCode(active, `})`, idx)
     }
   }
 }
 
 function getElement (name, opts) {
-  const {lastSelected, selectedLine, addedLine, arr, lineHeight, active, i, type, argument, isActive} = opts
+  const {lastSelected, line, selectedLine, addedLine, arr, lineHeight, active, i, type, argument, isActive} = opts
   let {indent} = opts
   if (name === 'comment') {
     return <CodeComment
@@ -110,7 +109,8 @@ function getElement (name, opts) {
               shouldTransition={!addedLine}
               numLines={arr.length}
               h={lineHeight}
-              bgColor='green'
+              bgColor='#666'
+              line={line}
               animal={active}
               color='#333'
               fs='28px'
@@ -149,7 +149,7 @@ function getElement (name, opts) {
               numLines={arr.length}
               name={name}
               type={type}
-              bgColor={isActive ? '#B43C3C' : '#555'}
+              bgColor={isActive ? '#B43C3C' : '#2C4770'}
               argument={argument}
               fs='28px'
               p='15px'

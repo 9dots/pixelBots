@@ -1,11 +1,14 @@
 /** @jsx element */
 
-import {initializeApp, createNew, refresh} from './actions'
+import {initializeApp, createNew, refresh, saveProgress, setToast} from './actions'
+import HeaderElement from './components/HeaderElement'
 import ModalMessage from './components/ModalMessage'
 import CreateSandbox from './pages/CreateSandbox'
+import {Block, Icon, Text, Toast} from 'vdux-ui'
 import {setUrl} from 'redux-effects-location'
 import {Block, Icon, Text} from 'vdux-ui'
 import {signOut} from './middleware/auth'
+import Transition from 'vdux-transition'
 import Header from './components/Header'
 import {Button} from 'vdux-containers'
 import Create from './pages/Create'
@@ -23,13 +26,16 @@ const endLogin = createAction('END_LOGIN')
 const initialState = () => ({loggingIn: false})
 
 const router = enroute({
-  '/': homePage,
-  '/play/:gameID': (params, props) => (
-    <Game key={params.gameID} {...props} left='60px' gameID={params.gameID}/>
-  ),
+  '/play/:gameID': (params, props) => {
+    return <Game key={params.gameID} {...props} left='60px' gameID={params.gameID}/>
+  },
+  '/saved/:saveID': (params, props) => {
+    return <Game key={params.gameID} {...props} left='60px' gameID={params.gameID} saveID={params.saveID}/>
+  },
   '/:gameID/create/:slug': ({slug, gameID}, props) => (
     <Create left='60px' gameID={gameID} params={slug} {...props} />
-  )
+  ),
+  '/': homePage
 })
 
 function homePage (params, props) {
@@ -41,45 +47,25 @@ function onCreate () {
 }
 
 function render ({props, state, local}) {
-  const {message, user} = props
   const {loggingIn} = state
+  const {message, url, game, saveID, gameID, toast, user} = props
+  const {animals} = game
+
   return (
     <Block tall wide>
       <Header w='60px' bgColor='primary' top='0' left='0'>
-        <Block mt='10px' cursor='pointer' onClick={[() => setUrl('/'), refresh]} relative>
-          <Block
-            h='40px'
-            w='40px'
-            mb='10px'
-            display='inline-block'
-            bgColor='transparent'
-            cursor='pointer'
-            background={'url(/animalImages/zebra.jpg)'}
-            backgroundSize='contain'/>
-          <Text w='150px' absolute color='white' fs='m' top='10px' left='63px'>Pixel Bots</Text>
-        </Block>
-        <Block relative cursor='pointer' hoverProps={{highlight: true}} onClick={createNew}>
-          <Block
-            h='40px'
-            borderWidth='0'
-            hoverProps={{color: 'white'}}
-            cursor='pointer'
-            bgColor='transparent'
-            color='#e5e5e5'
-            my='10px'
-            w='40px'
-            align='center center'>
-            <Icon transition={'all .3s ease-in-out'} fs='30px' name='note_add'/>
-          </Block>
-          <Text w='150px' absolute color='white' fs='m' top='10px' left='63px'>Challenge</Text>
-        </Block>
-        {!user || user.isAnonymous
-          ? <Button onClick={local(startLogin)}>Login</Button>
-          : <Button onClick={signOut}>Logout</Button>
-        }
+        <HeaderElement background='url(/animalImages/zebra.jpg)' handleClick={[() => setUrl('/'), refresh]} text='Pixel Bots'/>
+        <HeaderElement handleClick={createNew} text='Challenge' icon='note_add'/>
+        {url.search(/\/(play|saved)\//gi) > -1 && (
+          <HeaderElement
+            handleClick={() => saveProgress(animals, gameID, saveID)}
+            absolute
+            bottom='10px'
+            text='Save'
+            icon='save'/>)}
       </Header>
       {
-        router(props.url, props)
+        url && router(url, props)
       }
       {message && <ModalMessage
         header={message.header}
@@ -88,6 +74,11 @@ function render ({props, state, local}) {
       {
         loggingIn && <Auth handleDismiss={local(endLogin)}/>
       }
+      <Transition>
+        {toast !== '' && <Toast minHeight='none' w='200px' textAlign='center' bgColor='#333' color='white' top='none' bottom='8px' key='0' onDismiss={() => setToast('')}>
+          <Text>{toast}</Text>
+        </Toast>}
+      </Transition>
     </Block>
   )
 }
