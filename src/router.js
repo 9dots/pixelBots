@@ -73,7 +73,7 @@ function render ({props, state, local}) {
           </Block>
           <Text w='150px' absolute color='white' fs='m' top='10px' left='63px'>Challenge</Text>
         </Block>
-        {user.isAnonymous
+        {!user || user.isAnonymous
           ? <Button onClick={local(startLogin)}>Login</Button>
           : <Button onClick={signOut}>Logout</Button>
         }
@@ -86,7 +86,7 @@ function render ({props, state, local}) {
         body={message.body}/>
       }
       {
-        loggingIn && <Auth handleDismiss={() => local(endLogin)}/>
+        loggingIn && <Auth handleDismiss={local(endLogin)}/>
       }
     </Block>
   )

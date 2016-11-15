@@ -1,50 +1,41 @@
 import element from 'vdux/element'
 import firebase from 'firebase'
 import config from '../firebaseConfig'
-import {Modal, ModalBody} from 'vdux-ui'
+import {Block, Flex, Modal, ModalBody, ModalHeader, Text} from 'vdux-ui'
+import {IconButton} from 'vdux-containers'
+import {signInWithProvider} from '../middleware/auth'
+import Button from './Button'
 
 // Copy this from the Firebase Console.
-
-var authUi
-
-function onCreate ({props}) {
-  authUi = new firebaseui.auth.AuthUI(firebase.auth());
-  const {onSignIn} = props
-  const uiConfig = {
-    'callbacks': {
-      'signInSuccess': function(user) {
-        if (onSignIn) {
-          onSignIn(user)
-        }
-        return false
-      }
-    },
-    'signInOptions': [
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      firebase.auth.EmailAuthProvider.PROVIDER_ID
-    ]
-  }
-  setTimeout(() => authUi.start('#firebaseui-auth', uiConfig))
-}
-
-function onRemove () {
-  console.log('remove')
-  authUi.reset()
-}
 
 function render ({props}) {
   const {handleDismiss} = props
   return (
-    <Modal onDismiss={handleDismiss()} overlayProps={{top: '0'}}>
-      <ModalBody bgColor='#e5e5e5'>
-        <div id="firebaseui-auth"/>
+    <Modal w='280px' onDismiss={handleDismiss} overlayProps={{top: '0'}}>
+      <ModalHeader bgColor='#e5e5e5' pt='1em' pb='0' fs='m'>Sign In</ModalHeader>
+      <ModalBody p='20px' bgColor='#e5e5e5'>
+        <Flex column>
+          <Flex column>
+            <Button textAlign='right' bgColor='#DD4B39' onClick={() => handleSignIn('google')}  mb='10px' px='15px'  fs='s'>
+              <img style={{position: 'absolute', left:'10px', height:'24px', width:'24px'}} src='/authImages/google.png'/>
+              <Block relative left='10px'><Text>Sign in with Google</Text></Block>
+            </Button>
+            <Button textAlign='right' bgColor='#4267B2' onClick={() => handleSignIn('facebook')}  mb='10px' px='15px'  fs='s'>
+              <img style={{position: 'absolute', left:'8px', height:'24px', width:'24px'}} src='/authImages/facebook.png'/>
+              <Block relative left='19px'><Text>Sign in with Facebook</Text></Block>
+            </Button>
+          </Flex>
+        </Flex>
       </ModalBody>
     </Modal>
   )
+
+  function * handleSignIn (provider) {
+    yield handleDismiss()
+    yield signInWithProvider(provider)
+  }
 }
 
 export default {
-  onCreate,
-  onRemove,
   render
 }

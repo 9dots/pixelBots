@@ -13,7 +13,7 @@ body {
   height: 100vh;
   margin: 0;
   background-color: white;
-  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-family: "Roboto", Roboto, sans-serif;
 }
 
 @keyframes fade-in {
