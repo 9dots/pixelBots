@@ -16,7 +16,7 @@ const initialState = ({local}) => ({
 	selected: [],
 	actions: {
 		setTheCards: local((items) => setCards(items)),
-		lToggleLoading: local(() => doneLoading())
+		lToggleLoading: local(() => doneLoading()),
 	}
 })
 

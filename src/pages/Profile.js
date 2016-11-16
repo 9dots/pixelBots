@@ -1,30 +1,50 @@
-import element from 'vdux/element'
-import {Avatar, Block, Card, Flex, Image, Text} from 'vdux-ui'
-import Tab from '../components/Tab'
-import createAction from '@f/create-action'
 import IndeterminateProgress from '../components/IndeterminateProgress'
+import {Avatar, Block, Card, Flex, Image, Text} from 'vdux-ui'
+import ChallengeFeed from './ChallengeFeed'
 import SelectToolbar from './SelectToolbar'
+import createAction from '@f/create-action'
+import PlaylistFeed from './PlaylistFeed'
 import ProfileTabs from './ProfileTabs'
-import Feed from './Feed'
+import Tab from '../components/Tab'
+import {refMethod} from 'vdux-fire'
+import element from 'vdux/element'
 
 const changeTab = createAction('PROFILE: CHANGE_TAB')
 const toggleSelected = createAction('PROFILE: TOGGLE_SELECTED')
 const clearSelected = createAction('PROFILE: CLEAR_SELECTED')
 const toggleSelectMode = createAction('PROFLIE: TOGGLE_SELECT_MODE')
+const setPlaylists = createAction('PROFILE: SET_PLAYLISTS')
 
 const initialState = ({local}) => ({
-	tab: 'playlists',
+	tab: 'games',
 	selected: [],
 	actions: {
 		toggleSelected: local((key) => toggleSelected(key)),
 		clearSelected: local(() => clearSelected()),
-		toggleSelectMode: local(() => toggleSelectMode())
+		toggleSelectMode: local(() => toggleSelectMode()),
+		setPlaylists: local((items) => setPlaylists(items))
 	}
 })
 
+function * onUpdate (prev, {props, state}) {
+	if (prev.props.user.uid !== props.user.uid) {
+		const items = yield refMethod({
+	    ref: `/playlists/`,
+	    updates: [
+	      {method: 'orderByChild', value: 'creatorID'},
+	      {method: 'equalTo', value: props.user.uid},
+	      {method: 'limitToFirst', value: 50},
+	      {method: 'once', value: 'value'}
+	    ]
+	  })
+	  console.log(items)
+		yield state.actions.setPlaylists(items.val())
+  }
+}
+
 function render ({props, state, local}) {
 	const {user} = props
-	const {tab, actions, selected} = state
+	const {tab, actions, selected, playlists} = state
 	const selectMode = selected.length > 0
 	if (!user.uid) return <IndeterminateProgress/>
 
@@ -39,9 +59,21 @@ function render ({props, state, local}) {
 				</Block>
 				{!selectMode
 					? <ProfileTabs tab={tab} changeTab={local((val) => changeTab(val))} />
-					: <SelectToolbar uid={user.uid} clearSelected={actions.clearSelected} num={selected.length}/>}
+					: <SelectToolbar
+							selected={selected}
+							playlists={playlists}
+							uid={user.uid}
+							clearSelected={actions.clearSelected}
+							num={selected.length}/>}
 			</Card>
-			<Feed selected={selected} toggleSelected={actions.toggleSelected} uid={user.uid} cat={tab}/>
+			{tab === 'games' && <ChallengeFeed
+				selected={selected}
+				toggleSelected={actions.toggleSelected}
+				uid={user.uid}
+				cat={tab}/>}
+			{tab === 'playlists' && <PlaylistFeed
+				uid={user.uid}
+				cat={tab}/>}
 		</Flex>
 	)
 }
@@ -63,6 +95,11 @@ function reducer (state, action) {
 				...state,
 				selected: []
 			}
+		case setPlaylists.type:
+			return {
+				...state,
+				playlists: action.payload
+			}
 	}
 	return state
 }
@@ -77,6 +114,7 @@ function maybeAddToArray (val, arr) {
 
 export default {
 	initialState,
+	onUpdate,
 	reducer,
 	render
 }
