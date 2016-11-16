@@ -33,7 +33,7 @@ function * onCreate ({props, local, state}) {
     var {animals, gameID} = saveGame.val()
   }
   const playSnapshot = yield once({ref: `/play/${gameID}`})
-  const gameCode = playSnapshot.val()
+  const gameCode = playSnapshot.val().gameID
   const gameSnapshot = yield once({ref: `/games/${gameCode}`})
   const game = gameSnapshot.val()
   if (!animals) {
@@ -71,8 +71,6 @@ function render ({props, state, local}) {
   if (loading) {
     return <IndeterminateProgress/>
   }
-
-  console.log('render')
 
   return (
     <Block bgColor='#e5e5e5' relative w='calc(100% - 60px)' tall left={left}>

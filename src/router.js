@@ -6,8 +6,8 @@ import ModalMessage from './components/ModalMessage'
 import CreateSandbox from './pages/CreateSandbox'
 import {Block, Icon, Text, Toast} from 'vdux-ui'
 import {setUrl} from 'redux-effects-location'
-import {Block, Icon, Text} from 'vdux-ui'
 import {signOut} from './middleware/auth'
+import Profile from './pages/Profile'
 import Transition from 'vdux-transition'
 import Header from './components/Header'
 import {Button} from 'vdux-containers'
@@ -39,6 +39,9 @@ const router = enroute({
 })
 
 function homePage (params, props) {
+  if (props.user && !props.user.isAnonymous) {
+    return <Profile user={props.user}/>
+  }
   return <HomePage left='60px' {...props} />
 }
 
@@ -56,6 +59,10 @@ function render ({props, state, local}) {
       <Header w='60px' bgColor='primary' top='0' left='0'>
         <HeaderElement background='url(/animalImages/zebra.jpg)' handleClick={[() => setUrl('/'), refresh]} text='Pixel Bots'/>
         <HeaderElement handleClick={createNew} text='Challenge' icon='note_add'/>
+        {!user || user.isAnonymous
+          ? <HeaderElement absolute bottom='10px' handleClick={local(startLogin)} text='Sign In' icon='person_outline'/>
+          : <HeaderElement absolute bottom='10px' handleClick={signOut} text='Sign Out' icon='exit_to_app'/>
+        }
         {url.search(/\/(play|saved)\//gi) > -1 && (
           <HeaderElement
             handleClick={() => saveProgress(animals, gameID, saveID)}

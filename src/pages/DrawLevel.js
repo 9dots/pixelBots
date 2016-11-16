@@ -30,6 +30,7 @@ const hashids = new Hashids(
 const setFillColor = createAction('SET_FILL_COLOR')
 const addPainted = createAction('ADD_PAINTED')
 const showID = createAction('SHOW_ID')
+const hasSaved = createAction('HAS_SAVED')
 
 const modalFooter = (
   <Block>
@@ -48,8 +49,10 @@ function initialState ({props, local}) {
     color: 'black',
     painted: {start: whiteOut(levelSize), finished: whiteOut(levelSize)},
     show: '',
+    hasSaved: false,
     actions: {
-      displayID: local((id) => showID(id))
+      displayID: local((id) => showID(id)),
+      markSaved: local((gameID) => hasSaved(gameID))
     }
   }
 }
@@ -65,9 +68,9 @@ function whiteOut (size) {
 }
 
 function render ({props, state, local}) {
-  const {newGame, gameID} = props
+  const {newGame, gameID, user} = props
   const {color, painted, show, actions} = state
-  const {displayID} = actions
+  const {displayID, markSaved} = actions
 
   if (newGame.loading) {
     return <IndeterminateProgress/>
@@ -154,12 +157,13 @@ function render ({props, state, local}) {
     </Block>
   )
 
-  function updateGame () {
-    return refMethod({
+  function * updateGame () {
+    yield refMethod({
       ref: `/games/${gameID}`,
       updates: {
-        method: 'update',
+        method: 'set',
         value: {
+          ...game,
           initialPainted: painted.start,
           painted: painted.start,
           targetPainted: painted.finished
@@ -173,9 +177,10 @@ function render ({props, state, local}) {
     const code = yield createCode('/play')
     yield refMethod({
       ref: `/play/${code}`,
-      updates: {method: 'set', value: gameID}
+      updates: {method: 'set', value: {gameID, creatorID: user.uid}}
     })
     yield displayID(code)
+    yield markSaved()
   }
 }
 
@@ -183,6 +188,12 @@ function convertToStar (animal) {
   return {
     type: 'star',
     current: animal.initial
+  }
+}
+
+function * onRemove ({props, state}) {
+  if (state.hasSaved) {
+    yield refMethod({ref: `/drafts/${props.gameID}`, updates: {method: 'remove'}})
   }
 }
 
@@ -208,12 +219,18 @@ function reducer (state, action) {
         ...state,
         show: action.payload
       }
+    case hasSaved.type:
+      return {
+        ...state,
+        hasSaved: true
+      }
   }
   return state
 }
 
 export default {
   initialState,
+  onRemove,
   reducer,
   render
 }

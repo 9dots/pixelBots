@@ -23,14 +23,14 @@ function render ({props}) {
   }
 
   return (
-    <Block absolute m='0 auto' ml='60px' top={props.top} tall w='calc(100% - 60px)'>
+    <Block absolute m='0 auto' ml='60px' top={props.top} tall w='calc(100% - 60px)' overflowY='auto'>
       {router(props.params, props)}
     </Block>
   )
 }
 
 export default fire((props) => ({
-  newGame: `games/${props.gameID}`
+  newGame: `drafts/${props.gameID}`
 }))({
   render
 })

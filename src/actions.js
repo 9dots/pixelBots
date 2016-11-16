@@ -101,7 +101,7 @@ function * saveProgress (animals, gameID, saveID) {
 }
 
 function * createNew () {
-  const {key} = yield refMethod({updates: {method: 'push', value: ' '}, ref: '/games'})
+  const {key} = yield refMethod({updates: {method: 'push', value: ' '}, ref: '/drafts'})
   yield setUrl(`/${key}/create/animal`)
 }
 

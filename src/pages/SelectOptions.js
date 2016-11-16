@@ -15,6 +15,7 @@ import OptionsForm from './OptionsForm'
 const setAnimalPosition = createAction('SET_ANIMAL_POSITION')
 const setInputType = createAction('SET_INPUT_TYPE')
 const setSquares = createAction('SET_SQUARES')
+const setTitle = createAction('SET_TITLE')
 
 function initialState ({props}) {
   return {
@@ -25,7 +26,7 @@ function initialState ({props}) {
 }
 
 function render ({props, state, local}) {
-  const {size, inputType, animal} = state
+  const {size, inputType, animal, title} = state
   const {newGame, gameID, handleSave = save} = props
 
   if (newGame.loading) {
@@ -47,12 +48,13 @@ function render ({props, state, local}) {
           handleSave={() => handleSave({size, inputType, myAnimal})}
           setInputType={local((type) => setInputType(type))}
           setSquares={local((value) => setSquares(value))}
+          setTitle={local((value) => setTitle(value))}
           setAnimalPosition={local(() => setAnimalPosition({
             type: myAnimal.type,
             coords: undefined
           }))}>
           <Block align='flex-start center' my='20px'>
-            <Numbered complete={myAnimal.type && myAnimal.current.location}>3</Numbered>
+            <Numbered complete={myAnimal.type && myAnimal.current.location}>4</Numbered>
             <Block style={{flex: 1}}>
               <Text fontWeight='800'>Click the grid to set the starting position</Text>
             </Block>
@@ -77,11 +79,12 @@ function render ({props, state, local}) {
 
   function * save () {
     yield refMethod({
-      ref: `/games/${gameID}`,
+      ref: `/drafts/${gameID}`,
       updates: {
         method: 'update',
         value: {
           inputType,
+          title,
           levelSize: [size, size],
           'animals/0': myAnimal
         }
@@ -108,6 +111,11 @@ function reducer (state, action) {
       return {
         ...state,
         animal: coords ? setAnimal(coords, type) : {}
+      }
+    case setTitle.type:
+      return {
+        ...state,
+        title: action.payload
       }
   }
   return state

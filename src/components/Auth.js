@@ -12,7 +12,7 @@ function render ({props}) {
   const {handleDismiss} = props
   return (
     <Modal w='280px' onDismiss={handleDismiss} overlayProps={{top: '0'}}>
-      <ModalHeader bgColor='#e5e5e5' pt='1em' pb='0' fs='m'>Sign In</ModalHeader>
+      <ModalHeader bgColor='#e5e5e5' pt='1em' pb='0' fs='m' color='#333' fontWeight='800'>Sign In</ModalHeader>
       <ModalBody p='20px' bgColor='#e5e5e5'>
         <Flex column>
           <Flex column>

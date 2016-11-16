@@ -16,15 +16,17 @@ const inputProps = {
 
 function render ({props, children}) {
   const {
-    inputType,
-    game,
-    size,
-    valid,
-    animal,
-    handleSave,
+    setAnimalPosition,
     setInputType,
+    inputType,
+    handleSave,
     setSquares,
-    setAnimalPosition
+    setTitle,
+    animal,
+    valid,
+    title = '',
+    size,
+    game
   } = props
 
   const dropdownBtn = (
@@ -34,6 +36,8 @@ function render ({props, children}) {
     </Button>
   )
 
+  const titleValidator = validator.title(title)
+
   return (
     <Form
       validate={validator.game}
@@ -41,7 +45,19 @@ function render ({props, children}) {
       cast={cast}
       onSubmit={() => handleSave({size, inputType, animal})}>
       <Block align='flex-start'>
-        <Numbered complete={inputType && inputType !== 'choose'}>1</Numbered>
+        <Numbered complete={title && titleValidator.valid}>1</Numbered>
+        <Block style={{flex: 1}}>
+          <Text lineHeight='40px' fontWeight='800'>title</Text>
+          <Input
+            h='42px'
+            name='title'
+            inputProps={inputProps}
+            value={title}
+            onKeyUp={(e) => setTitle(e.target.value)}/>
+        </Block>
+      </Block>
+      <Block align='flex-start'>
+        <Numbered complete={inputType && inputType !== 'choose'}>2</Numbered>
         <Block style={{flex: 1}}>
           <Text lineHeight='40px' fontWeight='800'>input type</Text>
           <CodeSelectDropdown
@@ -52,7 +68,7 @@ function render ({props, children}) {
         </Block>
       </Block>
       <Block align='flex-start' mt='20px'>
-        <Numbered complete={valid.valid}>2</Numbered>
+        <Numbered complete={valid.valid}>3</Numbered>
         <Block style={{flex: 1}}>
           <Text lineHeight='40px' fontWeight='800'>grid size</Text>
           <Input
