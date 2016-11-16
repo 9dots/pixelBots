@@ -72,7 +72,7 @@ function render ({props, state, local}) {
 	            editMode
 	            animals={[]}
 	            painted={item.targetPainted}
-	            levelSize='250px'
+	            levelSize='150px'
 	            w='auto'
 	            h='auto'
 	            numRows={item.levelSize[0]}
