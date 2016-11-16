@@ -13,6 +13,7 @@ const setCards = createAction('FEED: SET_CARDS')
 const initialState = ({local}) => ({
 	loading: true,
 	cards: [],
+	selected: [],
 	actions: {
 		setTheCards: local((items) => setCards(items)),
 		lToggleLoading: local(() => doneLoading())
@@ -51,40 +52,57 @@ function * onUpdate (prev, {props, state}) {
   }
 }
 
-function render ({props, state}) {
+function render ({props, state, local}) {
 	const {items, loading} = state
+	const {selected, toggleSelected} = props
 	if (loading) {
 		return <IndeterminateProgress/>
 	}
 	return (
 		<Grid itemsPerRow='3'>
-			{reduce((cur, item) => cur.concat(
-				<Card p='20px' m='15px' color='#333'>
-					<Level
-            editMode
-            animals={[]}
-            painted={item.targetPainted}
-            levelSize='250px'
-            w='auto'
-            h='auto'
-            numRows={item.levelSize[0]}
-            numColumns={item.levelSize[1]}/>
-          <Block mt='15px' column align='center center'>
-	          <Block mb='10px'>
-	          	<Text fs='m' fontWeight='300'>{item.title}</Text>
+			{reduce((cur, item, key) => cur.concat(
+				<Block bgColor='#f5f5f5' m='15px' relative>
+					<Card
+						transform={selected.indexOf(key) > -1 ? 'scale3d(0.75, 0.81, 1)' : ''}
+						transition='transform .3s ease-in-out'
+						relative
+						p='20px'
+						color='#333'>
+						<Level
+	            editMode
+	            animals={[]}
+	            painted={item.targetPainted}
+	            levelSize='250px'
+	            w='auto'
+	            h='auto'
+	            numRows={item.levelSize[0]}
+	            numColumns={item.levelSize[1]}/>
+	          <Block mt='15px' column align='center center'>
+		          <Block mb='10px'>
+		          	<Text fs='m' fontWeight='300'>{item.title}</Text>
+		          </Block>
+		          <Block fs='s'>
+		          	<Block align='start center'>
+		          		<Icon mr='10px' name='keyboard'/>
+		          		<Text fontWeight='800'>{item.inputType}</Text>
+		          	</Block>
+		          	<Block align='start center'>
+		          		<Icon mr='10px' name='info_outline'/>
+		          		<Text fontWeight='800'>{item.animals[0].type}</Text>
+		          	</Block>
+		          </Block>
 	          </Block>
-	          <Block fs='s'>
-	          	<Block align='start center'>
-	          		<Icon mr='10px' name='keyboard'/>
-	          		<Text fontWeight='800'>{item.inputType}</Text>
-	          	</Block>
-	          	<Block align='start center'>
-	          		<Icon mr='10px' name='info_outline'/>
-	          		<Text fontWeight='800'>{item.animals[0].type}</Text>
-	          	</Block>
-	          </Block>
-          </Block>
-				</Card>), [], items)}
+					</Card>
+					<Icon
+	        	cursor='pointer'
+	        	onClick={() => toggleSelected(key)}
+	        	absolute
+	        	color={selected.indexOf(key) > -1 ? 'blue' : ''}
+	        	right='5px'
+	        	bottom='5px'
+	        	opacity={selected.indexOf(key) > -1 ? '1' : '0.5'}
+	        	name='check_circle'/>
+				</Block>), [], items)}
 		</Grid>
 	)
 }
