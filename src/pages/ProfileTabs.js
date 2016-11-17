@@ -5,7 +5,7 @@ import {Block, Flex} from 'vdux-ui'
 function render ({props}) {
 	const {changeTab, tab} = props
 	return (
-		<Flex bgColor='#f5f5f5' wide relative bottom='0' align='space-around' color='lightBlue' pt='10px' h='60px'>
+		<Flex borderBottom='1px solid #999' wide relative bottom='0' color='lightBlue' h='42px'>
 			<Tab
 				name='challenges'
 				fs='s'
@@ -13,12 +13,13 @@ function render ({props}) {
 				bgColor='#f5f5f5'
 				lineHeight='2.6em'
 				active={tab === 'games'}
-				fontWeight='300'
+				fontWeight='800'
 				highlight='false'
+				color={tab === 'games' ? '#333' : '#666'}
 				hoverProps={tab !== 'games' && {color: '#666'}}
 				p='0'
 				handleClick={() => changeTab('games')}>
-				{tab === 'games' && <Block absolute bgColor='red' wide  bottom='0' h='6px'/>}
+				{tab === 'games' && <Block absolute bgColor='red' wide  bottom='-1px' h='6px'/>}
 			</Tab>
 			<Tab
 				name='playlists'
@@ -27,12 +28,13 @@ function render ({props}) {
 				bgColor='#f5f5f5'
 				lineHeight='2.6em'
 				active={tab === 'playlists'}
-				fontWeight='300'
+				fontWeight='800'
 				highlight='false'
+				color={tab === 'playlists' ? '#333' : '#666'}
 				hoverProps={tab !== 'playlists' && {color: '#666'}}
 				p='0'
 				handleClick={() => changeTab('playlists')}>
-				{tab === 'playlists' && <Block absolute bgColor='lightBlue' wide  bottom='0' h='6px'/>}
+				{tab === 'playlists' && <Block absolute bgColor='lightBlue' wide  bottom='-1px' h='6px'/>}
 			</Tab>
 			<Tab
 				name='drafts'
@@ -41,12 +43,13 @@ function render ({props}) {
 				bgColor='#f5f5f5'
 				lineHeight='2.6em'
 				active={tab === 'drafts'}
-				fontWeight='300'
+				fontWeight='800'
 				highlight='false'
+				color={tab === 'drafts' ? '#333' : '#666'}
 				hoverProps={tab !== 'drafts' && {color: '#666'}}
 				p='0'
 				handleClick={() => changeTab('drafts')}>
-				{tab === 'drafts' && <Block absolute bgColor='yellow' wide  bottom='0' h='6px'/>}
+				{tab === 'drafts' && <Block absolute bgColor='yellow' wide  bottom='-1px' h='6px'/>}
 			</Tab>
 		</Flex>
 	)

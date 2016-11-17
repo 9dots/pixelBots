@@ -4,7 +4,10 @@ import {Dropdown, Input, MenuItem} from 'vdux-containers'
 import Button from '../components/Button'
 import {refMethod} from 'vdux-fire'
 import {createCode} from '../utils'
+import {union} from 'lodash'
 import reduce from '@f/reduce'
+import sleep from '@f/sleep'
+import {setToast} from '../actions'
 import createAction from '@f/create-action'
 
 const setModal = createAction('SELECT TOOLBAR: SET_MODAL')
@@ -32,22 +35,22 @@ const initialState = () => ({
 function render ({props, local, state}) {
 	const {num, uid, selected, clearSelected, playlists=[]} = props
 	const {modal, playlistName} = state
-
-	console.log(modal, playlistName)
-
 	return (
-		<Flex p='20px' color='white' wide h='60px' bgColor='red'>
+		<Flex px='20px' color='white' wide h='42px' bgColor='red' align='start center'>
 			<Block flex align='start center'>
 				<Icon cursor='pointer' mr='20px' name='close' onClick={clearSelected}/>
 				<Text fontWeight='800'>{num} selected</Text>
 			</Block>
-			<Block>
-				<Dropdown zIndex='999' btn={<Icon cursor='pointer' name='add'/>}>
+			<Block align='center center' mr='1em'>
+				<Dropdown zIndex='999' btn={<Icon mt='4px' cursor='pointer' name='add'/>}>
 					<Block py='10px' w='150px'>
 						<MenuItem fontWeight='300' wide onClick={local(setModal)}>New Playlist</MenuItem>
-						{reduce((cur, playlist) => cur.concat(<MenuItem wide>{playlist.name}</MenuItem>), [], playlists)}
+						{reduce((cur, playlist, key) => cur.concat(<MenuItem onClick={() => addToPlaylist(key, playlist.name)} wide>{playlist.name}</MenuItem>), [], playlists)}
 					</Block>
 				</Dropdown>
+			</Block>
+			<Block align='center center'>
+				<Icon cursor='pointer' name='delete'/>
 			</Block>
 			{modal && <Modal color='#333' onDismiss={local(clearModal)} overlayProps={modalProps}>
 				<ModalHeader py='1em'>Create a Playlist</ModalHeader>
@@ -77,11 +80,10 @@ function render ({props, local, state}) {
 				}
 			}
 		})
-		yield addToPlaylist(code)
-		yield clearSelected()
+		yield addToPlaylist(code, playlistName)
 	}
 
-	function * addToPlaylist (code) {
+	function * addToPlaylist (code, name) {
 		yield refMethod ({
 			ref: `/playlists/${code}`,
 			updates: {
@@ -90,14 +92,19 @@ function render ({props, local, state}) {
 					if (!val) {
 						return 0
 					} else {
+						const sequence = val.sequence ? union(val.sequence, selected) : selected
 						return {
 							...val,
-							sequence: selected
+							sequence
 						}
 					}
 				}
 			}
 		})
+		yield setToast(`${selected.length} added to ${name}`)
+		yield clearSelected()
+		yield sleep(3000)
+		yield setToast('')
 	}
 }
 

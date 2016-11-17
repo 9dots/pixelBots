@@ -6,14 +6,13 @@ import createAction from '@f/create-action'
 import PlaylistFeed from './PlaylistFeed'
 import ProfileTabs from './ProfileTabs'
 import Tab from '../components/Tab'
-import {refMethod} from 'vdux-fire'
+import fire, {refMethod} from 'vdux-fire'
 import element from 'vdux/element'
 
 const changeTab = createAction('PROFILE: CHANGE_TAB')
 const toggleSelected = createAction('PROFILE: TOGGLE_SELECTED')
 const clearSelected = createAction('PROFILE: CLEAR_SELECTED')
 const toggleSelectMode = createAction('PROFLIE: TOGGLE_SELECT_MODE')
-const setPlaylists = createAction('PROFILE: SET_PLAYLISTS')
 
 const initialState = ({local}) => ({
 	tab: 'games',
@@ -21,58 +20,46 @@ const initialState = ({local}) => ({
 	actions: {
 		toggleSelected: local((key) => toggleSelected(key)),
 		clearSelected: local(() => clearSelected()),
-		toggleSelectMode: local(() => toggleSelectMode()),
-		setPlaylists: local((items) => setPlaylists(items))
+		toggleSelectMode: local(() => toggleSelectMode())
 	}
 })
 
-function * onUpdate (prev, {props, state}) {
-	if (prev.props.user.uid !== props.user.uid) {
-		const items = yield refMethod({
-	    ref: `/playlists/`,
-	    updates: [
-	      {method: 'orderByChild', value: 'creatorID'},
-	      {method: 'equalTo', value: props.user.uid},
-	      {method: 'limitToFirst', value: 50},
-	      {method: 'once', value: 'value'}
-	    ]
-	  })
-	  console.log(items)
-		yield state.actions.setPlaylists(items.val())
-  }
-}
-
 function render ({props, state, local}) {
-	const {user} = props
-	const {tab, actions, selected, playlists} = state
+	const {playlists, user, mine} = props
+	const {tab, actions, selected} = state
 	const selectMode = selected.length > 0
-	if (!user.uid) return <IndeterminateProgress/>
+	if (playlists.loading) return <IndeterminateProgress/>
 
 	return (
-    <Flex py='20px' relative m='0 auto' column align='start center' minHeight='100%' w='96%'>
-			<Card relative w='80%' bgColor='white' color='#333' fontWeight='800'>
-				<Block align='start center' p='20px'>
-					<Avatar boxShadow='0 0 1px 2px rgba(0,0,0,0.2)' h='70px' w='70px' src={user.photoURL || user.providerData[0].photoURL}/>
-					<Block ml='1em'>
-						<Text fontWeight='800' fs='l'>{user.displayName || user.providerData[0].displayName}</Text>
+    <Flex p='20px' relative left='60px' column align='start' minHeight='100%' w='96%'>
+			<Block relative wide color='#333' fontWeight='800'>
+				<Block align='start center' pb='10px' ml='1em'>
+					<Avatar boxShadow='0 0 1px 2px rgba(0,0,0,0.2)' h='70px' w='70px' src={user.photoURL}/>
+					<Block relative ml='1em'>
+						<Text display='block' fontWeight='300' fs='xs'>USER</Text>
+						<Text display='block' fontWeight='500' fs='xl'>{user.displayName}</Text>
 					</Block>
 				</Block>
 				{!selectMode
 					? <ProfileTabs tab={tab} changeTab={local((val) => changeTab(val))} />
 					: <SelectToolbar
 							selected={selected}
-							playlists={playlists}
+							playlists={playlists.value}
 							uid={user.uid}
+							mine={mine}
 							clearSelected={actions.clearSelected}
 							num={selected.length}/>}
-			</Card>
+			</Block>
 			{tab === 'games' && <ChallengeFeed
 				selected={selected}
 				toggleSelected={actions.toggleSelected}
 				uid={user.uid}
+				mine={mine}
 				cat={tab}/>}
 			{tab === 'playlists' && <PlaylistFeed
+				items={playlists.value}
 				uid={user.uid}
+				mine={mine}
 				cat={tab}/>}
 		</Flex>
 	)
@@ -95,11 +82,6 @@ function reducer (state, action) {
 				...state,
 				selected: []
 			}
-		case setPlaylists.type:
-			return {
-				...state,
-				playlists: action.payload
-			}
 	}
 	return state
 }
@@ -112,9 +94,17 @@ function maybeAddToArray (val, arr) {
 	}
 }
 
-export default {
+export default fire((props) => ({
+  playlists: {
+  	ref: `/playlists/`,
+    updates: [
+      {method: 'orderByChild', value: 'creatorID'},
+      {method: 'equalTo', value: props.user.uid},
+      {method: 'limitToFirst', value: 50}
+    ]
+  }
+}))({
 	initialState,
-	onUpdate,
 	reducer,
 	render
-}
+})

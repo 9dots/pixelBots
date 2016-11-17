@@ -1,86 +1,69 @@
 import IndeterminateProgress from '../components/IndeterminateProgress'
+import {Block, Card, Flex, Menu, Icon, Grid, Text} from 'vdux-ui'
 import createAction from '@f/create-action'
-import {Block, Card, Icon, Grid, Text} from 'vdux-ui'
+import PlaylistView from './PlaylistView'
+import {MenuItem} from 'vdux-containers'
 import Level from '../components/Level'
 import {refMethod} from 'vdux-fire'
 import element from 'vdux/element'
 import reduce from '@f/reduce'
 
-const doneLoading = createAction('PLAYLIST FEED: DONE_LOADING')
-const toggleLoading = createAction('PLAYLIST FEED: TOGGLE_LOADING')
-const setCards = createAction('PLAYLIST FEED: SET_CARDS')
+const selectActivePlaylist = createAction('PLAYLIST FEED: SELECT ACTIVE PLAYLIST')
 
-const initialState = ({local}) => ({
-	loading: true,
-	cards: [],
-	selected: [],
+const initialState = ({props, local}) => ({
+	active: Object.keys(props.items)[0],
 	actions: {
-		setTheCards: local((items) => setCards(items)),
-		lToggleLoading: local(() => doneLoading()),
+		selectActivePlaylist: local((val) => selectActivePlaylist(val))
 	}
 })
 
-function * onCreate ({state, props}) {
-	const {setTheCards, lToggleLoading} = state.actions
-	const items = yield refMethod({
-    ref: `/playlists/`,
-    updates: [
-      {method: 'orderByChild', value: 'creatorID'},
-      {method: 'equalTo', value: props.uid},
-      {method: 'limitToFirst', value: 50},
-      {method: 'once', value: 'value'}
-    ]
-  })
-	yield setTheCards(items.val())
-	yield lToggleLoading()
-}
-
 function render ({props, state, local}) {
-	const {items, loading} = state
-	if (loading) {
-		return <IndeterminateProgress/>
-	}
+	const {items, mine} = props
+	const {actions, active} = state
 	return (
-		<Grid itemsPerRow='3'>
+		<Flex wide>
+			<Menu column spacing='2px' mt='2px'>
+			{mine && <MenuItem
+							bgColor='#d5d5d5'
+							align='start center'
+							relative
+							w='300px'
+							p='20px'
+							color='#333'>
+							<Icon name='add' mr='1em'/>
+			        <Text fs='m' fontWeight='300'>New Playlist</Text>
+			</MenuItem>}
 			{reduce((cur, item, key) => cur.concat(
-				<Block bgColor='#f5f5f5' m='15px' relative>
-					<Card
-						relative
-						p='20px'
-						color='#333'>
-	          <Block mt='15px' column align='center center'>
-		          <Block mb='10px'>
-		          	<Text fs='m' fontWeight='300'>{item.name}</Text>
-		          </Block>
-		          <Block fs='s'>
-		          	{item.sequence.map((elem) => <Block><Text>{elem}</Text></Block>)}
-		          </Block>
-	          </Block>
-					</Card>
-				</Block>), [], items)}
-		</Grid>
+				<MenuItem
+					bgColor='#d5d5d5'
+					relative
+					w='300px'
+					highlight={active === key}
+					p='20px'
+					onClick={() => actions.selectActivePlaylist(key)}
+					color='#333'>
+	          <Text fs='m' fontWeight='300'>{item.name}</Text>
+				</MenuItem>), [], items)}
+			</Menu>
+			<PlaylistView playlist={items[active]}/>
+		</Flex>
 	)
 }
 
 function reducer (state, action) {
 	switch (action.type) {
-		case setCards.type:
+		case selectActivePlaylist.type:
 			return {
 				...state,
-				items: action.payload
-			}
-		case doneLoading.type: 
-			return {
-				...state,
-				loading: false
+				active: action.payload
 			}
 	}
 	return state
 }
 
+
 export default {
 	initialState,
-	onCreate,
 	reducer,
 	render
 }

@@ -1,12 +1,14 @@
 /** @jsx element */
 
 import {initializeApp, createNew, refresh, saveProgress, setToast} from './actions'
+import IndeterminateProgress from './components/IndeterminateProgress'
 import HeaderElement from './components/HeaderElement'
 import ModalMessage from './components/ModalMessage'
 import CreateSandbox from './pages/CreateSandbox'
 import {Block, Icon, Text, Toast} from 'vdux-ui'
 import {setUrl} from 'redux-effects-location'
 import {signOut} from './middleware/auth'
+import ProfileLoader from './pages/ProfileLoader'
 import Profile from './pages/Profile'
 import Transition from 'vdux-transition'
 import Header from './components/Header'
@@ -32,15 +34,21 @@ const router = enroute({
   '/saved/:saveID': (params, props) => {
     return <Game key={params.gameID} {...props} left='60px' gameID={params.gameID} saveID={params.saveID}/>
   },
-  '/:gameID/create/:slug': ({slug, gameID}, props) => (
+  '/create/:gameID/:slug': ({slug, gameID}, props) => (
     <Create left='60px' gameID={gameID} params={slug} {...props} />
   ),
-  '/': homePage
+  '/:username': ({username}, props) => (
+    <ProfileLoader currentUser={props.user} username={username}/>
+  ),
+  '*': homePage
 })
 
 function homePage (params, props) {
-  if (props.user && !props.user.isAnonymous) {
-    return <Profile user={props.user}/>
+  if (props.user && Object.keys(props.user).length === 0) {
+    return <IndeterminateProgress/>
+  }
+  if (props.user && !props.user.isAnonymous) {``
+    return <Profile mine user={props.user}/>
   }
   return <HomePage left='60px' {...props} />
 }
@@ -63,13 +71,6 @@ function render ({props, state, local}) {
           ? <HeaderElement absolute bottom='10px' handleClick={local(startLogin)} text='Sign In' icon='person_outline'/>
           : <HeaderElement absolute bottom='10px' handleClick={signOut} text='Sign Out' icon='exit_to_app'/>
         }
-        {url.search(/\/(play|saved)\//gi) > -1 && (
-          <HeaderElement
-            handleClick={() => saveProgress(animals, gameID, saveID)}
-            absolute
-            bottom='10px'
-            text='Save'
-            icon='save'/>)}
       </Header>
       {
         url && router(url, props)
@@ -82,7 +83,17 @@ function render ({props, state, local}) {
         loggingIn && <Auth handleDismiss={local(endLogin)}/>
       }
       <Transition>
-        {toast !== '' && <Toast minHeight='none' w='200px' textAlign='center' bgColor='#333' color='white' top='none' bottom='8px' key='0' onDismiss={() => setToast('')}>
+        {toast !== '' && <Toast
+          fixed
+          minHeight='none'
+          w='200px'
+          textAlign='center'
+          bgColor='#333'
+          color='white'
+          top='none'
+          bottom='8px'
+          key='0'
+          onDismiss={() => setToast('')}>
           <Text>{toast}</Text>
         </Toast>}
       </Transition>
@@ -91,7 +102,6 @@ function render ({props, state, local}) {
 }
 
 function reducer (state, action) {
-  console.log(action)
   if (action.type === startLogin.type) {
     return {
       ...state,

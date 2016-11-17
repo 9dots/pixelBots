@@ -14,6 +14,7 @@ function render ({props}) {
     painted = [],
     active,
     running,
+    hideBorder = false,
     levelSize,
     clickHandler,
     editMode,
@@ -39,13 +40,14 @@ function render ({props}) {
   )
 }
 
-function getRows ({editMode, clickHandler = () => {}, size, active, numColumns, numRows, painted}) {
+function getRows ({editMode, clickHandler = () => {}, size, active, numColumns, numRows, painted, hideBorder}) {
   let rows = []
   for (var i = 0; i < numRows; i++) {
     rows.push(
       <Row
         editMode={editMode}
         clickHandler={clickHandler}
+        hideBorder={hideBorder}
         size={size}
         row={i}
         painted={getPainted(i, painted)}

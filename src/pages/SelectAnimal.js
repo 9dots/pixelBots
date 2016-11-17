@@ -63,7 +63,7 @@ function render ({props}) {
           }
         },
       })
-      yield setUrl(`/${gameID}/create/options`)
+      yield setUrl(`/create/${gameID}/options`)
     } catch (e) {
       yield endRunMessage({header: 'Error', body: e.message})
     }

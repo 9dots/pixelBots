@@ -17,6 +17,7 @@ import auth from './middleware/auth'
 import effects from 'redux-effects'
 import domready from '@f/domready'
 import reducer from './reducer'
+import firebase from 'firebase'
 import {initGame} from './utils'
 import rootEpic from './epics'
 import flow from 'redux-flo'
@@ -24,8 +25,11 @@ import * as fire from 'vdux-fire'
 import vdux from 'vdux/dom'
 import theme from './theme'
 
+
 const epicMiddleware = createEpicMiddleware(rootEpic)
 var app = require('./app').default
+
+firebase.initializeApp(firebaseConfig)
 
 const initialState = {
   url: '',

@@ -54,17 +54,17 @@ function * onUpdate (prev, {props, state}) {
 
 function render ({props, state, local}) {
 	const {items, loading} = state
-	const {selected, toggleSelected} = props
+	const {selected, toggleSelected, mine} = props
 	if (loading) {
 		return <IndeterminateProgress/>
 	}
 	return (
-		<Grid itemsPerRow='3'>
+		<Grid itemsPerRow='4'>
 			{reduce((cur, item, key) => cur.concat(
 				<Block bgColor='#f5f5f5' m='15px' relative>
 					<Card
 						transform={selected.indexOf(key) > -1 ? 'scale3d(0.75, 0.81, 1)' : ''}
-						transition='transform .3s ease-in-out'
+						transition='transform .1s ease-in-out'
 						relative
 						p='20px'
 						color='#333'>
@@ -93,15 +93,15 @@ function render ({props, state, local}) {
 		          </Block>
 	          </Block>
 					</Card>
-					<Icon
-	        	cursor='pointer'
-	        	onClick={() => toggleSelected(key)}
-	        	absolute
-	        	color={selected.indexOf(key) > -1 ? 'blue' : ''}
-	        	right='5px'
-	        	bottom='5px'
-	        	opacity={selected.indexOf(key) > -1 ? '1' : '0.5'}
-	        	name='check_circle'/>
+					{mine && <Icon
+						        	cursor='pointer'
+						        	onClick={() => toggleSelected(key)}
+						        	absolute
+						        	color={selected.indexOf(key) > -1 ? 'blue' : ''}
+						        	right='5px'
+						        	bottom='5px'
+						        	opacity={selected.indexOf(key) > -1 ? '1' : '0.5'}
+						        	name='check_circle'/>}
 				</Block>), [], items)}
 		</Grid>
 	)

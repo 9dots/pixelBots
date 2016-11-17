@@ -6,7 +6,7 @@ import Controls from '../components/Controls'
 import createAction from '@f/create-action'
 import Output from '../components/Output'
 // import {setGameID, setSaveID} from ''
-import {initializeGame} from '../actions'
+import {initializeGame, saveProgress} from '../actions'
 import element from 'vdux/element'
 import {once} from 'vdux-fire'
 import {Block} from 'vdux-ui'
@@ -38,6 +38,9 @@ function * onCreate ({props, local, state}) {
   const game = gameSnapshot.val()
   if (!animals) {
     var {animals} = game
+  }
+  if (!saveID) {
+    return yield saveProgress(animals, gameID)
   }
   yield initializeGame({game: {...game, animals}, gameID, saveID})
   yield loadingDone()

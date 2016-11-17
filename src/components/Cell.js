@@ -17,6 +17,7 @@ function render ({props}) {
     color = 'white',
     clickHandler,
     coordinates,
+    hideBorder,
     showColor,
     editMode,
     size,
@@ -27,7 +28,7 @@ function render ({props}) {
     <Block
       border
       borderColor='#999'
-      borderWidth={1}
+      borderWidth={hideBorder ? 0 : 1}
       h={size}
       w={size}
       onClick={() => clickHandler(coordinates)}

@@ -90,7 +90,7 @@ function render ({props, state, local}) {
         }
       }
     })
-    yield setUrl(`/${gameID}/create/level`)
+    yield setUrl(`/create/${gameID}/level`)
   }
 }
 

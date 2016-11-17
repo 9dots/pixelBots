@@ -20,12 +20,13 @@ function render ({props}) {
   )
 }
 
-function getCells ({size, row, painted, clickHandler, editMode, num}) {
+function getCells ({size, row, painted, clickHandler, editMode, num, hideBorder}) {
   let cells = []
   for (var i = 0; i < num; i++) {
     cells.push(<Cell
       size={size}
       coordinates={[row, i]}
+      hideBorder={hideBorder}
       clickHandler={clickHandler}
       color={getColor(painted, i)}
       editMode={editMode}/>)
