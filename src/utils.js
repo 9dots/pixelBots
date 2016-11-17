@@ -26,7 +26,7 @@ function * checkForExisting (ref, id) {
   return snap.val()
 }
 
-function * createCode (ref) {
+function * createCode (ref = '/links/') {
   const id = generateID()
   const exists = yield checkForExisting(ref, id)
   if (exists) {

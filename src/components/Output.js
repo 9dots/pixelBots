@@ -52,6 +52,7 @@ function render ({props}) {
             animals={animals}
             running={running}
             active={active}
+            hideBorder
             painted={painted}
             levelSize={size}
             numRows={levelSize[0]}

@@ -15,12 +15,14 @@ const providers = {
 
 export default ({getState, dispatch}) => {
   firebase.auth().onAuthStateChanged((user) => {
+    console.log(user)
     if (!user) {
       dispatch(setUserId(null))
       return firebase.auth().signInAnonymously()
     }
     if (!user.isAnonymous && !user.username) {
       const username = user.providerData[0].email.split('@')[0]
+      console.log(username)
       user.updateProfile({
         username
       }).then(() => dispatch(refMethod({

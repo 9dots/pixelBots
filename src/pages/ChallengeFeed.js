@@ -2,7 +2,7 @@ import IndeterminateProgress from '../components/IndeterminateProgress'
 import createAction from '@f/create-action'
 import {Block, Card, Icon, Grid, Text} from 'vdux-ui'
 import Level from '../components/Level'
-import {refMethod} from 'vdux-fire'
+import fire, {refMethod} from 'vdux-fire'
 import element from 'vdux/element'
 import reduce from '@f/reduce'
 
@@ -10,54 +10,13 @@ const doneLoading = createAction('FEED: DONE_LOADING')
 const toggleLoading = createAction('FEED: TOGGLE_LOADING')
 const setCards = createAction('FEED: SET_CARDS')
 
-const initialState = ({local}) => ({
-	loading: true,
-	cards: [],
-	selected: [],
-	actions: {
-		setTheCards: local((items) => setCards(items)),
-		lToggleLoading: local(() => doneLoading()),
-	}
-})
-
-function * onCreate ({state, props}) {
-	const {setTheCards, lToggleLoading} = state.actions
-	const items = yield refMethod({
-    ref: `/${props.cat}/`,
-    updates: [
-      {method: 'orderByChild', value: 'creatorID'},
-      {method: 'equalTo', value: props.uid},
-      {method: 'limitToFirst', value: 50},
-      {method: 'once', value: 'value'}
-    ]
-  })
-	yield setTheCards(items.val())
-	yield lToggleLoading()
-}
-
-function * onUpdate (prev, {props, state}) {
-	if (prev.props.uid !== props.uid || prev.props.cat !== props.cat) {
-		const {setTheCards, lToggleLoading} = state.actions
-		const items = yield refMethod({
-	    ref: `/${props.cat}/`,
-	    updates: [
-	      {method: 'orderByChild', value: 'creatorID'},
-	      {method: 'equalTo', value: props.uid},
-	      {method: 'limitToFirst', value: 50},
-	      {method: 'once', value: 'value'}
-	    ]
-	  })
-		yield setTheCards(items.val())
-  	yield lToggleLoading()
-  }
-}
 
 function render ({props, state, local}) {
-	const {items, loading} = state
-	const {selected, toggleSelected, mine} = props
-	if (loading) {
+	const {games, selected, toggleSelected, mine} = props
+	if (games.loading) {
 		return <IndeterminateProgress/>
 	}
+	const items = games.value
 	return (
 		<Grid itemsPerRow='4'>
 			{reduce((cur, item, key) => cur.concat(
@@ -107,26 +66,15 @@ function render ({props, state, local}) {
 	)
 }
 
-function reducer (state, action) {
-	switch (action.type) {
-		case setCards.type:
-			return {
-				...state,
-				items: action.payload
-			}
-		case doneLoading.type: 
-			return {
-				...state,
-				loading: false
-			}
-	}
-	return state
-}
-
-export default {
-	initialState,
-	onUpdate,
-	onCreate,
-	reducer,
+export default fire((props) => ({
+  games: {
+    ref: `/games/`,
+    updates: [
+      {method: 'orderByChild', value: 'creatorID'},
+      {method: 'equalTo', value: props.uid},
+      {method: 'limitToFirst', value: 50}
+    ]
+  }
+}))({
 	render
-}
+})

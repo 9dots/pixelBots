@@ -4,17 +4,19 @@ import {initializeApp, createNew, refresh, saveProgress, setToast} from './actio
 import IndeterminateProgress from './components/IndeterminateProgress'
 import HeaderElement from './components/HeaderElement'
 import ModalMessage from './components/ModalMessage'
+import PlaylistLoader from './pages/PlaylistLoader'
 import CreateSandbox from './pages/CreateSandbox'
+import ProfileLoader from './pages/ProfileLoader'
 import {Block, Icon, Text, Toast} from 'vdux-ui'
 import {setUrl} from 'redux-effects-location'
+import MyPlaylist from './pages/MyPlaylist'
 import {signOut} from './middleware/auth'
-import ProfileLoader from './pages/ProfileLoader'
-import Profile from './pages/Profile'
 import Transition from 'vdux-transition'
 import Header from './components/Header'
 import {Button} from 'vdux-containers'
-import Create from './pages/Create'
+import Profile from './pages/Profile'
 import Auth from './components/Auth'
+import Create from './pages/Create'
 import HomePage from './pages/Home'
 import element from 'vdux/element'
 import Game from './pages/Game'
@@ -40,6 +42,12 @@ const router = enroute({
   '/:username': ({username}, props) => (
     <ProfileLoader currentUser={props.user} username={username}/>
   ),
+  '/playlists/:id': ({id}, props) => (
+    <MyPlaylist ref={id} user={props.user}/>
+  ),
+  '/list/:id': ({id}, props) => (
+    <PlaylistLoader ref={id} user={props.user}/>
+  ),
   '*': homePage
 })
 
@@ -61,6 +69,7 @@ function render ({props, state, local}) {
   const {loggingIn} = state
   const {message, url, game, saveID, gameID, toast, user} = props
   const {animals} = game
+  console.log(user)
 
   return (
     <Block tall wide>
