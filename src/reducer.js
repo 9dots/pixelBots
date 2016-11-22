@@ -4,7 +4,7 @@ import setProp from '@f/set-prop'
 import reduce from '@f/reduce'
 import {initGame} from './utils'
 
-import {setUserId} from './middleware/auth'
+import {setUserId, setUsername} from './middleware/auth'
 
 import {
   initializeGame,
@@ -18,6 +18,7 @@ import {
   removeLine,
   animalMove,
   updateLine,
+  setSaveId,
   updateSize,
   selectLine,
   setActive,
@@ -198,12 +199,9 @@ function reducer (state, action) {
         url: action.payload
       }
     case initializeGame.type:
-      var {game, saveID, gameID} = action.payload
       return {
         ...state,
-        game,
-        saveID,
-        gameID
+        game: action.payload
       }
     case endRun.type:
       return {
@@ -265,6 +263,16 @@ function reducer (state, action) {
       return {
         ...state,
         toast: action.payload
+      }
+    case setSaveId.type:
+      return {
+        ...state,
+        saveID: action.payload
+      }
+    case setUsername.type:
+      return {
+        ...state,
+        username: action.payload
       }
   }
   return state

@@ -20,9 +20,10 @@ const initialState = ({props, local}) => ({
 function render ({props, state, local}) {
 	const {items, mine} = props
 	const {actions, active} = state
+
 	return (
 		<Flex wide>
-			<Menu column spacing='2px' mt='2px'>
+			<Menu column spacing='2px' mt='2px' maxHeight='calc(100vh - 142px)' overflowY='auto'>
 			{mine && <MenuItem
 							bgColor='#d5d5d5'
 							align='start center'
@@ -45,7 +46,7 @@ function render ({props, state, local}) {
 	          <Text fs='m' fontWeight='300'>{item.name}</Text>
 				</MenuItem>), [], items)}
 			</Menu>
-			<PlaylistView playlist={items[active]}/>
+			<PlaylistView mine={mine} activeKey={active} playlist={items[active]}/>
 		</Flex>
 	)
 }

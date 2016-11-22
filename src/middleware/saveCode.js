@@ -18,7 +18,6 @@ export default ({getState, dispatch}) => {
 function save (getState, dispatch) {
 	const {saveID, gameID, game} = getState()
 	const {animals} = game
-	console.log(saveID)
 	if (saveID) {
 		dispatch(saveProgress(animals, gameID, saveID))
 	}

@@ -1,11 +1,12 @@
 import IndeterminateProgress from '../components/IndeterminateProgress'
 import {Avatar, Block, Card, Flex, Image, Text} from 'vdux-ui'
-import ChallengeFeed from './ChallengeFeed'
+import ChallengeLoader from './ChallengeLoader'
 import SelectToolbar from './SelectToolbar'
 import createAction from '@f/create-action'
 import PlaylistFeed from './PlaylistFeed'
 import ProfileTabs from './ProfileTabs'
 import Tab from '../components/Tab'
+import enroute from 'enroute'
 import fire, {refMethod} from 'vdux-fire'
 import element from 'vdux/element'
 
@@ -15,7 +16,6 @@ const clearSelected = createAction('PROFILE: CLEAR_SELECTED')
 const toggleSelectMode = createAction('PROFLIE: TOGGLE_SELECT_MODE')
 
 const initialState = ({local}) => ({
-	tab: 'games',
 	selected: [],
 	actions: {
 		toggleSelected: local((key) => toggleSelected(key)),
@@ -24,14 +24,40 @@ const initialState = ({local}) => ({
 	}
 })
 
+const getFbProps = (uid) => ({
+	games: {
+    ref: `/games/`,
+    updates: [
+      {method: 'orderByChild', value: 'creatorID'},
+      {method: 'equalTo', value: uid},
+      {method: 'limitToFirst', value: 50}
+    ]
+  }
+})
+
+const router = enroute({
+  'games': (params, props) => <ChallengeLoader
+				selected={props.selected}
+				toggleSelected={props.actions.toggleSelected}
+				uid={props.user.uid}
+				fbProps={getFbProps(props.user.uid)}
+				mine={props.mine}
+				cat={props.tab}/>,
+	'playlists': (params, props) => <PlaylistFeed
+				items={props.playlists.value}
+				uid={props.user.uid}
+				mine={props.mine}
+				cat={props.tab}/>
+})
+
 function render ({props, state, local}) {
 	const {playlists, user, mine} = props
-	const {tab, actions, selected} = state
+	const {actions, selected} = state
 	const selectMode = selected.length > 0
 	if (playlists.loading) return <IndeterminateProgress/>
 
 	return (
-    <Flex p='20px' relative left='60px' column align='start' minHeight='100%' w='96%'>
+    <Flex column align='start' wide tall>
 			<Block relative wide color='#333' fontWeight='800'>
 				<Block align='start center' pb='10px' ml='1em'>
 					<Avatar boxShadow='0 0 1px 2px rgba(0,0,0,0.2)' h='70px' w='70px' src={user.photoURL}/>
@@ -41,7 +67,7 @@ function render ({props, state, local}) {
 					</Block>
 				</Block>
 				{!selectMode
-					? <ProfileTabs tab={tab} changeTab={local((val) => changeTab(val))} />
+					? <ProfileTabs username={props.username} tab={props.params} changeTab={local((val) => changeTab(val))} />
 					: <SelectToolbar
 							selected={selected}
 							playlists={playlists.value}
@@ -50,28 +76,13 @@ function render ({props, state, local}) {
 							clearSelected={actions.clearSelected}
 							num={selected.length}/>}
 			</Block>
-			{tab === 'games' && <ChallengeFeed
-				selected={selected}
-				toggleSelected={actions.toggleSelected}
-				uid={user.uid}
-				mine={mine}
-				cat={tab}/>}
-			{tab === 'playlists' && <PlaylistFeed
-				items={playlists.value}
-				uid={user.uid}
-				mine={mine}
-				cat={tab}/>}
+			{router(props.params, {...props, ...state})}
 		</Flex>
 	)
 }
 
 function reducer (state, action) {
 	switch (action.type) {
-		case changeTab.type: 
-			return {
-				...state,
-				tab: action.payload
-			}
 		case toggleSelected.type:
 			return {
 				...state,

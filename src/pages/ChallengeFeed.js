@@ -1,4 +1,3 @@
-import IndeterminateProgress from '../components/IndeterminateProgress'
 import createAction from '@f/create-action'
 import {Block, Card, Icon, Grid, Text} from 'vdux-ui'
 import Level from '../components/Level'
@@ -6,19 +5,12 @@ import fire, {refMethod} from 'vdux-fire'
 import element from 'vdux/element'
 import reduce from '@f/reduce'
 
-const doneLoading = createAction('FEED: DONE_LOADING')
-const toggleLoading = createAction('FEED: TOGGLE_LOADING')
-const setCards = createAction('FEED: SET_CARDS')
 
-
-function render ({props, state, local}) {
-	const {games, selected, toggleSelected, mine} = props
-	if (games.loading) {
-		return <IndeterminateProgress/>
-	}
-	const items = games.value
+function render ({props}) {
+	const {games, selected = [], toggleSelected, mine} = props
+	const items = games
 	return (
-		<Grid itemsPerRow='4'>
+		<Grid maxHeight='calc(100vh - 142px)' overflowY='auto' overflowX='hidden' itemsPerRow='4'>
 			{reduce((cur, item, key) => cur.concat(
 				<Block bgColor='#f5f5f5' m='15px' relative>
 					<Card
@@ -27,15 +19,18 @@ function render ({props, state, local}) {
 						relative
 						p='20px'
 						color='#333'>
-						<Level
-	            editMode
-	            animals={[]}
-	            painted={item.targetPainted}
-	            levelSize='150px'
-	            w='auto'
-	            h='auto'
-	            numRows={item.levelSize[0]}
-	            numColumns={item.levelSize[1]}/>
+						<Block border='1px solid #ccc'>
+							<Level
+		            editMode
+		            animals={[]}
+		            painted={item.targetPainted}
+		            levelSize='150px'
+		            w='auto'
+		            h='auto'
+		            hideBorder
+		            numRows={item.levelSize[0]}
+		            numColumns={item.levelSize[1]}/>
+	          </Block>
 	          <Block mt='15px' column align='center center'>
 		          <Block mb='10px'>
 		          	<Text fs='m' fontWeight='300'>{item.title}</Text>
@@ -66,15 +61,6 @@ function render ({props, state, local}) {
 	)
 }
 
-export default fire((props) => ({
-  games: {
-    ref: `/games/`,
-    updates: [
-      {method: 'orderByChild', value: 'creatorID'},
-      {method: 'equalTo', value: props.uid},
-      {method: 'limitToFirst', value: 50}
-    ]
-  }
-}))({
+export default {
 	render
-})
+}

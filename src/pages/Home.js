@@ -34,13 +34,12 @@ function render ({props}) {
   }
 
   return (
-    <Block bgColor='background' relative w='calc(100% - 60px)' tall left={left}>
+    <Block bgColor='background' relative wide tall>
       <Block
         relative
         display='flex'
         left='0'
         minHeight='100%'
-        h='100%'
         wide>
         <Output
           size={size}

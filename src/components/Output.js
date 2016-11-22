@@ -27,7 +27,7 @@ function render ({props}) {
 
   return (
     <Block
-      minHeight='600px'
+      h='760px'
       bgColor='light'
       boxShadow='0 0 2px 1px rgba(0,0,0,0.2)'
       m='20px'

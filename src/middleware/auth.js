@@ -3,6 +3,7 @@ import createAction from '@f/create-action'
 import {refMethod} from 'vdux-fire'
 
 const setUserId = createAction('SET_USER_ID')
+const setUsername = createAction('SET_USERNAME')
 const signInWithProvider = createAction('SIGN_IN_WITH_PROVIDER')
 const signOut = createAction('SIGN_OUT')
 
@@ -15,29 +16,30 @@ const providers = {
 
 export default ({getState, dispatch}) => {
   firebase.auth().onAuthStateChanged((user) => {
-    console.log(user)
     if (!user) {
       dispatch(setUserId(null))
       return firebase.auth().signInAnonymously()
     }
-    if (!user.isAnonymous && !user.username) {
+    if (user && !user.isAnonymous) {
       const username = user.providerData[0].email.split('@')[0]
-      console.log(username)
-      user.updateProfile({
-        username
-      }).then(() => dispatch(refMethod({
-        ref: `/users/${username}`,
-        updates: {
-          method: 'set',
-          value: {
-            uid: user.uid,
-            displayName: user.displayName || user.providerData[0].displayName,
-            photoURL: user.photoURL || user.providerData[0].photoURL
-          }
+      dispatch(refMethod({ref: `/users/${username}`, updates: {method: 'once', value: 'value'}})).then((userSnap) => {
+        if(!userSnap.exists()) {
+          dispatch(refMethod({
+            ref: `/users/${username}`,
+            updates: {
+              method: 'set',
+              value: {
+                uid: user.uid,
+                displayName: user.displayName || user.providerData[0].displayName,
+                photoURL: user.photoURL || user.providerData[0].photoURL
+              }
+            }
+          }))
         }
-      })))
+      })
+      dispatch(setUsername(username))
     }
-    return dispatch(setUserId(user))
+  return dispatch(setUserId(user))
   })
   return (next) => (action) => {
   	if (action.type === signInWithProvider.type) {
@@ -59,6 +61,7 @@ export default ({getState, dispatch}) => {
 
 export {
 	signInWithProvider,
+  setUsername,
 	setUserId,
 	signOut
 }

@@ -1,20 +1,12 @@
+import IndeterminateProgress from '../components/IndeterminateProgress'
 import element from 'vdux/element'
 import {Modal, ModalHeader, ModalBody, ModalFooter} from 'vdux-ui'
 import {Input} from 'vdux-containers'
-import {refMethod} from 'vdux-fire'
+import fire, {refMethod} from 'vdux-fire'
 import Button from '../components/Button'
 import {createCode} from '../utils'
 import {setUrl} from 'redux-effects-location'
 import createAction from '@f/create-action'
-
-const setListProps = createAction('PLAYLIST LOADER: SET LIST PROPS')
-
-const initialState = ({local}) => ({
-	listProps: {},
-	actions: {
-		setListProps: local((list) => setListProps(list))
-	}
-})
 
 const modalProps = {
 	position: 'fixed',
@@ -29,18 +21,15 @@ const inputProps = {
   border: '2px solid #ccc'
 }
 
-function * onCreate ({props, state}) {
-	const {actions} = state
-	const plist = yield refMethod({
-		ref: `/playlists/${props.ref}`,
-		updates: {method: 'once', value: 'value'}
-	})
-	const code = yield createCode('/savedList/')
-	yield actions.setListProps({val: plist.val(), code})
-}
+function render ({props}) {
+	const {playlist} = props
 
-function render ({props, state, local}) {
-	const {listProps} = state
+	if (playlist.loading) {
+		return <IndeterminateProgress/>
+	}
+
+	const listProps = playlist.value
+
 	const modal = <Modal dismissOnClick={false} dismissOnEsc={false} overlayProps={{modalProps}}>
 		<ModalHeader py='1em'>Enter Name</ModalHeader>
 		<ModalBody>
@@ -50,48 +39,56 @@ function render ({props, state, local}) {
 			<Button bgColor='primary' onClick={() => submit('Daniel')}>Save</Button>
 		</ModalFooter>
 	</Modal>
+
 	return (
 		<div>{modal}</div>
 	)
 
 	function * submit (textVal) {
-		yield refMethod({
-			ref: `/savedList/${listProps.code}`,
-			updates: {method: 'set', value: {
-				...listProps.val,
+		const saveIds = yield createSaveCodes(listProps.sequence.length)
+		const savedListRef = yield refMethod({
+			ref: `/savedList/`,
+			updates: {method: 'push', value: {
+				...listProps,
 				studentName: textVal,
-				assignmentRef: props.ref
+				assignmentRef: props.ref,
+				saveIds,
+				current: 0
 			}}
 		})
+		const code = yield createCode()
 		yield refMethod({
-			ref: `/savedList/${listProps.code}/sequence`,
+			ref: `/links/${code}`,
 			updates: {
-				method: 'transaction',
-				value: (val) => {
-					if (val === null) return 0
-					return val.map((ref) => ({ref, saveID: '', completed: false}))
+				method: 'set',
+				value: {
+					type: 'list',
+					payload: savedListRef.key
 				}
 			}
 		})
-		yield setUrl(`/list/${listProps.code}`)
+		yield setUrl(`/${code}`)
 	}
 }
 
-
-function reducer (state, action) {
-	switch (action.type) {
-		case setListProps.type:
-			return {
-				...state,
-				listProps: action.payload
+function * createSaveCodes (num) {
+	const saveCodes = []
+	for (var i = 0; i < num; i++) {
+		const saveRef = yield refMethod({
+			ref: '/saved/',
+			updates: {
+				method: 'push',
+				value: ''
 			}
+		})
+		saveCodes.push(saveRef.key)
 	}
-	return state
+	return saveCodes
 }
 
-export default {
-	initialState,
-	reducer,
-	onCreate,
+
+export default fire ((props) => ({
+	playlist: `/playlists/${props.ref}`
+}))({
 	render
-}
+})

@@ -61,6 +61,7 @@ const setAnimal = createAction('SET_ANIMAL')
 const codeAdded = createAction('CODE_ADDED')
 const swapMode = createAction('SWAP_MODE')
 const startRun = createAction('START_RUN')
+const setSaveId = createAction('SET_SAVE_ID')
 const newRoute = createAction('NEW_ROUTE')
 const setToast = createAction('SET_TOAST')
 const stopRun = createAction('STOP_RUN')
@@ -83,9 +84,9 @@ function * saveProgress (animals, gameID, saveID) {
           return 0
         }
         if (gameID) {
-          cur = {}
           cur.gameID = gameID
         }
+        cur = cur ? cur : {}
         cur.animals = animals.map((animal) => ({...animal, current: animal.initial}))
         return cur
       }
@@ -125,6 +126,7 @@ export {
   updateLine,
   gameLoaded,
   updateSize,
+  setSaveId,
   selectLine,
   moveAnimal,
   codeAdded,

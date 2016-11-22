@@ -49,9 +49,6 @@ function render ({props, local, state}) {
 					</Block>
 				</Dropdown>
 			</Block>
-			<Block align='center center'>
-				<Icon cursor='pointer' name='delete'/>
-			</Block>
 			{modal && <Modal color='#333' onDismiss={local(clearModal)} overlayProps={modalProps}>
 				<ModalHeader py='1em'>Create a Playlist</ModalHeader>
 				<ModalBody>
@@ -69,18 +66,17 @@ function render ({props, local, state}) {
 	)
 
 	function * createPlaylist () {
-		const code = yield createCode('/playlists/')
-		yield refMethod({
-			ref: `/playlists/${code}`,
+		const playlistRef = yield refMethod({
+			ref: `/playlists/`,
 			updates: {
-				method: 'set',
+				method: 'push',
 				value: {
 					creatorID: uid,
 					name: playlistName
 				}
 			}
 		})
-		yield addToPlaylist(code, playlistName)
+		yield addToPlaylist(playlistRef.key, playlistName)
 	}
 
 	function * addToPlaylist (code, name) {

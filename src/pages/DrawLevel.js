@@ -81,7 +81,7 @@ function render ({props, state, local}) {
     <Block border='2px solid #333' bgColor={color} align='center center' w='40px' h='40px' />
   )
 
-  const url = window.location.host + '/play/'
+  const url = window.location.host + '/'
   const canPaintColor = animalApis[game.animals[0].type].docs.paint.args
   const blackAndWhite = [
     {name: 'black', value: '#111'},
@@ -174,10 +174,16 @@ function render ({props, state, local}) {
 
   function * save (gameID) {
     yield updateGame()
-    const code = yield createCode('/play')
+    const code = yield createCode()
     yield refMethod({
-      ref: `/play/${code}`,
-      updates: {method: 'set', value: {gameID, creatorID: user.uid}}
+      ref: `/links/${code}`,
+      updates: {
+        method: 'set',
+        value: {
+          type: 'game',
+          payload: gameID
+        }
+      }
     })
     yield displayID(code)
     yield markSaved()

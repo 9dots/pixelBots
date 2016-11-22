@@ -1,11 +1,11 @@
 import {MenuItem, Image} from 'vdux-containers'
 import element from 'vdux/element'
-import fire from 'vdux-fire'
-import {Block, Box} from 'vdux-ui'
+import fire, {refMethod} from 'vdux-fire'
+import {Block, Box, Icon} from 'vdux-ui'
 import Level from './Level'
 
 function render ({props}) {
-	const {game} = props
+	const {game, playlistKey, mine	} = props
 
 	if (game.loading) return <div/>
 
@@ -35,8 +35,26 @@ function render ({props}) {
 			<Box w='160px' mr='2em'>
 				{gameVal.inputType}
 			</Box>
+			{mine && <Box>
+				<Icon name='delete' onClick={removeFromPlaylist}/>
+			</Box>}
 		</MenuItem>
 	)
+
+	function * removeFromPlaylist () {
+		yield refMethod({
+			ref: `/playlists/${playlistKey}`,
+			updates: {
+				method: 'transaction',
+				value: (val) => {
+					return {
+						...val,
+						sequence: val.sequence.filter((ref) => ref !== props.ref)
+					}
+				}
+			}
+		})
+	}
 }
 
 export default fire((props) => ({
