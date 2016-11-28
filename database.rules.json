@@ -1,6 +1,70 @@
 {
   "rules": {
-    ".read": "true",
-    ".write": "true"
+    ".read": "false",
+    ".write": "false",
+		"users": {
+		  "$uid": {
+		    ".write": "auth !== null && auth.uid === $uid",
+		    ".read": "auth !== null",
+		    "username": {
+		      ".validate": "!root.child('usernames').child(newData.val()).exists() || root.child('usernames').child(newData.val()).val() == $uid"
+		    }
+		  }
+		},
+    "usernames": {
+      ".read": "true",
+      ".write": "true"
+    },
+    "playlists": {
+      ".read": "auth !== null",
+      ".write": "auth !== null"
+    },
+    "games": {
+      ".read": "auth !== null",
+      ".write": "auth !== null"
+    },
+		"search": {
+      "request": {
+          "$recid": {
+             // I can only read records assigned to me
+             ".read": "auth.id === data.child('id').val() || auth.uid === data.child('id').val()",
+             // I can only write new records that don't exist yet
+             ".write": "!data.exists() && (newData.child('id').val() === auth.id || newData.child('id').val() === auth.uid)",
+             ".validate": "newData.hasChildren(['query', 'index', 'type'])",
+             "index": {
+                // accepts arrays or strings
+                ".validate": "(newData.isString() && newData.val().length < 1000) || newData.hasChildren()",
+                "$child": {
+                   ".validate": "newData.isString() && newData.val().length < 1000"
+                }
+             },
+             "type": {
+                // accepts arrays or strings
+                ".validate": "(newData.isString() && newData.val().length < 1000) || newData.hasChildren()",
+                "$child": {
+                   ".validate": "newData.isString() && newData.val().length < 1000"
+                }
+             },
+             "query": {
+                // lucene formatted string, such as "title:search_term" or an object
+                // see https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-search
+                ".validate": "newData.isString() || newData.hasChildren()"
+             },
+             "$other": {
+                ".validate": false
+             }
+          }
+       },
+       "response": {
+          "$recid": {
+             // I can only read/write records assigned to me
+             ".read": "auth.id === data.child('id').val() || auth.uid === data.child('id').val()",
+             ".write": "auth.id === data.child('id').val() || auth.uid === data.child('id').val()",
+             // Assumes that Flashlight will be writing the records using a secret or a token that has admin: true
+             // The only thing a logged in user needs to do is delete results after reading them
+             ".validate": false
+          }
+       }
+    }
   }
 }

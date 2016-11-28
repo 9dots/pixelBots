@@ -12,8 +12,6 @@ const providers = {
   facebook: () => new firebase.auth.FacebookAuthProvider()
 }
 
-
-
 export default ({getState, dispatch}) => {
   firebase.auth().onAuthStateChanged((user) => {
     if (!user) {
@@ -21,25 +19,9 @@ export default ({getState, dispatch}) => {
       return firebase.auth().signInAnonymously()
     }
     if (user && !user.isAnonymous) {
-      const username = user.providerData[0].email.split('@')[0]
-      dispatch(refMethod({ref: `/users/${username}`, updates: {method: 'once', value: 'value'}})).then((userSnap) => {
-        if(!userSnap.exists()) {
-          dispatch(refMethod({
-            ref: `/users/${username}`,
-            updates: {
-              method: 'set',
-              value: {
-                uid: user.uid,
-                displayName: user.displayName || user.providerData[0].displayName,
-                photoURL: user.photoURL || user.providerData[0].photoURL
-              }
-            }
-          }))
-        }
-      })
-      dispatch(setUsername(username))
+      dispatch(maybeCreateNewUser(user))
     }
-  return dispatch(setUserId(user))
+    return dispatch(setUserId(user))
   })
   return (next) => (action) => {
   	if (action.type === signInWithProvider.type) {
@@ -57,6 +39,57 @@ export default ({getState, dispatch}) => {
   	}
   	return next(action)
   }
+}
+
+function * maybeCreateNewUser (user) {
+  const maybeUser = yield checkUsers(user.uid)
+  if (maybeUser.exists()) {
+    return yield setUsername(maybeUser.val().username)
+  }
+  const username = yield createUsername(user)
+  yield refMethod({
+    ref: `/users/${user.uid}`,
+    updates: {
+      method: 'set',
+      value: {
+        username,
+        displayName: user.displayName || user.providerData[0].displayName,
+        photoURL: user.photoURL || user.providerData[0].photoURL
+      }
+    }
+  })
+}
+
+function * createUsername (user, ext = '') {
+  const username = user.providerData[0].email.split('@')[0] + ext
+  const snap = yield refMethod({
+    ref: `/usernames/${username}`,
+    updates: {
+      method: 'once',
+      value: 'value'
+    }
+  })
+  if (snap.exists()) {
+    yield createUsername(user, ext ? ++ext : 1)
+  } else {
+    yield refMethod({
+      ref: `/usernames/${username}`,
+      updates: {
+        method: 'set',
+        value: user.uid
+      }
+    })
+    yield setUsername(username)
+    return username
+  }
+}
+
+function * checkUsers (uid) {
+  const snap = yield refMethod({
+    ref: `/users/${uid}`,
+    updates: {method: 'once', value: 'value'}
+  })
+  return snap
 }
 
 export {

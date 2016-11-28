@@ -9,10 +9,13 @@ import reduce from '@f/reduce'
 import sleep from '@f/sleep'
 import {setToast} from '../actions'
 import createAction from '@f/create-action'
+import CreatePlaylist from '../components/CreatePlaylist'
+import Window from 'vdux/window'
 
-const setModal = createAction('SELECT TOOLBAR: SET_MODAL')
-const clearModal = createAction('SELECT TOOLBAR: CLEAR_MODAL')
-const setText = createAction('SELECT TOOLBAR: SET_TEXT')
+const setModal = createAction('<SelectToolbar/>: SET_MODAL')
+const clearModal = createAction('<SelectToolbar/>: CLEAR_MODAL')
+const setFixed = createAction('<SelectToolbar/>: SET_FIXED')
+const setRelative = createAction('<SelectToolbar/>: SET_RELATIVE')
 
 const inputProps = {
   h: '42px',
@@ -27,56 +30,61 @@ const modalProps = {
 	top: '0'
 }
 
-const initialState = () => ({
+const initialState = ({local}) => ({
 	modal: '',
-	playlistName: ''
+	playlistName: '',
+	position: 'relative',
+	actions: {
+		setFixed: local(setFixed),
+		setRelative: local(setRelative)
+	}
 })
 
 function render ({props, local, state}) {
 	const {num, uid, selected, clearSelected, playlists=[]} = props
-	const {modal, playlistName} = state
+	const {modal, actions, playlistName, position} = state
 	return (
-		<Flex px='20px' color='white' wide h='42px' bgColor='red' align='start center'>
-			<Block flex align='start center'>
-				<Icon cursor='pointer' mr='20px' name='close' onClick={clearSelected}/>
-				<Text fontWeight='800'>{num} selected</Text>
-			</Block>
-			<Block align='center center' mr='1em'>
-				<Dropdown zIndex='999' btn={<Icon mt='4px' cursor='pointer' name='add'/>}>
-					<Block py='10px' w='150px'>
-						<MenuItem fontWeight='300' wide onClick={local(setModal)}>New Playlist</MenuItem>
-						{reduce((cur, playlist, key) => cur.concat(<MenuItem onClick={() => addToPlaylist(key, playlist.name)} wide>{playlist.name}</MenuItem>), [], playlists)}
-					</Block>
-				</Dropdown>
-			</Block>
-			{modal && <Modal color='#333' onDismiss={local(clearModal)} overlayProps={modalProps}>
-				<ModalHeader py='1em'>Create a Playlist</ModalHeader>
-				<ModalBody>
-					<Input h='42px'
-            name='levelSize'
-            inputProps={inputProps}
-            onKeyUp={local((e) => setText(e.target.value))}/>
-				</ModalBody>
-				<ModalFooter>
-					<Button onClick={local(clearModal)} bgColor='secondary'>Cancel</Button>
-					<Button onClick={[createPlaylist, local(clearModal)]} ml='1em' bgColor='primary'>Save</Button>
-				</ModalFooter>
-			</Modal>}
-		</Flex>
+		<Window onScroll={maybeFixed}>
+			<Flex
+				position={position}
+				px='20px'
+				top='0'
+				color='white'
+				zIndex='999'
+				left={position === 'fixed' ? '110px' : '0'}
+				w={position === 'fixed' ? 'calc(100% - 130px)' : '100%'}
+				h='42px'
+				bgColor='red'
+				align='start center'>
+				<Block flex align='start center'>
+					<Icon cursor='pointer' mr='20px' name='close' onClick={clearSelected}/>
+					<Text fontWeight='800'>{num} selected</Text>
+				</Block>
+				<Block align='center center'>
+					<Dropdown zIndex='999' btn={<Icon mt='4px' cursor='pointer' name='add'/>}>
+						<Block py='10px' w='150px'>
+							<MenuItem fontWeight='300' wide onClick={local(setModal)}>New Playlist</MenuItem>
+							{reduce((cur, playlist, key) => cur.concat(<MenuItem onClick={() => addToPlaylist(key, playlist.name)} wide>{playlist.name}</MenuItem>), [], playlists)}
+						</Block>
+					</Dropdown>
+				</Block>
+				{modal && <CreatePlaylist
+					uid={uid}
+					selected={selected}
+					handleDismiss={local(clearModal)}
+					onAddToPlaylist={clearSelected}/>
+				}
+			</Flex>
+		</Window>
 	)
 
-	function * createPlaylist () {
-		const playlistRef = yield refMethod({
-			ref: `/playlists/`,
-			updates: {
-				method: 'push',
-				value: {
-					creatorID: uid,
-					name: playlistName
-				}
-			}
-		})
-		yield addToPlaylist(playlistRef.key, playlistName)
+	function * maybeFixed (e) {
+		console.log(e.target.scrollTop)
+		if (e.target.scrollTop > 100) {
+			yield actions.setFixed()
+		} else {
+			yield actions.setRelative()
+		}
 	}
 
 	function * addToPlaylist (code, name) {
@@ -105,6 +113,7 @@ function render ({props, local, state}) {
 }
 
 function reducer (state, action) {
+	console.log(action)
 	switch (action.type) {
 		case setModal.type:
 			return {
@@ -116,10 +125,15 @@ function reducer (state, action) {
 				...state,
 				modal: ''
 			}
-		case setText.type:
+		case setFixed.type:
 			return {
 				...state,
-				playlistName: action.payload
+				position: 'fixed'
+			}
+		case setRelative.type:
+			return {
+				...state,
+				position: 'relative'
 			}
 	}
 	return state

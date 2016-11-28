@@ -48,6 +48,7 @@ function render ({props, state}) {
         header='Link to Playlist'
         body={<Input
           readonly
+          autofocus
           inputProps={{p: '12px', borderWidth: '2px', border: '#ccc'}}
           id='url-input'
           fs='18px'

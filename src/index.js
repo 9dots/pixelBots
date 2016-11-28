@@ -63,7 +63,7 @@ const {subscribe, render, replaceReducer} = vdux({
 
 domready(() => {
   subscribe((state) => {
-    return render(app(state), {uiTheme: theme})
+    return render(app(state), {uiTheme: theme, currentUser: state.user, username: state.username})
   })
 })
 

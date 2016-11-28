@@ -30,7 +30,6 @@ function render ({props}) {
       h='760px'
       bgColor='light'
       boxShadow='0 0 2px 1px rgba(0,0,0,0.2)'
-      m='20px'
       mr='0'>
       <Block bgColor='secondary' wide align='flex-end center'>
         {

@@ -34,7 +34,7 @@ function render ({props}) {
   }
 
   return (
-    <Block bgColor='background' relative wide tall>
+    <Block bgColor='background' relative>
       <Block
         relative
         display='flex'

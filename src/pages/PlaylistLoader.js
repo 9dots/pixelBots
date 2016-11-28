@@ -12,7 +12,6 @@ function render ({props}) {
 	if (list.loading) return <IndeterminateProgress/>
 
 	const {sequence, current = 0} = list.value
-	console.log(list.value)
 
 	return (
 		<Playlist current={current} {...props} listRef={props.ref} {...list.value} next={next} prev={prev}/>

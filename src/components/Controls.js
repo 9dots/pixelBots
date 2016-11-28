@@ -48,8 +48,7 @@ function render ({props, state}) {
       wide
       bgColor='light'
       color='white'
-      my='20px'
-      mx='20px'>
+      ml='20px'>
       <Block bgColor='secondary' wide align='flex-end center'>
         <Block h='80%'>
           <Runner

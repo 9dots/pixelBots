@@ -1,6 +1,9 @@
 import createAction from '@f/create-action'
-import {Block, Card, Icon, Grid, Text} from 'vdux-ui'
+import {Block, Flex, Icon, Grid, Text} from 'vdux-ui'
+import {Card} from 'vdux-containers'
+import GridCard from '../components/Card'
 import Level from '../components/Level'
+import {createNew} from '../actions'
 import fire, {refMethod} from 'vdux-fire'
 import element from 'vdux/element'
 import reduce from '@f/reduce'
@@ -10,17 +13,37 @@ function render ({props}) {
 	const {games, selected = [], toggleSelected, mine} = props
 	const items = games
 	return (
-		<Grid maxHeight='calc(100vh - 142px)' overflowY='auto' overflowX='hidden' itemsPerRow='4'>
+		<Flex maxHeight='calc(100vh - 142px)' flexWrap='wrap'>
+			{
+				mine && <Block m='15px' relative>
+					<Block
+						w='192px'
+						h='288px'
+						border='2px dashed #666'
+						column
+						align='center center'
+						p='20px'
+						color='#666'>
+						<Text fs='m' fontWeight='500' textAlign='center'>Create New Challenge</Text>
+						<Card
+							cursor='pointer'
+							hoverProps={{bgColor: '#f5f5f5'}}
+							onClick={createNew}
+							transition='background .1s ease-in-out'
+							mt='1em'
+							circle='40px'
+							bgColor='#fff'
+							align='center center'>
+							<Icon color='#666' name='add'/>
+						</Card>
+					</Block>
+				</Block>
+			}
 			{reduce((cur, item, key) => cur.concat(
 				<Block bgColor='#f5f5f5' m='15px' relative>
-					<Card
-						transform={selected.indexOf(key) > -1 ? 'scale3d(0.75, 0.81, 1)' : ''}
-						transition='transform .1s ease-in-out'
-						relative
-						p='20px'
-						color='#333'>
-						<Block border='1px solid #ccc'>
-							<Level
+					<GridCard
+						selected={selected.indexOf(key) > -1}
+						cardImage={<Level
 		            editMode
 		            animals={[]}
 		            painted={item.targetPainted}
@@ -29,24 +52,17 @@ function render ({props}) {
 		            h='auto'
 		            hideBorder
 		            numRows={item.levelSize[0]}
-		            numColumns={item.levelSize[1]}/>
-	          </Block>
-	          <Block mt='15px' column align='center center'>
-		          <Block mb='10px'>
-		          	<Text fs='m' fontWeight='300'>{item.title}</Text>
-		          </Block>
-		          <Block fs='s'>
-		          	<Block align='start center'>
-		          		<Icon mr='10px' name='keyboard'/>
-		          		<Text fontWeight='800'>{item.inputType}</Text>
-		          	</Block>
-		          	<Block align='start center'>
-		          		<Icon mr='10px' name='info_outline'/>
-		          		<Text fontWeight='800'>{item.animals[0].type}</Text>
-		          	</Block>
-		          </Block>
-	          </Block>
-					</Card>
+		            numColumns={item.levelSize[1]}/>}
+	          cardTitle={item.title}>
+          	<Block align='start center'>
+          		<Icon mr='10px' name='keyboard'/>
+          		<Text fontWeight='800'>{item.inputType}</Text>
+          	</Block>
+          	<Block align='start center'>
+          		<Icon mr='10px' name='info_outline'/>
+          		<Text fontWeight='800'>{item.animals[0].type}</Text>
+          	</Block>
+					</GridCard>
 					{mine && <Icon
 						        	cursor='pointer'
 						        	onClick={() => toggleSelected(key)}
@@ -57,7 +73,7 @@ function render ({props}) {
 						        	opacity={selected.indexOf(key) > -1 ? '1' : '0.5'}
 						        	name='check_circle'/>}
 				</Block>), [], items)}
-		</Grid>
+		</Flex>
 	)
 }
 

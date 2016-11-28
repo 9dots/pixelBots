@@ -23,7 +23,7 @@ function render ({props}) {
   }
 
   return (
-    <Block absolute m='0 auto' ml='60px' top={props.top} tall w='calc(100% - 60px)' overflowY='auto'>
+    <Block>
       {router(props.params, props)}
     </Block>
   )

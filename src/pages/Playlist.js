@@ -10,7 +10,7 @@ function render ({props}) {
 	const isPrev = props.current - 1 >= 0
 	return (
 		<Block>
-			<Block w='calc(100% - 60px)' align='space-between center' relative left='60px' p='20px 20px' pb='0'>
+			<Block wide align='space-between center' relative mb='20px'>
 				<Block>
 					<Text display='block' fs='xxl' color='#555' fontWeight='500'>{props.name}</Text>
 				</Block>

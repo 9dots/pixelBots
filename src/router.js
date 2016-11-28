@@ -32,10 +32,15 @@ const router = enroute({
   '/create/:gameID/:slug': ({slug, gameID}, props) => {
     return <Create left='60px' gameID={gameID} params={slug} {...props} />
   },
+  '/search': (params, props) => {
+    return <SearchPage user={props.user}/>
+  },
   '/search/:searchType': ({searchType}, props) => {
-    console.log(searchType)
     return <SearchPage searchType={searchType} user={props.user}/>
   },
+  '/search/:searchType/:searchQ': ({searchType, searchQ}, props) => (
+    <SearchPage searchType={searchType} searchQ={searchQ} user={props.user}/>
+  ),
   '/:username/:activity': ({username, activity}, props) => {
     return <ProfileLoader params={activity} currentUser={props.user} username={username}/>
   },
@@ -44,11 +49,11 @@ const router = enroute({
 })
 
 function homePage (params, props) {
-  if (props.user && Object.keys(props.user).length === 0) {
+  if (props.user && Object.keys(props.user).length === 0 || !props.username) {
     return <IndeterminateProgress/>
   }
-  if (props.user && !props.user.isAnonymous) {
-    return <ProfileLoader mine username={props.username} user={props.user}/>
+  if (props.user && props.username && !props.user.isAnonymous) {
+    return <ProfileLoader mine username={props.username} currentUser={props.user}/>
   }
   return <HomePage {...props} />
 }
@@ -59,8 +64,9 @@ function onCreate () {
 
 function render ({props, state, local}) {
   const {loggingIn} = state
-  const {message, url, game, saveID, gameID, toast, user} = props
+  const {message, url, game, saveID, gameID, toast, user, username} = props
   const {animals} = game
+  const activeRoute = url.split('/')[1]
 
   return (
     <Block tall wide>
@@ -71,8 +77,8 @@ function render ({props, state, local}) {
             handleClick={[() => setUrl('/'), refresh]}/>
           {(user && !user.isAnonymous) &&
             <Block>
-              <HeaderElement onClick={() => setUrl('/search')} text='Search' icon='search'/>
-              <HeaderElement onClick={() => setUrl('/')} text='Your Stuff' icon='dashboard'/>
+              <HeaderElement active={activeRoute === 'search'} onClick={() => setUrl('/search')} text='Search' icon='search'/>
+              <HeaderElement active={activeRoute === username} onClick={() => setUrl('/')} text='Your Stuff' icon='dashboard'/>
             </Block>
           }
         </Block>
@@ -81,7 +87,7 @@ function render ({props, state, local}) {
           : <HeaderElement handleClick={signOut} text='Sign Out' icon='exit_to_app'/>
         }
       </Header>
-      <Block relative left='90px' p='20px' column align='start' minHeight='100%' w='calc(100% - 90px)' tall>
+      <Block overflowY='auto' relative left='90px' p='20px' column align='start' minHeight='100%' w='calc(100% - 90px)' tall>
       {
         url && router(url, props)
       }

@@ -30,7 +30,7 @@ function render ({props}) {
 
 	const listProps = playlist.value
 
-	const modal = <Modal dismissOnClick={false} dismissOnEsc={false} overlayProps={{modalProps}}>
+	const modal = <Modal dismissOnClick={false} dismissOnEsc={false} overlayProps={modalProps}>
 		<ModalHeader py='1em'>Enter Name</ModalHeader>
 		<ModalBody>
 			<Input inputProps={inputProps}/>
