@@ -25,7 +25,13 @@ function initialState ({local}) {
 function render ({props, state}) {
   const {arg, changeHandler, argument} = props
   const {name, type, values, description} = arg
+
   const {show, actions} = state
+
+  if (!actions) {
+    return <div/>
+  }
+
   const {showTip, hideTip} = actions
 
   let close

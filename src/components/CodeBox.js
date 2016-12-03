@@ -10,8 +10,9 @@ require('brace/mode/javascript')
 require('brace/theme/tomorrow_night')
 
 function render ({props}) {
-  const {active, activeLine, running, animals} = props
+  const {active, activeLine, running, animals, editorActions = {}} = props
   const sequence = animals[active].sequence || []
+  const addCodeHandler = editorActions.aceUpdate || aceUpdate
 
   const jsOptions = {
     undef: true,
@@ -36,7 +37,7 @@ function render ({props}) {
         jsOptions={jsOptions}
         highlightActiveLine={false}
         activeLine={running ? activeLine : -1}
-        onChange={(code) => aceUpdate({id: active, code})}
+        onChange={(code) => addCodeHandler({id: active, code})}
         value={sequence.length > 0 ? sequence : ''}
         theme='tomorrow_night' />
     </Box>

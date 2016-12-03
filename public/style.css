@@ -11,9 +11,11 @@ p {
 
 body {
   height: 100vh;
+  width: 100vw;
+  position: fixed;
   margin: 0;
   background-color: white;
-  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-family: "Roboto", Roboto, sans-serif;
 }
 
 @keyframes fade-in {
@@ -48,4 +50,15 @@ body {
   animation-name: cursor-flash;
   animation-iteration-count: infinite;
   animation-duration: 1s;
+}
+
+@keyframes progress {
+  from {transform: translate(-100%);}
+  to {transform: translate(120%);}
+}
+.progress-bar {
+  animation-name: progress;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
 }

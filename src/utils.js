@@ -2,6 +2,7 @@ import gPalette from 'google-material-color-palette-json'
 import {refMethod} from 'vdux-fire'
 import reduce from '@f/reduce'
 import Hashids from 'hashids'
+import map from '@f/map'
 import _ from 'lodash'
 
 const hashids = new Hashids(
@@ -26,7 +27,7 @@ function * checkForExisting (ref, id) {
   return snap.val()
 }
 
-function * createCode (ref) {
+function * createCode (ref = '/links/') {
   const id = generateID()
   const exists = yield checkForExisting(ref, id)
   if (exists) {
@@ -34,6 +35,19 @@ function * createCode (ref) {
   } else {
     return id
   }
+}
+
+function getRotation (rot) {
+  const circles = Math.floor(Math.abs(rot) / 360)
+  if (rot < 0) {
+    return rot + (360 * (circles + 1))
+  } else {
+    return rot - (360 * circles)
+  }
+}
+
+function getDirection  (rot) {
+  return (getRotation(rot) / 90) % 4
 }
 
 const icons = {
@@ -44,7 +58,10 @@ const icons = {
   paint: 'brush',
   comment: 'comment',
   loop: 'loop',
-  loop_end: 'loop'
+  loop_end: 'loop',
+  move: 'arrow_upward',
+  turnRight: 'rotate_right',
+  turnLeft: 'rotate_left  '
 }
 
 const colors = {
@@ -120,13 +137,24 @@ function initGame () {
   }
 }
 
+function arrayAt (obj, at) {
+  return map((elem, key) => {
+    if (key === at) {
+      return reduce((arr, next, k) => [...arr, next], [], elem)
+    }
+    return elem
+  }, obj)
+}
+
 export {
   nameToDirection,
+  getDirection,
   nameToColor,
   nameToIcon,
   createCode,
   initGame,
   palette,
+  arrayAt,
   isLocal,
   range
 }

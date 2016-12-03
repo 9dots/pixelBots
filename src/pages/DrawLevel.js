@@ -1,34 +1,41 @@
 /** @jsx element */
 
+import {addCode, aceUpdate, updateLine, removeLine} from '../reducer/editor'
+import IndeterminateProgress from '../components/IndeterminateProgress'
 import ModalMessage from '../components/ModalMessage'
 import ColorPicker from '../components/ColorPicker'
 import {setUrl} from 'redux-effects-location'
 import {palette, createCode} from '../utils'
 import createAction from '@f/create-action'
 import Button from '../components/Button'
+import {Block, Card, Icon, Text} from 'vdux-ui'
 import {once, refMethod} from 'vdux-fire'
 import Level from '../components/Level'
 import animalApis from '../animalApis'
 import {Input} from 'vdux-containers'
 import {createNew} from '../actions'
+import EditLevel from './EditLevel'
 import element from 'vdux/element'
 import setProp from '@f/set-prop'
+import {arrayAt} from '../utils'
 import firebase from 'firebase'
+import splice from '@f/splice'
 import Hashids from 'hashids'
-import {
-  Block,
-  Card,
-  Text
-} from 'vdux-ui'
+import Editor from './Editor'
+import reducer, {
+  setFillColor,
+  addPainted,
+  hasSaved,
+  showID,
+  next,
+  back
+} from '../reducer/drawLevelReducer'
 
 const hashids = new Hashids(
   'Oranges never ripen in the winter',
   5,
   'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789'
 )
-const setFillColor = createAction('SET_FILL_COLOR')
-const addPainted = createAction('ADD_PAINTED')
-const showID = createAction('SHOW_ID')
 
 const modalFooter = (
   <Block>
@@ -47,9 +54,184 @@ function initialState ({props, local}) {
     color: 'black',
     painted: {start: whiteOut(levelSize), finished: whiteOut(levelSize)},
     show: '',
+    sequence: [],
+    selectedLine: 0,
+    hasSaved: false,
+    slide: 0,
     actions: {
-      displayID: local((id) => showID(id))
+      displayID: local((id) => showID(id)),
+      markSaved: local((draftID) => hasSaved(draftID))
     }
+  }
+}
+
+function render ({props, state, local}) {
+  const {newGame, draftID, user} = props
+  const {color, painted, show, actions, slide, sequence, selectedLine} = state
+  const {displayID, markSaved} = actions
+
+  if (newGame.loading) {
+    return <IndeterminateProgress/>
+  }
+
+  const game = newGame.value
+  const btn = (
+    <Block border='2px solid #333' bgColor={color} align='center center' w='40px' h='40px' />
+  )
+
+  const url = window.location.host + '/'
+  const canPaintColor = animalApis[game.animals[0].type].docs.paint.args
+  const blackAndWhite = [
+    {name: 'black', value: '#111'},
+    {name: 'white', value: '#FFF'}
+  ]
+
+  const slides = [
+    {type: 'level', name: 'finished', title: 'Paint the Finished Grid'},
+    {type: 'level', name: 'start', title: 'Paint the Start Grid'},
+    {type: 'code', name: 'add code', title: 'Add Starting Code (optional)'}
+  ]
+
+  return (
+    <Block column align='center center'>
+      {show && <ModalMessage
+        header='Link to game'
+        body={<Input
+          readonly
+          inputProps={{p: '12px', borderWidth: '2px', border: borderColor}}
+          id='url-input'
+          fs='18px'
+          onFocus={() => document.getElementById('url-input').children[0].select()}
+          value={`http://${url}${show}`}>{`${url}${show}`}
+        </Input>}
+        footer={modalFooter}/>
+      }
+      <Block px='16px' bgColor='white' absolute left='0' top='0' borderBottom='2px solid #ccc' wide align='space-between center' py='1em' mb='1em'>
+        {
+          slide > 0
+            ? <Button
+                px='0'
+                w='40px'
+                align='center center'
+                borderWidth='0'
+                bgColor='white'
+                mr='1em'
+                color='#333'
+                onClick={slide > 0 && local(back)}>
+                <Icon name='arrow_back'/>
+              </Button>
+            : <Block w='40px'/>
+        }
+        <Text flex fontWeight='300' fs='xl'>{slides[slide].title}</Text>
+        {
+          slide < 2
+            ? <Button bgColor='green' w='160px' onClick={local(next)}>NEXT</Button>
+            : <Button bgColor='green' w='160px' onClick={save}>SAVE</Button>
+        }
+      </Block>
+      <Block mt='5em'>
+        <Block absolute left='20px'>
+          {slides.filter((s, i) => i < slide).map((slide) => getSlide(slide, 200))}
+        </Block>
+        {
+          getSlide(slides[slide])
+        }
+      </Block>
+    </Block>
+  )
+
+  function * updateGame () {
+    yield refMethod({
+      ref: `/games/${draftID}`,
+      updates: {
+        method: 'set',
+        value: {
+          ...game,
+          initialPainted: painted.start,
+          painted: painted.start,
+          targetPainted: painted.finished,
+          startCode: sequence
+        }
+      }
+    })
+    yield refMethod({
+      ref: `/users/${user.uid}/games`,
+      updates: {
+        method: 'push',
+        value: {
+          name: game.title,
+          ref: draftID 
+        }
+      }
+    })
+  }
+
+  function * save () {
+    yield updateGame()
+    const code = yield createCode()
+    yield refMethod({
+      ref: `/links/${code}`,
+      updates: {
+        method: 'set',
+        value: {
+          type: 'game',
+          payload: draftID
+        }
+      }
+    })
+    yield displayID(code)
+    yield markSaved()
+  }
+
+  function getSlide ({type, name, title}, size) {
+    if (type === 'level') {
+      return <Block mt='20px' column align='flex-start center' wide>
+        {size && <Text fs='m'>{name.toUpperCase()} GRID</Text>}
+        <EditLevel
+          game={game}
+          painted={painted[name]}
+          grid={name}
+          btn={btn}
+          size={size}
+          paintMode={!size}
+          palette={canPaintColor ? palette : blackAndWhite}
+          setFillColor={local(setFillColor)}
+          clickHandler={size ? () => {} : local(addPainted)}/>
+        {
+          !size && <Card p='12px' height='100px' w='180px' right='10%' top='140px' fixed>
+            <Block align='flex-start center'>
+              <Text wide fs='m' color='black'>
+                Fill color
+              </Text>
+              <ColorPicker
+                zIndex='999'
+                clickHandler={local((color) => setFillColor(color))}
+                palette={canPaintColor ? palette : blackAndWhite}
+                btn={btn}/>
+            </Block>
+          </Card>
+        }
+      </Block>
+    }
+    if (type === 'code') {
+      const animals = game.animals.map((animal) => ({...animal, sequence}))
+      return <Editor
+        active='0'
+        creatorMode
+        animals={animals}
+        aceUpdate={local(aceUpdate)}
+        removeLine={local(removeLine)}
+        updateLine={local(updateLine)}
+        addCode={local(addCode)}
+        inputType={game.inputType}
+      />
+    }
+  }
+}
+
+function * onRemove ({props, state}) {
+  if (state.hasSaved) {
+    yield refMethod({ref: `/drafts/${props.draftID}`, updates: {method: 'remove'}})
   }
 }
 
@@ -63,156 +245,9 @@ function whiteOut (size) {
   return grid
 }
 
-function render ({props, state, local}) {
-  const {newGame, gameID} = props
-  const {color, painted, show, actions} = state
-  const {displayID} = actions
-
-  if (newGame.loading) {
-    return <div>... loading</div>
-  }
-
-  const game = newGame.value
-  const btn = (
-    <Block border='2px solid #333' bgColor={color} align='center center' w='40px' h='40px' />
-  )
-
-  const url = window.location.host + '/play/'
-  const canPaintColor = animalApis[game.animals[0].type].docs.paint.args
-  const blackAndWhite = [
-    {name: 'black', value: '#111'},
-    {name: 'white', value: '#FFF'}
-  ]
-
-  return (
-    <Block p='60px' column align='center center'>
-      {show && <ModalMessage
-        header='Link to game'
-        body={<Input
-          readonly
-          inputProps={{p: '12px', borderWidth: '2px', border: borderColor}}
-          id='url-input'
-          fs='18px'
-          onFocus={() => document.getElementById('url-input').children[0].select()}
-          value={`http://${url}${show}`}>{`${url}${show}`}
-        </Input>}
-        footer={modalFooter}/>
-      }
-      <Card p='12px' height='100px' w='180px' right='0' top='225px' fixed>
-        <Block mb='20px' align='flex-start center'>
-          <Text wide fs='m' color='black'>
-            Fill color
-          </Text>
-          <ColorPicker
-            zIndex='999'
-            clickHandler={local((color) => setFillColor(color))}
-            palette={canPaintColor ? palette : blackAndWhite}
-            btn={btn}/>
-        </Block>
-        <hr/>
-        <Button
-          mt='0px'
-          wide
-          h='40px'
-          fs='m'
-          onClick={() => save(gameID)}>Save</Button>
-      </Card>
-      <Text fs='xl' fontWeight='800'>Click the squares to paint the grids</Text>
-      <Block mt='20px' column align='flex-start center' wide>
-        <Block mt='20px' textAlign='center'>
-          <Block mb='10px' fs='l' fontWeight='800'>Starting Grid</Block>
-          <Level
-            editMode
-            painted={painted.start}
-            levelSize='500px'
-            w='auto'
-            h='auto'
-            clickHandler={local((coord) => (
-              addPainted({grid: 'start', coord})
-            ))}
-            animals={game.animals}
-            numRows={game.levelSize[0]}
-            numColumns={game.levelSize[1]}/>
-        </Block>
-        <Block mt='20px' textAlign='center'>
-          <Block mb='10px' fs='l' fontWeight='800'>Finished Grid</Block>
-          <Level
-            editMode
-            animals={game.animals.map((animal) => convertToStar(animal))}
-            painted={painted.finished}
-            levelSize='500px'
-            w='auto'
-            h='auto'
-            clickHandler={local((coord) => (
-              addPainted({grid: 'finished', coord})
-            ))}
-            numRows={game.levelSize[0]}
-            numColumns={game.levelSize[1]}/>
-        </Block>
-      </Block>
-    </Block>
-  )
-
-  function updateGame () {
-    return refMethod({
-      ref: `/games/${gameID}`,
-      updates: {
-        method: 'update',
-        value: {
-          initialPainted: painted.start,
-          painted: painted.start,
-          targetPainted: painted.finished
-        }
-      }
-    })
-  }
-
-  function * save (gameID) {
-    yield updateGame()
-    const code = yield createCode('/play')
-    yield refMethod({
-      ref: `/play/${code}`,
-      updates: {method: 'set', value: gameID}
-    })
-    yield displayID(code)
-  }
-}
-
-function convertToStar (animal) {
-  return {
-    type: 'star',
-    current: animal.initial
-  }
-}
-
-function reducer (state, action) {
-  switch (action.type) {
-    case setFillColor.type:
-      return {
-        ...state,
-        color: action.payload
-      }
-    case addPainted.type:
-      const {grid, coord} = action.payload
-      return {
-        ...state,
-        painted: setProp(
-            grid,
-            state.painted,
-            {...state.painted[grid], [coord]: state.color}
-          )
-      }
-    case showID.type:
-      return {
-        ...state,
-        show: action.payload
-      }
-  }
-  return state
-}
-
 export default {
   initialState,
+  onRemove,
   reducer,
   render
 }

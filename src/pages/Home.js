@@ -6,9 +6,20 @@ import element from 'vdux/element'
 import {Block} from 'vdux-ui'
 import Output from '../components/Output'
 import omit from '@f/omit'
+import createAction from '@f/create-action'
 
-function render ({props}) {
-  console.log('render home')
+const changeTab = createAction('<Home/>: CHANGE_TAB')
+
+function initialState ({props, local}) {
+  return {
+    tab: 'sandbox',
+    actions: {
+      tabChanged: local((name) => changeTab(name))
+    }
+  }
+}
+
+function render ({props, state}) {
   const {
     selectedLine,
     activeLine,
@@ -18,6 +29,8 @@ function render ({props}) {
     game,
     left
   } = props
+
+  const {actions, tab} = state
 
   const {
     animals,
@@ -35,19 +48,20 @@ function render ({props}) {
   }
 
   return (
-    <Block bgColor='background' relative w='calc(100% - 60px)' tall left={left}>
+    <Block bgColor='background' relative>
       <Block
         relative
         display='flex'
         left='0'
         minHeight='100%'
-        h='100%'
         wide>
         <Output
           size={size}
-          tabs={['sandbox']}
-          tab='sandbox'
+          tabs={['sandbox', 'options']}
+          handleTabClick={actions.tabChanged}
+          tab={tab}
           options
+          hasRun={hasRun}
           {...game}
           {...outputProps}
         />
@@ -64,6 +78,19 @@ function render ({props}) {
   )
 }
 
+function reducer (state, action) {
+  switch (action.type) {
+    case changeTab.type:
+      return {
+        ...state,
+        tab: action.payload
+      }
+  }
+  return state
+}
+
 export default {
+  initialState,
+  reducer,
   render
 }

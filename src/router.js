@@ -1,72 +1,146 @@
 /** @jsx element */
 
-import {initializeApp, createNew, refresh, saveProgress} from './actions'
+import {initializeApp, createNew, refresh, saveProgress, setToast} from './actions'
+import IndeterminateProgress from './components/IndeterminateProgress'
 import HeaderElement from './components/HeaderElement'
 import ModalMessage from './components/ModalMessage'
 import CreateSandbox from './pages/CreateSandbox'
+import PlaylistView from './pages/PlaylistView'
+import ProfileLoader from './pages/ProfileLoader'
+import {Block, Icon, Text, Toast} from 'vdux-ui'
+import LinkDecipher from './pages/LinkDecipher'
 import {setUrl} from 'redux-effects-location'
-import {Block, Icon, Text} from 'vdux-ui'
+import SearchPage from './pages/SearchPage'
+import {signOut} from './middleware/auth'
+import Transition from 'vdux-transition'
 import Header from './components/Header'
+import {Button} from 'vdux-containers'
+import Auth from './components/Auth'
 import Create from './pages/Create'
 import HomePage from './pages/Home'
 import element from 'vdux/element'
-import Game from './pages/Game'
 import enroute from 'enroute'
 
-let gameID
-let saveID
+import createAction from '@f/create-action'
+
+const startLogin = createAction('START_LOGIN')
+const endLogin = createAction('END_LOGIN')
+
+
+const initialState = () => ({loggingIn: false})
 
 const router = enroute({
-  '/play/:gameID': (params, props) => {
-    gameID = params.gameID
-    return <Game key={params.gameID} {...props} left='60px' gameID={params.gameID}/>
+  '/create/:draftID/:slug': ({draftID, slug}, props) => {
+    console.log(draftID)
+    return <Create left='60px' draftID={draftID} params={slug} {...props}/>
   },
-  '/saved/:saveID': (params, props) => {
-    saveID = params.saveID
-    return <Game key={params.gameID} {...props} left='60px' gameID={params.gameID} saveID={saveID}/>
+  '/search': (params, props) => {
+    return <SearchPage user={props.user}/>
   },
-  '/:gameID/create/:slug': ({slug, gameID}, props) => (
-    <Create left='60px' gameID={gameID} params={slug} {...props} />
+  '/search/:searchType': ({searchType}, props) => {
+    return <SearchPage searchType={searchType} user={props.user}/>
+  },
+  '/search/:searchType/:searchQ': ({searchType, searchQ}, props) => (
+    <SearchPage searchType={searchType} searchQ={searchQ} user={props.user}/>
   ),
-  '/': homePage
+  '/playlist/:playlistID': ({playlistID, username}, props) => (
+    <PlaylistView activeKey={playlistID} uid={props.user.uid}/>
+  ),
+  '/:username/:activity': ({username, activity}, props) => {
+    return <ProfileLoader params={activity} currentUser={props.user} username={username}/>
+  },
+  '/:link': ({link}, props) => <LinkDecipher link={link} {...props}/>,
+  '*': homePage
 })
 
 function homePage (params, props) {
-  return <HomePage left='60px' {...props} />
+  if (!props.user || (props.user && Object.keys(props.user).length === 0) || (!props.user.isAnonymous && !props.username)) {
+    return <IndeterminateProgress/>
+  }
+  if (props.user && props.username && !props.user.isAnonymous) {
+    return <ProfileLoader mine username={props.username} currentUser={props.user}/>
+  }
+  return <HomePage {...props} />
 }
 
 function onCreate () {
   return initializeApp()
 }
 
-function render ({props}) {
-  const {message, url, game} = props
+function render ({props, state, local}) {
+  const {loggingIn} = state
+  const {message, url, game, saveID, gameID, toast, user, username} = props
   const {animals} = game
+  const activeRoute = url.split('/')[1]
 
   return (
     <Block tall wide>
-      <Header w='60px' bgColor='primary' top='0' left='0'>
-        <HeaderElement background='url(/animalImages/zebra.jpg)' handleClick={[() => setUrl('/'), refresh]} text='Pixel Bots'/>
-        <HeaderElement handleClick={createNew} text='Challenge' icon='note_add'/>
-        {url.search(/\/(play|saved)\//gi) > -1 && <HeaderElement
-          handleClick={() => saveProgress(animals, gameID, saveID)}
-          absolute
-          bottom='10px'
-          text='Save'
-          icon='save'/>}
+      <Header w='90px' bgColor='primary' top='0' left='0'>
+        <Block flex>
+          <HeaderElement 
+            image='/animalImages/zebra.jpg'
+            handleClick={[() => setUrl('/'), refresh]}/>
+          {(user && !user.isAnonymous) &&
+            <Block>
+              <HeaderElement active={activeRoute === 'search'} onClick={() => setUrl('/search/games')} text='Search' icon='search'/>
+              <HeaderElement active={activeRoute === username} onClick={() => setUrl(`/${username}/games`)} text='Your Stuff' icon='dashboard'/>
+              <HeaderElement active={activeRoute === 'create'} onClick={createNew} text='Create' icon='add'/>
+            </Block>
+          }
+        </Block>
+        {!user || user.isAnonymous
+          ? <HeaderElement handleClick={local(startLogin)} text='Sign In' icon='person_outline'/>
+          : <HeaderElement handleClick={signOut} text='Sign Out' icon='exit_to_app'/>
+        }
       </Header>
+      <Block class='action-bar-holder' overflowY='auto' relative left='90px' p='20px' column align='start' minHeight='100%' w='calc(100% - 90px)' tall>
       {
-        router(url, props)
+        url && router(url, props)
       }
+      </Block>
       {message && <ModalMessage
         header={message.header}
         body={message.body}/>
       }
+      {
+        loggingIn && <Auth handleDismiss={local(endLogin)}/>
+      }
+      <Transition>
+        {toast !== '' && <Toast
+          fixed
+          minHeight='none'
+          w='200px'
+          textAlign='center'
+          bgColor='#333'
+          color='white'
+          top='none'
+          bottom='8px'
+          key='0'
+          onDismiss={() => setToast('')}>
+          <Text>{toast}</Text>
+        </Toast>}
+      </Transition>
     </Block>
   )
 }
 
+function reducer (state, action) {
+  if (action.type === startLogin.type) {
+    return {
+      ...state,
+      loggingIn: true
+    }
+  } else if (action.type === endLogin.type) {
+    return {
+      ...state,
+      loggingIn: false
+    }
+  }
+}
+
 export default {
+  initialState,
+  reducer,
   onCreate,
   render
 }

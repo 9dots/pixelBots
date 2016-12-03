@@ -1,5 +1,6 @@
 /** @jsx element */
 
+import IndeterminateProgress from '../components/IndeterminateProgress'
 import SelectOptions from './SelectOptions'
 import SelectAnimal from './SelectAnimal'
 import DrawLevel from './DrawLevel'
@@ -18,18 +19,18 @@ function render ({props}) {
   const {newGame} = props
 
   if (newGame.loading) {
-    return <div>...loading</div>
+    return <IndeterminateProgress/>
   }
 
   return (
-    <Block absolute m='0 auto' ml='60px' top={props.top} tall w='calc(100% - 60px)'>
+    <Block>
       {router(props.params, props)}
     </Block>
   )
 }
 
 export default fire((props) => ({
-  newGame: `games/${props.gameID}`
+  newGame: `drafts/${props.draftID}`
 }))({
   render
 })

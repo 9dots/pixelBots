@@ -1,25 +1,30 @@
-import {Block, Icon, Text} from 'vdux-ui'
+import {Block, Icon, Image, Text} from 'vdux-containers'
 import element from 'vdux/element'
 import omit from '@f/omit'
 
 function render ({props}) {
-  const {handleClick, background, icon, text, ...restProps} = props
+  const {handleClick, background, icon, text, image, active, ...restProps} = props
   return (
-    <Block mt='10px' cursor='pointer' onClick={handleClick} relative {...restProps}>
+    <Block
+      column
+      align='center center'
+      my='25px'
+      cursor='pointer'
+      onClick={handleClick}
+      color={active ? '#f5f5f5' : 'disabled'}
+      hoverProps={{color: '#fff'}}
+      transition={'all .3s ease-in-out'}
+      relative
+      {...restProps}>
       <Block
-        h='40px'
-        w='40px'
-        mb='10px'
         display='inline-block'
         bgColor='transparent'
-        color='white'
         cursor='pointer'
-        align='center center'
-        background={background && background}
-        backgroundSize='contain'>
-        {icon && <Icon name={icon} transition={'all .3s ease-in-out'} fs='30px'/>}
+        align='center center'>
+        {image && <Image src={image} sq='50px' margin='auto'/>}
+        {icon && <Icon name={icon} fs='34px'/>}
       </Block>
-      <Text w='150px' absolute color='white' fs='m' top='10px' left='63px'>{text}</Text>
+      {text && <Text mt='8px' fs='xs' fontWeight='600'>{text}</Text>}
     </Block>
   )
 }

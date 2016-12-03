@@ -9,6 +9,9 @@ const size = Schema('number')
   .min(1)
   .max(20)
 
+const title = Schema('string')
+  .min(4)
+
 const animalType = Schema('string')
 
 const location = Schema('array')
@@ -33,13 +36,15 @@ const animal = Schema()
 //   .items({type: animal})
 
 const game = Schema()
+  .prop('title', title)
   .prop('inputType', inputType)
   .prop('levelSize', size)
   .prop('animal', animal)
-  .required(['inputType', 'levelSize', 'animal'])
+  .required(['inputType', 'levelSize', 'animal', 'title'])
 
 export default {
   animal: validator(animal),
   levelSize: validator(size),
-  game: validator(game)
+  game: validator(game),
+  title: validator(title)
 }

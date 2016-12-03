@@ -6,8 +6,14 @@ import {CSSContainer, wrap} from 'vdux-containers'
 import deepEqual from '@f/deep-equal'
 import omit from '@f/omit'
 
+function maybeOmitProps ({props}) {
+  return props.editMode
+    ? props
+    : omit('clickHandler', props)
+}
+
 function shouldUpdate (prev, next) {
-  return !deepEqual(omit('clickHandler', prev.props), omit('clickHandler',next.props))
+  return !deepEqual(omit(['clickHandler', 'handleMouseOver'], prev.props), omit(['clickHandler', 'handleMouseOver'], next.props))
     || !deepEqual(prev.children, next.children)
     || prev.props.clickHandler.toString() !== next.props.clickHandler.toString()
 }
@@ -17,25 +23,35 @@ function render ({props}) {
     color = 'white',
     clickHandler,
     coordinates,
+    hideBorder,
+    paintMode,
     showColor,
     editMode,
-    size,
-    actions
+    dragging,
+    actions,
+    size
   } = props
 
   return (
     <Block
-      border
+      transition={!editMode && 'background-color .5s ease-in-out'}
+      onMouseOver={paintMode && handleMouseOver}
+      onMouseDown={() => clickHandler(coordinates)}
+      borderWidth={hideBorder ? 0 : 1}
       borderColor='#999'
-      borderWidth={1}
+      bgColor={color}
       h={size}
       w={size}
-      onClick={() => clickHandler(coordinates)}
-      transition={!editMode && 'background-color .2s ease-in-out'}
-      bgColor={color}>
+      border>
       <Tooltip relative show={showColor}>{color}</Tooltip>
     </Block>
   )
+
+  function * handleMouseOver (e) {
+    if (dragging) {
+      yield clickHandler(coordinates)
+    }
+  }
 }
 
 export default wrap(CSSContainer, {

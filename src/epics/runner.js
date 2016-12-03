@@ -1,4 +1,4 @@
-import { startRun, stopRun, setActiveLine } from '../actions'
+import { startRun, stopRun, setActiveLine, runCompleted } from '../actions'
 import {loopAction} from '../animalApis/loop'
 import {scrollTo} from '../middleware/scroll'
 import isGeneratorObject from '@f/is-generator-object'
@@ -24,7 +24,7 @@ export default function runner (action$, store) {
     )
     .switchMap((obs) => mapObserver(obs, store)
       .concatAll()
-      .takeUntil(action$.ofType(stopRun.type))
+      .takeUntil(action$.ofType(stopRun.type) || action$.ofType(runCompleted.type))
     )
 }
 

@@ -3,11 +3,10 @@
 import CodeComment from './CodeComment'
 import CodeEndLoop from './CodeEndLoop'
 import LineNumber from './LineNumber'
-import {selectLine} from '../actions'
+import {selectLine, addCode} from '../actions'
 import {nameToIcon} from '../utils'
 import element from 'vdux/element'
-import {Block, Box} from 'vdux-ui'
-import {addCode} from '../actions'
+import {Block, Box, Icon} from 'vdux-ui'
 import CodeLoop from './CodeLoop'
 import CodeIcon from './CodeIcon'
 import Outline from './Outline'
@@ -40,7 +39,9 @@ function getIndent (line) {
 }
 
 function render ({props, state}) {
-  const {animals, active, activeLine, selectedLine, hasRun, finishAddLoop, waitingForLoop} = props
+  const {animals, active, activeLine, selectedLine, hasRun, finishAddLoop, waitingForLoop, editorActions={}} = props
+  const handleSelectLine = editorActions.selectLine || selectLine
+  const handleAddCode = editorActions.addCode || addCode
   const lineHeight = '36px'
   const sequence = animals[active].sequence || []
   let indent = 0
@@ -55,13 +56,13 @@ function render ({props, state}) {
     const addedLine = arr.length > prevLength
     indent += getIndent(line)
 
-    const opts = {lastSelected, addedLine, arr, indent, lineHeight, active, i, type, argument, isActive, selectedLine}
+    const opts = {line, lastSelected, addedLine, arr, indent, lineHeight, active, i, type, argument, isActive, selectedLine, editorActions}
 
     return (
-      <Block id={`code-icon-${i}`} cursor='pointer' onClick={() => handleClick(active, i)}>
-        <Cursor h='14px' active={selectedLine === i}/>
+      <Block id={`code-icon-${i}`} cursor='pointer' onClick={[(e) => e.stopPropagation(), () => handleClick(active, i)]}>
+        <Cursor w='250px' h='14px' active={selectedLine === i}/>
         <Block align='center'>
-          <LineNumber fs='22px' absolute textAlign='right' numLines={arr.length} lineNum={i + 1} />
+          <LineNumber editorActions={editorActions} fs='22px' absolute textAlign='right' numLines={arr.length} lineNum={i + 1} animalID={active} active={selectedLine === i}/>
           <Indent w='30px' level={name !== 'loop' && !waitingForLoop ? indent : indent - 1} borderLeft='1px dotted deepPurple'/>
           {getElement(name, opts)}
         </Block>
@@ -80,28 +81,29 @@ function render ({props, state}) {
       minWidth='480px'
       relative
       tall
+      onClick={[(e) => e.stopPropagation(), () => handleClick(active, prevLength)]}
       overflowY='auto'>
       <Block absolute w='50px' left='0' tall/>
       <Block p='4px 15px' pl='66px' fs='22px' fontFamily='Monaco' color='white' column wide>
         {code}
-        <Block w='250px' cursor='pointer' onClick={() => handleClick(active, prevLength)}>
-          <Cursor h='18px' active={selectedLine === prevLength}/>
+        <Block w='250px' cursor='pointer' onClick={[(e) => e.stopPropagation(), () => handleClick(active, prevLength)]}>
+          <Cursor w='250px' h='18px' active={selectedLine === prevLength}/>
         </Block>
       </Block>
     </Box>
   )
 
   function * handleClick (active, idx) {
-    yield selectLine(active, idx)
+    yield handleSelectLine({id: active, idx})
     if (waitingForLoop) {
       yield finishAddLoop()
-      yield addCode(active, `})`, idx)
+      yield handleAddCode(active, `})`, idx)
     }
   }
 }
 
 function getElement (name, opts) {
-  const {lastSelected, selectedLine, addedLine, arr, lineHeight, active, i, type, argument, isActive} = opts
+  const {lastSelected, line, selectedLine, addedLine, arr, lineHeight, active, i, type, argument, isActive, editorActions} = opts
   let {indent} = opts
   if (name === 'comment') {
     return <CodeComment
@@ -110,7 +112,9 @@ function getElement (name, opts) {
               numLines={arr.length}
               h={lineHeight}
               bgColor='#666'
+              line={line}
               animal={active}
+              editorActions={editorActions}
               color='#333'
               fs='28px'
               w='250px'
@@ -123,6 +127,7 @@ function getElement (name, opts) {
               h={lineHeight}
               bgColor='deepPurple'
               animal={active}
+              editorActions={editorActions}
               color='#333'
               fs='28px'
               w='250px'
@@ -133,6 +138,7 @@ function getElement (name, opts) {
               shouldTransition={!addedLine}
               numLines={arr.length}
               h={lineHeight}
+              editorActions={editorActions}
               bgColor='deepPurple'
               animal={active}
               color='white'
@@ -148,6 +154,7 @@ function getElement (name, opts) {
               numLines={arr.length}
               name={name}
               type={type}
+              editorActions={editorActions}
               bgColor={isActive ? '#B43C3C' : '#2C4770'}
               argument={argument}
               fs='28px'

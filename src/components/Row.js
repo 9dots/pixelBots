@@ -1,7 +1,7 @@
 /** @jsx element */
 
 import element from 'vdux/element'
-import Cell from './cell'
+import Cell from './Cell'
 import {Flex} from 'vdux-ui'
 import deepEqual from '@f/deep-equal'
 import omit from '@f/omit'
@@ -20,15 +20,13 @@ function render ({props}) {
   )
 }
 
-function getCells ({size, row, painted, clickHandler, editMode, num}) {
+function getCells ({row, painted, numColumns, ...restProps}) {
   let cells = []
-  for (var i = 0; i < num; i++) {
+  for (var i = 0; i < numColumns; i++) {
     cells.push(<Cell
-      size={size}
       coordinates={[row, i]}
-      clickHandler={clickHandler}
       color={getColor(painted, i)}
-      editMode={editMode}/>)
+      {...restProps}/>)
   }
   return cells
 }

@@ -12,7 +12,7 @@ function render ({props}) {
   return (
     <Block color='white' wide tall px='10px'>
       <Block>
-        <Text align='center' fw='800' fs='l'>{type} API</Text>
+        <Text align='center' fw='800' fs='l'>API</Text>
       </Block>
       <hr/>
       {reduce(getApiDocs, [], api)}

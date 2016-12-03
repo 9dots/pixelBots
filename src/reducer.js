@@ -2,7 +2,9 @@ import map from '@f/map'
 import splice from '@f/splice'
 import setProp from '@f/set-prop'
 import reduce from '@f/reduce'
-import {initGame} from './utils'
+import {initGame, arrayAt} from './utils'
+
+import {setUserId, setUsername} from './middleware/auth'
 
 import {
   initializeGame,
@@ -12,9 +14,12 @@ import {
   setAnimalPos,
   animalPaint,
   handleError,
+  animalTurn,
   removeLine,
   animalMove,
   updateLine,
+  setSaveId,
+  setGameId,
   updateSize,
   selectLine,
   setActive,
@@ -23,6 +28,7 @@ import {
   swapMode,
   newRoute,
   startRun,
+  setToast,
   stopRun,
   addCode,
   refresh,
@@ -40,6 +46,15 @@ function reducer (state, action) {
           setProp(`animals.${id}.current.location`, state.game, location),
          'animals'
        )
+      }
+    case animalTurn.type:
+      var {id, rot} = action.payload
+      return {
+        ...state,
+        game: arrayAt(
+          setProp(`animals.${id}.current.rot`, state.game, rot),
+          'animals'
+        )
       }
     case animalPaint.type:
       var {id, color} = action.payload
@@ -66,7 +81,7 @@ function reducer (state, action) {
         selectedLine: idx
       }
     case addCode.type:
-      var {id, fn, idx} = action.payload
+      var {id, code, idx} = action.payload
       var lineNum = idx || typeof (state.selectedLine) === 'number'
         ? state.selectedLine
         : null
@@ -76,7 +91,7 @@ function reducer (state, action) {
         game: arrayAt(setProp(
           `animals.${id}.sequence`,
           state.game,
-          splice(state.game.animals[id].sequence || [], lineNum, 0, fn)
+          splice(state.game.animals[id].sequence || [], lineNum, 0, code)
         ), 'animals')
       }
     case removeLine.type:
@@ -137,6 +152,8 @@ function reducer (state, action) {
         running: false,
         hasRun: false,
         activeLine: -1,
+        saveID: undefined,
+        gameID: undefined,
         game: initGame()
       }
     case reset.type:
@@ -187,7 +204,15 @@ function reducer (state, action) {
     case initializeGame.type:
       return {
         ...state,
-        game: action.payload
+        game: {
+          ...action.payload,
+          animals: action.payload.animals.map((animal) => ({
+            ...animal,
+            sequence: !animal.sequence || animal.sequence.length === 0 
+              ? action.payload.startCode || []
+              : animal.sequence
+          }))
+        }
       }
     case endRun.type:
       return {
@@ -208,10 +233,19 @@ function reducer (state, action) {
           }), state.game.animals)
         }
       }
+    case setUserId.type:
+      return {
+        ...state,
+        user: action.payload
+      }
     case updateSize.type:
       return {
         ...state,
-        game: setProp('levelSize', state.game, [action.payload, action.payload])
+        game: {
+          ...state.game,
+          levelSize: [action.payload, action.payload],
+          animals: state.game.animals.map((animal) => setNewAnimalPos([0,0], animal))
+        }
       }
     case setAnimal.type:
       return {
@@ -240,50 +274,45 @@ function reducer (state, action) {
           })
         }
       }
+    case setToast.type:
+      return {
+        ...state,
+        toast: action.payload
+      }
+    case setSaveId.type:
+      return {
+        ...state,
+        saveID: action.payload
+      }
+    case setGameId.type:
+      return {
+        ...state,
+        gameID: action.payload
+      }
+    case setUsername.type:
+      return {
+        ...state,
+        username: action.payload
+      }
   }
   return state
 }
 
-function arrayAt (obj, at) {
-  return map((elem, key) => {
-    if (key === at) {
-      return reduce((arr, next, k) => [...arr, next], [], elem)
+function setNewAnimalPos (coords, animal) {
+  return {
+    ...animal,
+    initial: {
+      location: coords,
+      dir: 0,
+      rot: 0
+    },
+    current: {
+      location: coords,
+      dir: 0,
+      rot: 0
     }
-    return elem
-  }, obj)
+  }
 }
 
-// case animalTurnRight.type:
-//   var id = action.payload
-//   return {
-//     ...state,
-//     animals: {
-//       ...state.animals,
-//       [id]: {
-//         ...state.animals[id],
-//         current: {
-//           ...state.animals[id].current,
-//           dir: (state.animals[id].current.dir + 1) % 4,
-//           rot: state.animals[id].current.rot + 1
-//         }
-//       }
-//     }
-//   }
-// case animalTurnLeft.type:
-//   var id = action.payload
-//   return {
-//     ...state,
-//     animals: {
-//       ...state.animals,
-//       [id]: {
-//         ...state.animals[id],
-//         current: {
-//           ...state.animals[id].current,
-//           dir: (state.animals[id].current.dir + 3) % 4,
-//           rot: state.animals[id].current.rot - 1
-//         }
-//       }
-//     }
-//   }
 
 export default reducer

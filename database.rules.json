@@ -1,6 +1,61 @@
 {
   "rules": {
-    ".read": "true",
-    ".write": "true"
+    ".read": "auth !== null",
+    ".write": "auth !== null",
+    "users": {
+      "$uid": {
+        ".write": "auth !== null",
+        ".read": "auth !== null",
+        "username": {
+          ".validate": "!root.child('usernames').child(newData.val()).exists() || root.child('usernames').child(newData.val()).val() == $uid"
+        }
+      }
+    },
+    "usernames": {
+      ".read": "true",
+      ".write": "true"
+    },
+    "playlists": {
+      ".read": "auth !== null",
+      ".write": "auth !== null"
+    },
+    "games": {
+      ".read": "auth !== null",
+      ".write": "auth !== null"
+    },
+    "search": {
+      "request": {
+          "$recid": {
+             ".read": "auth.id === data.child('id').val() || auth.uid === data.child('id').val()",
+             ".write": "!data.exists() && (newData.child('id').val() === auth.id || newData.child('id').val() === auth.uid)",
+             ".validate": "newData.hasChildren(['query', 'index', 'type'])",
+             "index": {
+                ".validate": "(newData.isString() && newData.val().length < 1000) || newData.hasChildren()",
+                "$child": {
+                   ".validate": "newData.isString() && newData.val().length < 1000"
+                }
+             },
+             "type": {
+                ".validate": "(newData.isString() && newData.val().length < 1000) || newData.hasChildren()",
+                "$child": {
+                   ".validate": "newData.isString() && newData.val().length < 1000"
+                }
+             },
+             "query": {
+                ".validate": "newData.isString() || newData.hasChildren()"
+             },
+             "$other": {
+                ".validate": false
+             }
+          }
+       },
+       "response": {
+          "$recid": {
+             ".read": "auth.id === data.child('id').val() || auth.uid === data.child('id').val()",
+             ".write": "auth.id === data.child('id').val() || auth.uid === data.child('id').val()",
+             ".validate": false
+          }
+       }
+    }
   }
 }

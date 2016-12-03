@@ -8,7 +8,7 @@ function render ({props, children}) {
     <Block
       fixed
       h='100vh'
-      w='66px'
+      w='100px'
       left='0'
       overflow='hidden'
       zIndex='999'
@@ -16,9 +16,8 @@ function render ({props, children}) {
       bgColor='white'
       py='10px'
       px='10px'
-      transition='width .2s ease-in-out'
-      focusProps={{w: '60px'}}
-      lingerProps={{w: '250px'}}
+      column
+      align='center center'
       {...props}>
       {children}
     </Block>

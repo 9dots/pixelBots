@@ -26,6 +26,7 @@ export default {
     light: '#c5c5c5',
     buttons: '#2C4770',
     background: '#e5e5e5',
+    disabled: '#C0C0C0',
     default: baseColors.black,
     info: baseColors.blue,
     success: baseColors.green,
