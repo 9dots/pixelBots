@@ -61,18 +61,19 @@
     "rxjs": "^5.0.0-beta.12",
     "stack-trace": "0.0.9",
     "type": "0.0.3",
-    "vdux": "^2.4.10",
+    "vdux": "2",
     "vdux-ace": "^0.2.18",
-    "vdux-containers": "^1.1.19",
+    "vdux-containers": "1.1.19",
     "vdux-css-transition": "^1.2.1",
     "vdux-delay": "^1.0.6",
-    "vdux-form": "^1.0.11",
+    "vdux-fire": "^0.1.18",
+    "vdux-form": "1.0.11",
+    "vdux-position": "1.0.5",
     "vdux-transition": "1.0.6",
-    "vdux-ui": "^1.2.36",
+    "vdux-ui": "1.2.36",
     "yoco": "^1.6.2"
   },
   "devDependencies": {
-    "firebase-tools": "^3.0.4",
     "babel-plugin-transform-react-jsx": "^6.7.5",
     "babel-plugin-transform-runtime": "^6.9.0",
     "babel-preset-es2015": "^6.3.13",
@@ -81,6 +82,7 @@
     "browserify": "^13.1.1",
     "browserify-hmr": "^0.3.1",
     "cross-env": "^3.1.3",
+    "firebase-tools": "^3.0.4",
     "uglifyjs": "^2.4.10",
     "watchify": "^3.7.0"
   }

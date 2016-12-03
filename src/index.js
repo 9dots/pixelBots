@@ -30,8 +30,6 @@ import theme from './theme'
 const epicMiddleware = createEpicMiddleware(rootEpic)
 var app = require('./app').default
 
-firebase.initializeApp(firebaseConfig)
-
 const initialState = {
   url: '',
   toast: '',

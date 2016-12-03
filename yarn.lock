@@ -153,7 +153,7 @@
   dependencies:
     "@f/slice" "^1.1.3"
 
-"@f/debounce@^1.0.2", "@f/debounce@^1.0.4", "@f/debounce@^1.0.5":
+"@f/debounce@^1.0.2", "@f/debounce@^1.0.5":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@f/debounce/-/debounce-1.0.5.tgz#4e35438e819bbd918c6947e3029a28ebeffae83c"
 
@@ -523,12 +523,6 @@
     "@f/is-function" "^1.1.1"
     "@f/map-array" "^1.2.1"
 
-"@f/memoize@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@f/memoize/-/memoize-1.1.1.tgz#e02aa997405d8c6b5ef1b334dc2b6c6f11ee1a0e"
-  dependencies:
-    "@f/slice" "^1.0.0"
-
 "@f/noop@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@f/noop/-/noop-1.2.0.tgz#4c48b94b4d24dcf66d329e5e25c61ff887d1abbe"
@@ -579,7 +573,7 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@f/popcount/-/popcount-1.0.0.tgz#f2d5372c2880d665df511fb154240c0add8bb084"
 
-"@f/position-element@^1.1.3":
+"@f/position-element@^1.1.1", "@f/position-element@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@f/position-element/-/position-element-1.1.3.tgz#c1ab87a08f28e25fd2d789f2f835b6a160b09336"
   dependencies:
@@ -713,6 +707,13 @@
 "@f/svg-namespace@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@f/svg-namespace/-/svg-namespace-1.0.1.tgz#f6f1a5ce5d3971a4ade91a11d22d4c459acd375f"
+
+"@f/switch@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@f/switch/-/switch-1.0.1.tgz#f7509590ec6679d2a94294e7ad26b9db3e73ab9c"
+  dependencies:
+    "@f/noop" "^1.2.0"
+    "@f/slice" "^1.1.3"
 
 "@f/throttle@^1.0.0":
   version "1.0.0"
@@ -1028,10 +1029,6 @@ ast-types@0.8.12:
   version "0.8.12"
   resolved "https://registry.yarnpkg.com/ast-types/-/ast-types-0.8.12.tgz#a0d90e4351bb887716c83fd637ebf818af4adfcc"
 
-ast-types@0.8.15:
-  version "0.8.15"
-  resolved "https://registry.yarnpkg.com/ast-types/-/ast-types-0.8.15.tgz#8eef0827f04dff0ec8857ba925abe3fea6194e52"
-
 ast-types@0.9.2:
   version "0.9.2"
   resolved "https://registry.yarnpkg.com/ast-types/-/ast-types-0.9.2.tgz#2cc19979d15c655108bf565323b8e7ee38751f6b"
@@ -1083,6 +1080,10 @@ auto-yield-delegate@^0.5.4:
   dependencies:
     babel-core "^6.7.4"
     camel-case "^1.2.2"
+
+autosize@^3.0.15:
+  version "3.0.19"
+  resolved "https://registry.yarnpkg.com/autosize/-/autosize-3.0.19.tgz#3ee11b8683e534aeb680eb80dba3970c8f3da7ea"
 
 aws-sign2@~0.6.0:
   version "0.6.0"
@@ -5192,20 +5193,11 @@ readline2@^1.0.1:
     is-fullwidth-code-point "^1.0.0"
     mute-stream "0.0.5"
 
-recast@0.10.33:
+recast@0.10.33, recast@^0.10.10:
   version "0.10.33"
   resolved "https://registry.yarnpkg.com/recast/-/recast-0.10.33.tgz#942808f7aa016f1fa7142c461d7e5704aaa8d697"
   dependencies:
     ast-types "0.8.12"
-    esprima-fb "~15001.1001.0-dev-harmony-fb"
-    private "~0.1.5"
-    source-map "~0.5.0"
-
-recast@^0.10.10:
-  version "0.10.43"
-  resolved "https://registry.yarnpkg.com/recast/-/recast-0.10.43.tgz#b95d50f6d60761a5f6252e15d80678168491ce7f"
-  dependencies:
-    ast-types "0.8.15"
     esprima-fb "~15001.1001.0-dev-harmony-fb"
     private "~0.1.5"
     source-map "~0.5.0"
@@ -5308,7 +5300,7 @@ regenerate@^1.2.1:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.3.2.tgz#d1941c67bad437e1be76433add5b385f95b19260"
 
-regenerator-runtime@^0.9.5:
+regenerator-runtime@^0.9.5, regenerator-runtime@^0.9.6:
   version "0.9.6"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.9.6.tgz#d33eb95d0d2001a4be39659707c51b0cb71ce029"
 
@@ -6294,13 +6286,12 @@ vdux-ace@^0.2.18:
     redux-ephemeral "^0.1.9"
     vdux "^2.4.9"
 
-vdux-containers@^1.1.19:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/vdux-containers/-/vdux-containers-1.2.1.tgz#b5652529c4062916fc7c8f318363fd6fbf521866"
+vdux-containers@1.1.19:
+  version "1.1.19"
+  resolved "https://registry.yarnpkg.com/vdux-containers/-/vdux-containers-1.1.19.tgz#76f315fc891e4aa0aecbf262ca5615f2c16a48d4"
   dependencies:
     "@f/combine-reducers" "^1.2.1"
     "@f/create-action" "^1.1.1"
-    "@f/debounce" "^1.0.4"
     "@f/equal" "^1.0.1"
     "@f/foreach-obj" "^1.1.1"
     "@f/handle-actions" "^1.1.1"
@@ -6311,6 +6302,8 @@ vdux-containers@^1.1.19:
     "@f/noop" "^1.2.0"
     "@f/omit" "^2.2.3"
     "@f/serialize-form" "^1.0.0"
+    autosize "^3.0.15"
+    vdux "^2.4.9"
     vdux-ui "^1.2.0"
 
 vdux-css-emulator@^2.0.5:
@@ -6344,14 +6337,37 @@ vdux-delay@^1.0.6:
     "@f/create-action" "^1.1.1"
     "@f/handle-actions" "^1.1.1"
 
-vdux-form@^1.0.11:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/vdux-form/-/vdux-form-1.2.1.tgz#5781e49236d286fe72aee1c751c5e4fa2efcb60a"
+vdux-fire@^0.1.18:
+  version "0.1.18"
+  resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-0.1.18.tgz#6f0619cba76f743af32ceacc67dc68a764df8347"
+  dependencies:
+    "@f/create-action" "^1.1.1"
+    "@f/deep-equal" "^1.0.2"
+    "@f/equal-obj" "^1.2.1"
+    "@f/handle-actions" "^1.1.2"
+    "@f/map" "^1.5.3"
+    "@f/map-obj" "^1.2.2"
+    "@f/omit" "^2.2.3"
+    "@f/switch" "^1.0.1"
+    firebase "3.6.0"
+    redux-ephemeral "^0.3.7"
+    regenerator-runtime "^0.9.6"
+    vdux "^2.4.6"
+
+vdux-form@1.0.11:
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/vdux-form/-/vdux-form-1.0.11.tgz#057f8e2a182bf2378caac83ad268e0473fea27f2"
   dependencies:
     "@f/identity" "^1.1.1"
     "@f/noop" "^1.2.0"
     "@f/serialize-form" "^1.0.0"
     vdux-ui "^1.2.0"
+
+vdux-position@1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/vdux-position/-/vdux-position-1.0.5.tgz#f5a1fb04b26744c4cf93e2faf9c85e79ece4ffae"
+  dependencies:
+    "@f/position-element" "^1.1.1"
 
 vdux-position@^1.0.5:
   version "1.1.0"
@@ -6372,20 +6388,17 @@ vdux-transition@1.0.6, vdux-transition@^1.0.5:
     "@f/omit" "^2.2.3"
     "@f/splice" "^1.0.0"
 
-vdux-ui@^1.2.0, vdux-ui@^1.2.36:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/vdux-ui/-/vdux-ui-1.3.1.tgz#4034ac82069ff4ac474cd6a6d5287c5719ad6ed7"
+vdux-ui@1.2.36, vdux-ui@^1.2.0:
+  version "1.2.36"
+  resolved "https://registry.yarnpkg.com/vdux-ui/-/vdux-ui-1.2.36.tgz#1909b08d1ade10eef408947b136bd452c218d9cb"
   dependencies:
     "@f/defaults" "^1.0.1"
-    "@f/event-handler" "^1.0.2"
     "@f/extend" "^1.0.0"
     "@f/foreach" "^1.2.2"
     "@f/has" "^1.0.0"
     "@f/html-attrs" "^1.0.2"
-    "@f/identity" "^1.1.1"
     "@f/input-attrs" "^1.0.0"
     "@f/map" "^1.5.3"
-    "@f/memoize" "^1.1.1"
     "@f/noop" "^1.2.0"
     "@f/normalize-bowser" "^1.0.0"
     "@f/omit" "^2.2.3"
@@ -6395,10 +6408,11 @@ vdux-ui@^1.2.0, vdux-ui@^1.2.36:
     "@f/times" "^1.0.0"
     bowser "^1.4.5"
     color "^0.11.1"
+    vdux "^2.4.9"
     vdux-css-emulator "^2.0.5"
     vdux-position "^1.0.5"
 
-vdux@^2.4.10, vdux@^2.4.9:
+vdux@2, vdux@^2.4.6, vdux@^2.4.9:
   version "2.4.10"
   resolved "https://registry.yarnpkg.com/vdux/-/vdux-2.4.10.tgz#1a20565bca5f7c1347f119230c3e9751d3087598"
   dependencies:
