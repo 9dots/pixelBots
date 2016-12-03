@@ -26,6 +26,7 @@
     "@f/debounce": "^1.0.5",
     "@f/deep-equal": "^1.0.2",
     "@f/equal-obj": "^1.2.1",
+    "@f/event-handler": "1.0.2",
     "@f/filter": "^1.1.1",
     "@f/flatten-gen": "^2.0.0",
     "@f/is-generator-object": "^1.3.0",
@@ -71,6 +72,7 @@
     "vdux-position": "1.0.5",
     "vdux-transition": "1.0.6",
     "vdux-ui": "1.2.36",
+    "virtex-element": "0.3",
     "yoco": "^1.6.2"
   },
   "devDependencies": {

@@ -221,6 +221,17 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@f/event-constructors/-/event-constructors-1.0.0.tgz#0510a930151d6272359a86b6dec68a2fbe025c9c"
 
+"@f/event-handler@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@f/event-handler/-/event-handler-1.0.2.tgz#275b1134e016dcd0cba155dfc2f94332c0737422"
+  dependencies:
+    "@f/is-array" "^1.1.1"
+    "@f/is-function" "^1.1.1"
+    "@f/is-object" "^1.1.4"
+    "@f/keychord" "^1.1.1"
+    "@f/map" "^1.5.3"
+    "@f/maybe-over" "^1.0.0"
+
 "@f/event-handler@^1.0.1", "@f/event-handler@^1.0.2":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@f/event-handler/-/event-handler-1.0.4.tgz#4b6e4dbacb0e7d6d33152bcd5aad5cf0e2961aab"
@@ -573,7 +584,7 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@f/popcount/-/popcount-1.0.0.tgz#f2d5372c2880d665df511fb154240c0add8bb084"
 
-"@f/position-element@^1.1.1", "@f/position-element@^1.1.3":
+"@f/position-element@^1.1.1":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@f/position-element/-/position-element-1.1.3.tgz#c1ab87a08f28e25fd2d789f2f835b6a160b09336"
   dependencies:
@@ -6363,17 +6374,11 @@ vdux-form@1.0.11:
     "@f/serialize-form" "^1.0.0"
     vdux-ui "^1.2.0"
 
-vdux-position@1.0.5:
+vdux-position@1.0.5, vdux-position@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/vdux-position/-/vdux-position-1.0.5.tgz#f5a1fb04b26744c4cf93e2faf9c85e79ece4ffae"
   dependencies:
     "@f/position-element" "^1.1.1"
-
-vdux-position@^1.0.5:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/vdux-position/-/vdux-position-1.1.0.tgz#2357279f078f3db916eaf94557241c401ccd8180"
-  dependencies:
-    "@f/position-element" "^1.1.3"
 
 vdux-transition@1.0.6, vdux-transition@^1.0.5:
   version "1.0.6"
@@ -6478,7 +6483,7 @@ virtex-dom@^0.3.12:
     "@f/set-value" "^1.0.0"
     virtex "^0.3.6"
 
-virtex-element@^0.3.0, virtex-element@^0.3.6:
+virtex-element@0.3, virtex-element@^0.3.0, virtex-element@^0.3.6:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/virtex-element/-/virtex-element-0.3.6.tgz#0913cb855bcb763e74561bf23f050e35c4170fdb"
   dependencies:
