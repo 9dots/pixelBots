@@ -8,7 +8,6 @@ import createAction from '@f/create-action'
 
 function render ({props, state}) {
   const {header, body, footer, clickHandler = [], dismiss = clearMessage} = props
-  console.log(body)
 
   return (
     <Modal overlayProps={{fixed: true, top: 0, left: 0}} onDismiss={dismiss} onKeyup={{esc: dismiss}}>

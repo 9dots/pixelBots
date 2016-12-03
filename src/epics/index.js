@@ -3,6 +3,6 @@ import runner from './runner'
 import runOver from './runOver'
 
 export default combineEpics(
-  runner
-  // runOver
+  runner,
+  runOver
 )

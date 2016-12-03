@@ -11,8 +11,6 @@ function render ({props}) {
 
   const handleRemoveLine = editorActions.removeLine || removeLine
 
-  console.log(editorActions)
-
   return (
     <Block mt='5px' color='#333' {...props} w='30px' left={`${offset}px`}>
       {
