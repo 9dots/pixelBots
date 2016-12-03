@@ -11,6 +11,7 @@ import moveAnimal from './middleware/moveAnimal'
 import location from 'redux-effects-location'
 import firebaseConfig from './firebaseConfig'
 import addCode from './middleware/addCodeMW'
+import checkCompleted from './middleware/checkCompleted'
 import saveCode from './middleware/saveCode'
 import scroll from './middleware/scroll'
 import auth from './middleware/auth'
@@ -54,6 +55,7 @@ const {subscribe, render, replaceReducer} = vdux({
     fire.middleware(firebaseConfig),
     auth,
     epicMiddleware,
+    checkCompleted,
     scroll,
     addCode,
     saveCode,

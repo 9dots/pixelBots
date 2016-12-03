@@ -1,67 +1,132 @@
 import IndeterminateProgress from '../components/IndeterminateProgress'
-import ChallengeFeed from './ChallengeFeed'
 import PlaylistSearchFeed from './PlaylistSearchFeed'
-import element from 'vdux/element'
-import reduce from '@f/reduce'
-import {Block, Flex} from 'vdux-ui'
 import ProfileTab from '../components/ProfileTab'
 import {setUrl} from 'redux-effects-location'
+import ChallengeFeed from './ChallengeFeed'
+import SelectToolbar from './SelectToolbar'
+import createAction from '@f/create-action'
+import {Block, Flex} from 'vdux-ui'
+import element from 'vdux/element'
+import reduce from '@f/reduce'
+import filter from '@f/filter'
 import enroute from 'enroute'
 import fire from 'vdux-fire'
 
+const toggleSelected = createAction('PROFILE: TOGGLE_SELECTED')
+const clearSelected = createAction('PROFILE: CLEAR_SELECTED')
+
+const initialState = ({local}) => ({
+	selected: [],
+	actions: {
+		toggleSelected: local((key) => toggleSelected(key)),
+		clearSelected: local(() => clearSelected()),
+		toggleSelectMode: local(() => toggleSelectMode())
+	}
+})
+
+function * onUpdate (prev, {props, state}) {
+	if (prev.props.searchKey !== props.searchKey) {
+		yield state.actions.clearSelected()
+	}
+}
+
 const router = enroute({
-	'games': (params, props) => (
-		<ChallengeFeed games={props}/>
+	'games': (params, {items, actions, selected}) => (
+		<ChallengeFeed editable games={items} toggleSelected={actions.toggleSelected} selected={selected}/>
 	),
-	'playlists': (params, props) => (
-		<PlaylistSearchFeed playlists={props}/>
+	'playlists': (params, {items}) => (
+		<PlaylistSearchFeed playlists={items}/>
 	)
 })
 
-function render ({props}) {
-	const {responses, tab, searchQ = ''} = props
+function render ({props, state}) {
+	const {responses, tab, playlists, uid, searchQ = ''} = props
+	const {actions, selected} = state
 	const hits = responses.value
 		? responses.value.hits
 		: {}
 
+	if (playlists.loading) {
+		return <IndeterminateProgress/>
+	}
+
 	const byType = reduce((cur, next) => {
-		cur[next._type] && cur[next._type].length > 0
-			? cur[next._type] = cur[next._type].concat([next._source])
-			: cur[next._type] = [next._source]
-		return cur
+		return {
+			...cur,
+			[next._type]: {
+				...cur[next._type],
+				[next._id]: {
+					...next._source,
+					ref: next._id
+				}
+			}
+		}
 	},
-	{games: [], playlists: [], users: []},
+	{games: {}, playlists: {}, users: {}},
 	hits)
 
 	return (
 		<Block>
-			<Flex borderBottom='1px solid #999' wide relative bottom='0' color='lightBlue' h='42px'>
-				<ProfileTab
-					title={`${byType.games.length || 0} challenges`}
-					underlineColor='red'
-					active={tab === 'games'}
-					handleClick={() => setUrl(`/search/games/${searchQ}`)}/>
-				<ProfileTab
-					title={`${byType.playlists.length || 0} playlists`}
-					underlineColor='lightBlue'
-					active={tab === 'playlists'}
-					handleClick={() => setUrl(`/search/playlists/${searchQ}`)}/>
-				<ProfileTab
-					title={`${byType.users.length || 0} users`}
-					active={tab === 'users'}
-					underlineColor='yellow'
-					handleClick={() => setUrl(`/search/users/${searchQ}`)}/>
-			</Flex>
+			{selected.length > 0
+				? <SelectToolbar
+							selected={selected}
+							playlists={filter((playlist) => playlist.creatorID === uid, playlists.value)}
+							uid={props.userKey}
+							clearSelected={actions.clearSelected}
+							num={selected.length}/>
+				: <Flex borderBottom='1px solid #999' wide relative bottom='0' color='lightBlue' h='42px'>
+							<ProfileTab
+								title={`${Object.keys(byType.games).length || 0} challenges`}
+								underlineColor='red'
+								active={tab === 'games'}
+								handleClick={() => setUrl(`/search/games/${searchQ}`)}/>
+							<ProfileTab
+								title={`${Object.keys(byType.playlists).length || 0} playlists`}
+								underlineColor='lightBlue'
+								active={tab === 'playlists'}
+								handleClick={() => setUrl(`/search/playlists/${searchQ}`)}/>
+						</Flex>}
 			{responses.loading && props.searchKey
 				? <IndeterminateProgress/>
-				: router(tab, byType[tab])
+				: router(tab, {items: byType[tab], actions, selected})
 			}
 		</Block>
 	)
 }
 
+function reducer (state, action) {
+	switch (action.type) {
+		case toggleSelected.type:
+			return {
+				...state,
+				selected: maybeAddToArray(action.payload, state.selected)
+			}
+	case clearSelected.type:
+			return {
+				...state,
+				selected: []
+			}
+	}
+	return state
+}
+
+function maybeAddToArray (val, arr) {
+	if (arr.indexOf(val) > -1) {
+		return arr.filter((item) => item !== val)
+	} else {
+		return arr.concat(val)
+	}
+}
+
+
 export default fire((props) => ({
-	responses: `/search/response/${props.searchKey}`
+	responses: `/search/response/${props.searchKey}`,
+	playlists: {
+  	ref: `users/${props.uid}/playlists/`
+  }
 }))({
+	initialState,
+	onUpdate,
+	reducer,
 	render
 })

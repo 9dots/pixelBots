@@ -15,7 +15,7 @@ const router = enroute({
     <GameLoader {...props} left='60px' gameCode={props.payload.gameRef} saveID={props.payload.saveRef}/>
   ),
   'playlists': (params, props) => (
-    <MyPlaylist ref={props.payload} user={props.user}/>
+    <MyPlaylist anonymous={props.payload.anonymous} ref={props.payload.ref} user={props.user}/>
   ),
   'list': (params, props) => (
     <PlaylistLoader {...props} ref={props.payload} user={props.user}/>
@@ -49,7 +49,7 @@ function render ({props}) {
 }
 
 export default fire((props) => ({
-	linkSnap: `/links/${props.link}`
+	linkSnap: `/links/${props.link.toUpperCase()}`
 }))({
 	render
 })

@@ -33,53 +33,63 @@ const modalProps = {
 const initialState = ({local}) => ({
 	modal: '',
 	playlistName: '',
-	position: 'relative',
+	position: getInitialPosition(document.getElementsByClassName('action-bar-holder')[0]),
 	actions: {
 		setFixed: local(setFixed),
 		setRelative: local(setRelative)
 	}
 })
 
+function getInitialPosition (target) {
+	if (target.scrollTop > 100) {
+		return 'fixed'
+	} else {
+		return 'relative'
+	}
+}
+
 function render ({props, local, state}) {
 	const {num, uid, selected, clearSelected, playlists=[]} = props
 	const {modal, actions, playlistName, position} = state
 	return (
 		<Window onScroll={maybeFixed}>
-			<Flex
-				position={position}
-				px='20px'
-				top='0'
-				color='white'
-				zIndex='999'
-				left={position === 'fixed' ? '110px' : '0'}
-				w={position === 'fixed' ? 'calc(100% - 130px)' : '100%'}
-				h='42px'
-				bgColor='red'
-				align='start center'>
-				<Block flex align='start center'>
-					<Icon cursor='pointer' mr='20px' name='close' onClick={clearSelected}/>
-					<Text fontWeight='800'>{num} selected</Text>
-				</Block>
-				<Block align='center center'>
-					<Dropdown zIndex='999' btn={<Icon mt='4px' cursor='pointer' name='add'/>}>
-						<Block py='10px' w='150px'>
-							<MenuItem fontWeight='300' wide onClick={local(setModal)}>New Playlist</MenuItem>
-							{reduce((cur, playlist, key) => cur.concat(<MenuItem onClick={() => addToPlaylist(key, playlist.name)} wide>{playlist.name}</MenuItem>), [], playlists)}
-						</Block>
-					</Dropdown>
-				</Block>
-				{modal && <CreatePlaylist
-					uid={uid}
-					selected={selected}
-					handleDismiss={local(clearModal)}
-					onAddToPlaylist={clearSelected}/>
-				}
-			</Flex>
+			<Block>
+				<Flex
+					position={position}
+					px='20px'
+					top='0'
+					color='white'
+					zIndex='999'
+					left={position === 'fixed' ? '90px' : '0'}
+					w={position === 'fixed' ? 'calc(100% - 90px)' : '100%'}
+					h='42px'
+					bgColor='red'
+					align='start center'>
+					<Block flex align='start center'>
+						<Icon cursor='pointer' mr='20px' name='close' onClick={clearSelected}/>
+						<Text fontWeight='800'>{num} selected</Text>
+					</Block>
+					<Block align='center center'>
+						<Dropdown zIndex='999' btn={<Icon mt='4px' cursor='pointer' name='add'/>}>
+							<Block maxHeight='300px' py='10px' w='150px' overflowY='auto'>
+								<MenuItem fontWeight='300' wide onClick={local(setModal)}>New Playlist</MenuItem>
+								{reduce((cur, playlist, key) => cur.concat(<MenuItem onClick={() => addToPlaylist(playlist.ref, playlist.name)} wide>{playlist.name}</MenuItem>), [], playlists)}
+							</Block>
+						</Dropdown>
+					</Block>
+					{modal && <CreatePlaylist
+						uid={uid}
+						selected={selected}
+						handleDismiss={local(clearModal)}
+						onAddToPlaylist={clearSelected}/>
+					}
+				</Flex>
+				{position === 'fixed' && <Block wide h='42px'/>}
+			</Block>
 		</Window>
 	)
 
 	function * maybeFixed (e) {
-		console.log(e.target.scrollTop)
 		if (e.target.scrollTop > 100) {
 			yield actions.setFixed()
 		} else {
@@ -113,7 +123,6 @@ function render ({props, local, state}) {
 }
 
 function reducer (state, action) {
-	console.log(action)
 	switch (action.type) {
 		case setModal.type:
 			return {

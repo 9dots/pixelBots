@@ -21,6 +21,12 @@ const inputProps = {
   border: '2px solid #ccc'
 }
 
+function * onUpdate (prev, {props}) {
+	if (props.anonymous && props.playlist.value) {
+		yield submit(props.playlist.value, props.ref)
+	}
+}
+
 function render ({props}) {
 	const {playlist} = props
 
@@ -36,39 +42,39 @@ function render ({props}) {
 			<Input inputProps={inputProps}/>
 		</ModalBody>
 		<ModalFooter>
-			<Button bgColor='primary' onClick={() => submit('Daniel')}>Save</Button>
+			<Button bgColor='primary' onClick={() => submit(listProps, props.ref, 'Daniel')}>Save</Button>
 		</ModalFooter>
 	</Modal>
 
 	return (
-		<div>{modal}</div>
+		<div>{!props.anonymous && modal}</div>
 	)
+}
 
-	function * submit (textVal) {
-		const saveIds = yield createSaveCodes(listProps.sequence.length)
-		const savedListRef = yield refMethod({
-			ref: `/savedList/`,
-			updates: {method: 'push', value: {
-				...listProps,
-				studentName: textVal,
-				assignmentRef: props.ref,
-				saveIds,
-				current: 0
-			}}
-		})
-		const code = yield createCode()
-		yield refMethod({
-			ref: `/links/${code}`,
-			updates: {
-				method: 'set',
-				value: {
-					type: 'list',
-					payload: savedListRef.key
-				}
+function * submit (listProps, assignmentRef, textVal = '') {
+	const saveIds = yield createSaveCodes(listProps.sequence.length)
+	const savedListRef = yield refMethod({
+		ref: `/savedList/`,
+		updates: {method: 'push', value: {
+			saveIds,
+			...listProps,
+			assignmentRef,
+			studentName: textVal,
+			current: 0
+		}}
+	})
+	const code = yield createCode()
+	yield refMethod({
+		ref: `/links/${code}`,
+		updates: {
+			method: 'set',
+			value: {
+				type: 'list',
+				payload: savedListRef.key
 			}
-		})
-		yield setUrl(`/${code}`)
-	}
+		}
+	})
+	yield setUrl(`/${code}`)
 }
 
 function * createSaveCodes (num) {
@@ -90,5 +96,6 @@ function * createSaveCodes (num) {
 export default fire ((props) => ({
 	playlist: `/playlists/${props.ref}`
 }))({
+	onUpdate,
 	render
 })

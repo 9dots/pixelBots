@@ -1,3 +1,4 @@
+import IndeterminateProgress from '../components/IndeterminateProgress'
 import element from 'vdux/element'
 import {Block, Flex, Text} from 'vdux-ui'
 import {Input} from 'vdux-containers'
@@ -48,22 +49,50 @@ const initialState = ({local, props}) => ({
 
 function render ({props, state, local}) {
 	const {searchKey, actions, searchValue} = state
-	const {searchType = 'games', searchQ = ''} = props
+	const {uid, searchType = 'games', searchQ = ''} = props
 	const {newSearchKey} = actions
 
+	if (!uid) {
+		return <IndeterminateProgress/>
+	}
+
 	return (
-		<Block>
-			<Block align='center center'>
-				<Input
-					wide
-					inputProps={inputProps}
-					value={searchValue}
-					placeholder='Search Pixelbots'
-					onKeyUp={{enter: (e) => e.target.value !== searchQ && setUrl(`/search/${searchType}/${e.target.value}`)}}/>
-			</Block>
-			<Block>
-				<SearchResults tab={searchType} searchKey={searchKey} searchQ={searchQ}/>
-			</Block>
+		<Block wide tall>
+			{
+				searchValue
+					? <Block>
+							<Block align='center center'>
+								<Input
+									wide
+									autofocus
+									inputProps={inputProps}
+									value={searchValue}
+									placeholder='Search Pixelbots'
+									onKeyUp={{enter: (e) => e.target.value !== searchQ && setUrl(`/search/${searchType}/${e.target.value}`)}}/>
+							</Block>
+							<Block>
+								<SearchResults uid={uid} tab={searchType} searchKey={searchKey} searchQ={searchQ}/>
+							</Block>
+						</Block>
+					: <Block absolute tall top='0' left='0' wide align='center center'>
+							<Input
+									w='90%'
+									autofocus
+									fs='xxl'
+									bgColor='transparent'
+									inputProps={{
+										h: '100px',
+										textIndent: '8px',
+										border: 'none',
+										borderWidth: '0',
+										borderBottom: '3px solid #b5b5b5',
+										bgColor: 'transparent'
+									}}
+									value={searchValue}
+									placeholder='Search Pixelbots'
+									onKeyUp={{enter: (e) => e.target.value !== searchQ && setUrl(`/search/${searchType}/${e.target.value}`)}}/>
+						</Block>
+			}
 		</Block>
 	)
 }
@@ -98,9 +127,17 @@ function reducer (state, action) {
 	}
 }
 
+function getProps (props, context) {
+	return {
+		...props,
+		uid: context.currentUser.uid
+	}
+}
+
 export default {
 	onCreate,
 	onUpdate,
+	getProps,
 	initialState,
 	reducer,
 	render

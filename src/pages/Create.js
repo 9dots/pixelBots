@@ -30,7 +30,7 @@ function render ({props}) {
 }
 
 export default fire((props) => ({
-  newGame: `drafts/${props.gameID}`
+  newGame: `drafts/${props.draftID}`
 }))({
   render
 })

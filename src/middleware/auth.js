@@ -1,6 +1,9 @@
 import firebase from 'firebase'
 import createAction from '@f/create-action'
 import {refMethod} from 'vdux-fire'
+import {setUrl} from 'redux-effects-location'
+import {refresh} from '../actions'
+import sleep from '@f/sleep'
 
 const setUserId = createAction('SET_USER_ID')
 const setUsername = createAction('SET_USERNAME')
@@ -27,7 +30,7 @@ export default ({getState, dispatch}) => {
   	if (action.type === signInWithProvider.type) {
   		var provider = providers[action.payload]()
 			firebase.auth().signInWithPopup(provider).then(function(result) {
-				console.log(result)
+				dispatch(setUrl('/'))
 			}).catch(function(error) {
 				if (error.code === 'auth/credential-already-in-use') {
 					return firebase.auth().signInWithCredential(error.credential)
@@ -36,6 +39,8 @@ export default ({getState, dispatch}) => {
   	}
   	if (action.type === signOut.type) {
   		firebase.auth().signOut()
+      dispatch(setUrl('/'))
+      dispatch(refresh())
   	}
   	return next(action)
   }
@@ -47,21 +52,34 @@ function * maybeCreateNewUser (user) {
     return yield setUsername(maybeUser.val().username)
   }
   const username = yield createUsername(user)
-  yield refMethod({
-    ref: `/users/${user.uid}`,
-    updates: {
-      method: 'set',
-      value: {
-        username,
-        displayName: user.displayName || user.providerData[0].displayName,
-        photoURL: user.photoURL || user.providerData[0].photoURL
+  yield sleep(2000)
+  try {
+    yield refMethod({
+      ref: `/users/${user.uid}`,
+      updates: {
+        method: 'set',
+        value: {
+          username,
+          displayName: user.displayName || user.providerData[0].displayName,
+          photoURL: user.photoURL || user.providerData[0].photoURL
+        }
       }
-    }
-  })
+    })
+  } catch (e) {
+    console.warn(e)
+  }
 }
 
-function * createUsername (user, ext = '') {
-  const username = user.providerData[0].email.split('@')[0] + ext
+function createName (user, ext) {
+  if (user.providerData[0].email) {
+    return user.providerData[0].email.split('@')[0].replace('.', '') + ext
+  } else {
+    return user.providerData[0].displayName.replace(' ', '')
+  }
+}
+
+function * createUsername (user, ext = '', username = '') {
+  username =  username || createName(user, ext)
   const snap = yield refMethod({
     ref: `/usernames/${username}`,
     updates: {
@@ -70,7 +88,7 @@ function * createUsername (user, ext = '') {
     }
   })
   if (snap.exists()) {
-    yield createUsername(user, ext ? ++ext : 1)
+    yield createUsername(user, ext ? ++ext : 1, username)
   } else {
     yield refMethod({
       ref: `/usernames/${username}`,

@@ -24,10 +24,6 @@ const moveError = createAction(
   (msg) => msg,
   (msg, lineNum) => ({lineNum})
 )
-const updateLine = createAction(
-  'UPDATE_LINE',
-  (id, lineNum, code) => ({id, lineNum, code})
-)
 const throwError = createAction(
   'THROW_ERROR',
   (message, lineNum) => ({message, lineNum})
@@ -43,28 +39,30 @@ const turnAnimal = createAction(
   (opts, lineNum) => ({lineNum})
 )
 const paintSquare = createAction('PAINT_SQUARE', (opts) => opts, (opts, lineNum) => ({lineNum}))
-const selectLine = createAction('SELECT_LINE', (id, idx) => ({id, idx}))
-const removeLine = createAction('REMOVE_LINE', (id, idx, type) => ({id, idx, type}))
-const setActiveLine = createAction('SET_ACTIVE_LINE', (idx) => idx)
-const addCode = createAction('ADD_CODE', (id, fn, idx) => ({id, fn, idx}))
-const setActive = createAction('SET_ANIMAL_ACTIVE', (id) => id)
 const initializeGame = createAction('INITIALIZE_GAME')
+const setActiveLine = createAction('SET_ACTIVE_LINE')
+const setActive = createAction('SET_ANIMAL_ACTIVE')
 const endRunMessage = createAction('END_RUN_MESSAGE')
 const setAnimalPos = createAction('SET_ANIMAL_POS')
 const clearMessage = createAction('CLEAR_MESSAGE')
 const setGameData = createAction('SET_GAME_DATA')
 const handleError = createAction('HANDLE_ERROR')
+const selectLine = createAction('SELECT_LINE')
 const gameLoaded = createAction('GAME_LOADED')
+const updateLine = createAction('UPDATE_LINE')
+const removeLine = createAction('REMOVE_LINE')
 const updateSize = createAction('UPDATE_SIZE')
+const setGameId = createAction('SET_GAME_ID')
+const setSaveId = createAction('SET_SAVE_ID')
 const aceUpdate = createAction('ACE_UPDATE')
 const setAnimal = createAction('SET_ANIMAL')
 const codeAdded = createAction('CODE_ADDED')
 const swapMode = createAction('SWAP_MODE')
 const startRun = createAction('START_RUN')
-const setSaveId = createAction('SET_SAVE_ID')
 const newRoute = createAction('NEW_ROUTE')
 const setToast = createAction('SET_TOAST')
 const stopRun = createAction('STOP_RUN')
+const addCode = createAction('ADD_CODE')
 const refresh = createAction('refresh')
 const endRun = createAction('END_RUN')
 const reset = createAction('RESET')
@@ -80,13 +78,10 @@ function * saveProgress (animals, gameID, saveID) {
     updates: {
       method: 'transaction',
       value: (cur) => {
-        if (saveID && cur === null) {
-          return 0
-        }
+        cur = cur ? cur : {}        
         if (gameID) {
           cur.gameID = gameID
         }
-        cur = cur ? cur : {}
         cur.animals = animals.map((animal) => ({...animal, current: animal.initial}))
         return cur
       }
@@ -127,6 +122,7 @@ export {
   gameLoaded,
   updateSize,
   setSaveId,
+  setGameId,
   selectLine,
   moveAnimal,
   codeAdded,

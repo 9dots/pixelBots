@@ -17,11 +17,6 @@ function render ({props}) {
 				active={tab === 'playlists'}
 				underlineColor='lightBlue'
 				handleClick={() => setUrl(`/${username}/playlists`)}/>
-			<ProfileTab
-				title='assignments'
-				active={tab === 'assignments'}
-				underlineColor='yellow'
-				handleClick={() => setUrl(`/${username}/assignments`)}/>
 		</Flex>
 	)
 }
@@ -29,3 +24,9 @@ function render ({props}) {
 export default {
 	render
 }
+
+// <ProfileTab
+// 	title='assignments'
+// 	active={tab === 'assignments'}
+// 	underlineColor='yellow'
+// 	handleClick={() => setUrl(`/${username}/assignments`)}/>

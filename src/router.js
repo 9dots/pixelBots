@@ -5,6 +5,7 @@ import IndeterminateProgress from './components/IndeterminateProgress'
 import HeaderElement from './components/HeaderElement'
 import ModalMessage from './components/ModalMessage'
 import CreateSandbox from './pages/CreateSandbox'
+import PlaylistView from './pages/PlaylistView'
 import ProfileLoader from './pages/ProfileLoader'
 import {Block, Icon, Text, Toast} from 'vdux-ui'
 import LinkDecipher from './pages/LinkDecipher'
@@ -29,8 +30,9 @@ const endLogin = createAction('END_LOGIN')
 const initialState = () => ({loggingIn: false})
 
 const router = enroute({
-  '/create/:gameID/:slug': ({slug, gameID}, props) => {
-    return <Create left='60px' gameID={gameID} params={slug} {...props} />
+  '/create/:draftID/:slug': ({draftID, slug}, props) => {
+    console.log(draftID)
+    return <Create left='60px' draftID={draftID} params={slug} {...props}/>
   },
   '/search': (params, props) => {
     return <SearchPage user={props.user}/>
@@ -41,6 +43,9 @@ const router = enroute({
   '/search/:searchType/:searchQ': ({searchType, searchQ}, props) => (
     <SearchPage searchType={searchType} searchQ={searchQ} user={props.user}/>
   ),
+  '/playlist/:playlistID': ({playlistID, username}, props) => (
+    <PlaylistView activeKey={playlistID} uid={props.user.uid}/>
+  ),
   '/:username/:activity': ({username, activity}, props) => {
     return <ProfileLoader params={activity} currentUser={props.user} username={username}/>
   },
@@ -49,7 +54,7 @@ const router = enroute({
 })
 
 function homePage (params, props) {
-  if (props.user && Object.keys(props.user).length === 0 || !props.username) {
+  if (!props.user || (props.user && Object.keys(props.user).length === 0) || (!props.user.isAnonymous && !props.username)) {
     return <IndeterminateProgress/>
   }
   if (props.user && props.username && !props.user.isAnonymous) {
@@ -77,8 +82,9 @@ function render ({props, state, local}) {
             handleClick={[() => setUrl('/'), refresh]}/>
           {(user && !user.isAnonymous) &&
             <Block>
-              <HeaderElement active={activeRoute === 'search'} onClick={() => setUrl('/search')} text='Search' icon='search'/>
-              <HeaderElement active={activeRoute === username} onClick={() => setUrl('/')} text='Your Stuff' icon='dashboard'/>
+              <HeaderElement active={activeRoute === 'search'} onClick={() => setUrl('/search/games')} text='Search' icon='search'/>
+              <HeaderElement active={activeRoute === username} onClick={() => setUrl(`/${username}/games`)} text='Your Stuff' icon='dashboard'/>
+              <HeaderElement active={activeRoute === 'create'} onClick={createNew} text='Create' icon='add'/>
             </Block>
           }
         </Block>
@@ -87,7 +93,7 @@ function render ({props, state, local}) {
           : <HeaderElement handleClick={signOut} text='Sign Out' icon='exit_to_app'/>
         }
       </Header>
-      <Block overflowY='auto' relative left='90px' p='20px' column align='start' minHeight='100%' w='calc(100% - 90px)' tall>
+      <Block class='action-bar-holder' overflowY='auto' relative left='90px' p='20px' column align='start' minHeight='100%' w='calc(100% - 90px)' tall>
       {
         url && router(url, props)
       }

@@ -1,14 +1,16 @@
 import IndeterminateProgress from '../components/IndeterminateProgress'
 import {Avatar, Block, Card, Flex, Image, Text} from 'vdux-ui'
-import ChallengeLoader from './ChallengeLoader'
+import AssignmentFeed from './AssignmentFeed'
+import ChallengeFeed from './ChallengeFeed'
 import SelectToolbar from './SelectToolbar'
 import createAction from '@f/create-action'
+import fire, {refMethod} from 'vdux-fire'
 import PlaylistFeed from './PlaylistFeed'
 import ProfileTabs from './ProfileTabs'
 import Tab from '../components/Tab'
-import enroute from 'enroute'
-import fire, {refMethod} from 'vdux-fire'
 import element from 'vdux/element'
+import filter from '@f/filter'
+import enroute from 'enroute'
 
 const changeTab = createAction('PROFILE: CHANGE_TAB')
 const toggleSelected = createAction('PROFILE: TOGGLE_SELECTED')
@@ -24,38 +26,33 @@ const initialState = ({local}) => ({
 	}
 })
 
-const getFbProps = (uid) => ({
-	games: {
-    ref: `/games/`,
-    updates: [
-      {method: 'orderByChild', value: 'creatorID'},
-      {method: 'equalTo', value: uid},
-      {method: 'limitToFirst', value: 50}
-    ]
-  }
-})
-
 const router = enroute({
-  'games': (params, props) => <ChallengeLoader
+  'games': (params, props) => <ChallengeFeed
 				selected={props.selected}
 				toggleSelected={props.actions.toggleSelected}
 				uid={props.userKey}
-				fbProps={getFbProps(props.userKey)}
+				games={props.profile.value.games}
 				mine={props.mine}
 				cat={props.tab}/>,
 	'playlists': (params, props) => <PlaylistFeed
-				items={props.playlists.value}
+				items={props.profile.value.playlists}
 				uid={props.userKey}
 				mine={props.mine}
+				cat={props.tab}/>,
+	'assignments': (params, props) => <AssignmentFeed
+				mine={props.mine}
+				uid={props.userKey}
 				cat={props.tab}/>
 })
 
 function render ({props, state, local}) {
-	const {playlists, user, mine, profile} = props
+	const {user, mine, profile, currentUser} = props
 	const {actions, selected} = state
 	const selectMode = selected.length > 0
 
-	if (playlists.loading || profile.loading) return <IndeterminateProgress/>
+	if (profile.loading || !currentUser || !profile.value) return <IndeterminateProgress/>
+
+	const {playlists} = profile.value
 
 	return (
     <Flex column align='start' wide tall>
@@ -71,13 +68,15 @@ function render ({props, state, local}) {
 					? <ProfileTabs username={props.username} tab={props.params} changeTab={local((val) => changeTab(val))} />
 					: <SelectToolbar
 							selected={selected}
-							playlists={playlists.value}
+							playlists={filter((playlist) => playlist.creatorID === currentUser.uid, playlists)}
 							uid={props.userKey}
 							mine={mine}
 							clearSelected={actions.clearSelected}
 							num={selected.length}/>}
 			</Block>
-			{router(props.params, {...props, ...state})}
+			<Block maxHeight='calc(100% - 102px)' wide tall>
+				{router(props.params, {...props, ...state})}
+			</Block>
 		</Flex>
 	)
 }
@@ -89,7 +88,7 @@ function reducer (state, action) {
 				...state,
 				selected: maybeAddToArray(action.payload, state.selected)
 			}
-		case clearSelected.type:
+	case clearSelected.type:
 			return {
 				...state,
 				selected: []
@@ -107,15 +106,7 @@ function maybeAddToArray (val, arr) {
 }
 
 export default fire((props) => ({
-	profile: `/users/${props.userKey}`,
-  playlists: {
-  	ref: `/playlists/`,
-    updates: [
-      {method: 'orderByChild', value: 'creatorID'},
-      {method: 'equalTo', value: props.userKey},
-      {method: 'limitToFirst', value: 50}
-    ]
-  }
+	profile: `/users/${props.userKey}`
 }))({
 	initialState,
 	reducer,

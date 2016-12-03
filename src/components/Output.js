@@ -1,13 +1,16 @@
 /** @jsx element */
 
 import ControlPanel from './ControlPanel'
-import element from 'vdux/element'
-import {Block} from 'vdux-ui'
+import Button from '../components/Button'
 import {setAnimalPos} from '../actions'
-import Level from './Level'
-import Tab from './Tab'
 import deepEqual from '@f/deep-equal'
+import element from 'vdux/element'
+import {Block, Icon} from 'vdux-ui'
+import Level from './Level'
 import omit from '@f/omit'
+import Tab from './Tab'
+import {runCode, abortRun} from '../middleware/codeRunner'
+import {reset} from '../actions'
 
 function render ({props}) {
   const {
@@ -19,7 +22,9 @@ function render ({props}) {
     running,
     options,
     painted,
+    hasRun,
     active,
+    onRun,
     size,
     tabs,
     tab
@@ -27,11 +32,10 @@ function render ({props}) {
 
   return (
     <Block
-      h='760px'
       bgColor='light'
       boxShadow='0 0 2px 1px rgba(0,0,0,0.2)'
       mr='0'>
-      <Block bgColor='secondary' wide align='flex-end center'>
+      <Block bgColor='secondary' wide align='start center'>
         {
           tabs.map((tabName) => (
             <Tab
@@ -51,7 +55,6 @@ function render ({props}) {
             animals={animals}
             running={running}
             active={active}
-            hideBorder
             painted={painted}
             levelSize={size}
             numRows={levelSize[0]}
@@ -83,9 +86,26 @@ function render ({props}) {
             numColumns={levelSize[1]}/>
         </Block>
       </Block>}
-      {options && <Block p='10px'>
-        <ControlPanel type={animals[active].type} levelSize={levelSize[0]} inputType={inputType}/>
-      </Block>}
+      {
+        tab === 'options' && <Block mx='10px' py='10px' w='400px'>
+          <ControlPanel type={animals[active].type} levelSize={levelSize[0]} inputType={inputType}/>
+        </Block>
+      }
+      {
+        tab !== 'options' && 
+          <Block w='200px' h='60px' px='10px' align='start center'>
+            <Button
+              tall
+              wide
+              bgColor='green'
+              fs='l'
+              color='white'
+              onClick={!hasRun ? [runCode, onRun] : [reset, () => abortRun('STOP')]}>
+              <Icon ml='-4px' mr='10px' name={!hasRun ? 'play_arrow' : 'replay'}/>
+              {!hasRun ? 'RUN' : 'RESET'}
+            </Button>
+          </Block>
+      }
     </Block>
   )
 }

@@ -27,7 +27,7 @@ function initialState ({props}) {
 
 function render ({props, state, local}) {
   const {size, inputType, animal, title} = state
-  const {newGame, gameID, handleSave = save} = props
+  const {newGame, draftID, handleSave = save} = props
 
   if (newGame.loading) {
     return <IndeterminateProgress/>
@@ -79,7 +79,7 @@ function render ({props, state, local}) {
 
   function * save () {
     yield refMethod({
-      ref: `/drafts/${gameID}`,
+      ref: `/drafts/${draftID}`,
       updates: {
         method: 'update',
         value: {
@@ -90,7 +90,7 @@ function render ({props, state, local}) {
         }
       }
     })
-    yield setUrl(`/create/${gameID}/level`)
+    yield setUrl(`/create/${draftID}/level`)
   }
 }
 

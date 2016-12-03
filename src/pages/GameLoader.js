@@ -1,7 +1,7 @@
 import IndeterminateProgress from '../components/IndeterminateProgress'
 import {setUrl} from 'redux-effects-location'
 import fire, {refMethod} from 'vdux-fire'
-import {setSaveId} from '../actions'
+import {setSaveId, setGameId} from '../actions'
 import {createCode} from '../utils'
 import element from 'vdux/element'
 import omit from '@f/omit'
@@ -9,6 +9,7 @@ import Game from './Game'
 
 function * onCreate ({props}) {
 	if (props.saveID) {
+		yield setGameId(props.gameCode)
 	  return yield setSaveId(props.saveID)
 	} else {
 		const code = yield createCode()
@@ -16,7 +17,7 @@ function * onCreate ({props}) {
 			ref: '/saved/',
 			updates: {
 				method: 'push',
-				value: '0'
+				value: ''
 			}
 		})
 		yield refMethod({

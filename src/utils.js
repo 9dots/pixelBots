@@ -2,6 +2,7 @@ import gPalette from 'google-material-color-palette-json'
 import {refMethod} from 'vdux-fire'
 import reduce from '@f/reduce'
 import Hashids from 'hashids'
+import map from '@f/map'
 import _ from 'lodash'
 
 const hashids = new Hashids(
@@ -136,6 +137,15 @@ function initGame () {
   }
 }
 
+function arrayAt (obj, at) {
+  return map((elem, key) => {
+    if (key === at) {
+      return reduce((arr, next, k) => [...arr, next], [], elem)
+    }
+    return elem
+  }, obj)
+}
+
 export {
   nameToDirection,
   getDirection,
@@ -144,6 +154,7 @@ export {
   createCode,
   initGame,
   palette,
+  arrayAt,
   isLocal,
   range
 }

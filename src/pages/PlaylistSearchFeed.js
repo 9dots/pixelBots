@@ -1,27 +1,42 @@
 import element from 'vdux/element'
-import {Block, Flex} from 'vdux-ui'
+import {Block, Flex, Text} from 'vdux-ui'
 import Card from '../components/Card'
+import {setUrl} from 'redux-effects-location'
+import reduce from '@f/reduce'
 
 function render ({props}) {
 	const {playlists} = props
+
 	return (
 		<Flex>
-			{playlists.map(({name, description = '', pins = 0}) => (
+			{reduce((cur, playlist, key) => cur.concat(
 				<Card
 					m='15px'
-					h='auto'
-					w='auto'
+					h='150px'
+					w='192px'
+					onClick={() => setUrl(`/playlist/${playlist.ref}`)}
 					cursor='pointer'
-					cardTitle={name}>
-					<Block fontWeight='800'>
-						{description}
+					cardFooter={getCardFooter(playlist)}
+					cardTitle={playlist.name}>
+					<Block mt='-10px' fontWeight='800' fs='xxs'>
+						{playlist.creatorUsername.toUpperCase()}
 					</Block>
-					<Block>
-						{pins} {pins === 1 ? 'pin' : 'pins'}
+					<Block py='10px' fontWeight='500'>
+						{playlist.description}
 					</Block>
 				</Card>
-			))}
+			), [], playlists)}
 		</Flex>
+	)
+}
+
+function getCardFooter (playlist) {
+	return (
+		<Block p='10px' align='space-between'>
+			<Text fs='xxs'>
+				{playlist.follows || 0} FOLLOWS
+			</Text>
+		</Block>
 	)
 }
 

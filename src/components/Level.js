@@ -5,53 +5,70 @@ import {Flex} from 'vdux-ui'
 import Row from './Row'
 import Animal from './Animal'
 import reduce from '@f/reduce'
+import Window from 'vdux/window'
+import createAction from '@f/create-action'
 
-function render ({props}) {
+const dragStart = createAction('<Level/>: DRAG_START')
+const dragEnd = createAction('<Level/>: DRAG_END')
+
+const initialState = () => ({
+  dragging: false
+})
+
+function render ({props, local, state}) {
   let {
-    animals,
-    numRows = 5,
+    clickHandler = () => {},
+    hideBorder = false,
     numColumns = 5,
     painted = [],
-    active,
-    running,
-    hideBorder = false,
+    numRows = 5,
     levelSize,
-    clickHandler,
+    paintMode,
     editMode,
+    animals,
+    running,
+    active,
+    grid,
     w = '100%',
     h = '100%'
   } = props
+  const {dragging} = state
 
   const size = parseFloat(levelSize) / numRows + 'px'
 
   return (
-    <Flex w={w} h={h} relative column>
-      {getRows({...props, size})}
-      {animals.map((animal, i) => (
-        <Animal
-          running={running}
-          editMode={editMode}
-          cellSize={size}
-          active={active}
-          animal={animal}
-          id={i}/>
-      ))}
-    </Flex>
+    <Window onMouseUp={local(dragEnd)}>
+      <Flex
+        w={w}
+        h={h}
+        relative
+        column
+        onMouseDown={paintMode && local(dragStart)}
+        onMouseUp={paintMode && local(dragEnd)}>
+        {getRows({...props, size, dragging, clickHandler})}
+        {animals.map((animal, i) => (
+          <Animal
+            running={running}
+            editMode={editMode}
+            cellSize={size}
+            active={active}
+            animal={animal}
+            id={i}/>
+        ))}
+      </Flex>
+    </Window>
   )
 }
 
-function getRows ({editMode, clickHandler = () => {}, size, active, numColumns, numRows, painted, hideBorder}) {
+function getRows ({painted, numRows, ...restProps}) {
   let rows = []
   for (var i = 0; i < numRows; i++) {
     rows.push(
       <Row
-        editMode={editMode}
-        clickHandler={clickHandler}
-        hideBorder={hideBorder}
-        size={size}
+        {...restProps}
+        numRows={numRows}
         row={i}
-        painted={getPainted(i, painted)}
-        num={numColumns} />
+        painted={getPainted(i, painted)}/>
     )
   }
   return rows
@@ -67,7 +84,24 @@ function getPainted (idx, painted) {
   }, {}, painted)
 }
 
+function reducer (state, action) {
+  switch (action.type) {
+    case dragStart.type:
+      return {
+        ...state,
+        dragging: true
+      }
+    case dragEnd.type:
+      return {
+        ...state,
+        dragging: false
+      }
+  }
+  return state
+}
 
 export default {
+  initialState,
+  reducer,
   render
 }

@@ -32,6 +32,9 @@ function render ({props, state}) {
     animals,
     running,
     selectedLine,
+    editorActions,
+    creatorMode,
+    initialData,
     hasRun,
     inputType,
     onRun
@@ -43,52 +46,64 @@ function render ({props, state}) {
   return (
     <Block
       minHeight='600px'
+      tall
       boxShadow='0 0 2px 1px rgba(0,0,0,0.2)'
       relative
-      wide
+      w={props.w || '100%'}
       bgColor='light'
       color='white'
       ml='20px'>
-      <Block bgColor='secondary' wide align='flex-end center'>
-        <Block h='80%'>
-          <Runner
-            onRun={onRun}
-            relative
-            tall
-            ml='10px'
-            running={running}
-            hasRun={hasRun} />
-        </Block>
-        <Box flex align='flex-end center'>
-          <Tab
-            bgColor='secondary'
-            onClick={tabChanged('documentation')}
-            color='white'
-            name='documentation'
-            active={tab === 'documentation'}
-            fs='s'/>
+      <Block bgColor='secondary' wide align='start center'>
+        <Box flex wide align='start center'>
           <Tab
             bgColor='secondary'
             onClick={tabChanged('code')}
             color='white'
+            w='260px'
             active={tab === 'code'}
             name='code'
             fs='s'/>
+          {
+            !creatorMode && <Tab
+              bgColor='secondary'
+              w='260px'
+              onClick={tabChanged('documentation')}
+              color='white'
+              name='documentation'
+              active={tab === 'documentation'}
+              fs='s'/>
+          }
         </Box>
+        <Block h='80%'>
+          {
+            initialData && <Runner
+              initialData={initialData}
+              onRun={onRun}
+              creatorMode={creatorMode}
+              running={running}
+              relative
+              tall
+              ml='10px'
+              hasRun={hasRun} />
+          }
+        </Block>
       </Block>
       <Block h='calc(100% - 40px)' wide absolute align='start start'>
-        <Buttons
-          onRun={onRun}
-          hasRun={hasRun}
-          startAddLoop={startAddLoop}
-          running={running}
-          changeTab={tabChanged('documentation')}
-          active={active}
-          inputType={inputType}
-          cursor={selectedLine || sequence.length - 1} type={animals[active].type}/>
         {tab === 'code'
           ? inputType === 'icons'
-            ? <Code waitingForLoop={waitingForLoop} finishAddLoop={finishAddLoop} {...props}/>
+            ? <Block wide tall align='center center'>
+                <Buttons
+                  onRun={onRun}
+                  hasRun={hasRun}
+                  startAddLoop={startAddLoop}
+                  running={running}
+                  changeTab={tabChanged('documentation')}
+                  active={active}
+                  editorActions={editorActions}
+                  inputType={inputType}
+                  cursor={selectedLine || sequence.length - 1} type={animals[active].type}/>
+                <Code waitingForLoop={waitingForLoop} finishAddLoop={finishAddLoop} {...props}/>
+              </Block>
             : <CodeBox {...props} />
           : <Documentation animal={animals[active]}/>
         }

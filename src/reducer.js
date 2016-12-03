@@ -2,7 +2,7 @@ import map from '@f/map'
 import splice from '@f/splice'
 import setProp from '@f/set-prop'
 import reduce from '@f/reduce'
-import {initGame} from './utils'
+import {initGame, arrayAt} from './utils'
 
 import {setUserId, setUsername} from './middleware/auth'
 
@@ -19,6 +19,7 @@ import {
   animalMove,
   updateLine,
   setSaveId,
+  setGameId,
   updateSize,
   selectLine,
   setActive,
@@ -80,7 +81,7 @@ function reducer (state, action) {
         selectedLine: idx
       }
     case addCode.type:
-      var {id, fn, idx} = action.payload
+      var {id, code, idx} = action.payload
       var lineNum = idx || typeof (state.selectedLine) === 'number'
         ? state.selectedLine
         : null
@@ -90,7 +91,7 @@ function reducer (state, action) {
         game: arrayAt(setProp(
           `animals.${id}.sequence`,
           state.game,
-          splice(state.game.animals[id].sequence || [], lineNum, 0, fn)
+          splice(state.game.animals[id].sequence || [], lineNum, 0, code)
         ), 'animals')
       }
     case removeLine.type:
@@ -151,6 +152,8 @@ function reducer (state, action) {
         running: false,
         hasRun: false,
         activeLine: -1,
+        saveID: undefined,
+        gameID: undefined,
         game: initGame()
       }
     case reset.type:
@@ -201,7 +204,15 @@ function reducer (state, action) {
     case initializeGame.type:
       return {
         ...state,
-        game: action.payload
+        game: {
+          ...action.payload,
+          animals: action.payload.animals.map((animal) => ({
+            ...animal,
+            sequence: !animal.sequence || animal.sequence.length === 0 
+              ? action.payload.startCode || []
+              : animal.sequence
+          }))
+        }
       }
     case endRun.type:
       return {
@@ -230,7 +241,11 @@ function reducer (state, action) {
     case updateSize.type:
       return {
         ...state,
-        game: setProp('levelSize', state.game, [action.payload, action.payload])
+        game: {
+          ...state.game,
+          levelSize: [action.payload, action.payload],
+          animals: state.game.animals.map((animal) => setNewAnimalPos([0,0], animal))
+        }
       }
     case setAnimal.type:
       return {
@@ -269,6 +284,11 @@ function reducer (state, action) {
         ...state,
         saveID: action.payload
       }
+    case setGameId.type:
+      return {
+        ...state,
+        gameID: action.payload
+      }
     case setUsername.type:
       return {
         ...state,
@@ -278,13 +298,20 @@ function reducer (state, action) {
   return state
 }
 
-function arrayAt (obj, at) {
-  return map((elem, key) => {
-    if (key === at) {
-      return reduce((arr, next, k) => [...arr, next], [], elem)
+function setNewAnimalPos (coords, animal) {
+  return {
+    ...animal,
+    initial: {
+      location: coords,
+      dir: 0,
+      rot: 0
+    },
+    current: {
+      location: coords,
+      dir: 0,
+      rot: 0
     }
-    return elem
-  }, obj)
+  }
 }
 
 

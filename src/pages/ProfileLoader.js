@@ -20,9 +20,8 @@ function render ({props}) {
 	const {user, currentUser} = props
 	if (user.loading || !currentUser || !props.params) return <IndeterminateProgress/>
 	if (user.value === null) return <div>User not Found</div>
-	console.log(user.value)
 	return (
-		<Profile username={props.username} params={props.params} userKey={user.value} mine={user.value === currentUser.uid}/>
+		<Profile username={props.username} currentUser={currentUser} params={props.params} userKey={user.value} mine={user.value === currentUser.uid}/>
 	)
 }
 

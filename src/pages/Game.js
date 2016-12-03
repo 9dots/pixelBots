@@ -32,6 +32,7 @@ function render ({props, state, local}) {
     savedProgress,
     selectedLine,
     activeLine,
+    initialData,
     message,
     running,
     active,
@@ -64,14 +65,16 @@ function render ({props, state, local}) {
           tabs={['target', 'actual']}
           tab={tab}
           size={size}
+          onRun={local(() => changeTab('actual'))}
+          hasRun={hasRun}
           {...game}
           {...props}/>
         <Controls
-          onRun={local(() => changeTab('actual'))}
           selectedLine={selectedLine}
           activeLine={activeLine}
           inputType={inputType}
           running={running}
+          initialData={initialData}
           hasRun={hasRun}
           active={active}
           animals={animals}/>

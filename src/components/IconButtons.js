@@ -9,15 +9,13 @@ import reduce from '@f/reduce'
 import {Block} from 'vdux-ui'
 
 function render ({props}) {
-  const {active, type, startAddLoop} = props
+  const {active, type, startAddLoop, editorActions = {}} = props
+  const {incrementLine = () => {}} = editorActions
+  const addCodeHandler = editorActions.addCode || addCode
   const docs = animalApis[type].docs
 
   return (
     <Block column align='start center' wide tall>
-      <Block>
-        <Text textAlign='center' align='center' fw='800' fs='l'>{type} buttons</Text>
-      </Block>
-      <hr style={{width: '100%'}}/>
       {reduce((arr, val, key) => [...arr, createButton(key, val)], [], docs)}
     </Block>
   )
@@ -45,11 +43,11 @@ function render ({props}) {
 
   function getClickHandler (active, name, args) {
     if (name === 'comment') {
-      return () => [addCode(active, `// comment`)]
+      return () => [addCodeHandler({id: active, code: `// comment`}), incrementLine()]
     } else if (name === 'loop') {
-      return () => [addCode(active, `loop(1, function () {`), startAddLoop()]
+      return () => [addCodeHandler({id: active, code: `loop(1, function () {`}), startAddLoop(), incrementLine()]
     } else {
-      return () => [addCode(active, `${name}(${args})`)]
+      return () => [addCodeHandler({id: active, code: `${name}(${args})`}), incrementLine()]
     }
   }
 }

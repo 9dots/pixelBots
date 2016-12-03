@@ -10,8 +10,10 @@ import reduce from '@f/reduce'
 import {refMethod} from 'vdux-fire'
 
 function render ({props}) {
-  const {gameID, title, handleSave = setAnimal, user} = props
+  const {draftID, title, handleSave = setAnimal, user} = props
   const {uid} = user
+
+  console.log(draftID)
 
   return (
     <Flex relative m='0 auto' column align='center center' minHeight='100%' w='96%'>
@@ -54,7 +56,7 @@ function render ({props}) {
   function * setAnimal (animal) {
     try {
       yield refMethod({
-        ref: `/drafts/${gameID}`,
+        ref: `/drafts/${draftID}`,
         updates: {
           method: 'set',
           value: {
@@ -63,7 +65,7 @@ function render ({props}) {
           }
         },
       })
-      yield setUrl(`/create/${gameID}/options`)
+      yield setUrl(`/create/${draftID}/options`)
     } catch (e) {
       yield endRunMessage({header: 'Error', body: e.message})
     }
@@ -71,7 +73,7 @@ function render ({props}) {
 }
 
 function * onRemove ({props}) {
-  const ref = `drafts/${props.gameID}`
+  const ref = `drafts/${props.draftID}`
   const gameValue = yield refMethod({
     ref,
     updates: {method: 'once', value: 'value'}

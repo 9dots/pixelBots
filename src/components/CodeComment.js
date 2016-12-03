@@ -31,7 +31,7 @@ function render ({props}) {
         		m='0'
         		h='90%'
         		onClick={(e) => e.stopPropagation()}
-            onKeyUp={(e) => updateLine(animal, lineNum, `// ${e.target.value}`)}
+            onKeyUp={(e) => updateLine({id: animal, lineNum, code: `// ${e.target.value}`})}
             value={comment}
         		inputProps={{bgColor: 'transparent', h: '100%', borderWidth: '0px', color: 'white'}}/>
       </Block>
@@ -39,7 +39,7 @@ function render ({props}) {
         <Icon
           color='#666'
           name='delete'
-          onClick={[(e) => e.stopPropagation(), () => removeLine(animal, lineNum)]}/>
+          onClick={[(e) => e.stopPropagation(), () => removeLine({id: animal, idx: lineNum})]}/>
       </Block>
     </Block>
 	)

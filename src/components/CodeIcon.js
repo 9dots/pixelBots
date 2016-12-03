@@ -8,13 +8,15 @@ import {nameToColor} from '../utils'
 import LineNumber from './LineNumber'
 import element from 'vdux/element'
 
-function onCreate () {
-  return codeAdded()
+function onCreate ({props}) {
+  const handleCodeAdded = props.editorActions.codeAdded || codeAdded
+  return handleCodeAdded()
 }
 
 function render ({props}) {
   let {
     shouldTransition,
+    editorActions,
     newElement,
     argument,
     numLines,
@@ -26,6 +28,8 @@ function render ({props}) {
     name,
     fs
   } = props
+
+  const handleUpdateLine = editorActions.updateLine || updateLine
 
   const shouldFlash = !shouldTransition && newElement
   const docs = animalApis[type].docs
@@ -45,17 +49,11 @@ function render ({props}) {
               <IconArgument
                 argument={argument.split(',')[i]}
                 changeHandler={(val) => (
-                  updateLine(animal, lineNum, `${name}(${val})`)
+                  handleUpdateLine({id: animal, lineNum, code: `${name}(${val})`})
                 )}
                 arg={arg}/>
           ))}
         </Block>
-      </Block>
-      <Block align='center center' absolute right='0' top='5px'>
-        <Icon
-          color='#666'
-          name='delete'
-          onClick={[(e) => e.stopPropagation(), () => removeLine(animal, lineNum)]}/>
       </Block>
     </Block>
   )

@@ -11,8 +11,12 @@ function render ({props}) {
 
 	const gameVal = game.value
 
+	if (gameVal === null) {
+		return <div/>
+	}
+
 	return (
-		<MenuItem fontWeight='800' align='start center' bgColor='transparent' borderTop='1px solid #999'>
+		<MenuItem fontWeight='300' align='start center' bgColor='transparent' borderTop='1px solid #999'>
 			<Level
         editMode
         animals={[]}
@@ -23,7 +27,7 @@ function render ({props}) {
         h='auto'
         numRows={gameVal.levelSize[0]}
         numColumns={gameVal.levelSize[1]}/>
-      <Box flex ml='2em'>
+      <Box flex minWidth='200px' ml='2em'>
 				{gameVal.title}
 			</Box>
 			<Box w='160px' mr='2em'>
@@ -58,13 +62,7 @@ function render ({props}) {
 }
 
 export default fire((props) => ({
-  game: {
-  	ref: `/games/${props.ref}`,
-    updates: [
-      {method: 'orderByKey'},
-      {method: 'limitToFirst', value: 50}
-    ]
-  }
+  game: `/games/${props.ref}`
 }))({
 	render
 })
