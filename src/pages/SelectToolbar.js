@@ -1,16 +1,16 @@
-import element from 'vdux/element'
 import {Block, Icon, Flex, Modal, ModalBody, ModalHeader, ModalFooter, Text} from 'vdux-ui'
+import CreatePlaylist from '../components/CreatePlaylist'
 import {Dropdown, Input, MenuItem} from 'vdux-containers'
+import createAction from '@f/create-action'
 import Button from '../components/Button'
+import {setToast} from '../actions'
 import {refMethod} from 'vdux-fire'
 import {createCode} from '../utils'
-import {union} from 'lodash'
-import reduce from '@f/reduce'
-import sleep from '@f/sleep'
-import {setToast} from '../actions'
-import createAction from '@f/create-action'
-import CreatePlaylist from '../components/CreatePlaylist'
+import element from 'vdux/element'
 import Window from 'vdux/window'
+import reduce from '@f/reduce'
+import {union} from 'lodash'
+import sleep from '@f/sleep'
 
 const setModal = createAction('<SelectToolbar/>: SET_MODAL')
 const clearModal = createAction('<SelectToolbar/>: CLEAR_MODAL')
@@ -73,7 +73,7 @@ function render ({props, local, state}) {
 						<Dropdown zIndex='999' btn={<Icon mt='4px' cursor='pointer' name='add'/>}>
 							<Block maxHeight='300px' py='10px' w='150px' overflowY='auto'>
 								<MenuItem fontWeight='300' wide onClick={local(setModal)}>New Playlist</MenuItem>
-								{reduce((cur, playlist, key) => cur.concat(<MenuItem onClick={() => addToPlaylist(playlist.ref, playlist.name)} wide>{playlist.name}</MenuItem>), [], playlists)}
+								{reduce((cur, playlist, key) => cur.concat(<MenuItem fontWeight='600' onClick={() => addToPlaylist(playlist.ref, playlist.name)} wide>{playlist.name}</MenuItem>), [], playlists)}
 							</Block>
 						</Dropdown>
 					</Block>

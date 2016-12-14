@@ -5,7 +5,7 @@ import Button from '../components/Button'
 import {setAnimalPos} from '../actions'
 import deepEqual from '@f/deep-equal'
 import element from 'vdux/element'
-import {Block, Icon} from 'vdux-ui'
+import {Block, Icon, Text} from 'vdux-ui'
 import Level from './Level'
 import omit from '@f/omit'
 import Tab from './Tab'
@@ -20,6 +20,7 @@ function render ({props}) {
     levelSize,
     animals,
     running,
+    saveLink = '',
     options,
     painted,
     hasRun,
@@ -93,7 +94,7 @@ function render ({props}) {
       }
       {
         tab !== 'options' && 
-          <Block w='200px' h='60px' px='10px' align='start center'>
+          <Block w='200px' h='60px' px='10px'>
             <Button
               tall
               wide
@@ -104,6 +105,13 @@ function render ({props}) {
               <Icon ml='-4px' mr='10px' name={!hasRun ? 'play_arrow' : 'replay'}/>
               {!hasRun ? 'RUN' : 'RESET'}
             </Button>
+            {
+              saveLink && (
+                <Block my='1em'>
+                  <Text fontWeight='300' fs='l'>Save ID: {saveLink}</Text>
+                </Block>
+              )
+            }
           </Block>
       }
     </Block>

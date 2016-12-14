@@ -7,6 +7,12 @@ import animalApis from '../animalApis'
 import html from 'hypervdux'
 import marked from 'marked'
 
+marked.setOptions({
+  highlight: function (code) {
+    return hljs.highlightAuto(code).value;
+  }
+})
+
 function render ({props}) {
   const {animal} = props
   const docs = animalApis[animal.type].docs
@@ -19,7 +25,7 @@ function render ({props}) {
 }
 
 function createDoc (elem, key) {
-  const {usage, description, args = []} = elem
+  const {usage, description, example, args = []} = elem
   return (
     <Block my='10px'>
       <Text display='block' mb='5px' fontWeight='800' fs='l'>
@@ -34,6 +40,15 @@ function createDoc (elem, key) {
           <Text fontFamily='ornate'>{type}</Text>
         </ul>
       ))}
+      {
+        example && 
+          <Block my='10px'>
+            <Text display='block' fontWeight='800' fs='s'>
+              Example:
+            </Text>
+          <Block fs='s' borderRadius='2px' p='5px 15px' bgColor='#333' innerHTML={(marked(example))}/>
+          </Block>
+      }
     </Block>
   )
 }

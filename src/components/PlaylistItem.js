@@ -5,45 +5,70 @@ import {Block, Box, Icon} from 'vdux-ui'
 import Level from './Level'
 
 function render ({props}) {
-	const {game, playlistKey, mine	} = props
+	const {game, playlistKey, mine, isTarget=false, listActions} = props
+	const {dragEnter, dragExit, dragStart, dragEnd, drop} = listActions
 
-	if (game.loading) return <div/>
-
-	const gameVal = game.value
-
-	if (gameVal === null) {
-		return <div/>
+	if (props.ref === undefined) {
+		console.log(props.ref, game)
 	}
 
 	return (
-		<MenuItem fontWeight='300' align='start center' bgColor='transparent' borderTop='1px solid #999'>
-			<Level
-        editMode
-        animals={[]}
-        painted={gameVal.targetPainted}
-        levelSize='50px'
-        hideBorder
-        w='auto'
-        h='auto'
-        numRows={gameVal.levelSize[0]}
-        numColumns={gameVal.levelSize[1]}/>
-      <Box flex minWidth='200px' ml='2em'>
-				{gameVal.title}
-			</Box>
-			<Box w='160px' mr='2em'>
-				<Block align='start center'>
-					<Image mr='1em' sq='40px' src={`/animalImages/${gameVal.animals[0].type}.jpg`}/>
-					{gameVal.animals[0].type}
-				</Block>
-			</Box>
-			<Box w='160px' mr='2em'>
-				{gameVal.inputType}
-			</Box>
-			{mine && <Box>
-				<Icon name='delete' onClick={removeFromPlaylist}/>
-			</Box>}
+		<MenuItem
+			draggable={mine}
+			onDragEnter={handleDragEnter}
+			onDragOver={(e) => e.preventDefault()}
+			onDragStart={() => dragStart(props.ref)}
+			onDrop={handleDrop}
+			relative
+			cursor={mine ? 'move' : 'default'}
+			fontWeight='300'
+			bgColor={isTarget ? 'lightblue' : '#e5e5e5'}
+			borderTop='1px solid #999'>
+			<Block visibility={isTarget ? 'hidden' : 'visible'} align='start center'>
+				<Level
+	        editMode
+	        animals={[]}
+	        painted={game.targetPainted}
+	        levelSize='50px'
+	        hideBorder
+	        w='auto'
+	        h='auto'
+	        numRows={game.levelSize[0]}
+	        numColumns={game.levelSize[1]}/>
+	      <Box flex minWidth='200px' ml='2em'>
+					{game.title}
+				</Box>
+				<Box w='160px' mr='2em'>
+					<Block align='start center'>
+						<Image mr='1em' sq='40px' src={`/animalImages/${game.animals[0].type}.jpg`}/>
+						{game.animals[0].type}
+					</Block>
+				</Box>
+				<Box w='160px' mr='2em'>
+					{game.inputType}
+				</Box>
+				{mine && <Box absolute lineHeight='0' right='2em'>
+					<Icon name='delete' onClick={removeFromPlaylist}/>
+				</Box>}
+			</Block>
 		</MenuItem>
 	)
+
+	function * handleDragEnd (e) {
+		yield e.preventDefault()
+		yield e.stopPropagation()
+		yield dragEnd(props.idx)
+	}
+
+	function * handleDrop (e) {
+		yield e.preventDefault()
+		yield drop(props.idx)
+	}
+
+	function * handleDragEnter (e) {
+		yield e.preventDefault()
+		yield dragEnter(props.ref)
+	}
 
 	function * removeFromPlaylist () {
 		yield refMethod({
@@ -61,8 +86,7 @@ function render ({props}) {
 	}
 }
 
-export default fire((props) => ({
-  game: `/games/${props.ref}`
-}))({
+
+export default {
 	render
-})
+}

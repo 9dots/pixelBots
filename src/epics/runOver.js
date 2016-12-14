@@ -24,7 +24,6 @@ export default function runOver (action$, store) {
         .map((sets) => diff(sets[0], sets[1]))
         .map((diffObj) => {
           if (game.targetPainted) {
-            console.log(diffObj)
             if (!diffObj) {
               return endRunMessage(winMessage)
             }

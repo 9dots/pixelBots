@@ -8,6 +8,7 @@ import Level from '../components/Level'
 import deepEqual from '@f/deep-equal'
 import {refMethod} from 'vdux-fire'
 import element from 'vdux/element'
+import mapValues from '@f/map-values'
 import reduce from '@f/reduce'
 import fire from 'vdux-fire'
 
@@ -17,7 +18,7 @@ const clearModal = createAction('<PlaylistFeed/>: clearModal')
 
 const initialState = ({props, local}) => ({
 	modal: false,
-	active: props.items ? 0 : ' ',
+	active: props.playlists ? 0 : '',
 	actions: {
 		selectActivePlaylist: local((val) => selectActivePlaylist(val)),
 		setModal: local(setModal),
@@ -27,10 +28,10 @@ const initialState = ({props, local}) => ({
 
 function * onUpdate (prev, {props, state}) {
 	if (!deepEqual(prev.state, state) || !deepEqual(prev.props, props)) {
-		if (!props.items) {
+		if (!props.playlists) {
 			return yield state.actions.selectActivePlaylist(' ')
 		}
-		if (!props.playlists.value[prev.state.active]) {
+		if (Object.keys(props.playlists).length < prev.state.active) {
 			return yield state.actions.selectActivePlaylist(0)
 		}
 	}
@@ -39,11 +40,7 @@ function * onUpdate (prev, {props, state}) {
 function render ({props, state, local}) {
 	const {playlists, mine, uid} = props
 
-	if (playlists.loading) {
-		return <IndeterminateProgress/>
-	}
-
-	const items = playlists.value
+	const items = mapValues((val) => val, playlists)
 	const {actions, active, modal} = state
 
 	return (
@@ -76,7 +73,11 @@ function render ({props, state, local}) {
 	          {uid !== item.creatorID && <Text fs='xs'>by {item.creatorUsername}</Text>}
 				</MenuItem>), [], items)}
 			</Menu>
-			{(items && items[active] && items[active].ref) && <PlaylistView mine={mine} ref={items[active].key} activeKey={items[active].ref}/>}
+			{(items && items[active] && items[active].ref) && <PlaylistView
+				mine={mine}
+				ref={items[active].key}
+				uid={uid}
+				activeKey={items[active].ref}/>}
 			{modal && <CreatePlaylist
 				uid={uid}
 				handleDismiss={actions.clearModal}/>
@@ -107,16 +108,9 @@ function reducer (state, action) {
 }
 
 
-export default fire((props) => ({
-	playlists: {
-		ref: `/users/${props.uid}/playlists/`,
-		updates: [
-			{method: 'orderByChild', value: 'dateAdded'}
-		]
-	}
-}))({
+export default {
 	initialState,
 	onUpdate,
 	reducer,
 	render
-})
+}

@@ -7,6 +7,7 @@ import sleep from '@f/sleep'
 
 const setUserId = createAction('SET_USER_ID')
 const setUsername = createAction('SET_USERNAME')
+const setUserProfile = createAction('SET_USER_PROFILE')
 const signInWithProvider = createAction('SIGN_IN_WITH_PROVIDER')
 const signOut = createAction('SIGN_OUT')
 
@@ -42,6 +43,9 @@ export default ({getState, dispatch}) => {
       dispatch(setUrl('/'))
       dispatch(refresh())
   	}
+    if (action.type === setUserId.type && action.payload) {
+      firebase.database().ref(`/users/${action.payload.uid}`).on('value', (snap) => dispatch(setUserProfile(snap.val())))
+    }
   	return next(action)
   }
 }
@@ -52,7 +56,6 @@ function * maybeCreateNewUser (user) {
     return yield setUsername(maybeUser.val().username)
   }
   const username = yield createUsername(user)
-  yield sleep(2000)
   try {
     yield refMethod({
       ref: `/users/${user.uid}`,
@@ -112,6 +115,7 @@ function * checkUsers (uid) {
 
 export {
 	signInWithProvider,
+  setUserProfile,
   setUsername,
 	setUserId,
 	signOut

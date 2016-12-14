@@ -1,8 +1,9 @@
 import {Block, Card, Text} from 'vdux-ui'
+import {CSSContainer, wrap} from 'vdux-containers'
 import element from 'vdux/element'
 
 function render ({props, children}) {
-	const {selected = false, cardImage = '', cardTitle = '', cardHeader = '', cardFooter = '', ...restProps} = props
+	const {selected = false, cardImage = '', cardTitle = '', cardHeader = '', cardFooter = '', hovering, hoverOptions, ...restProps} = props
 	return (
 		<Card
 			transform={selected ? 'scale3d(0.75, 0.81, 1)' : ''}
@@ -13,13 +14,20 @@ function render ({props, children}) {
 			color='#333'
 			{...restProps}>
       {
+        (hovering && hoverOptions) && (
+          <Block absolute wide tall zIndex='999' bgColor='rgba(0,0,0,0.7)'>
+            {hoverOptions}
+          </Block>
+        )
+      }
+      {
         cardHeader && <Block>
           {cardHeader}
         </Block>
       }
       <Block p='20px'>
         {
-          cardImage && <Block border='1px solid #ccc'>
+          cardImage && <Block border='1px solid #e5e5e5'>
             {cardImage}
           </Block>
         }
@@ -41,7 +49,7 @@ function render ({props, children}) {
         </Block>
       </Block>
       {
-        cardFooter && <Block absolute bottom='0'>
+        cardFooter && <Block absolute bottom='0' left='0' right='0'>
           {cardFooter}
         </Block>
       }
@@ -49,6 +57,10 @@ function render ({props, children}) {
 	)
 }
 
-export default {
-	render
-}
+export default wrap(CSSContainer, {
+  hoverProps: {
+    hovering: true
+  }
+})({
+  render
+})

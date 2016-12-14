@@ -11,21 +11,21 @@ function render ({props}) {
 	return (
 		<Block>
 			<Block px='16px' bgColor='white' absolute left='0' top='0' borderBottom='2px solid #ccc' wide align='space-between center' py='1em' mb='1em'>
-	        {
-	          isPrev
-	            ? <Button
-	                px='0'
-	                w='40px'
-	                align='center center'
-	                borderWidth='0'
-	                bgColor='white'
-	                mr='1em'
-	                color='#333'
-	                onClick={props.prev}>
-	                <Icon name='arrow_back'/>
-	              </Button>
-	            : <Block w='40px'/>
-	        }
+        {
+          isPrev
+            ? <Button
+                px='0'
+                w='40px'
+                align='center center'
+                borderWidth='0'
+                bgColor='white'
+                mr='1em'
+                color='#333'
+                onClick={props.prev}>
+                <Icon name='arrow_back'/>
+              </Button>
+            : <Block w='40px'/>
+        }
         <Text flex fontWeight='300' fs='xl'>{props.name}</Text>
         <Text fs='m' mr='2em'>{props.current + 1} / {props.sequence.length}</Text>
        	{

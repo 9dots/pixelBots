@@ -10,6 +10,7 @@ import ProfileLoader from './pages/ProfileLoader'
 import {Block, Icon, Text, Toast} from 'vdux-ui'
 import LinkDecipher from './pages/LinkDecipher'
 import {setUrl} from 'redux-effects-location'
+import GameLoader from './pages/GameLoader'
 import SearchPage from './pages/SearchPage'
 import {signOut} from './middleware/auth'
 import Transition from 'vdux-transition'
@@ -31,9 +32,11 @@ const initialState = () => ({loggingIn: false})
 
 const router = enroute({
   '/create/:draftID/:slug': ({draftID, slug}, props) => {
-    console.log(draftID)
     return <Create left='60px' draftID={draftID} params={slug} {...props}/>
   },
+  '/sandbox': (params, props) => (
+    <HomePage {...props}/>
+  ),
   '/search': (params, props) => {
     return <SearchPage user={props.user}/>
   },
@@ -45,6 +48,9 @@ const router = enroute({
   ),
   '/playlist/:playlistID': ({playlistID, username}, props) => (
     <PlaylistView activeKey={playlistID} uid={props.user.uid}/>
+  ),
+  '/games/:gameID': ({gameID}, props) => (
+    <GameLoader {...props} left='60px' noSave gameCode={gameID}/>
   ),
   '/:username/:activity': ({username, activity}, props) => {
     return <ProfileLoader params={activity} currentUser={props.user} username={username}/>
@@ -84,6 +90,7 @@ function render ({props, state, local}) {
             <Block>
               <HeaderElement active={activeRoute === 'search'} onClick={() => setUrl('/search/games')} text='Search' icon='search'/>
               <HeaderElement active={activeRoute === username} onClick={() => setUrl(`/${username}/games`)} text='Your Stuff' icon='dashboard'/>
+              <HeaderElement active={activeRoute === 'sandbox'} onClick={() => setUrl('/sandbox')} text='Sandbox' icon='play_circle_outline'/>
               <HeaderElement active={activeRoute === 'create'} onClick={createNew} text='Create' icon='add'/>
             </Block>
           }
@@ -95,12 +102,15 @@ function render ({props, state, local}) {
       </Header>
       <Block class='action-bar-holder' overflowY='auto' relative left='90px' p='20px' column align='start' minHeight='100%' w='calc(100% - 90px)' tall>
       {
-        url && router(url, props)
+        (url && user) && router(url, props)
       }
       </Block>
-      {message && <ModalMessage
-        header={message.header}
-        body={message.body}/>
+      {
+        message && <ModalMessage
+          type={message.type}
+          header={message.header}
+          animals={animals}
+          body={message.body}/>
       }
       {
         loggingIn && <Auth handleDismiss={local(endLogin)}/>

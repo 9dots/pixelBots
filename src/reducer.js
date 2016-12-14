@@ -4,7 +4,7 @@ import setProp from '@f/set-prop'
 import reduce from '@f/reduce'
 import {initGame, arrayAt} from './utils'
 
-import {setUserId, setUsername} from './middleware/auth'
+import {setUserId, setUsername, setUserProfile} from './middleware/auth'
 
 import {
   initializeGame,
@@ -176,6 +176,7 @@ function reducer (state, action) {
       return {
         ...state,
         message: {
+          type: 'error',
           header: message,
           body: `Check the code at line ${lineNum + 1}`
         },
@@ -186,6 +187,7 @@ function reducer (state, action) {
       return {
         ...state,
         message: {
+          type: 'win',
           header,
           body
         }
@@ -293,6 +295,11 @@ function reducer (state, action) {
       return {
         ...state,
         username: action.payload
+      }
+    case setUserProfile.type:
+      return {
+        ...state,
+        profile: action.payload
       }
   }
   return state

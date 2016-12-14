@@ -12,7 +12,7 @@ function render ({props}) {
   const {active, type, startAddLoop, editorActions = {}} = props
   const {incrementLine = () => {}} = editorActions
   const addCodeHandler = editorActions.addCode || addCode
-  const docs = animalApis[type].docs
+  const docs = type ? animalApis[type].docs : {}
 
   return (
     <Block column align='start center' wide tall>

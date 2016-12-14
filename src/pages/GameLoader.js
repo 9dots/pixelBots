@@ -8,6 +8,11 @@ import omit from '@f/omit'
 import Game from './Game'
 
 function * onCreate ({props}) {
+	if (props.noSave) {
+		yield setGameId(props.gameCode)
+		yield setSaveId(null)
+		return
+	}
 	if (props.saveID) {
 		yield setGameId(props.gameCode)
 	  return yield setSaveId(props.saveID)
@@ -38,14 +43,14 @@ function * onCreate ({props}) {
 }
 
 function * onUpdate (prev, {props}) {
-  if (props.saveID !== prev.props.saveID) {
+  if (!props.noSave && props.saveID !== prev.props.saveID) {
     yield setSaveId(props.saveID)
   }
 }
 
 function render ({props}) {
 	const {gameVal, savedProgress} = props
-	if (gameVal.loading || savedProgress.loading) {
+	if (gameVal.loading || (props.saveID && savedProgress.loading)) {
 		return <IndeterminateProgress/>
 	}
 
@@ -56,10 +61,13 @@ function render ({props}) {
 	)
 }
 
-export default fire((props) => ({
-  gameVal: `/games/${props.gameCode}`,
-  savedProgress: `/saved/${props.saveID}`
-}))({
+export default fire((props) => {
+	const savedProgress = props.saveID ? `/saved/${props.saveID}` : null
+	return {
+ 		savedProgress,
+		gameVal: `/games/${props.gameCode}`
+	}
+})({
 	onCreate,
 	onUpdate,
   render

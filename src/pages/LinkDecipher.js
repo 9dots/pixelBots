@@ -9,16 +9,16 @@ import fire from 'vdux-fire'
 
 const router = enroute({
   'game': (params, props) => (
-    <GameLoader {...props} left='60px' gameCode={props.payload}/>
+    <GameLoader {...props} left='60px' saveLink={props.link} gameCode={props.payload}/>
   ),
   'saved': (params, props) => (
-    <GameLoader {...props} left='60px' gameCode={props.payload.gameRef} saveID={props.payload.saveRef}/>
+    <GameLoader {...props} left='60px' saveLink={props.link} gameCode={props.payload.gameRef} saveID={props.payload.saveRef}/>
   ),
   'playlists': (params, props) => (
-    <MyPlaylist anonymous={props.payload.anonymous} ref={props.payload.ref} user={props.user}/>
+    <MyPlaylist anonymous={props.payload.anonymous} saveLink={props.link} ref={props.payload.ref} user={props.user}/>
   ),
   'list': (params, props) => (
-    <PlaylistLoader {...props} ref={props.payload} user={props.user}/>
+    <PlaylistLoader {...props} ref={props.payload} saveLink={props.link} user={props.user}/>
   ),
   ':username': ({username}, props) => <ProfileLoader currentUser={props.user} username={username}/>,
   '*': () => <div>Bad Link</div>
@@ -49,7 +49,7 @@ function render ({props}) {
 }
 
 export default fire((props) => ({
-	linkSnap: `/links/${props.link.toUpperCase()}`
+	linkSnap: `/links/${props.link}`
 }))({
 	render
 })

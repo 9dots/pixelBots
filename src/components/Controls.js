@@ -92,24 +92,30 @@ function render ({props, state}) {
         {tab === 'code'
           ? inputType === 'icons'
             ? <Block wide tall align='center center'>
-                <Buttons
-                  onRun={onRun}
-                  hasRun={hasRun}
-                  startAddLoop={startAddLoop}
-                  running={running}
-                  changeTab={tabChanged('documentation')}
-                  active={active}
-                  editorActions={editorActions}
-                  inputType={inputType}
-                  cursor={selectedLine || sequence.length - 1} type={animals[active].type}/>
+                {addButtons()}
                 <Code waitingForLoop={waitingForLoop} finishAddLoop={finishAddLoop} {...props}/>
               </Block>
-            : <CodeBox {...props} />
+            : <Block wide tall align='center center'>
+                {addButtons()}
+                <CodeBox {...props} />
+              </Block>
           : <Documentation animal={animals[active]}/>
         }
       </Block>
     </Block>
   )
+
+  function addButtons () {
+    return (
+      <Buttons
+        startAddLoop={startAddLoop}
+        running={running}
+        active={active}
+        type={animals[active].type}
+        editorActions={editorActions}
+        inputType={inputType}/>
+    )
+  }
 }
 
 function reducer (state, action) {

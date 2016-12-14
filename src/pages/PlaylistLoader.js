@@ -3,7 +3,7 @@ import createAction from '@f/create-action'
 import element from 'vdux/element'
 import createCode from '../utils'
 import Playlist from './Playlist'
-import {swapMode} from '../actions'
+import {swapMode, reset} from '../actions'
 import fire, {refMethod} from 'vdux-fire'
 
 function render ({props}) {
@@ -20,6 +20,7 @@ function render ({props}) {
 	function * next () {
 		if (current + 1 < sequence.length) {
 			yield swapMode('icons')
+			yield reset()
 			yield refMethod({
 				ref: `/savedList/${props.ref}/current`,
 				updates: {method: 'transaction', value: (val) => val + 1}
@@ -30,6 +31,7 @@ function render ({props}) {
 	function * prev () {
 		if (current - 1 >= 0) {
 			yield swapMode('icons')
+			yield reset()
 			yield refMethod({
 				ref: `/savedList/${props.ref}/current`,
 				updates: {method: 'transaction', value: (val) => val - 1}

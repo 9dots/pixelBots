@@ -21,6 +21,7 @@ export default {
   paint: {
     usage: 'paint(color)',
     description: 'Paint the square the chameleon is currently on `color`.',
+    example: "```js\npaint('yellow')\n```",
     args: [{
       name: 'color',
       type: 'string',

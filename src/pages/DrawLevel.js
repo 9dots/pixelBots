@@ -12,9 +12,11 @@ import {Block, Card, Icon, Text} from 'vdux-ui'
 import {once, refMethod} from 'vdux-fire'
 import Level from '../components/Level'
 import animalApis from '../animalApis'
+import html2canvas from 'html2canvas'
 import {Input} from 'vdux-containers'
 import {createNew} from '../actions'
 import EditLevel from './EditLevel'
+import {uploadImage} from '../storage'
 import element from 'vdux/element'
 import setProp from '@f/set-prop'
 import {arrayAt} from '../utils'
@@ -137,10 +139,24 @@ function render ({props, state, local}) {
           getSlide(slides[slide])
         }
       </Block>
+      <Block absolute top='40%' zIndex='-999'>
+        <EditLevel
+          game={game}
+          painted={painted['finished']}
+          grid='finished'
+          btn={btn}
+          hideBorder
+          size='300px'
+          id='grid-finished'
+          animals={[]}
+          paintMode={false}/>
+      </Block>
     </Block>
   )
 
   function * updateGame () {
+    // const canvas = yield html2canvas(document.getElementById('grid-finished'))
+    // yield uploadImage(canvas, draftID)
     yield refMethod({
       ref: `/games/${draftID}`,
       updates: {

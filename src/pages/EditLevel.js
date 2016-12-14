@@ -5,7 +5,7 @@ import Level from '../components/Level'
 import element from 'vdux/element'
 
 function render ({props}) {
-  const {game, painted, paintMode, clickHandler = () => {}, title, grid, size = '500px'} = props
+  const {game, id, painted, paintMode, clickHandler = () => {}, title, grid, size = '500px', ...restProps} = props
 
   return (
     <Block my='1em' textAlign='center'>
@@ -13,6 +13,7 @@ function render ({props}) {
         editMode
         paintMode={paintMode}
         grid={grid}
+        id={id}
         animals={game.animals.map((animal) => convertToStar(animal))}
         painted={painted}
         levelSize={size}
@@ -20,7 +21,8 @@ function render ({props}) {
         h='auto'
         clickHandler={(coord) => clickHandler({grid, coord})}
         numRows={game.levelSize[0]}
-        numColumns={game.levelSize[1]}/>
+        numColumns={game.levelSize[1]}
+        {...restProps}/>
     </Block>
   )
 }

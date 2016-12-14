@@ -27,6 +27,7 @@ function render ({props, local, state}) {
     editMode,
     animals,
     running,
+    id='',
     active,
     grid,
     w = '100%',
@@ -43,6 +44,7 @@ function render ({props, local, state}) {
         h={h}
         relative
         column
+        id={id}
         onMouseDown={paintMode && local(dragStart)}
         onMouseUp={paintMode && local(dragEnd)}>
         {getRows({...props, size, dragging, clickHandler})}
@@ -60,7 +62,7 @@ function render ({props, local, state}) {
   )
 }
 
-function getRows ({painted, numRows, ...restProps}) {
+function getRows ({painted, numRows, running, animals, ...restProps}) {
   let rows = []
   for (var i = 0; i < numRows; i++) {
     rows.push(

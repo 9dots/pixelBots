@@ -31,11 +31,11 @@ const router = enroute({
 				selected={props.selected}
 				toggleSelected={props.actions.toggleSelected}
 				uid={props.userKey}
-				games={props.profile.value.games}
+				games={props.profile.games}
 				mine={props.mine}
 				cat={props.tab}/>,
 	'playlists': (params, props) => <PlaylistFeed
-				items={props.profile.value.playlists}
+				playlists={props.profile.playlists}
 				uid={props.userKey}
 				mine={props.mine}
 				cat={props.tab}/>,
@@ -49,19 +49,19 @@ function render ({props, state, local}) {
 	const {user, mine, profile, currentUser} = props
 	const {actions, selected} = state
 	const selectMode = selected.length > 0
+	
+	if (!profile || !currentUser) return <IndeterminateProgress/>
 
-	if (profile.loading || !currentUser || !profile.value) return <IndeterminateProgress/>
-
-	const {playlists} = profile.value
+	const {playlists} = profile
 
 	return (
     <Flex column align='start' wide tall>
 			<Block relative wide color='#333' fontWeight='800'>
 				<Block align='start center' pb='10px' ml='1em'>
-					<Avatar boxShadow='0 0 1px 2px rgba(0,0,0,0.2)' h='70px' w='70px' src={profile.value.photoURL}/>
+					<Avatar boxShadow='0 0 1px 2px rgba(0,0,0,0.2)' h='70px' w='70px' src={profile.photoURL}/>
 					<Block relative ml='1em'>
 						<Text display='block' fontWeight='300' fs='xs'>USER</Text>
-						<Text display='block' fontWeight='500' fs='xl'>{profile.value.displayName}</Text>
+						<Text display='block' fontWeight='500' fs='xl'>{profile.displayName}</Text>
 					</Block>
 				</Block>
 				{!selectMode
@@ -105,10 +105,16 @@ function maybeAddToArray (val, arr) {
 	}
 }
 
-export default fire((props) => ({
-	profile: `/users/${props.userKey}`
-}))({
+function getProps (props, context) {
+	return {
+		...props,
+		profile: context.profile
+	}
+}
+
+export default {
 	initialState,
+	getProps,
 	reducer,
 	render
-})
+}

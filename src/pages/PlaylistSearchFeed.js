@@ -8,7 +8,7 @@ function render ({props}) {
 	const {playlists} = props
 
 	return (
-		<Flex>
+		<Flex wide flexWrap='wrap'>
 			{reduce((cur, playlist, key) => cur.concat(
 				<Card
 					m='15px'

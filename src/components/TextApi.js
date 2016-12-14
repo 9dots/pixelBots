@@ -8,7 +8,7 @@ import animalApis from '../animalApis/index'
 
 function render ({props}) {
   const {type} = props
-  const api = animalApis[type].docs
+  const api = type ? animalApis[type].docs : {}
   return (
     <Block color='white' wide tall px='10px'>
       <Block>

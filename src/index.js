@@ -23,11 +23,14 @@ import {initGame} from './utils'
 import rootEpic from './epics'
 import flow from 'redux-flo'
 import * as fire from 'vdux-fire'
+import logger from 'redux-logger'
 import vdux from 'vdux/dom'
 import theme from './theme'
 
 
 const epicMiddleware = createEpicMiddleware(rootEpic)
+firebase.initializeApp(firebaseConfig)
+
 var app = require('./app').default
 
 const initialState = {
@@ -54,6 +57,7 @@ const {subscribe, render, replaceReducer} = vdux({
     auth,
     epicMiddleware,
     checkCompleted,
+    // logger(),
     scroll,
     addCode,
     saveCode,
@@ -63,7 +67,7 @@ const {subscribe, render, replaceReducer} = vdux({
 
 domready(() => {
   subscribe((state) => {
-    return render(app(state), {uiTheme: theme, currentUser: state.user, username: state.username})
+    return render(app(state), {uiTheme: theme, currentUser: state.user, username: state.username, profile: state.profile})
   })
 })
 

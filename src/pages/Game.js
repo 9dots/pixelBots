@@ -6,6 +6,7 @@ import Controls from '../components/Controls'
 import createAction from '@f/create-action'
 import Output from '../components/Output'
 import {initializeGame, setSaveId} from '../actions'
+import objEqual from '@f/equal-obj'
 import element from 'vdux/element'
 import {once} from 'vdux-fire'
 import {Block} from 'vdux-ui'
@@ -25,6 +26,12 @@ function initialState ({props, local}) {
 
 function * onCreate ({props}) {
   yield initializeGame(props.initialData)
+}
+
+function * onUpdate (prev, {props}) {
+  if (!objEqual(prev.props.initialData, props.initialData)) {
+    yield initializeGame(props.initialData)
+  }
 }
 
 function render ({props, state, local}) {
@@ -103,12 +110,9 @@ function reducer (state, action) {
   return state
 }
 
-function * updatedSavedAnimal () {
-
-}
-
 export default ({
   initialState,
+  onUpdate,
   onCreate,
   reducer,
   render

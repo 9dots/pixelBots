@@ -6,12 +6,6 @@ import {CSSContainer, wrap} from 'vdux-containers'
 import deepEqual from '@f/deep-equal'
 import omit from '@f/omit'
 
-function maybeOmitProps ({props}) {
-  return props.editMode
-    ? props
-    : omit('clickHandler', props)
-}
-
 function shouldUpdate (prev, next) {
   return !deepEqual(omit(['clickHandler', 'handleMouseOver'], prev.props), omit(['clickHandler', 'handleMouseOver'], next.props))
     || !deepEqual(prev.children, next.children)

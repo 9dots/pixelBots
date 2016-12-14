@@ -1,4 +1,5 @@
 import IndeterminateProgress from '../components/IndeterminateProgress'
+import PlaylistGameLoader from '../components/PlaylistGameLoader'
 import {Block, Dropdown, Menu, MenuItem, Text} from 'vdux-ui'
 import PlaylistOptions from '../components/PlaylistOptions'
 import PlaylistItem from '../components/PlaylistItem'
@@ -11,44 +12,52 @@ import {refMethod} from 'vdux-fire'
 import {setToast} from '../actions'
 import element from 'vdux/element'
 import filter from '@f/filter'
+import findIndex from '@f/find-index'
+import splice from '@f/splice'
 import sleep from '@f/sleep'
 import fire from 'vdux-fire'
 
 const setModal = createAction('<PlaylistView/>: setModal')
+const handleDragEnter = createAction('<PlaylistItem/>: HANDLE_DRAG_ENTER')
+const handleDragStart = createAction('<PlaylistItem/>: HANLDE_DRAG_START')
+const handleDragEnd = createAction('<PlaylistItem/>: HANDLE_END')
+const handleDrop = createAction('<PlaylistItem/>: HANDLE_DROP')
 
 const initialState = ({local}) => ({
 	modal: '',
+	target: null,
+	dragTarget: null,
 	actions: {
-		setModal: local((modal) => setModal(modal))
+		setModal: local((modal) => setModal(modal)),
+		dragEnter: local((gameKey) => handleDragEnter(gameKey)),
+		dragStart: local((gameKey) => handleDragStart(gameKey)),
+		dragEnd: local(handleDragEnd),
+		handleDrop: local(handleDrop)
 	}
 })
 
 const url = window.location.host + '/'
 
 function render ({props, state}) {
-	const {playlist, myPlaylists, activeKey, mine, currentUser, ref} = props
+	const {playlist, myPlaylists, activeKey, mine, currentUser, ref, username, profile} = props
 	const {uid, isAnonymous} = currentUser
 
-	if (playlist.loading || myPlaylists.loading) {
+	if (playlist.loading || !profile) {
 		return <IndeterminateProgress/>
 	}
 
-	const myPlaylistsValue = myPlaylists.value || []
+	const myPlaylistsValue = profile.playlists || []
 	const playlistMatch = Object.keys(filter((list) => list.ref === activeKey, myPlaylistsValue))[0]
-	const {sequence, name, followedBy = [], creatorID, creatorUsername} = playlist.value
-	const {modal, actions} = state
+	const {sequence, name, followedBy = [], creatorID, creatorUsername, description} = playlist.value
+	const {modal, actions, target, dragTarget} = state
 
 	const followed = followedBy[props.username]
-	
+
 	const modalFooter = (
 	  <Block>
 	    <Button ml='m' onClick={() => actions.setModal('')}>Done</Button>
 	  </Block>
 	)
-
-	const followButton = followed
-		? <Button onClick={unfollow} bgColor='transparent' color='#666' border='1px solid #666'>Unfollow</Button>
-		: <Button onClick={follow}>Follow</Button>
 
 	return (
 		<Block flex ml='10px' tall overflowY='auto' minWidth='680px'>
@@ -56,13 +65,18 @@ function render ({props, state}) {
 				<Block>
 					<Text display='block' fs='xs' color='#777' fontWeight='300'>CREATED BY: {creatorUsername}</Text>
 					<Text display='block' fs='xxl' color='#555' fontWeight='500'>{name}</Text>
+					<Text display='block' fs='m' color='#777' fontWeight='300'>{description}</Text>
 				</Block>
 				<Block>
-					{
-						mine
-							? <PlaylistOptions uid={uid} name={name} activeKey={activeKey} setModal={actions.setModal} unfollow={unfollow}/>
-							: followButton
-					}
+					<PlaylistOptions
+						follow={follow}
+						mine={mine}
+						followed={followed}
+						uid={uid}
+						name={name}
+						activeKey={activeKey}
+						setModal={actions.setModal}
+						unfollow={unfollow}/>
 				</Block>
 			</Block>
 			<Menu overflowY='auto' column>
@@ -72,7 +86,14 @@ function render ({props, state}) {
 			 		<Text mr='2em' minWidth='100px' w='100px'>ANIMAL</Text>
 			 		<Text mr='2em' minWidth='180px' w='180px'>CODE TYPE</Text>
 			 	</Block>
-				{sequence && sequence.map((challenge) => <PlaylistItem playlistKey={activeKey} mine={mine && currentUser.uid === creatorID} ref={challenge}/>)}
+				<PlaylistGameLoader
+					dragTarget={dragTarget}
+					dropTarget={target}
+					listActions={{...actions, drop}}
+					activeKey={activeKey}
+					mine={mine}
+					creatorID={creatorID}
+					sequence={sequence}/>
 			</Menu>
 			{modal && <ModalMessage
         header='Link to Playlist'
@@ -90,6 +111,22 @@ function render ({props, state}) {
       }
 		</Block>
 	)
+
+	function * drop (idx) {
+		const removeIdx = findIndex(sequence, (val) => val === dragTarget)
+		yield refMethod({
+			ref: `/playlists/${activeKey}/sequence`,
+			updates: {
+				method: 'transaction',
+				value: (seq) => (
+					seq
+						? splice(splice(seq, removeIdx, 1), removeIdx > idx ? idx : idx - 1, 0, dragTarget)
+						: 0
+				)
+			}
+		})
+		yield actions.handleDrop()
+	}
 
 	function * follow () {
 		yield refMethod({
@@ -151,7 +188,8 @@ function getProps (props, context) {
 	return {
 		...props,
 		currentUser: context.currentUser,
-		username: context.username
+		username: context.username,
+		profile: context.profile
 	}
 }
 
@@ -162,13 +200,34 @@ function reducer (state, action) {
 				...state,
 				modal: action.payload
 			}
+		case handleDragEnter.type:
+			return {
+				...state,
+				target: action.payload
+			}
+		case handleDragEnd.type:
+			return {
+				...state,
+				target: null,
+				dragTarget: null
+			}
+		case handleDrop.type:
+			return {
+				...state,
+				dragTarget: null,
+				target: null
+			}
+		case handleDragStart.type:
+			return {
+				...state,
+				dragTarget: action.payload
+			}
 	}
 	return state
 }
 
 export default fire((props) => ({
-	playlist: `/playlists/${props.activeKey}`,
-	myPlaylists: `/users/${props.uid}/playlists`
+	playlist: `/playlists/${props.activeKey}`
 }))({
 	initialState,
 	getProps,

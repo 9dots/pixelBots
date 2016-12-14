@@ -10,7 +10,6 @@ function render ({props}) {
 		return <IndeterminateProgress/>
 	}
 
-	console.log(playlist)
 	return (
 		<PlaylistView playlist={playlist.value} activeKey={playlistID} mine={uid === playlist.value.creatorID}/>
 	)

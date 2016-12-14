@@ -13,8 +13,6 @@ function render ({props}) {
   const {draftID, title, handleSave = setAnimal, user} = props
   const {uid} = user
 
-  console.log(draftID)
-
   return (
     <Flex relative m='0 auto' column align='center center' minHeight='100%' w='96%'>
       <Block absolute textAlign='center' top='1em' left='0' right='0'>
