@@ -46,10 +46,12 @@ const router = enroute({
 })
 
 function render ({props, state, local}) {
-	const {user, mine, profile, currentUser} = props
+	const {user, mine, thisProfile, currentUser, myProfile} = props
 	const {actions, selected} = state
 	const selectMode = selected.length > 0
-	
+
+	const profile = mine ? myProfile : thisProfile.value
+
 	if (!profile || !currentUser) return <IndeterminateProgress/>
 
 	const {playlists} = profile
@@ -75,7 +77,7 @@ function render ({props, state, local}) {
 							num={selected.length}/>}
 			</Block>
 			<Block maxHeight='calc(100% - 102px)' wide tall>
-				{router(props.params, {...props, ...state})}
+				{router(props.params, {...props, ...state, profile})}
 			</Block>
 		</Flex>
 	)
@@ -108,13 +110,15 @@ function maybeAddToArray (val, arr) {
 function getProps (props, context) {
 	return {
 		...props,
-		profile: context.profile
+		myProfile: context.profile
 	}
 }
 
-export default {
+export default fire((props) => ({
+	thisProfile: `/users/${props.userKey}`
+}))({
 	initialState,
 	getProps,
 	reducer,
 	render
-}
+})

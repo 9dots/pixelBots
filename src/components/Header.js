@@ -10,7 +10,6 @@ function render ({props, children}) {
       h='100vh'
       w='100px'
       left='0'
-      overflow='hidden'
       zIndex='999'
       boxShadow='0px 2px 4px -2px rgba(0,0,0,0.8)'
       bgColor='white'

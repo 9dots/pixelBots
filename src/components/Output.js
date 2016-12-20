@@ -1,18 +1,29 @@
 /** @jsx element */
 
+import {runCode, abortRun} from '../middleware/codeRunner'
+import handleActions from '@f/handle-actions'
+import createAction from '@f/create-action'
 import ControlPanel from './ControlPanel'
+import {Block, Card, Icon, Text} from 'vdux-ui'
 import Button from '../components/Button'
 import {setAnimalPos} from '../actions'
-import deepEqual from '@f/deep-equal'
 import element from 'vdux/element'
-import {Block, Icon, Text} from 'vdux-ui'
-import Level from './Level'
-import omit from '@f/omit'
-import Tab from './Tab'
-import {runCode, abortRun} from '../middleware/codeRunner'
 import {reset} from '../actions'
+import Slider from './Slider'
+import Level from './Level'
+import Tab from './Tab'
 
-function render ({props}) {
+const setOpacity = createAction('<Output/>: SET_OPACITY')
+const greetings = createAction('<Output/>: GREETINGS')
+
+const initialState = ({local}) => ({
+  opacity: '0.2',
+  actions: {
+    setOpacity: local((val) => setOpacity(val))
+  }
+})
+
+function render ({props, state, local}) {
   const {
     handleTabClick = () => {},
     targetPainted,
@@ -30,6 +41,8 @@ function render ({props}) {
     tabs,
     tab
   } = props
+
+  const {opacity, actions} = state
 
   return (
     <Block
@@ -49,7 +62,17 @@ function render ({props}) {
           ))
         }
       </Block>
-      {tab === 'actual' && <Block p='10px'>
+      {tab === 'display' && <Block relative p='10px'>
+        <Block absolute top='10px' left='10px' h={size} w={size} zIndex='99' opacity={opacity}>
+          <Level
+            editMode
+            animals={[]}
+            active={active}
+            painted={targetPainted}
+            levelSize={size}
+            numRows={levelSize[0]}
+            numColumns={levelSize[1]}/>
+        </Block>
         <Block h={size} w={size}>
           <Level
             editMode={!running}
@@ -57,18 +80,6 @@ function render ({props}) {
             running={running}
             active={active}
             painted={painted}
-            levelSize={size}
-            numRows={levelSize[0]}
-            numColumns={levelSize[1]}/>
-        </Block>
-      </Block>}
-      {tab === 'target' && <Block p='10px'>
-        <Block h={size} w={size}>
-          <Level
-            editMode
-            animals={animals.map((animal) => convertToStar(animal))}
-            active={active}
-            painted={targetPainted}
             levelSize={size}
             numRows={levelSize[0]}
             numColumns={levelSize[1]}/>
@@ -94,29 +105,38 @@ function render ({props}) {
       }
       {
         tab !== 'options' && 
-          <Block w='200px' h='60px' px='10px'>
+          <Card mx='10px' p='20px 10px'>
+            <Block wide align='space-around center' wide pb='1em'>
+              <Text fontWeight='300' userSelect='none'>START</Text>
+                <Slider
+                  startValue={opacity}
+                  w='200px'
+                  max='1'
+                  step='0.1'
+                  handleChange={(val) => actions.setOpacity(val)}
+                  name='opacity-slider'/>
+              <Text fontWeight='300' userSelect='none'>FINISH</Text>
+            </Block>
             <Button
               tall
               wide
               bgColor='green'
+              h='60px'
               fs='l'
               color='white'
               onClick={!hasRun ? [runCode, onRun] : [reset, () => abortRun('STOP')]}>
               <Icon ml='-4px' mr='10px' name={!hasRun ? 'play_arrow' : 'replay'}/>
               {!hasRun ? 'RUN' : 'RESET'}
             </Button>
-            {
-              saveLink && (
-                <Block my='1em'>
-                  <Text fontWeight='300' fs='l'>Save ID: {saveLink}</Text>
-                </Block>
-              )
-            }
-          </Block>
+          </Card>
       }
     </Block>
   )
 }
+
+const reducer = handleActions({
+  [setOpacity]: (state, opacity) => ({...state, opacity})
+})
 
 function convertToStar (animal) {
   return {
@@ -125,6 +145,8 @@ function convertToStar (animal) {
   }
 }
 
-export default {
+export default ({
+  initialState,
+  reducer,
   render
-}
+})

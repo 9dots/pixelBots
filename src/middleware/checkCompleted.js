@@ -1,10 +1,11 @@
-import {animalMove, animalPaint, animalTurn, endRunMessage} from '../actions'
+import {animalMove, animalPaint, animalTurn, setModalMessage} from '../actions'
 import {abortRun} from './codeRunner'
 import objEqual from '@f/equal-obj'
 
 const winMessage = {
   header: 'Congratulations',
-  body: 'You have successfully painted the picture.'
+  body: 'You have successfully painted the picture.',
+  type: 'win'
 }
 
 export default ({getState, dispatch}) => (next) => (action) => {
@@ -13,8 +14,10 @@ export default ({getState, dispatch}) => (next) => (action) => {
 		const game = getState().game
 		if (game.targetPainted) {
       if (objEqual(game.targetPainted, game.painted)) {
-      	dispatch(abortRun('STOP'))
-      	dispatch(endRunMessage(winMessage))
+      	setTimeout(function () {
+	      	dispatch(abortRun('STOP'))
+      		dispatch(setModalMessage(winMessage))
+      	}, 800)
       }
 		}
 		return result

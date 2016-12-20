@@ -38,7 +38,7 @@ function * onUpdate (prev, {props, state}) {
 }
 
 function render ({props, state, local}) {
-	const {playlists, mine, uid} = props
+	const {playlists = {}, mine, uid} = props
 
 	const items = mapValues((val) => val, playlists)
 	const {actions, active, modal} = state

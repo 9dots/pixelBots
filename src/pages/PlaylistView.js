@@ -3,7 +3,8 @@ import PlaylistGameLoader from '../components/PlaylistGameLoader'
 import {Block, Dropdown, Menu, MenuItem, Text} from 'vdux-ui'
 import PlaylistOptions from '../components/PlaylistOptions'
 import PlaylistItem from '../components/PlaylistItem'
-import ModalMessage from '../components/ModalMessage'
+import LinkModal from '../components/LinkModal'
+import handleActions from '@f/handle-actions'
 import createAction from '@f/create-action'
 import Button from '../components/Button'
 import {Input} from 'vdux-containers'
@@ -95,18 +96,8 @@ function render ({props, state}) {
 					creatorID={creatorID}
 					sequence={sequence}/>
 			</Menu>
-			{modal && <ModalMessage
-        header='Link to Playlist'
-        body={<Input
-          readonly
-          autofocus
-          inputProps={{p: '12px', borderWidth: '2px', border: '#ccc'}}
-          id='url-input'
-          fs='18px'
-          onFocus={() => document.getElementById('url-input').children[0].select()}
-          value={`http://${url}${modal}`}>
-          {`${url}${modal}`}
-        </Input>}
+			{modal && <LinkModal
+				code={modal}
         footer={modalFooter}/>
       }
 		</Block>
@@ -193,38 +184,13 @@ function getProps (props, context) {
 	}
 }
 
-function reducer (state, action) {
-	switch (action.type) {
-		case setModal.type:
-			return {
-				...state,
-				modal: action.payload
-			}
-		case handleDragEnter.type:
-			return {
-				...state,
-				target: action.payload
-			}
-		case handleDragEnd.type:
-			return {
-				...state,
-				target: null,
-				dragTarget: null
-			}
-		case handleDrop.type:
-			return {
-				...state,
-				dragTarget: null,
-				target: null
-			}
-		case handleDragStart.type:
-			return {
-				...state,
-				dragTarget: action.payload
-			}
-	}
-	return state
-}
+const reducer = handleActions({
+	[setModal]: (state, payload) => ({...state, modal: payload}),
+	[handleDragEnter]: (state, payload) => ({...state, target: payload}),
+	[handleDragEnd]: (state) => ({...state, target: null, dragTarget: null}),
+	[handleDrop]: (state) => ({...state, target: null, dragTarget: null}),
+	[handleDragStart]: (state, payload) => ({...state, dragTarget: payload})
+})
 
 export default fire((props) => ({
 	playlist: `/playlists/${props.activeKey}`

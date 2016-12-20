@@ -80,7 +80,7 @@ function render ({props}) {
         	(mine || editable) && 
         		<Icon
 		        	cursor='pointer'
-		        	zIndex='9999'
+		        	zIndex='10'
 		        	onClick={() => toggleSelected(props.ref)}
 		        	absolute
 		        	color={selected ? 'blue' : 'white'}
@@ -115,8 +115,5 @@ function reducer (state, action) {
 export default fire((props) => ({
   game: `/games/${props.ref}`
 }))({
-	// initialState,
-	// onCreate,
-	// reducer,
 	render
 })

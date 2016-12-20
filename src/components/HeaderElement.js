@@ -2,7 +2,7 @@ import {Block, Icon, Image, Text} from 'vdux-containers'
 import element from 'vdux/element'
 import omit from '@f/omit'
 
-function render ({props}) {
+function render ({props, children}) {
   const {handleClick, background, icon, text, image, active, ...restProps} = props
   return (
     <Block
@@ -25,6 +25,7 @@ function render ({props}) {
         {icon && <Icon name={icon} fs='34px'/>}
       </Block>
       {text && <Text mt='8px' fs='xs' fontWeight='600'>{text}</Text>}
+      {children}
     </Block>
   )
 }

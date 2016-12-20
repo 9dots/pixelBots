@@ -15,7 +15,7 @@ function render ({props, children}) {
 			{...restProps}>
       {
         (hovering && hoverOptions) && (
-          <Block absolute wide tall zIndex='999' bgColor='rgba(0,0,0,0.7)'>
+          <Block absolute wide tall zIndex='5' bgColor='rgba(0,0,0,0.7)'>
             {hoverOptions}
           </Block>
         )

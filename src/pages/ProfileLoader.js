@@ -6,13 +6,13 @@ import fire from 'vdux-fire'
 
 function * onCreate ({props}) {
 	if (!props.params) {
-		yield setUrl(`/${props.username}/games`)
+		yield setUrl(`/${props.username}/games`, true)
 	}
 }
 
 function * onUpdate (prev, {props}) {
 	if (!props.params) {
-		yield setUrl(`/${props.username}/games`)
+		yield setUrl(`/${props.username}/games`, true)
 	}
 }
 

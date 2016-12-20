@@ -11,8 +11,7 @@ export default function () {
         : stackTrace.parse(action.payload)[0].lineNumber - 5
       dispatch(stopRun())
       dispatch(handleError({
-        message: action.payload.message,
-        lineNum: errorLine
+        message: `${action.payload.message}. Check the code at line ${errorLine + 1}.`
       }))
     }
     return next(action)

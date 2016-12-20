@@ -1,14 +1,16 @@
 /** @jsx element */
 
-import {initializeApp, createNew, refresh, saveProgress, setToast} from './actions'
+import {initializeApp, createNew, refresh, saveProgress, setToast, setModalMessage} from './actions'
 import IndeterminateProgress from './components/IndeterminateProgress'
 import HeaderElement from './components/HeaderElement'
 import ModalMessage from './components/ModalMessage'
 import CreateSandbox from './pages/CreateSandbox'
 import PlaylistView from './pages/PlaylistView'
 import ProfileLoader from './pages/ProfileLoader'
-import {Block, Icon, Text, Toast} from 'vdux-ui'
+import LinkModal from './components/LinkModal'
+import {Block, Icon, Input, Text, Toast} from 'vdux-ui'
 import LinkDecipher from './pages/LinkDecipher'
+import CodeLink from './components/CodeLink'
 import {setUrl} from 'redux-effects-location'
 import GameLoader from './pages/GameLoader'
 import SearchPage from './pages/SearchPage'
@@ -95,6 +97,7 @@ function render ({props, state, local}) {
             </Block>
           }
         </Block>
+        <HeaderElement onClick={() => setModalMessage(<CodeLink/>)} mb='0' text='Code' icon='link'/>
         {!user || user.isAnonymous
           ? <HeaderElement handleClick={local(startLogin)} text='Sign In' icon='person_outline'/>
           : <HeaderElement handleClick={signOut} text='Sign Out' icon='exit_to_app'/>
@@ -106,11 +109,7 @@ function render ({props, state, local}) {
       }
       </Block>
       {
-        message && <ModalMessage
-          type={message.type}
-          header={message.header}
-          animals={animals}
-          body={message.body}/>
+        message && message
       }
       {
         loggingIn && <Auth handleDismiss={local(endLogin)}/>

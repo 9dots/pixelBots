@@ -110,7 +110,7 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@f/contains-element/-/contains-element-1.0.0.tgz#e40eac5d6bc70761495d6dc56b465a310aa26507"
 
-"@f/create-action@^1.1.1":
+"@f/create-action@1.1.1", "@f/create-action@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@f/create-action/-/create-action-1.1.1.tgz#69c61666c9ec31d69a4dd1a14a915339590f72f8"
 
@@ -324,7 +324,7 @@
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@f/get-value/-/get-value-1.0.1.tgz#9d50bebe00dd6687033194b60610899df766182e"
 
-"@f/handle-actions@^1.1.1", "@f/handle-actions@^1.1.2":
+"@f/handle-actions@1.1.2", "@f/handle-actions@^1.1.1", "@f/handle-actions@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@f/handle-actions/-/handle-actions-1.1.2.tgz#8e6125d97408d71faff15421c4642f20ffbe8cc8"
   dependencies:
@@ -343,7 +343,7 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@f/hash-str/-/hash-str-1.0.0.tgz#059d14538be23ca812536392105c6efe76058c04"
 
-"@f/html-attrs@^1.0.2":
+"@f/html-attrs@^1.0.1", "@f/html-attrs@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@f/html-attrs/-/html-attrs-1.0.2.tgz#66494a69755b16457c00c473a4156e3d806afc42"
 
@@ -555,7 +555,7 @@
     "@f/omit" "^2.0.0"
     "@f/set-prop" "^1.0.0"
 
-"@f/omit@^2.0.0", "@f/omit@^2.2.3":
+"@f/omit@2.2.3", "@f/omit@^2.0.0", "@f/omit@^2.2.3":
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@f/omit/-/omit-2.2.3.tgz#a3dc9bc4bb646dc75cb9c1586e229b14e13c0c80"
   dependencies:
@@ -1658,7 +1658,7 @@ babel-plugin-transform-regenerator@^6.16.0:
     babel-types "^6.16.0"
     private "~0.1.5"
 
-babel-plugin-transform-runtime@^6.9.0:
+babel-plugin-transform-runtime@^6.8.0, babel-plugin-transform-runtime@^6.9.0:
   version "6.15.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-runtime/-/babel-plugin-transform-runtime-6.15.0.tgz#3d75b4d949ad81af157570273846fb59aeb0d57c"
   dependencies:
@@ -3531,6 +3531,10 @@ flat-arguments@^1.0.0:
     lodash.isarguments "^3.0.0"
     lodash.isobject "^3.0.0"
 
+flatten@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
+
 for-each@~0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/for-each/-/for-each-0.3.2.tgz#2c40450b9348e97f281322593ba96704b9abd4d4"
@@ -3909,6 +3913,10 @@ html-tokenize@^1.1.1:
     minimist "~0.0.8"
     readable-stream "~1.0.27-1"
     through2 "~0.4.1"
+
+html2canvas@^0.5.0-beta4:
+  version "0.5.0-beta4"
+  resolved "https://registry.yarnpkg.com/html2canvas/-/html2canvas-0.5.0-beta4.tgz#8282c62ac5fd78168f5702b5e4877157ca93f39e"
 
 htmlescape@^1.1.0:
   version "1.1.1"
@@ -6880,6 +6888,19 @@ vdux-containers@1.1.19:
     vdux "^2.4.9"
     vdux-ui "^1.2.0"
 
+vdux-containers@1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/vdux-containers/-/vdux-containers-1.1.6.tgz#ddc3375564ce0cb7b441f8916081cc0917b877e3"
+  dependencies:
+    "@f/combine-reducers" "^1.2.1"
+    "@f/create-action" "^1.1.1"
+    "@f/foreach-obj" "^1.1.1"
+    "@f/handle-actions" "^1.1.1"
+    "@f/map-values" "^1.0.0"
+    "@f/omit" "^2.2.3"
+    babel-plugin-transform-runtime "^6.8.0"
+    vdux-ui "^1.2.0"
+
 vdux-css-emulator@^2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/vdux-css-emulator/-/vdux-css-emulator-2.0.5.tgz#ff31b0e4b1e54085f79bde8631c1875fcaa22788"
@@ -6943,6 +6964,18 @@ vdux-position@1.0.5, vdux-position@^1.0.5:
   dependencies:
     "@f/position-element" "^1.1.1"
 
+vdux-toggle@^0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/vdux-toggle/-/vdux-toggle-0.1.8.tgz#eecaa3a0143e32e8ecf7d6792786d72935aa99ef"
+  dependencies:
+    "@f/create-action" "1.1.1"
+    "@f/handle-actions" "1.1.2"
+    "@f/omit" "2.2.3"
+    flatten "1.0.2"
+    vdux "2.4.10"
+    vdux-containers "1.1.6"
+    vdux-ui "1.2.6"
+
 vdux-transition@1.0.6, vdux-transition@^1.0.5:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/vdux-transition/-/vdux-transition-1.0.6.tgz#dcb10b96de16a83d1f12888de71e9ada910372e6"
@@ -6980,7 +7013,27 @@ vdux-ui@1.2.36, vdux-ui@^1.2.0:
     vdux-css-emulator "^2.0.5"
     vdux-position "^1.0.5"
 
-vdux@2, vdux@^2.4.6, vdux@^2.4.9:
+vdux-ui@1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/vdux-ui/-/vdux-ui-1.2.6.tgz#75d2d1dc5c8bdd5ce78e52450b8d125e0c5eb848"
+  dependencies:
+    "@f/defaults" "^1.0.1"
+    "@f/extend" "^1.0.0"
+    "@f/foreach" "^1.2.2"
+    "@f/has" "^1.0.0"
+    "@f/html-attrs" "^1.0.1"
+    "@f/input-attrs" "^1.0.0"
+    "@f/map" "^1.5.3"
+    "@f/noop" "^1.2.0"
+    "@f/omit" "^2.2.3"
+    "@f/pick" "^1.1.4"
+    "@f/reduce" "^1.0.0"
+    color "^0.11.1"
+    vdux "^2.4.5"
+    vdux-css-emulator "^2.0.5"
+    vdux-position "^1.0.5"
+
+vdux@2, vdux@2.4.10, vdux@^2.4.5, vdux@^2.4.6, vdux@^2.4.9:
   version "2.4.10"
   resolved "https://registry.yarnpkg.com/vdux/-/vdux-2.4.10.tgz#1a20565bca5f7c1347f119230c3e9751d3087598"
   dependencies:

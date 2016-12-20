@@ -1,15 +1,17 @@
-import map from '@f/map'
-import splice from '@f/splice'
-import setProp from '@f/set-prop'
-import reduce from '@f/reduce'
+import element from 'vdux/element'
+import ModalMessage from './components/ModalMessage'
 import {initGame, arrayAt} from './utils'
+import setProp from '@f/set-prop'
+import splice from '@f/splice'
+import reduce from '@f/reduce'
+import map from '@f/map'
 
 import {setUserId, setUsername, setUserProfile} from './middleware/auth'
 
 import {
   initializeGame,
   setActiveLine,
-  endRunMessage,
+  setModalMessage,
   clearMessage,
   setAnimalPos,
   animalPaint,
@@ -175,22 +177,14 @@ function reducer (state, action) {
       var {message, lineNum} = action.payload
       return {
         ...state,
-        message: {
-          type: 'error',
-          header: message,
-          body: `Check the code at line ${lineNum + 1}`
-        },
+        message: createModal('Error', message, 'error', state.animals),
         activeLine: lineNum
       }
-    case endRunMessage.type:
-      var {header, body} = action.payload
+    case setModalMessage.type:
+      var {header, body, type} = action.payload
       return {
         ...state,
-        message: {
-          type: 'win',
-          header,
-          body
-        }
+        message: action.payload.children  ? action.payload : createModal(header, body, type)
       }
     case clearMessage.type:
       return {
@@ -303,6 +297,14 @@ function reducer (state, action) {
       }
   }
   return state
+}
+
+function createModal (header, body, type = '', animals = {}) {
+  return <ModalMessage
+          type={type}
+          header={header}
+          animals={animals}
+          body={body}/>
 }
 
 function setNewAnimalPos (coords, animal) {

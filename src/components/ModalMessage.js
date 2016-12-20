@@ -8,10 +8,10 @@ import createAction from '@f/create-action'
 import WinAnimals from './WinAnimals'
 
 function render ({props, state}) {
-  const {header, body, footer, type, animals=[], clickHandler = [], dismiss = clearMessage} = props
+  const {header, body, footer, type, animals=[], clickHandler = [], dismiss = clearMessage, ...restProps} = props
 
   return (
-    <Modal overlayProps={{fixed: true, top: 0, left: 0}} onDismiss={dismiss} onKeyup={{esc: dismiss}}>
+    <Modal overlayProps={{fixed: true, top: 0, left: 0}} onDismiss={dismiss} onKeyup={{esc: dismiss}} {...restProps}>
       <ModalHeader flex column align='center center' color={type === 'error' ? 'error' : 'blue'} p='l' fs='xl'>
         {
           type === 'win' && <WinAnimals animals={animals}/>
@@ -24,7 +24,7 @@ function render ({props, state}) {
         </Block>
       </ModalBody>
       <ModalFooter>
-        {footer ? footer : <Button fs='m' p='8px' bgColor={type === 'error' ? 'error' : 'green'} onClick={dismiss}>Okay</Button>}
+        {footer ? footer : <Button fs='m' p='8px' bgColor={type === 'error' ? 'error' : 'blue'} onClick={dismiss}>Okay</Button>}
       </ModalFooter>
     </Modal>
   )

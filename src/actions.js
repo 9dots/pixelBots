@@ -42,7 +42,7 @@ const paintSquare = createAction('PAINT_SQUARE', (opts) => opts, (opts, lineNum)
 const initializeGame = createAction('INITIALIZE_GAME')
 const setActiveLine = createAction('SET_ACTIVE_LINE')
 const setActive = createAction('SET_ANIMAL_ACTIVE')
-const endRunMessage = createAction('END_RUN_MESSAGE')
+const setModalMessage = createAction('SET_MODAL_MESSAGE')
 const setAnimalPos = createAction('SET_ANIMAL_POS')
 const clearMessage = createAction('CLEAR_MESSAGE')
 const setGameData = createAction('SET_GAME_DATA')
@@ -89,7 +89,7 @@ function * saveProgress (animals, gameID, saveID) {
   })
   if (!saveID) {
     yield setUrl(`/saved/${id}`)
-    yield endRunMessage({header: 'Saved Game', body: 'http://pixelbots.io/saved/' + id})
+    yield setModalMessage({header: 'Saved Game', body: 'http://pixelbots.io/saved/' + id})
   }
   yield setToast('Saved')
   yield sleep(3000)
@@ -104,7 +104,7 @@ function * createNew () {
 export {
   initializeGame,
   setActiveLine,
-  endRunMessage,
+  setModalMessage,
   initializeApp,
   clearMessage,
   saveProgress,

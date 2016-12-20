@@ -5,7 +5,7 @@ import {Block, Flex, Grid, Text} from 'vdux-ui'
 import {Card} from 'vdux-containers'
 import {setUrl} from 'redux-effects-location'
 import animalDescriptions from '../animalApis/animalDescriptions'
-import {endRunMessage} from '../actions'
+import {setModalMessage} from '../actions'
 import reduce from '@f/reduce'
 import {refMethod} from 'vdux-fire'
 
@@ -65,7 +65,7 @@ function render ({props}) {
       })
       yield setUrl(`/create/${draftID}/options`)
     } catch (e) {
-      yield endRunMessage({header: 'Error', body: e.message})
+      yield setModalMessage({header: 'Error', body: e.message})
     }
   }
 }

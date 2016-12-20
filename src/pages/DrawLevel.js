@@ -4,6 +4,7 @@ import {addCode, aceUpdate, updateLine, removeLine} from '../reducer/editor'
 import IndeterminateProgress from '../components/IndeterminateProgress'
 import ModalMessage from '../components/ModalMessage'
 import ColorPicker from '../components/ColorPicker'
+import LinkModal from '../components/LinkModal'
 import {setUrl} from 'redux-effects-location'
 import {palette, createCode} from '../utils'
 import createAction from '@f/create-action'
@@ -18,9 +19,6 @@ import {createNew} from '../actions'
 import EditLevel from './EditLevel'
 import {uploadImage} from '../storage'
 import element from 'vdux/element'
-import setProp from '@f/set-prop'
-import {arrayAt} from '../utils'
-import firebase from 'firebase'
 import splice from '@f/splice'
 import Hashids from 'hashids'
 import Editor from './Editor'
@@ -96,16 +94,8 @@ function render ({props, state, local}) {
 
   return (
     <Block column align='center center'>
-      {show && <ModalMessage
-        header='Link to game'
-        body={<Input
-          readonly
-          inputProps={{p: '12px', borderWidth: '2px', border: borderColor}}
-          id='url-input'
-          fs='18px'
-          onFocus={() => document.getElementById('url-input').children[0].select()}
-          value={`http://${url}${show}`}>{`${url}${show}`}
-        </Input>}
+      {show && <LinkModal
+        code={show}
         footer={modalFooter}/>
       }
       <Block px='16px' bgColor='white' absolute left='0' top='0' borderBottom='2px solid #ccc' wide align='space-between center' py='1em' mb='1em'>
@@ -155,7 +145,8 @@ function render ({props, state, local}) {
   )
 
   function * updateGame () {
-    // const canvas = yield html2canvas(document.getElementById('grid-finished'))
+    const canvas = yield html2canvas(document.getElementById('grid-finished'))
+    console.log(canvas)
     // yield uploadImage(canvas, draftID)
     yield refMethod({
       ref: `/games/${draftID}`,

@@ -1,7 +1,7 @@
 {
   "rules": {
-    ".read": "auth !== null",
-    ".write": "auth !== null",
+    ".read": "true",
+    ".write": "true",
     "users": {
       "$uid": {
         ".write": "auth !== null",
@@ -22,6 +22,74 @@
     "games": {
       ".read": "auth !== null",
       ".write": "auth !== null"
+    },
+    "queue": {
+      "tasks": {
+        ".read": "auth.canProcessTasks",
+        ".write": "auth.canAddTasks || auth.canProcessTasks",
+        ".indexOn": "_state",
+        "$taskId": {
+          "_state": {
+            ".validate": "newData.isString()"
+          },
+          "_state_changed": {
+          },
+          "_owner": {
+            ".validate": "newData.isString()"
+          },
+          "_progress": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100"
+          },
+          "_error_details": {
+              "error": {
+                ".validate": "newData.isString()"
+              },
+              "error_stack": {
+                ".validate": "newData.isString()"
+              },
+              "previous_state": {
+                ".validate": "newData.isString()"
+              },
+              "original_task": {
+                /* This space intentionally left blank, for malformed tasks */
+              },
+              "attempts": {
+                ".validate": "newData.isNumber() && newData.val() > 0"
+              },
+              "$other": {
+                ".validate": false
+              }
+          },
+          "_id": {
+            ".validate": "newData.isString()"
+          }
+        }
+      },
+      "specs" : {
+        ".read": "auth.canAddSpecs || auth.canProcessTasks",
+        ".write": "auth.canAddSpecs",
+        "$specId": {
+          ".validate": "newData.hasChild('in_progress_state')",
+          "start_state": {
+            ".validate": "newData.isString()"
+          },
+          "in_progress_state": {
+            ".validate": "newData.isString()"
+          },
+          "finished_state": {
+            ".validate": "newData.isString()"
+          },
+          "error_state": {
+            ".validate": "newData.isString()"
+          },
+          "timeout": {
+            ".validate": "newData.isNumber() && newData.val() > 0"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
     },
     "search": {
       "request": {

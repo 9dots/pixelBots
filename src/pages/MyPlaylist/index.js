@@ -1,6 +1,6 @@
 import IndeterminateProgress from '../../components/IndeterminateProgress'
 import element from 'vdux/element'
-import {Modal, ModalHeader, ModalBody, ModalFooter} from 'vdux-ui'
+import {Block, Modal, ModalHeader, ModalBody, ModalFooter} from 'vdux-ui'
 import {Input} from 'vdux-containers'
 import fire, {refMethod} from 'vdux-fire'
 import Button from '../../components/Button'
@@ -9,7 +9,14 @@ import {setUrl} from 'redux-effects-location'
 import createAction from '@f/create-action'
 import sleep from '@f/sleep'
 
-let submitting = false
+const setLoading = createAction('<MyPlaylist/>: SET_LOADING')
+
+const initialState = ({local}) => ({
+	loading: false,
+	actions: {
+		setLoading: local(setLoading)
+	}
+})
 
 const modalProps = {
 	position: 'fixed',
@@ -24,16 +31,18 @@ const inputProps = {
   border: '2px solid #ccc'
 }
 
-function * onUpdate (prev, {props}) {
-	if (!submitting && props.anonymous && props.playlist.value) {
+function * onUpdate (prev, {props, state}) {
+	if (!state.loading && props.anonymous && props.playlist.value) {
+		yield state.actions.setLoading()
 		yield submit(props.playlist.value, props.ref)
 	}
 }
 
-function render ({props}) {
+function render ({props, state}) {
 	const {playlist} = props
+	const {actions, loading} = state
 
-	if (playlist.loading) {
+	if (playlist.loading || loading) {
 		return <IndeterminateProgress/>
 	}
 
@@ -45,17 +54,18 @@ function render ({props}) {
 			<Input inputProps={inputProps}/>
 		</ModalBody>
 		<ModalFooter>
-			<Button bgColor='primary' onClick={() => submit(listProps, props.ref, 'Daniel')}>Save</Button>
+			<Button bgColor='primary' onClick={[actions.setLoading(), () => submit(listProps, props.ref, 'Daniel')]}>Save</Button>
 		</ModalFooter>
 	</Modal>
 
 	return (
-		<div>{!props.anonymous && modal}</div>
+		<div>
+			{!props.anonymous && modal}
+		</div>
 	)
 }
 
 function * submit (listProps, assignmentRef, textVal = '') {
-	submitting = true
 	const saveIds = yield createSaveCodes(listProps.sequence.length)
 	const savedListRef = yield refMethod({
 		ref: `/savedList/`,
@@ -82,6 +92,7 @@ function * submit (listProps, assignmentRef, textVal = '') {
 	yield setUrl(`/${code}`, true)
 }
 
+
 function * createSaveCodes (num) {
 	const saveCodes = []
 	for (var i = 0; i < num; i++) {
@@ -97,14 +108,25 @@ function * createSaveCodes (num) {
 	return saveCodes
 }
 
+function reducer (state, action) {
+	switch (action.type) {
+		case setLoading.type:
+			return {
+				...state,
+				loading: !state.loading
+			}
+	}
+}
+
 export {
-	submit,
 	createSaveCodes
 }
 
 export default fire ((props) => ({
 	playlist: `/playlists/${props.ref}`
 }))({
+	initialState,
 	onUpdate,
+	reducer,
 	render
 })

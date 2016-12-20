@@ -1,4 +1,4 @@
-import ModalMessage from '../components/ModalMessage'
+import LinkModal from '../components/LinkModal'
 import {Block, Flex, Icon, Grid, Text} from 'vdux-ui'
 import ChallengeLoader from './ChallengeLoader'
 import createAction from '@f/create-action'
@@ -69,18 +69,8 @@ function render ({props, state}) {
 						toggleSelected={toggleSelected}/>
 				), [], games)
 			}
-			{modal && <ModalMessage
-        header='Link to Game'
-        body={<Input
-          readonly
-          autofocus
-          inputProps={{p: '12px', borderWidth: '2px', border: '#ccc'}}
-          id='url-input'
-          fs='18px'
-          onFocus={() => document.getElementById('url-input').children[0].select()}
-          value={`https://pixelbots.io/${modal}`}>
-          {`https://pixelbots.io/${modal}`}
-        </Input>}
+			{modal && <LinkModal
+        code={modal}         
         footer={modalFooter}/>
       }
 		</Flex>

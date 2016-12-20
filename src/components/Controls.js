@@ -35,6 +35,7 @@ function render ({props, state}) {
     editorActions,
     creatorMode,
     initialData,
+    saveID,
     hasRun,
     inputType,
     onRun
@@ -59,14 +60,14 @@ function render ({props, state}) {
             bgColor='secondary'
             onClick={tabChanged('code')}
             color='white'
-            w='260px'
+            w='230px'
             active={tab === 'code'}
             name='code'
             fs='s'/>
           {
             !creatorMode && <Tab
               bgColor='secondary'
-              w='260px'
+              w='230px'
               onClick={tabChanged('documentation')}
               color='white'
               name='documentation'
@@ -80,6 +81,7 @@ function render ({props, state}) {
               initialData={initialData}
               onRun={onRun}
               creatorMode={creatorMode}
+              saveID={saveID}
               running={running}
               relative
               tall

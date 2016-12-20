@@ -2,29 +2,43 @@
 
 import element from 'vdux/element'
 import ConfirmDelete from '../components/ConfirmDelete'
-import {Block, IconButton} from 'vdux-containers'
+import LinkModal from '../components/LinkModal'
+import {Block, Icon} from 'vdux-containers'
+import Button from './Button'
 import {abortRun} from '../middleware/codeRunner'
-import {initializeGame} from '../actions'
-import createAction from '@f/create-action'
+import {initializeGame, clearMessage, setModalMessage} from '../actions'
 
-const openModal = createAction('<Runner/>: OPEN_MODAL')
-const closeModal = createAction('<Runner/>: CLOSE_MODAL')
+function createButton (icon, text, bgColor, clickHandler) {
+  return <Button
+    tall
+    flex
+    bgColor={bgColor}
+    p='4px'
+    wide
+    mx='4px'
+    fs='s'
+    color='white'
+    align='center center'
+    onClick={clickHandler}>
+    <Icon fs='m' name={icon}/>
+  </Button>
+}
 
-const initialState = ({local}) => ({
-  open: false,
-  actions: {
-    openModal: local(openModal),
-    closeModal: local(closeModal)
-  }
-})
+function render ({props}) {
+  const {creatorMode, initialData, saveID=''} = props
 
-function render ({props, state}) {
-  const {creatorMode, initialData} = props
-  const {actions, open} = state
+  const deleteModal = <ConfirmDelete
+    header='Start Over?'
+    message='start over? All of your code will be deleted.'
+    dismiss={clearMessage}
+    action={startOver}/>
+
+  const saveModal = <LinkModal code={saveID}/>
 
   const playButtons = (
-    <Block w='180px' mr='1em'>
-      <IconButton icon='delete_forever' tall flex bgColor='primary' wide fs='s' color='white' onClick={actions.openModal}>Start Over</IconButton>
+    <Block h='80%' align='center center' mr='1em'>
+      {createButton('delete_forever', 'Start Over', '#666', () => setModalMessage(deleteModal))}
+      {saveID && createButton('save', 'Save', '#2C4770', () => setModalMessage(saveModal))}
     </Block>
   )
   return (
@@ -34,7 +48,6 @@ function render ({props, state}) {
           ? <Block wide tall/>
           : playButtons
       }
-     {open && <ConfirmDelete header='Start Over?' message='start over? All of your code will be deleted.' dismiss={actions.closeModal} action={startOver}/>}
     </Block>
   )
 
@@ -50,24 +63,6 @@ function render ({props, state}) {
   }
 }
 
-function reducer (state, action) {
-  switch (action.type) {
-    case openModal.type:
-      return {
-        ...state,
-        open: true
-      }
-    case closeModal.type:
-      return {
-        ...state,
-        open: false
-      }
-  }
-  return state
-}
-
 export default {
-  initialState,
-  reducer,
   render
 }

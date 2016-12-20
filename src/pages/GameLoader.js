@@ -17,28 +17,7 @@ function * onCreate ({props}) {
 		yield setGameId(props.gameCode)
 	  return yield setSaveId(props.saveID)
 	} else {
-		const code = yield createCode()
-		const saveRef = yield refMethod({
-			ref: '/saved/',
-			updates: {
-				method: 'push',
-				value: ''
-			}
-		})
-		yield refMethod({
-			ref: `/links/${code}`,
-			updates: {
-				method: 'set',
-				value: {
-					type: 'saved',
-					payload: {
-						saveRef: `${saveRef.key}`,
-						gameRef: `${props.gameCode}`
-					}
-				}
-			}
-		})
-		yield setUrl(`/${code}`)
+		yield createNewSave(props.gameCode)
 	}
 }
 
@@ -57,8 +36,33 @@ function render ({props}) {
 	const mergeGameData = {...gameVal.value, ...savedProgress.value}
 
 	return (
-		<Game initialData={mergeGameData} {...omit(['gameVal, savedProgress'], props)} left='60px'/>
+		<Game gameData={gameVal.value} initialData={mergeGameData} {...omit(['gameVal, savedProgress'], props)} left='60px'/>
 	)
+}
+
+function * createNewSave (gameCode) {
+	const code = yield createCode()
+	const saveRef = yield refMethod({
+		ref: '/saved/',
+		updates: {
+			method: 'push',
+			value: ''
+		}
+	})
+	yield refMethod({
+		ref: `/links/${code}`,
+		updates: {
+			method: 'set',
+			value: {
+				type: 'saved',
+				payload: {
+					saveRef: `${saveRef.key}`,
+					gameRef: `${gameCode}`
+				}
+			}
+		}
+	})
+	yield setUrl(`/${code}`, true)
 }
 
 export default fire((props) => {

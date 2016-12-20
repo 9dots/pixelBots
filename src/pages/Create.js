@@ -15,7 +15,7 @@ const router = enroute({
   'level': (params, props) => <DrawLevel {...props} />
 })
 
-function render ({props}) {
+function render ({props, state, local}) {
   const {newGame} = props
 
   if (newGame.loading) {

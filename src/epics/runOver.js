@@ -1,4 +1,4 @@
-import { endRun, endRunMessage } from '../actions'
+import { endRun, setModalMessage } from '../actions'
 import { Observable } from 'rxjs'
 import diff from 'deep-diff'
 
@@ -25,7 +25,7 @@ export default function runOver (action$, store) {
         .map((diffObj) => {
           if (game.targetPainted) {
             if (!diffObj) {
-              return endRunMessage(winMessage)
+              return setModalMessage(winMessage)
             }
           }
         })

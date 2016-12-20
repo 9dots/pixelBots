@@ -6,6 +6,7 @@ import Controls from '../components/Controls'
 import createAction from '@f/create-action'
 import Output from '../components/Output'
 import {initializeGame, setSaveId} from '../actions'
+import {immediateSave} from '../middleware/saveCode'
 import objEqual from '@f/equal-obj'
 import element from 'vdux/element'
 import {once} from 'vdux-fire'
@@ -17,26 +18,27 @@ const changeTab = createAction('CHANGE_TAB')
 
 function initialState ({props, local}) {
   return {
-    tab: 'target',
+    tab: 'display',
     actions: {
       tabChanged: local((name) => changeTab(name))
     }
   }
 }
 
-function * onCreate ({props}) {
+function * onCreate ({props, state}) {
+  yield state.actions.tabChanged('display')
   yield initializeGame(props.initialData)
 }
 
-function * onUpdate (prev, {props}) {
-  if (!objEqual(prev.props.initialData, props.initialData)) {
+function * onUpdate (prev, {props, state}) {
+  if (!objEqual(prev.props.gameData, props.gameData)) {
     yield initializeGame(props.initialData)
+    yield state.actions.tabChanged('display')
   }
 }
 
 function render ({props, state, local}) {
   const {
-    savedProgress,
     selectedLine,
     activeLine,
     initialData,
@@ -45,6 +47,7 @@ function render ({props, state, local}) {
     active,
     game,
     hasRun,
+    saveLink,
     gameVal,
     left
   } = props
@@ -69,10 +72,10 @@ function render ({props, state, local}) {
         wide>
         <Output
           handleTabClick={tabChanged}
-          tabs={['target', 'actual']}
+          tabs={['display']}
           tab={tab}
           size={size}
-          onRun={local(() => changeTab('actual'))}
+          onRun={local(() => changeTab('display'))}
           hasRun={hasRun}
           {...game}
           {...props}/>
@@ -81,18 +84,16 @@ function render ({props, state, local}) {
           activeLine={activeLine}
           inputType={inputType}
           running={running}
+          saveID={saveLink}
           initialData={initialData}
           hasRun={hasRun}
           active={active}
           animals={animals}/>
       </Block>
-      {message && <ModalMessage
-        header={message.header}
-        body={message.body}lineNumber={activeLine + 1}/>
-      }
     </Block>
   )
 }
+
 
 function reducer (state, action) {
   switch (action.type) {

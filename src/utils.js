@@ -30,8 +30,9 @@ function * checkForExisting (ref, id) {
 function * createCode (ref = '/links/') {
   const id = generateID()
   const exists = yield checkForExisting(ref, id)
+  console.log(exists)
   if (exists) {
-    yield createCode(ref)
+    return yield createCode(ref)
   } else {
     return id
   }

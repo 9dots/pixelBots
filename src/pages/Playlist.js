@@ -8,9 +8,10 @@ import {Block, Icon, Text} from 'vdux-ui'
 function render ({props}) {
 	const isNext = props.current + 1 < props.sequence.length
 	const isPrev = props.current - 1 >= 0
+
 	return (
-		<Block>
-			<Block px='16px' bgColor='white' absolute left='0' top='0' borderBottom='2px solid #ccc' wide align='space-between center' py='1em' mb='1em'>
+		<Block absolute top='0px' left='0px' wide tall column>
+			<Block px='16px' bgColor='white' relative left='0' top='0' borderBottom='2px solid #ccc' wide align='space-between center' py='1em'>
         {
           isPrev
             ? <Button
@@ -34,7 +35,7 @@ function render ({props}) {
        			: <Block w='160px'/>
        	}
      	</Block>
-     	<Block mt='5em'>
+     	<Block flex p='16px' relative>
 				<GameLoader gameCode={props.sequence[props.current]} saveID={props.saveIds[props.current]} {...omit('saveID', props)}/>
 			</Block>
 		</Block>
