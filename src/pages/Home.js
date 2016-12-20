@@ -48,12 +48,14 @@ function render ({props, state}) {
   }
 
   return (
-    <Block bgColor='background' relative>
+    <Block tall wide bgColor='background' relative>
       <Block
+      relative
         relative
         display='flex'
         left='0'
         minHeight='100%'
+        h='100%'
         wide>
         <Output
           size={size}
