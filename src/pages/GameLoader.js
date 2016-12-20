@@ -4,6 +4,7 @@ import fire, {refMethod} from 'vdux-fire'
 import {setSaveId, setGameId} from '../actions'
 import {createCode} from '../utils'
 import element from 'vdux/element'
+import {Block} from 'vdux-ui'
 import omit from '@f/omit'
 import Game from './Game'
 
@@ -36,7 +37,13 @@ function render ({props}) {
 	const mergeGameData = {...gameVal.value, ...savedProgress.value}
 
 	return (
-		<Game gameData={gameVal.value} initialData={mergeGameData} {...omit(['gameVal, savedProgress'], props)} left='60px'/>
+		<Block wide tall>
+			<Game
+				gameData={gameVal.value}
+				initialData={mergeGameData}
+				{...omit(['gameVal, savedProgress'], props)}
+				left='60px'/>
+		</Block>
 	)
 }
 

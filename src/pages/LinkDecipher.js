@@ -42,9 +42,7 @@ function render ({props}) {
 	const {type, payload} = linkSnap.value
 
 	return (
-		<div>
-			{router(type, {...props, payload})}
-		</div>
+		router(type, {...props, payload})
 	)
 }
 

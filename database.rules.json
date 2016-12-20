@@ -25,8 +25,6 @@
     },
     "queue": {
       "tasks": {
-        ".read": "auth.canProcessTasks",
-        ".write": "auth.canAddTasks || auth.canProcessTasks",
         ".indexOn": "_state",
         "$taskId": {
           "_state": {
@@ -66,8 +64,6 @@
         }
       },
       "specs" : {
-        ".read": "auth.canAddSpecs || auth.canProcessTasks",
-        ".write": "auth.canAddSpecs",
         "$specId": {
           ".validate": "newData.hasChild('in_progress_state')",
           "start_state": {
