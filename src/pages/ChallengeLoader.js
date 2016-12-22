@@ -6,7 +6,7 @@ import Level from '../components/Level'
 import Card from '../components/Card'
 import {createCode} from '../utils'
 import element from 'vdux/element'
-import fire from 'vdux-fire'
+import fire, {refMethod} from 'vdux-fire'
 
 
 function render ({props}) {

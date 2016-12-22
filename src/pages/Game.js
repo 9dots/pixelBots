@@ -2,11 +2,11 @@
 
 import IndeterminateProgress from '../components/IndeterminateProgress'
 import ModalMessage from '../components/ModalMessage'
+import {initializeGame, setSaveId, endRun} from '../actions'
+import {immediateSave} from '../middleware/saveCode'
 import Controls from '../components/Controls'
 import createAction from '@f/create-action'
 import Output from '../components/Output'
-import {initializeGame, setSaveId} from '../actions'
-import {immediateSave} from '../middleware/saveCode'
 import objEqual from '@f/equal-obj'
 import element from 'vdux/element'
 import {once} from 'vdux-fire'
@@ -92,6 +92,10 @@ function render ({props, state, local}) {
       </Block>
     </Block>
   )
+}
+
+function * onRemove () {
+  yield endRun()
 }
 
 

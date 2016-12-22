@@ -33,6 +33,10 @@ function scrollToElement ({element, parent, duration = 0, easing, offsetX = 0, o
    ? easingUtil[easing]
    : easing
 
+  if (!element) {
+    return
+  }
+
   const elemPosition = element.offsetTop
 
   parent.scrollTop = elemPosition
