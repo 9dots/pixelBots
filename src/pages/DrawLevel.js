@@ -145,9 +145,6 @@ function render ({props, state, local}) {
   )
 
   function * updateGame () {
-    const canvas = yield html2canvas(document.getElementById('grid-finished'))
-    console.log(canvas)
-    // yield uploadImage(canvas, draftID)
     yield refMethod({
       ref: `/games/${draftID}`,
       updates: {
@@ -188,6 +185,7 @@ function render ({props, state, local}) {
     })
     yield displayID(code)
     yield markSaved()
+    yield uploadImage(draftID, game.levelSize[0], painted.finished)
   }
 
   function getSlide ({type, name, title}, size) {

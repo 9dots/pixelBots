@@ -67,6 +67,7 @@ function render ({props, state, local}) {
           <Level
             editMode
             animals={[]}
+            hideBorder
             active={active}
             painted={targetPainted}
             levelSize={size}

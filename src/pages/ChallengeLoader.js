@@ -5,26 +5,9 @@ import Button from '../components/Button'
 import Level from '../components/Level'
 import Card from '../components/Card'
 import {createCode} from '../utils'
-import {refMethod} from 'vdux-fire'
 import element from 'vdux/element'
 import fire from 'vdux-fire'
-import {getImage} from '../storage'
-import createAction from '@f/create-action'
 
-const setImage = createAction('<ChallengeLoader/>: SET_IMAGE')
-
-const initialState = ({local}) => ({
-	imageURL: '',
-	actions: {
-		setImage: local((url) => setImage(url))
-	}
-})
-
-function * onCreate ({props, state}) {
-	const {actions} = state
-	const imageURL = yield getImage(props.ref)
-	yield actions.setImage(imageURL)
-}
 
 function render ({props}) {
 	const {game, selected, mine, editable, toggleSelected, setModal} = props
@@ -65,16 +48,7 @@ function render ({props}) {
 			<Card
 				hoverOptions={selected ? '' : hoverOptions}
 				selected={selected}
-				cardImage={<Level
-	            editMode
-	            animals={[]}
-	            painted={item.targetPainted}
-	            levelSize='150px'
-	            w='auto'
-	            h='auto'
-	            hideBorder
-	            numRows={item.levelSize[0]}
-	            numColumns={item.levelSize[1]}/>}
+				cardImage={<Image display='block' sq='150px' src={item.imageUrl}/>}
         cardTitle={item.title}>
         {
         	(mine || editable) && 
@@ -100,16 +74,6 @@ function render ({props}) {
 			</Card>
 		</Block>
 	)
-}
-
-function reducer (state, action) {
-	switch (action.type) {
-		case setImage.type:
-			return {
-				...state,
-				imageURL: action.payload
-			}
-	}
 }
 
 export default fire((props) => ({

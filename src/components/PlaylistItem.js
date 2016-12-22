@@ -25,16 +25,7 @@ function render ({props}) {
 			bgColor={isTarget ? 'lightblue' : '#e5e5e5'}
 			borderTop='1px solid #999'>
 			<Block visibility={isTarget ? 'hidden' : 'visible'} align='start center'>
-				<Level
-	        editMode
-	        animals={[]}
-	        painted={game.targetPainted}
-	        levelSize='50px'
-	        hideBorder
-	        w='auto'
-	        h='auto'
-	        numRows={game.levelSize[0]}
-	        numColumns={game.levelSize[1]}/>
+				<Image display='block' sq='50px' src={game.imageUrl}/>
 	      <Box flex minWidth='200px' ml='2em'>
 					{game.title}
 				</Box>
