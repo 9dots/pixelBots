@@ -107,17 +107,19 @@ function render ({props, state, local}) {
       {
         tab !== 'options' && 
           <Card mx='10px' p='20px 10px'>
-            <Block wide align='space-around center' wide pb='1em'>
-              <Text fontWeight='300' userSelect='none'>START</Text>
-                <Slider
-                  startValue={opacity}
-                  w='200px'
-                  max='1'
-                  step='0.1'
-                  handleChange={(val) => actions.setOpacity(val)}
-                  name='opacity-slider'/>
-              <Text fontWeight='300' userSelect='none'>FINISH</Text>
-            </Block>
+            {
+              targetPainted && <Block wide align='space-around center' wide pb='1em'>
+                <Text fontWeight='300' userSelect='none'>START</Text>
+                  <Slider
+                    startValue={opacity}
+                    w='200px'
+                    max='1'
+                    step='0.1'
+                    handleChange={(val) => actions.setOpacity(val)}
+                    name='opacity-slider'/>
+                <Text fontWeight='300' userSelect='none'>FINISH</Text>
+              </Block>
+            }
             <Button
               tall
               wide
