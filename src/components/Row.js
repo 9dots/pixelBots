@@ -20,11 +20,12 @@ function render ({props}) {
   )
 }
 
-function getCells ({row, painted, numColumns, ...restProps}) {
+function getCells ({row, painted, color, numColumns, ...restProps}) {
   let cells = []
   for (var i = 0; i < numColumns; i++) {
     cells.push(<Cell
       coordinates={[row, i]}
+      paintColor={color}
       color={getColor(painted, i)}
       {...restProps}/>)
   }

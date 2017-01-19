@@ -3,7 +3,6 @@ import createAction from '@f/create-action'
 import {refMethod} from 'vdux-fire'
 import {setUrl} from 'redux-effects-location'
 import {refresh} from '../actions'
-import sleep from '@f/sleep'
 
 const setUserId = createAction('SET_USER_ID')
 const setUsername = createAction('SET_USERNAME')
@@ -28,25 +27,25 @@ export default ({getState, dispatch}) => {
     return dispatch(setUserId(user))
   })
   return (next) => (action) => {
-  	if (action.type === signInWithProvider.type) {
-  		var provider = providers[action.payload]()
-			firebase.auth().signInWithPopup(provider).then(function(result) {
-				dispatch(setUrl('/'))
-			}).catch(function(error) {
-				if (error.code === 'auth/credential-already-in-use') {
-					return firebase.auth().signInWithCredential(error.credential)
-				}
-			})
-  	}
-  	if (action.type === signOut.type) {
-  		firebase.auth().signOut()
+    if (action.type === signInWithProvider.type) {
+      var provider = providers[action.payload]()
+      firebase.auth().signInWithPopup(provider).then(function (result) {
+        dispatch(setUrl('/'))
+      }).catch(function (error) {
+        if (error.code === 'auth/credential-already-in-use') {
+          return firebase.auth().signInWithCredential(error.credential)
+        }
+      })
+    }
+    if (action.type === signOut.type) {
+      firebase.auth().signOut()
       dispatch(setUrl('/'))
       dispatch(refresh())
-  	}
+    }
     if (action.type === setUserId.type && action.payload) {
       firebase.database().ref(`/users/${action.payload.uid}`).on('value', (snap) => dispatch(setUserProfile(snap.val())))
     }
-  	return next(action)
+    return next(action)
   }
 }
 
@@ -82,7 +81,7 @@ function createName (user, ext) {
 }
 
 function * createUsername (user, ext = '', username = '') {
-  username =  username || createName(user, ext)
+  username = username || createName(user, ext)
   const snap = yield refMethod({
     ref: `/usernames/${username}`,
     updates: {

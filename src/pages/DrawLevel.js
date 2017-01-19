@@ -2,25 +2,18 @@
 
 import {addCode, aceUpdate, updateLine, removeLine} from '../reducer/editor'
 import IndeterminateProgress from '../components/IndeterminateProgress'
-import ModalMessage from '../components/ModalMessage'
 import ColorPicker from '../components/ColorPicker'
 import LinkModal from '../components/LinkModal'
 import {setUrl} from 'redux-effects-location'
 import {palette, createCode} from '../utils'
-import createAction from '@f/create-action'
 import Button from '../components/Button'
 import {Block, Card, Icon, Text} from 'vdux-ui'
-import {once, refMethod} from 'vdux-fire'
-import Level from '../components/Level'
+import {refMethod} from 'vdux-fire'
 import animalApis from '../animalApis'
-import html2canvas from 'html2canvas'
-import {Input} from 'vdux-containers'
 import {createNew} from '../actions'
 import EditLevel from './EditLevel'
 import {uploadImage} from '../storage'
 import element from 'vdux/element'
-import splice from '@f/splice'
-import Hashids from 'hashids'
 import Editor from './Editor'
 import reducer, {
   setFillColor,
@@ -31,20 +24,12 @@ import reducer, {
   back
 } from '../reducer/drawLevelReducer'
 
-const hashids = new Hashids(
-  'Oranges never ripen in the winter',
-  5,
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789'
-)
-
 const modalFooter = (
   <Block>
     <Button bgColor='secondary' onClick={createNew}>Make Another</Button>
     <Button ml='m' onClick={() => setUrl('/')}>Done</Button>
   </Block>
 )
-
-let borderColor = '#ccc'
 
 function initialState ({props, local}) {
   const {newGame} = props
@@ -67,11 +52,11 @@ function initialState ({props, local}) {
 
 function render ({props, state, local}) {
   const {newGame, draftID, user} = props
-  const {color, painted, show, actions, slide, sequence, selectedLine} = state
+  const {color, painted, show, actions, slide, sequence} = state
   const {displayID, markSaved} = actions
 
   if (newGame.loading) {
-    return <IndeterminateProgress/>
+    return <IndeterminateProgress />
   }
 
   const game = newGame.value
@@ -79,7 +64,6 @@ function render ({props, state, local}) {
     <Block border='2px solid #333' bgColor={color} align='center center' w='40px' h='40px' />
   )
 
-  const url = window.location.host + '/'
   const canPaintColor = animalApis[game.animals[0].type].docs.paint.args
   const blackAndWhite = [
     {name: 'black', value: '#111'},
@@ -96,23 +80,23 @@ function render ({props, state, local}) {
     <Block column align='center center'>
       {show && <LinkModal
         code={show}
-        footer={modalFooter}/>
+        footer={modalFooter} />
       }
       <Block px='16px' bgColor='white' absolute left='0' top='0' borderBottom='2px solid #ccc' wide align='space-between center' py='1em' mb='1em'>
         {
           slide > 0
             ? <Button
-                px='0'
-                w='40px'
-                align='center center'
-                borderWidth='0'
-                bgColor='white'
-                mr='1em'
-                color='#333'
-                onClick={slide > 0 && local(back)}>
-                <Icon name='arrow_back'/>
-              </Button>
-            : <Block w='40px'/>
+              px='0'
+              w='40px'
+              align='center center'
+              borderWidth='0'
+              bgColor='white'
+              mr='1em'
+              color='#333'
+              onClick={slide > 0 && local(back)}>
+              <Icon name='arrow_back' />
+            </Button>
+            : <Block w='40px' />
         }
         <Text flex fontWeight='300' fs='xl'>{slides[slide].title}</Text>
         {
@@ -139,7 +123,7 @@ function render ({props, state, local}) {
           size='300px'
           id='grid-finished'
           animals={[]}
-          paintMode={false}/>
+          paintMode={false} />
       </Block>
     </Block>
   )
@@ -164,7 +148,7 @@ function render ({props, state, local}) {
         method: 'push',
         value: {
           name: game.title,
-          ref: draftID 
+          ref: draftID
         }
       }
     })
@@ -201,7 +185,7 @@ function render ({props, state, local}) {
           paintMode={!size}
           palette={canPaintColor ? palette : blackAndWhite}
           setFillColor={local(setFillColor)}
-          clickHandler={size ? () => {} : local(addPainted)}/>
+          clickHandler={size ? () => {} : local(addPainted)} />
         {
           !size && <Card p='12px' height='100px' w='180px' right='10%' top='140px' fixed>
             <Block align='flex-start center'>
@@ -212,7 +196,7 @@ function render ({props, state, local}) {
                 zIndex='999'
                 clickHandler={local((color) => setFillColor(color))}
                 palette={canPaintColor ? palette : blackAndWhite}
-                btn={btn}/>
+                btn={btn} />
             </Block>
           </Card>
         }

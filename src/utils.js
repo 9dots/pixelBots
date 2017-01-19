@@ -1,5 +1,7 @@
 import gPalette from 'google-material-color-palette-json'
 import {refMethod} from 'vdux-fire'
+import isArray from '@f/is-array'
+import Analyse from 'js-analyse'
 import reduce from '@f/reduce'
 import Hashids from 'hashids'
 import map from '@f/map'
@@ -47,7 +49,7 @@ function getRotation (rot) {
   }
 }
 
-function getDirection  (rot) {
+function getDirection (rot) {
   return (getRotation(rot) / 90) % 4
 }
 
@@ -117,8 +119,19 @@ function range (low, hi) {
   return rangeRec(low, hi, [])
 }
 
-function initGame () {
+function maybeAddToArray (val, arr) {
+  if (arr.indexOf(val) > -1) {
+    return arr.filter((item) => item !== val)
+  } else {
+    return arr.concat(val)
+  }
+}
+
+function initGame (name = '') {
   return {
+    permissions: ['Run Button', 'Edit Code'],
+    title: 'Untitled',
+    description: 'Use code to draw the image.',
     inputType: 'icons',
     levelSize: [5, 5],
     animals: [{
@@ -134,9 +147,37 @@ function initGame () {
         dir: 0,
         rot: 0
       }
-    }]
+    }],
+    name
   }
 }
+
+function * publish (draftID) {
+  yield refMethod({
+    ref: '/queue/tasks',
+    updates: {
+      method: 'push',
+      value: {
+        _state: 'create_game',
+        draftRef: draftID
+      }
+    }
+  })
+}
+
+let lastLoc = 0
+
+function getLoc (code = '') {
+  try {
+    const analysis = new Analyse(maybeStringify(code))
+    lastLoc = analysis.lloc()
+    return lastLoc
+  } catch (e) {
+    return lastLoc
+  }
+}
+
+const maybeStringify = (seq) => isArray(seq) ? seq.join('\n') : seq
 
 function arrayAt (obj, at) {
   return map((elem, key) => {
@@ -148,14 +189,17 @@ function arrayAt (obj, at) {
 }
 
 export {
+  maybeAddToArray,
   nameToDirection,
   getDirection,
   nameToColor,
   nameToIcon,
   createCode,
   initGame,
+  publish,
   palette,
   arrayAt,
   isLocal,
+  getLoc,
   range
 }

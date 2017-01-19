@@ -5,12 +5,15 @@ const inputType = Schema('string')
   .max(100)
   .pattern(/code|icons/)
 
+const description = Schema('string')
+  .max(600)
+
 const size = Schema('number')
   .min(1)
   .max(20)
 
 const title = Schema('string')
-  .min(4)
+  .min(3)
 
 const animalType = Schema('string')
 
@@ -37,6 +40,7 @@ const animal = Schema()
 
 const game = Schema()
   .prop('title', title)
+  .prop('description', description)
   .prop('inputType', inputType)
   .prop('levelSize', size)
   .prop('animal', animal)
@@ -46,5 +50,6 @@ export default {
   animal: validator(animal),
   levelSize: validator(size),
   game: validator(game),
-  title: validator(title)
+  title: validator(title),
+  description: validator(description)
 }

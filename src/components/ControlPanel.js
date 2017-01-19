@@ -41,11 +41,9 @@ function render ({props, state}) {
   )
 
   return (
-    <Card wide p='22px'>
-      <Text fs='m' fontWeight='800'>Control Panel</Text>
-      <hr/>
-      <Block mt='20px' align='start center'>
-        <Text w='120px' lineHeight='40px' fontWeight='800' mr='10px'>select animal:</Text>
+    <Card wide p='22px' align='space-around center'>
+      <Block align='start center'>
+        <Text fs='m' lineHeight='40px' fontWeight='800' color='#666' mr='1em'>SELECT ANIMAL:</Text>
         <AnimalDropdown
           btn={animalBtn}
           clickHandler={(name) => setAnimal(name)}
@@ -53,23 +51,24 @@ function render ({props, state}) {
           name='setAnimal'
           />
       </Block>
-      <Block mt='20px' align='start center'>
-        <Text w='120px' lineHeight='40px' fontWeight='800' mr='10px'>input type:</Text>
+      <Block align='start center'>
+        <Text fs='m' lineHeight='40px' fontWeight='800' color='#666' mr='1em'>CODE TYPE:</Text>
         <CodeSelectDropdown
           name='inputType'
           value={inputType}
           btn={dropdownBtn}
           setInputType={((type) => swapMode(type))}/>
       </Block>
-      <Block mt='20px' align='start center'>
-        <Text w='120px' lineHeight='40px' fontWeight='800' mr='10px'>level size:</Text>
+      <Block align='start center'>
+        <Text fs='m' lineHeight='40px' fontWeight='800' color='#666' mr='1em'>LEVEL SIZE:</Text>
         <Input
-          inputProps={{h: '42px', textIndent: '8px'}}
+          inputProps={{p: '12px', borderWidth: '2px', border: '#ccc'}}
           w='120px'
+          mb='0'
           h='42px'
           invalid={message}
           message={message}
-          errorPlacement='right'
+          errorPlacement='bottom'
           onKeyUp={[checkE, sizeUpdate]}
           value={levelSize}/>
       </Block>

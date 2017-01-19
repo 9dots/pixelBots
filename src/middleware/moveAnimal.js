@@ -14,7 +14,7 @@ export default function () {
     }
     if (action.type === turnAnimal.type) {
       const {game} = getState()
-      const {levelSize, animals} = game
+      const {animals} = game
       const {id, turn} = action.payload
       const {lineNum} = action.meta
       const rot = animals[id].current.rot + turn

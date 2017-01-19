@@ -25,6 +25,7 @@ function codeRunner () {
               throwError(code.error.name, (code.error.loc.line) - 1)
             )
           }
+          console.log(code)
           dispatch(startRun(code))
         }
       }

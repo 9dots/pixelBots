@@ -17,7 +17,7 @@ function render ({props}) {
       </MenuItem>
       <MenuItem
         onClick={() => setInputType('code')}>
-        code
+        javascript
       </MenuItem>
     </Dropdown>
   )

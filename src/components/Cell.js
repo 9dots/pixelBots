@@ -15,6 +15,7 @@ function shouldUpdate (prev, next) {
 function render ({props}) {
   const {
     color = 'white',
+    animationSpeed,
     clickHandler,
     coordinates,
     hideBorder,
@@ -22,16 +23,15 @@ function render ({props}) {
     showColor,
     editMode,
     dragging,
-    actions,
     size
   } = props
 
   return (
     <Block
-      transition={!editMode && 'background-color .5s ease-in-out'}
-      onMouseOver={paintMode && handleMouseOver}
+      transition={!editMode && `background-color ${animationSpeed}s ease-in-out`}
+      onMouseOver={handleMouseOver}
       onMouseDown={() => clickHandler(coordinates)}
-      borderWidth={hideBorder ? 0 : 1}
+      borderWidth={hideBorder ? 0 : 0.5}
       borderColor='#999'
       bgColor={color}
       h={size}

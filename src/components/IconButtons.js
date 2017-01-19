@@ -9,7 +9,7 @@ import reduce from '@f/reduce'
 import {Block} from 'vdux-ui'
 
 function render ({props}) {
-  const {active, type, startAddLoop, editorActions = {}} = props
+  const {active, type, startAddLoop, selectedLine, editorActions = {}} = props
   const {incrementLine = () => {}} = editorActions
   const addCodeHandler = editorActions.addCode || addCode
   const docs = type ? animalApis[type].docs : {}
@@ -22,7 +22,7 @@ function render ({props}) {
 
   function createButton (name, doc) {
     const args = doc.args
-      ? doc.args.map((a) => a.type === 'number' ? 1 : '').join(',')
+      ? doc.args.map((a) => a.default || '').join(',')
       : ''
     return (
       <Button
@@ -43,11 +43,11 @@ function render ({props}) {
 
   function getClickHandler (active, name, args) {
     if (name === 'comment') {
-      return () => [addCodeHandler({id: active, code: `// comment`}), incrementLine()]
+      return () => [addCodeHandler({id: active, code: '// comment', selectedLine}), incrementLine()]
     } else if (name === 'loop') {
-      return () => [addCodeHandler({id: active, code: `loop(1, function () {`}), startAddLoop(), incrementLine()]
+      return () => [addCodeHandler({id: active, code: `loop(1, function () {`, selectedLine}), startAddLoop(), incrementLine()]
     } else {
-      return () => [addCodeHandler({id: active, code: `${name}(${args})`}), incrementLine()]
+      return () => [addCodeHandler({id: active, code: `${name}(${args})`, selectedLine}), incrementLine()]
     }
   }
 }

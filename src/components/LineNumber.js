@@ -12,15 +12,15 @@ function render ({props}) {
   const handleRemoveLine = editorActions.removeLine || removeLine
 
   return (
-    <Block mt='5px' color='#333' {...props} w='30px' left={`${offset}px`}>
+    <Block mt='5px' color='#666' {...props} w='30px' left={`${offset}px`}>
       {
       	active
       		? <Block align='center center' ml='18px'>
-      				<Icon
-              	color='#666'
-              	name='delete'
-              	onClick={[(e) => e.stopPropagation(), () => handleRemoveLine({id: animalID, idx: lineNum - 1})]}/>
-             </Block>
+        <Icon
+          color='#666'
+          name='delete'
+          onClick={[(e) => e.stopPropagation(), () => handleRemoveLine({id: animalID, idx: lineNum - 1})]} />
+      </Block>
           : lineNum
       }
     </Block>

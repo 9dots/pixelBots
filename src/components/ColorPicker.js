@@ -2,11 +2,10 @@
 
 import element from 'vdux/element'
 import ColorSwatch from './ColorSwatch'
-import {Block, Dropdown, Grid} from 'vdux-containers'
+import {Dropdown, Grid} from 'vdux-containers'
 
 function render ({props}) {
   const {btn, clickHandler, palette, swatchSize = '24px'} = props
-
   let close
 
   return (

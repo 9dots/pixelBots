@@ -26,7 +26,6 @@ function reducer (state, action) {
         : null
       return {
         ...state,
-        selectedLine: state.selectedLine + 1,
         game: arrayAt(setProp(
           `animals.${id}.sequence`,
           state.game,

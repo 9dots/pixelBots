@@ -7,6 +7,7 @@ import Animal from './Animal'
 import reduce from '@f/reduce'
 import Window from 'vdux/window'
 import createAction from '@f/create-action'
+import animalApis from '../animalApis'
 
 const dragStart = createAction('<Level/>: DRAG_START')
 const dragEnd = createAction('<Level/>: DRAG_END')
@@ -15,27 +16,28 @@ const initialState = () => ({
   dragging: false
 })
 
-function render ({props, local, state}) {
+function render ({props, local, state, children}) {
   let {
     clickHandler = () => {},
-    hideBorder = false,
-    numColumns = 5,
-    painted = [],
     numRows = 5,
     levelSize,
     paintMode,
     editMode,
     animals,
     running,
-    id='',
     active,
-    grid,
     w = '100%',
-    h = '100%'
+    h = '100%',
+    speed,
+    id
   } = props
   const {dragging} = state
 
   const size = parseFloat(levelSize) / numRows + 'px'
+  const thisAnimal = animals[0] ? animalApis[animals[0].type] : undefined
+  const animationSpeed = thisAnimal
+    ? (thisAnimal.speed * (1 / speed)) / 1000
+    : 0.75
 
   return (
     <Window onMouseUp={local(dragEnd)}>
@@ -47,16 +49,18 @@ function render ({props, local, state}) {
         id={id}
         onMouseDown={paintMode && local(dragStart)}
         onMouseUp={paintMode && local(dragEnd)}>
-        {getRows({...props, size, dragging, clickHandler})}
+        {getRows({...props, size, dragging, clickHandler, animationSpeed})}
         {animals.map((animal, i) => (
           <Animal
             running={running}
             editMode={editMode}
+            animationSpeed={animationSpeed}
             cellSize={size}
             active={active}
             animal={animal}
             id={i}/>
         ))}
+        {children}
       </Flex>
     </Window>
   )

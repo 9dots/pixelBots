@@ -26,6 +26,7 @@ export default {
       name: 'color',
       type: 'string',
       values: 'color',
+      default: "'white'",
       description: 'The color to paint.'
     }]
   },

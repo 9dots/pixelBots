@@ -1,14 +1,15 @@
 /** @jsx element */
 
 import element from 'vdux/element'
-import {MenuItem} from 'vdux-containers'
+import {MenuItem, Text} from 'vdux-containers'
 
 function render ({props, children}) {
   const {name, active, handleClick} = props
   return (
     <MenuItem
       p='10px'
-      w='200px'
+      w='180px'
+      align='center center'
       bgColor='#c5c5c5'
       textAlign='center'
       textTransform='uppercase'
@@ -17,7 +18,7 @@ function render ({props, children}) {
       onClick={() => handleClick(name)}
       highlight={active}
       {...props}>
-      {name}
+      <Text display='block'>{name}</Text>
       {children}
     </MenuItem>
   )

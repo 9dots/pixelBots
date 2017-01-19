@@ -23,10 +23,8 @@ import {initGame} from './utils'
 import rootEpic from './epics'
 import flow from 'redux-flo'
 import * as fire from 'vdux-fire'
-import logger from 'redux-logger'
 import vdux from 'vdux/dom'
 import theme from './theme'
-
 
 const epicMiddleware = createEpicMiddleware(rootEpic)
 firebase.initializeApp(firebaseConfig)
@@ -37,6 +35,7 @@ const initialState = {
   url: '',
   toast: '',
   active: 0,
+  speed: 1,
   user: {},
   selectedLine: 0,
   game: initGame()

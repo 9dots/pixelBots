@@ -1,7 +1,6 @@
 import { startRun, stopRun, setActiveLine, runCompleted } from '../actions'
-import {loopAction} from '../animalApis/loop'
-import {scrollTo} from '../middleware/scroll'
 import isGeneratorObject from '@f/is-generator-object'
+import {scrollTo} from '../middleware/scroll'
 import animalApis from '../animalApis'
 import { Observable } from 'rxjs'
 
@@ -19,7 +18,7 @@ const getTimeout = (animals, id) => {
 
 export default function runner (action$, store) {
   return action$.filter((action) => action.type === startRun.type)
-    .map((action) => 
+    .map((action) =>
       Observable.from(action.payload).delay(800)
     )
     .switchMap((obs) => mapObserver(obs, store)
@@ -43,16 +42,19 @@ function mapObserver (obs, store) {
   }
 
   function addDelayAction (x) {
+    const curState = store.getState()
     const addDelay = Observable
       .of(x)
       .concat(
-        createDelay(getTimeout(store.getState().game.animals, x.payload.id)
-      ))
-    return x.meta
-      ? addDelay
-        .merge(highlighter(x.meta.lineNum))
-        .merge(addScroll(x.meta.lineNum))
-      : addDelay
+        createDelay(getTimeout(curState.game.animals, x.payload.id) * 1 / curState.speed)
+      )
+    if (x.meta) {
+      if (curState.game.inputType === 'icons') {
+        return addDelay.merge(highlighter(x.meta.lineNum)).merge(addScroll(x.meta.lineNum))
+      }
+      return addDelay.merge(highlighter(x.meta.lineNum))
+    }
+    return addDelay
   }
 }
 

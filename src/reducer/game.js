@@ -1,10 +1,6 @@
 import map from '@f/map'
-import splice from '@f/splice'
 import setProp from '@f/set-prop'
-import reduce from '@f/reduce'
 import {initGame, arrayAt} from './utils'
-
-import {setUserId, setUsername} from './middleware/auth'
 
 import {
   initializeGame,

@@ -10,18 +10,18 @@ const url = window.location.host + '/'
 const toggleDisplayCode = createAction('<LinkModal/>: TOGGLE_DISPLAY_CODE')
 
 const initialState = ({local}) => ({
-	displayCode: true,
-	actions: {
-		toggleDisplayCode: local(toggleDisplayCode)
-	}
+  displayCode: true,
+  actions: {
+    toggleDisplayCode: local(toggleDisplayCode)
+  }
 })
 
 function render ({props, state}) {
-	const {code, footer, ...restProps} = props
-	const {displayCode, actions} = state
+  const {code, footer, ...restProps} = props
+  const {displayCode, actions} = state
 
-	const body = <Block>
-		<Input
+  const body = <Block>
+    <Input
       readonly
       inputProps={{p: '12px', borderWidth: '2px', border: '#ccc'}}
       id='url-input'
@@ -31,37 +31,37 @@ function render ({props, state}) {
       {`${url}${code}`}
     </Input>
     <Block mt='1em' mb='2px'>
-			<Toggle onClick={() => actions.toggleDisplayCode()} bgColor='blue' label='Link:' w='100px'/>
-		</Block>
-		<Block>
-    	<Text fs='xs'>
-    		<strong>Note:</strong>
-    		{
+      <Toggle onClick={() => actions.toggleDisplayCode()} bgColor='blue' label='Link:' w='100px' />
+    </Block>
+    <Block>
+      <Text fs='xs'>
+        <strong>Note:</strong>
+        {
     			displayCode
     				? " Use this code in the 'Code' section of the navigation bar."
-    				: " Use the link in the url bar of your browser."
+    				: ' Use the link in the url bar of your browser.'
     		}
-    	</Text>
+      </Text>
     </Block>
-	</Block>
+  </Block>
 
-	return (
-		<ModalMessage
-			header='Save Code'
-			body={body}
-			footer={footer}
-			w='40%'
-			{...restProps}
+  return (
+    <ModalMessage
+      header='Save Code'
+      body={body}
+      footer={footer}
+      w='40%'
+      {...restProps}
 		/>
-	)
+  )
 }
 
 const reducer = handleActions({
-	[toggleDisplayCode]: (state) => ({...state, displayCode: !state.displayCode})
+  [toggleDisplayCode]: (state) => ({...state, displayCode: !state.displayCode})
 })
 
 export default {
-	initialState,
-	reducer,
-	render
+  initialState,
+  reducer,
+  render
 }

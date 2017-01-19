@@ -9,8 +9,21 @@ import Ace from 'vdux-ace'
 require('brace/mode/javascript')
 require('brace/theme/tomorrow_night')
 
+let setValue
+
+function * onUpdate (prev, next) {
+  const {active, animals, startCode = ''} = next.props
+  const sequence = animals[active].sequence.length < 1
+    ? ''
+    : animals[active].sequence
+  const prevSequence = prev.props.animals[active].sequence
+  if (prevSequence !== sequence && sequence === startCode && setValue) {
+    setValue(startCode)
+  }
+}
+
 function render ({props}) {
-  const {active, activeLine, running, animals, editorActions = {}} = props
+  const {active, activeLine, running, animals, startCode, editorActions = {}} = props
   const sequence = animals[active].sequence || []
   const addCodeHandler = editorActions.aceUpdate || aceUpdate
 
@@ -27,23 +40,25 @@ function render ({props}) {
   }
 
   return (
-    <Box relative flex tall fontFamily='code'>
+    <Box relative flex tall fontFamily='code' class='code-editor'>
       <Ace
         name='code-editor'
         mode='javascript'
         height='100%'
         width='100%'
         fontSize='18px'
+        ref={_setValue => setValue = _setValue}
         jsOptions={jsOptions}
         highlightActiveLine={false}
         activeLine={running ? activeLine : -1}
         onChange={(code) => addCodeHandler({id: active, code})}
-        value={sequence.length > 0 ? sequence : ''}
+        value={sequence.length > 0 ? sequence : startCode || ''}
         theme='tomorrow_night' />
     </Box>
   )
 }
 
 export default {
+  onUpdate,
   render
 }

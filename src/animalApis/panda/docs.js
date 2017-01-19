@@ -8,6 +8,7 @@ export default {
     args: [{
       name: 'steps',
       type: 'number',
+      default: 1,
       values: range(1, 10),
       description: 'The number of steps right to move the panda.'
     }]
@@ -18,6 +19,7 @@ export default {
     args: [{
       name: 'steps',
       type: 'number',
+      default: 1,
       values: range(1, 10),
       description: 'The number of steps right to move the panda.'
     }]
@@ -28,6 +30,7 @@ export default {
     args: [{
       name: 'steps',
       type: 'number',
+      default: 1,
       values: range(1, 10),
       description: 'The number of steps right to move the panda.'
     }]
@@ -38,6 +41,7 @@ export default {
     args: [{
       name: 'steps',
       type: 'number',
+      default: 1,
       values: range(1, 10),
       description: 'The number of steps right to move the panda.'
     }]

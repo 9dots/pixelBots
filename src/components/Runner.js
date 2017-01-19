@@ -1,12 +1,14 @@
 /** @jsx element */
 
-import element from 'vdux/element'
-import ConfirmDelete from '../components/ConfirmDelete'
-import LinkModal from '../components/LinkModal'
-import {Block, Icon} from 'vdux-containers'
-import Button from './Button'
-import {abortRun} from '../middleware/codeRunner'
 import {initializeGame, clearMessage, setModalMessage} from '../actions'
+import ConfirmDelete from '../components/ConfirmDelete'
+import {abortRun} from '../middleware/codeRunner'
+import LinkModal from '../components/LinkModal'
+import {Block, Icon, Text} from 'vdux-containers'
+import element from 'vdux/element'
+import Button from './Button'
+
+const pluralize = (noun, num) => num === 0 || num > 1 ? `${noun}s` : noun
 
 function createButton (icon, text, bgColor, clickHandler) {
   return <Button
@@ -20,34 +22,47 @@ function createButton (icon, text, bgColor, clickHandler) {
     color='white'
     align='center center'
     onClick={clickHandler}>
-    <Icon fs='m' name={icon}/>
+    <Icon fs='m' name={icon} />
   </Button>
 }
 
-function render ({props}) {
-  const {creatorMode, initialData, saveID=''} = props
+function render ({props, state, local}) {
+  const {initialData, saveID = '', inputType, saved, loc, ...restProps} = props
 
   const deleteModal = <ConfirmDelete
     header='Start Over?'
     message='start over? All of your code will be deleted.'
     dismiss={clearMessage}
-    action={startOver}/>
+    action={startOver} />
 
   const saveModal = <LinkModal code={saveID}/>
 
   const playButtons = (
-    <Block h='80%' align='center center' mr='1em'>
+    <Block h='80%' align='center center'>
       {createButton('delete_forever', 'Start Over', '#666', () => setModalMessage(deleteModal))}
+      {inputType === 'code' && createButton('print', 'Print', '#666', () => window.print())}
       {saveID && createButton('save', 'Save', '#2C4770', () => setModalMessage(saveModal))}
     </Block>
   )
   return (
-    <Block {...props} align='start center' hoverProps={{highlight: true}} transition='all .3s ease-in-out'>
-      {
-        creatorMode
-          ? <Block wide tall/>
-          : playButtons
-      }
+    <Block
+      transition='all .3s ease-in-out'
+      align='end center'
+      bgColor={props.bgColor}
+      border='1px solid rgba(255, 255, 255, 0.2)'
+      borderBottomWidth='0'
+      zIndex='999'
+      bottom='0'
+      py='5px'
+      wide
+      {...restProps}>
+      <Block flex pl='1em'>
+        <Text color='white' fs='s' fontWeight='800'>{saved ? 'saved' : ''}</Text>
+      </Block>
+      <Block flex>
+        <Text color='white' fs='s' fontWeight='800'>{loc} {pluralize('line', loc)}</Text>
+      </Block>
+      {playButtons}
     </Block>
   )
 

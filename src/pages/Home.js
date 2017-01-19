@@ -1,18 +1,18 @@
 /** @jsx element */
 
-import ModalMessage from '../components/ModalMessage'
 import Controls from '../components/Controls'
+import createAction from '@f/create-action'
+import Output from '../components/Output'
+import Tabs from '../components/Tabs'
 import element from 'vdux/element'
 import {Block} from 'vdux-ui'
-import Output from '../components/Output'
 import omit from '@f/omit'
-import createAction from '@f/create-action'
 
 const changeTab = createAction('<Home/>: CHANGE_TAB')
 
 function initialState ({props, local}) {
   return {
-    tab: 'sandbox',
+    tab: 'display',
     actions: {
       tabChanged: local((name) => changeTab(name))
     }
@@ -26,8 +26,8 @@ function render ({props, state}) {
     running,
     active,
     hasRun,
-    game,
-    left
+    speed,
+    game
   } = props
 
   const {actions, tab} = state
@@ -44,37 +44,42 @@ function render ({props, state}) {
     animals: animals.map((animal) => omit('sequence', animal)),
     running,
     active,
+    speed,
     size
   }
 
+  const display = (
+    <Block display='flex' wide tall>
+      <Output
+        size={size}
+        handleTabClick={actions.tabChanged}
+        tab={tab}
+        options
+        hasRun={hasRun}
+        {...game}
+        {...outputProps}
+      />
+      <Controls
+        selectedLine={selectedLine}
+        activeLine={activeLine}
+        inputType={inputType}
+        running={running}
+        hasRun={hasRun}
+        active={active}
+        animals={animals}/>
+    </Block>
+  )
+
   return (
     <Block tall wide bgColor='background' relative>
+      <Tabs onClick={actions.tabChanged} tabs={['display', 'options']}/>
       <Block
-      relative
         relative
-        display='flex'
         left='0'
-        minHeight='100%'
-        h='100%'
+        bgColor='light'
+        h='calc(100% - 40px)'
         wide>
-        <Output
-          size={size}
-          tabs={['sandbox', 'options']}
-          handleTabClick={actions.tabChanged}
-          tab={tab}
-          options
-          hasRun={hasRun}
-          {...game}
-          {...outputProps}
-        />
-        <Controls
-          selectedLine={selectedLine}
-          activeLine={activeLine}
-          inputType={inputType}
-          running={running}
-          hasRun={hasRun}
-          active={active}
-          animals={animals}/>
+        {tab === 'display' && display}
       </Block>
     </Block>
   )

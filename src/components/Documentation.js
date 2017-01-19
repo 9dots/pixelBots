@@ -9,7 +9,7 @@ import marked from 'marked'
 
 marked.setOptions({
   highlight: function (code) {
-    return hljs.highlightAuto(code).value;
+    return hljs.highlightAuto(code).value
   }
 })
 
@@ -41,12 +41,12 @@ function createDoc (elem, key) {
         </ul>
       ))}
       {
-        example && 
+        example &&
           <Block my='10px'>
             <Text display='block' fontWeight='800' fs='s'>
               Example:
             </Text>
-          <Block fs='s' borderRadius='2px' p='5px 15px' bgColor='#333' innerHTML={(marked(example))}/>
+            <Block fs='s' borderRadius='2px' p='5px 15px' bgColor='#333' innerHTML={(marked(example))}/>
           </Block>
       }
     </Block>

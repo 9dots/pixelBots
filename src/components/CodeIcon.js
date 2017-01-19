@@ -1,12 +1,18 @@
 /** @jsx element */
 
-import {removeLine, updateLine, codeAdded} from '../actions'
+import {updateLine, codeAdded} from '../actions'
 import animalApis from '../animalApis/index'
 import {Icon, Block} from 'vdux-containers'
+import deepEqual from '@f/deep-equal'
 import IconArgument from './IconArgument'
 import {nameToColor} from '../utils'
-import LineNumber from './LineNumber'
 import element from 'vdux/element'
+import omit from '@f/omit'
+
+function shouldUpdate (prev, next) {
+  return !deepEqual(omit('editorActions', prev.props), omit('editorActions', next.props)) ||
+  !deepEqual(prev.children, next.children)
+}
 
 function onCreate ({props}) {
   const handleCodeAdded = props.editorActions.codeAdded || codeAdded
@@ -19,10 +25,8 @@ function render ({props}) {
     editorActions,
     newElement,
     argument,
-    numLines,
     iconName,
     lineNum,
-    indent,
     animal,
     type,
     name,
@@ -60,6 +64,7 @@ function render ({props}) {
 }
 
 export default {
+  shouldUpdate,
   onCreate,
   render
 }

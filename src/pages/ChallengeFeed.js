@@ -26,9 +26,9 @@ function render ({props, state}) {
 	const items = games
 
 	const modalFooter = (
-	  <Block>
-	    <Button ml='m' onClick={() => actions.setModal('')}>Done</Button>
-	  </Block>
+		<Block>
+			<Button ml='m' onClick={() => actions.setModal('')}>Done</Button>
+		</Block>
 	)
 
 	return (
@@ -47,7 +47,7 @@ function render ({props, state}) {
 						<Card
 							cursor='pointer'
 							hoverProps={{bgColor: '#f5f5f5'}}
-							onClick={createNew}
+							onClick={() => createNew(props.uid)}
 							transition='background .1s ease-in-out'
 							mt='1em'
 							circle='40px'
@@ -70,9 +70,9 @@ function render ({props, state}) {
 				), [], games)
 			}
 			{modal && <LinkModal
-        code={modal}         
-        footer={modalFooter}/>
-      }
+				code={modal}
+				footer={modalFooter}/>
+			}
 		</Flex>
 	)
 }

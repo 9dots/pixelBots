@@ -1,39 +1,47 @@
 /** @jsx element */
 
-import IndeterminateProgress from '../components/IndeterminateProgress'
-import ModalMessage from '../components/ModalMessage'
-import {initializeGame, setSaveId, endRun} from '../actions'
-import {immediateSave} from '../middleware/saveCode'
+import handleActions from '@f/handle-actions'
+import {setUrl} from 'redux-effects-location'
 import Controls from '../components/Controls'
 import createAction from '@f/create-action'
 import Output from '../components/Output'
+import {initializeGame} from '../actions'
+import Button from '../components/Button'
+import OptionsPage from './OptionsPage'
+import Tabs from '../components/Tabs'
 import objEqual from '@f/equal-obj'
 import element from 'vdux/element'
-import {once} from 'vdux-fire'
 import {Block} from 'vdux-ui'
-import fire from 'vdux-fire'
 
-const setDoneLoading = createAction('SET_DONE_LOADING')
+const updateTime = createAction('<Game/>: UPDATE_TIME')
+const updateInitialData = createAction('<Game/>: UPDATE_INITIAL_DATA')
 const changeTab = createAction('CHANGE_TAB')
 
 function initialState ({props, local}) {
   return {
-    tab: 'display',
+    tab: props.mine ? 'options' : 'code',
+    elapsedTime: 0,
+    initialData: props.initialData || props.game,
     actions: {
-      tabChanged: local((name) => changeTab(name))
+      tabChanged: local((name) => changeTab(name)),
+      updateInitialData: local(updateInitialData)
     }
   }
 }
 
-function * onCreate ({props, state}) {
-  yield state.actions.tabChanged('display')
-  yield initializeGame(props.initialData)
+function * onCreate ({props, state, local}) {
+  // yield state.actions.tabChanged('display')
+  if (props.initialData) {
+    yield initializeGame(props.initialData)
+  }
 }
 
-function * onUpdate (prev, {props, state}) {
-  if (!objEqual(prev.props.gameData, props.gameData)) {
+function * onUpdate (prev, {props, state, local}) {
+  if (!objEqual(prev.props.gameData || {}, props.gameData || {})) {
     yield initializeGame(props.initialData)
-    yield state.actions.tabChanged('display')
+  }
+  if (!props.saveID && prev.props.game.startCode !== props.game.startCode) {
+    yield state.actions.updateInitialData(props.game)
   }
 }
 
@@ -41,15 +49,14 @@ function render ({props, state, local}) {
   const {
     selectedLine,
     activeLine,
-    initialData,
-    message,
-    running,
-    active,
-    game,
-    hasRun,
     saveLink,
-    gameVal,
-    left
+    gameData,
+    publish,
+    running,
+    hasRun,
+    active,
+    mine,
+    game
   } = props
 
   const {
@@ -57,63 +64,52 @@ function render ({props, state, local}) {
     animals
   } = game
 
-  const {tab, actions} = state
+  const {tab, actions, initialData} = state
   const {tabChanged} = actions
-  const size = '400px'
+  const size = '350px'
+
+  const display = (
+    <Block wide tall align='start start'>
+      <Output
+        size={size}
+        tab={tab}
+        hasRun={hasRun}
+        {...game}
+        {...props}/>
+      <Controls
+        selectedLine={selectedLine}
+        initialData={initialData}
+        activeLine={activeLine}
+        inputType={inputType}
+        running={running}
+        saveID={saveLink}
+        saved={game.saved}
+        animals={animals}
+        hasRun={hasRun}
+        active={active}
+        tab={tab}/>
+    </Block>
+  )
 
   return (
-    <Block wide tall>
+    <Block tall wide minHeight='600px' maxHeight='80vh'>
       <Block
         relative
         display='flex'
         left='0'
-        minHeight='100%'
-        h='100%'
+        bgColor='light'
+        tall
         wide>
-        <Output
-          handleTabClick={tabChanged}
-          tabs={['display']}
-          tab={tab}
-          size={size}
-          onRun={local(() => changeTab('display'))}
-          hasRun={hasRun}
-          {...game}
-          {...props}/>
-        <Controls
-          selectedLine={selectedLine}
-          activeLine={activeLine}
-          inputType={inputType}
-          running={running}
-          saveID={saveLink}
-          initialData={initialData}
-          hasRun={hasRun}
-          active={active}
-          animals={animals}/>
+        {display}
       </Block>
     </Block>
   )
 }
 
-function * onRemove () {
-  yield endRun()
-}
-
-
-function reducer (state, action) {
-  switch (action.type) {
-    case changeTab.type:
-      return {
-        ...state,
-        tab: action.payload
-      }
-    case setDoneLoading.type:
-      return {
-        ...state,
-        loading: false
-      }
-  }
-  return state
-}
+const reducer = handleActions({
+  [changeTab.type]: (state, payload) => ({...state, tab: payload}),
+  [updateInitialData.type]: (state, payload) => ({...state, initialData: payload})
+})
 
 export default ({
   initialState,

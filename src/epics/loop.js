@@ -19,9 +19,7 @@ const getTimeout = (animals, id) => {
 
 export default function runner (action$, store) {
   return action$.filter((action) => action.type === loopAction.type)
-    .map((action) => 
-      Observable.from(action.payload)
-    )
+    .map((action) => Observable.from(action.payload))
     .switchMap((obs) => mapObserver(obs, store)
       .concatAll()
       .takeUntil(action$.ofType(stopRun.type))

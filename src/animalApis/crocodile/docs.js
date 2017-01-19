@@ -20,6 +20,7 @@ export default {
     args: [{
       name: 'color',
       type: 'string',
+      default: "'white'",
       values: 'color',
       description: 'The color to paint.'
     }]

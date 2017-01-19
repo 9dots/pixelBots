@@ -1,14 +1,11 @@
 /** @jsx element */
 
-import {initializeApp, createNew, refresh, saveProgress, setToast, setModalMessage} from './actions'
+import {initializeApp, createNew, refresh, setToast, setModalMessage, updateGame} from './actions'
 import IndeterminateProgress from './components/IndeterminateProgress'
 import HeaderElement from './components/HeaderElement'
-import ModalMessage from './components/ModalMessage'
-import CreateSandbox from './pages/CreateSandbox'
 import PlaylistView from './pages/PlaylistView'
 import ProfileLoader from './pages/ProfileLoader'
-import LinkModal from './components/LinkModal'
-import {Block, Icon, Input, Text, Toast} from 'vdux-ui'
+import {Block, Text, Toast} from 'vdux-ui'
 import LinkDecipher from './pages/LinkDecipher'
 import CodeLink from './components/CodeLink'
 import {setUrl} from 'redux-effects-location'
@@ -17,11 +14,11 @@ import SearchPage from './pages/SearchPage'
 import {signOut} from './middleware/auth'
 import Transition from 'vdux-transition'
 import Header from './components/Header'
-import {Button} from 'vdux-containers'
 import Auth from './components/Auth'
 import Create from './pages/Create'
 import HomePage from './pages/Home'
 import element from 'vdux/element'
+import Game from './pages/Game'
 import enroute from 'enroute'
 
 import createAction from '@f/create-action'
@@ -29,22 +26,24 @@ import createAction from '@f/create-action'
 const startLogin = createAction('START_LOGIN')
 const endLogin = createAction('END_LOGIN')
 
-
 const initialState = () => ({loggingIn: false})
 
 const router = enroute({
-  '/create/:draftID/:slug': ({draftID, slug}, props) => {
-    return <Create left='60px' draftID={draftID} params={slug} {...props}/>
-  },
-  '/sandbox': (params, props) => (
-    <HomePage {...props}/>
+  '/create/:draftID/:slug': ({draftID, slug}, props) => (
+    <Create left='60px' draftID={draftID} params={slug} {...props}/>
   ),
-  '/search': (params, props) => {
-    return <SearchPage user={props.user}/>
-  },
-  '/search/:searchType': ({searchType}, props) => {
-    return <SearchPage searchType={searchType} user={props.user}/>
-  },
+  '/edit/:draftID/:step': ({draftID, step}, props) => (
+    <Create mine left='60px' draftID={draftID} step={step} {...props}/>
+  ),
+  '/edit/:draftID': ({draftID, step}, props) => (
+    <Create mine left='60px' draftID={draftID} {...props}/>
+  ),
+  '/search': (params, props) => (
+    <SearchPage user={props.user}/>
+  ),
+  '/search/:searchType': ({searchType}, props) => (
+    <SearchPage searchType={searchType} user={props.user}/>
+  ),
   '/search/:searchType/:searchQ': ({searchType, searchQ}, props) => (
     <SearchPage searchType={searchType} searchQ={searchQ} user={props.user}/>
   ),
@@ -54,9 +53,9 @@ const router = enroute({
   '/games/:gameID': ({gameID}, props) => (
     <GameLoader {...props} left='60px' noSave gameCode={gameID}/>
   ),
-  '/:username/:activity': ({username, activity}, props) => {
-    return <ProfileLoader params={activity} currentUser={props.user} username={username}/>
-  },
+  '/:username/:activity': ({username, activity}, props) => (
+    <ProfileLoader params={activity} currentUser={props.user} username={username}/>
+  ),
   '/:link': ({link}, props) => <LinkDecipher link={link} {...props}/>,
   '*': homePage
 })
@@ -77,23 +76,21 @@ function onCreate () {
 
 function render ({props, state, local}) {
   const {loggingIn} = state
-  const {message, url, game, saveID, gameID, toast, user, username} = props
-  const {animals} = game
+  const {message, url, toast, user, username} = props
   const activeRoute = url.split('/')[1]
 
   return (
     <Block tall wide>
       <Header w='90px' bgColor='primary' top='0' left='0'>
         <Block flex>
-          <HeaderElement 
+          <HeaderElement
             image='/animalImages/zebra.jpg'
             handleClick={[() => setUrl('/'), refresh]}/>
+          <HeaderElement active={activeRoute === 'search'} onClick={() => setUrl('/search/games')} text='Search' icon='search'/>
           {(user && !user.isAnonymous) &&
             <Block>
-              <HeaderElement active={activeRoute === 'search'} onClick={() => setUrl('/search/games')} text='Search' icon='search'/>
               <HeaderElement active={activeRoute === username} onClick={() => setUrl(`/${username}/games`)} text='Your Stuff' icon='dashboard'/>
-              <HeaderElement active={activeRoute === 'sandbox'} onClick={() => setUrl('/sandbox')} text='Sandbox' icon='play_circle_outline'/>
-              <HeaderElement active={activeRoute === 'create'} onClick={createNew} text='Create' icon='add'/>
+              <HeaderElement active={activeRoute === 'create'} onClick={() => createNew(user.uid)} text='Create' icon='add'/>
             </Block>
           }
         </Block>
@@ -146,6 +143,8 @@ function reducer (state, action) {
     }
   }
 }
+
+// <HeaderElement active={activeRoute === 'sandbox'} onClick={[() => setUrl('/sandbox'), refresh]} text='Sandbox' icon='play_circle_outline'/>
 
 export default {
   initialState,

@@ -1,18 +1,22 @@
-import element from 'vdux/element'
+/** @jsx element */
+
+import {initGame, arrayAt, maybeAddToArray} from './utils'
 import ModalMessage from './components/ModalMessage'
-import {initGame, arrayAt} from './utils'
+import element from 'vdux/element'
 import setProp from '@f/set-prop'
 import splice from '@f/splice'
-import reduce from '@f/reduce'
 import map from '@f/map'
 
 import {setUserId, setUsername, setUserProfile} from './middleware/auth'
 
 import {
+  togglePermission,
+  setModalMessage,
   initializeGame,
   setActiveLine,
-  setModalMessage,
+  incrementLine,
   clearMessage,
+  addStartCode,
   setAnimalPos,
   animalPaint,
   handleError,
@@ -27,12 +31,16 @@ import {
   setActive,
   setAnimal,
   aceUpdate,
+  setSaved,
   swapMode,
   newRoute,
   startRun,
+  setSpeed,
+  setPaint,
   setToast,
   stopRun,
   addCode,
+  setTitle,
   refresh,
   endRun,
   reset
@@ -156,7 +164,7 @@ function reducer (state, action) {
         activeLine: -1,
         saveID: undefined,
         gameID: undefined,
-        game: initGame()
+        game: initGame(state.game.name)
       }
     case reset.type:
       return {
@@ -184,7 +192,7 @@ function reducer (state, action) {
       var {header, body, type} = action.payload
       return {
         ...state,
-        message: action.payload.children  ? action.payload : createModal(header, body, type)
+        message: action.payload.children ? action.payload : createModal(header, body, type)
       }
     case clearMessage.type:
       return {
@@ -202,9 +210,10 @@ function reducer (state, action) {
         ...state,
         game: {
           ...action.payload,
+          saved: true,
           animals: action.payload.animals.map((animal) => ({
             ...animal,
-            sequence: !animal.sequence || animal.sequence.length === 0 
+            sequence: !animal.sequence || animal.sequence.length === 0
               ? action.payload.startCode || []
               : animal.sequence
           }))
@@ -221,6 +230,7 @@ function reducer (state, action) {
         game: {
           ...state.game,
           inputType: action.payload,
+          startCode: '',
           painted: state.game.initialPainted,
           animals: map((animal) => ({
             ...animal,
@@ -234,13 +244,18 @@ function reducer (state, action) {
         ...state,
         user: action.payload
       }
+    case setSpeed.type:
+      return {
+        ...state,
+        speed: action.payload
+      }
     case updateSize.type:
       return {
         ...state,
         game: {
           ...state.game,
           levelSize: [action.payload, action.payload],
-          animals: state.game.animals.map((animal) => setNewAnimalPos([0,0], animal))
+          animals: state.game.animals.map((animal) => setNewAnimalPos([0, 0], animal))
         }
       }
     case setAnimal.type:
@@ -295,16 +310,57 @@ function reducer (state, action) {
         ...state,
         profile: action.payload
       }
+    case setTitle.type:
+      return {
+        ...state,
+        game: {
+          ...state.game,
+          title: action.payload
+        }
+      }
+    case addStartCode.type:
+      return {
+        ...state,
+        game: {
+          ...state.game,
+          startCode: action.payload
+        }
+      }
+    case setPaint.type:
+      var {grid, painted} = action.payload
+      return {
+        ...state,
+        game: {
+          ...state.game,
+          [grid]: painted
+        }
+      }
+    case togglePermission.type:
+      return {
+        ...state,
+        game: {
+          ...state.game,
+          permissions: maybeAddToArray(action.payload, state.game.permissions)
+        }
+      }
+    case setSaved.type:
+      return {
+        ...state,
+        game: {
+          ...state.game,
+          saved: action.payload
+        }
+      }
   }
   return state
 }
 
 function createModal (header, body, type = '', animals = {}) {
   return <ModalMessage
-          type={type}
-          header={header}
-          animals={animals}
-          body={body}/>
+    type={type}
+    header={header}
+    animals={animals}
+    body={body} />
 }
 
 function setNewAnimalPos (coords, animal) {
@@ -322,6 +378,5 @@ function setNewAnimalPos (coords, animal) {
     }
   }
 }
-
 
 export default reducer

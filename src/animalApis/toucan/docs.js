@@ -9,6 +9,7 @@ export default {
       name: 'steps',
       type: 'number',
       values: range(1, 10),
+      default: 1,
       description: 'The number of steps up to move the toucan.'
     }]
   },
@@ -19,6 +20,7 @@ export default {
       name: 'steps',
       type: 'number',
       values: range(1, 10),
+      default: 1,
       description: 'The number of steps left to move the toucan.'
     }]
   },
@@ -29,6 +31,7 @@ export default {
       name: 'steps',
       type: 'number',
       values: range(1, 10),
+      default: 1,
       description: 'The number of steps right to move the toucan.'
     }]
   },
@@ -39,6 +42,7 @@ export default {
       name: 'steps',
       type: 'number',
       values: range(1, 10),
+      default: 1,
       description: 'The number of steps down to move the toucan.'
     }]
   },
@@ -48,6 +52,7 @@ export default {
     args: [{
       name: 'color',
       type: 'string',
+      default: "'white'",
       values: 'color',
       description: 'The color to paint.'
     }]

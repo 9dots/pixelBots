@@ -168,3 +168,20 @@ svg {
 .star circle:nth-of-type(5) {
   animation-delay: 1.9s;
 }
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #print-container, #print-container * {
+    visibility: visible;
+  }
+  #print-container {
+    display: block;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0px;
+    top: 0px;
+  }
+}

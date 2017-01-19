@@ -1,16 +1,16 @@
 /** @jsx element */
 
+import PrintContainer from '../pages/PrintContainer'
+import handleActions from '@f/handle-actions'
 import createAction from '@f/create-action'
-import Documentation from './Documentation'
-import {Block, Box} from 'vdux-containers'
+import {Block} from 'vdux-containers'
 import element from 'vdux/element'
 import Buttons from './Buttons'
+import {getLoc} from '../utils'
 import CodeBox from './CodeBox'
 import Runner from './Runner'
 import Code from './Code'
-import Tab from './Tab'
 
-const changeTab = createAction('CHANGE_TAB: controls')
 const addLoop = createAction('ADD_LOOP: controls')
 const loopAdded = createAction('LOOP_ADDED: controls')
 
@@ -19,7 +19,6 @@ function initialState ({local}) {
     tab: 'code',
     waitingForLoop: false,
     actions: {
-      tabChanged: (name) => local(() => changeTab(name)),
       startAddLoop: local(() => addLoop()),
       finishAddLoop: local(() => loopAdded())
     }
@@ -28,82 +27,51 @@ function initialState ({local}) {
 
 function render ({props, state}) {
   const {
-    active,
-    animals,
-    running,
-    selectedLine,
     editorActions,
-    creatorMode,
-    initialData,
-    saveID,
-    hasRun,
+    selectedLine,
     inputType,
-    onRun
+    minHeight = '600px',
+    running,
+    animals,
+    active,
+    saved
   } = props
   const sequence = animals[active].sequence || []
-  const {tab, actions, waitingForLoop} = state
-  const {tabChanged, startAddLoop, finishAddLoop} = actions
+  const {actions, waitingForLoop} = state
+  const {startAddLoop, finishAddLoop} = actions
+
+  const loc = getLoc(sequence)
 
   return (
     <Block
-      minHeight='600px'
+      minHeight={minHeight}
+      column
       tall
-      boxShadow='0 0 2px 1px rgba(0,0,0,0.2)'
       relative
       w={props.w || '100%'}
-      bgColor='light'
-      color='white'
-      ml='20px'>
-      <Block bgColor='secondary' wide align='start center'>
-        <Box flex wide align='start center'>
-          <Tab
-            bgColor='secondary'
-            onClick={tabChanged('code')}
-            color='white'
-            w='230px'
-            active={tab === 'code'}
-            name='code'
-            fs='s'/>
-          {
-            !creatorMode && <Tab
-              bgColor='secondary'
-              w='230px'
-              onClick={tabChanged('documentation')}
-              color='white'
-              name='documentation'
-              active={tab === 'documentation'}
-              fs='s'/>
-          }
-        </Box>
-        <Block h='80%'>
-          {
-            initialData && <Runner
-              initialData={initialData}
-              onRun={onRun}
-              creatorMode={creatorMode}
-              saveID={saveID}
-              running={running}
-              relative
-              tall
-              ml='10px'
-              hasRun={hasRun} />
-          }
-        </Block>
-      </Block>
-      <Block h='calc(100% - 40px)' wide absolute align='start start'>
-        {tab === 'code'
-          ? inputType === 'icons'
+      color='white'>
+      <Block flex tall wide align='start start'>
+        {
+          inputType === 'icons'
             ? <Block wide tall align='center center'>
-                {addButtons()}
-                <Code waitingForLoop={waitingForLoop} finishAddLoop={finishAddLoop} {...props}/>
-              </Block>
+              {addButtons()}
+              <Code waitingForLoop={waitingForLoop} finishAddLoop={finishAddLoop} {...props} />
+            </Block>
             : <Block wide tall align='center center'>
-                {addButtons()}
-                <CodeBox {...props} />
-              </Block>
-          : <Documentation animal={animals[active]}/>
+              {addButtons()}
+              <PrintContainer code={sequence} />
+              <CodeBox startCode={props.initialData && props.initialData.startCode} {...props} />
+            </Block>
         }
       </Block>
+      {<Runner
+        bgColor={inputType === 'icons' ? '#A7B4CB' : '#1D1F21'}
+        initialData={props.initialData}
+        saveID={props.saveID}
+        saved={props.saveID && saved}
+        loc={loc}
+        creatorMode
+        inputType={inputType}/>}
     </Block>
   )
 
@@ -111,35 +79,20 @@ function render ({props, state}) {
     return (
       <Buttons
         startAddLoop={startAddLoop}
+        selectedLine={selectedLine}
         running={running}
         active={active}
         type={animals[active].type}
         editorActions={editorActions}
-        inputType={inputType}/>
+        inputType={inputType} />
     )
   }
 }
 
-function reducer (state, action) {
-  switch (action.type) {
-    case changeTab.type:
-      return {
-        ...state,
-        tab: action.payload
-      }
-    case addLoop.type:
-      return {
-        ...state,
-        waitingForLoop: true
-      }
-    case loopAdded.type:
-      return {
-        ...state,
-        waitingForLoop: false
-      }
-  }
-  return state
-}
+const reducer = handleActions({
+  [addLoop.type]: (state) => ({...state, waitingForLoop: true}),
+  [loopAdded.type]: (state) => ({...state, waitingForLoop: false})
+})
 
 export default {
   initialState,

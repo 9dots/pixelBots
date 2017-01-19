@@ -80,7 +80,7 @@ function render ({props, state}) {
   )
 
   return (
-    <Block onClick={(e) => e.stopPropagation()} absolute left='100%' bgColor='#333' tall minWidth='80px' align='center center'>
+    <Block onClick={(e) => e.stopPropagation()} absolute top='0' left='100%' bgColor='#333' tall minWidth='80px' align='center center'>
       {values ? getDropdown() : getInput(false)}
       {!values && <Tooltip
         zIndex='999'
