@@ -38,13 +38,20 @@ function codeRunner () {
         }
       }
       if (action.type === abortRun.type || action.type === moveError.type || action.type === reset.type) {
-        runner.stop()
-        runner.removeAllListeners('step')
+        if (runner) {
+          runner.stop()
+          runner.removeAllListeners('step')
+          runner = undefined
+        } else {
+          dispatch(stopRun())
+        }
       }
       if (action.type === startRun.type) {
-        runner = new Runner(action.payload, dispatch, getState)
-        runner.on('step', () => dispatch(incrementSteps()))
-        runner.startRun()
+        if (action.payload) {
+          runner = new Runner(action.payload, dispatch, getState)
+          runner.on('step', () => dispatch(incrementSteps()))
+          runner.startRun()
+        }
       }
       if (action.type === pauseRun.type) {
         dispatch(stopRun())
@@ -54,6 +61,13 @@ function codeRunner () {
         runner.startRun()
       }
       if (action.type === stepForward.type) {
+        if (!runner) {
+          dispatch(startRun())
+          const {animals} = state.game
+          const api = animalApis[animals[0].type].default(0, getState)
+          let code = getIterator(animals[0], api, 0)
+          runner = new Runner(code, dispatch, getState)
+        }
         runner.stepForward()
       }
       return next(action)

@@ -29,7 +29,7 @@ function render ({props}) {
         </Button>
         <Block mt='1em' wide align='space-around center'>
           <SpeedDisplay speed={speed}/>
-          <StepperWidget steps={steps}/>
+          <StepperWidget sequence={animal.sequence} steps={steps}/>
         </Block>
       </Block>
     </Card>

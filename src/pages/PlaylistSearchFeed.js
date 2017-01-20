@@ -18,7 +18,7 @@ function render ({props}) {
           h='auto'
           onClick={() => setUrl(`/playlist/${ref}`)}
           cursor='pointer'
-          cardImage={<Image src={body.imageUrl} />}
+          cardImage={<Image h='150px' w='150px' src={body.imageUrl} />}
           cardFooter={getCardFooter(body)}
           cardTitle={body.name}>
           <Block mt='-10px' fontWeight='800' fs='xxs'>
