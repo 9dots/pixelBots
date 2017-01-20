@@ -41,16 +41,13 @@
             ".validate": "newData.isString()"
           },
           "_state_changed": {
-            ".validate": "newData.isNumber() && (newData.val() === now
-                          || data.val() === newData.val())"
+            ".validate": "newData.isNumber() && (newData.val() === now || data.val() === newData.val())"
           },
           "_owner": {
             ".validate": "newData.isString()"
           },
           "_progress": {
-            ".validate": "newData.isNumber()
-                          && newData.val() >= 0
-                          && newData.val() <= 100"
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100"
           },
           "_error_details": {
               "error": {
