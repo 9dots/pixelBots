@@ -64,8 +64,9 @@ class Runner extends EventEmitter {
     }
   }
   stop () {
+  	console.log('stop')
+  	this.done = true
     this.running = false
-    clearTimeout(this.timeout)
   }
   pause () {
     this.running = false

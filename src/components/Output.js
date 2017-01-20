@@ -49,6 +49,7 @@ function render ({props, state, local}) {
         </Block>
         <Block h={size} w={size}>
           <Level
+            hasRun={hasRun}
             animals={animals}
             running={running}
             active={active}

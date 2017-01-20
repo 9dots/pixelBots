@@ -10,7 +10,6 @@ import Button from './Button'
 
 function render ({props}) {
   const {hasRun, onRun = () => {}, speed, animal, running, steps = 0} = props
-  console.log(running)
   return (
     <Card mt='0.5em' wide p='10px'>
       <Block column align='space-between center'>

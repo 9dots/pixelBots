@@ -46,7 +46,7 @@ function render ({props, state}) {
   let indent = 0
 
   const code = sequence.map((line, i, arr) => {
-    const isActive = activeLine === i && hasRun
+    const isActive = activeLine === i
     const name = getName(line)
     const re = /\((.*?)(?:\))/gi
     const argMatch = re.exec(line)

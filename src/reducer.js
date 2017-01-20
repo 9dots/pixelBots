@@ -8,7 +8,7 @@ import splice from '@f/splice'
 import map from '@f/map'
 
 import {setUserId, setUsername, setUserProfile} from './middleware/auth'
-import {incrementSteps, resume} from './middleware/codeRunner'
+import {incrementSteps, resume, stepForward} from './middleware/codeRunner'
 
 import {
   togglePermission,
@@ -300,6 +300,11 @@ function reducer (state, action) {
             }
           })
         }
+      }
+    case stepForward.type: 
+      return {
+        ...state,
+        hasRun: true
       }
     case setToast.type:
       return {

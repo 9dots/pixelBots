@@ -37,14 +37,13 @@ function codeRunner () {
           dispatch(startRun(code))
         }
       }
-      if (action.type === abortRun.type || action.type === moveError.type || action.type === reset.type) {
+      if (action.type === abortRun.type || action.type === throwError.type || action.type === reset.type) {
         if (runner) {
           runner.stop()
           runner.removeAllListeners('step')
           runner = undefined
-        } else {
-          dispatch(stopRun())
         }
+        dispatch(stopRun())
       }
       if (action.type === startRun.type) {
         if (action.payload) {
@@ -58,15 +57,16 @@ function codeRunner () {
         runner.pause()
       }
       if (action.type === resume.type) {
+        dispatch(startRun())
         runner.startRun()
       }
       if (action.type === stepForward.type) {
         if (!runner) {
-          dispatch(startRun())
           const {animals} = state.game
           const api = animalApis[animals[0].type].default(0, getState)
           let code = getIterator(animals[0], api, 0)
           runner = new Runner(code, dispatch, getState)
+          runner.on('step', () => dispatch(incrementSteps()))
         }
         runner.stepForward()
       }

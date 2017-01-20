@@ -6,7 +6,7 @@ import {setActive} from '../actions'
 import animalApis from '../animalApis'
 
 function render ({props}) {
-  let {animal, active, id, cellSize, editMode, running, animationSpeed} = props
+  let {animal, active, id, cellSize, editMode, running, animationSpeed, hasRun} = props
 
   if (Object.keys(animal.current).length < 1) {
     return (<div/>)
@@ -27,7 +27,7 @@ function render ({props}) {
       border={border}
       borderColor={'red'}
       transform={`rotate(${rot}deg) translate(${pos.left}px, ${pos.top}px)`}
-      transition={(!editMode) && `all ${animationSpeed}s ease-in-out`}
+      transition={(!editMode && hasRun) && `all ${animationSpeed}s ease-in-out`}
       boxShadow={boxShadow}
       h={animalSize}
       w={animalSize}

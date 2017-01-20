@@ -24,6 +24,7 @@ function render ({props, local, state, children}) {
     paintMode,
     editMode,
     animals,
+    hasRun,
     running,
     active,
     w = '100%',
@@ -52,6 +53,7 @@ function render ({props, local, state, children}) {
         {getRows({...props, size, dragging, clickHandler, animationSpeed})}
         {animals.map((animal, i) => (
           <Animal
+            hasRun={hasRun}
             running={running}
             editMode={editMode}
             animationSpeed={animationSpeed}
