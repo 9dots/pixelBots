@@ -24,7 +24,7 @@ function codeRunner () {
   return ({getState, dispatch}) => {
     return (next) => (action) => {
       let state = getState()
-      if (action.type === runCode.type && !state.running) {
+      if (action.type === runCode.type && !state.running && !state.hasRun) {
         const {animals} = state.game
         for (var id in animals) {
           const api = animalApis[animals[id].type].default(id, getState)

@@ -25,17 +25,22 @@ class Runner extends EventEmitter {
       const curState = self.getState()
       const result = self.it.next()
       const interval = getTimeout(curState.game.animals, result.value.payload.id) * 1 / curState.speed
-      self.step(result.value, interval).then(() => {
-	      self.stepQueue--
-        if (self.stepQueue > 0) {
-         run()
-        }
-      })
+      self.step(result.value, interval)
+	      .then(() => {
+		      self.stepQueue--
+	        if (self.stepQueue > 0) {
+	         run()
+	        }
+	      })
+	     	.catch(() => {})
     }
   }
   step (step, interval) {
     return new Promise((resolve, reject) => {
       step = step || this.it.next().value
+      if (step.type === 'END_RUN') {
+      	return reject('run over')
+      }
       this.stepsCompleted += 1
       this.emit('step', this.stepsCompleted)
       if (step.meta) {
@@ -55,18 +60,19 @@ class Runner extends EventEmitter {
       const self = this
       const curState = this.getState()
       const interval = getTimeout(curState.game.animals, result.value.payload.id) * 1 / curState.speed
-      this.step(result.value, interval)
-        .then(() => this.running && this.run())
-      if (result.done) {
+       if (result.done) {
         this.done = true
         this.running = false
       }
+      this.step(result.value, interval)
+        .then(() => this.running && this.run())
+        .catch((e) => this.done = true)
     }
   }
   stop () {
-  	console.log('stop')
   	this.done = true
     this.running = false
+    this.stepQueue = 0
   }
   pause () {
     this.running = false
