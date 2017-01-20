@@ -56,6 +56,7 @@ function render ({props, state}) {
         tab={tab}
         options
         hasRun={hasRun}
+        game={game}
         {...game}
         {...outputProps}
       />
