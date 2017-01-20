@@ -1,6 +1,6 @@
 /** @jsx element */
 
-import {Block, Text} from 'vdux-ui'
+import {Block, Icon, Text} from 'vdux-ui'
 import element from 'vdux/element'
 import {setSpeed} from '../actions'
 import Button from './Button'
@@ -28,7 +28,7 @@ function render ({props}) {
           fontWeight='800'
           borderWidth='0'
           color={isMinSpeed ? 'grey' : 'green'}
-          onClick={() => decreaseSpeed(speed)}>-</Button>
+          onClick={() => decreaseSpeed(speed)}><Icon name='remove'/></Button>
         <Text
           w='60px'
           textAlign='center'
@@ -44,7 +44,7 @@ function render ({props}) {
           fontWeight='800'
           borderWidth='0'
           color={isMaxSpeed ? 'grey' : 'green'}
-          onClick={() => increaseSpeed(speed)}>+</Button>
+          onClick={() => increaseSpeed(speed)}><Icon name='add'/></Button>
       </Block>
     </Block>
   )

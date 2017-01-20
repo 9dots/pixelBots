@@ -7,7 +7,7 @@ import {Text, Tooltip} from 'vdux-ui'
 function render ({props}) {
   const {tool, show} = props
   return (
-    <Text cursor='zoom-in' fontFamily='code' fw='300' fs='l' pr='10px'>
+    <Text cursor='zoom-in' fontFamily='code' fw='300' fs='s' pr='10px'>
       {tool.usage}
       <Tooltip
         placement='right'
@@ -16,7 +16,7 @@ function render ({props}) {
         color='black'
         show={show}
         w='200px'
-        fs='m'>
+        fs='s'>
         {tool.description}
       </Tooltip>
     </Text>

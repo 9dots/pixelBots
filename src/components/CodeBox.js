@@ -23,7 +23,7 @@ function * onUpdate (prev, next) {
 }
 
 function render ({props}) {
-  const {active, activeLine, running, animals, startCode, editorActions = {}} = props
+  const {active, activeLine, running, animals, startCode, hasRun, editorActions = {}} = props
   const sequence = animals[active].sequence || []
   const addCodeHandler = editorActions.aceUpdate || aceUpdate
 
@@ -50,7 +50,7 @@ function render ({props}) {
         ref={_setValue => setValue = _setValue}
         jsOptions={jsOptions}
         highlightActiveLine={false}
-        activeLine={running ? activeLine : -1}
+        activeLine={hasRun ? activeLine : -1}
         onChange={(code) => addCodeHandler({id: active, code})}
         value={sequence.length > 0 ? sequence : startCode || ''}
         theme='tomorrow_night' />

@@ -1,15 +1,16 @@
 /** @jsx element */
 
-import {runCode, abortRun} from '../middleware/codeRunner'
+import {runCode, abortRun, pauseRun, resume} from '../middleware/codeRunner'
 import {Card, Block, Icon} from 'vdux-ui'
-import LinesOfCode from './LinesOfCode'
+import StepperWidget from './StepperWidget'
 import SpeedDisplay from './Speed'
 import element from 'vdux/element'
 import {reset} from '../actions'
 import Button from './Button'
 
 function render ({props}) {
-  const {hasRun, onRun, speed, animal} = props
+  const {hasRun, onRun = () => {}, speed, animal, running, steps = 0} = props
+  console.log(running)
   return (
     <Card mt='0.5em' wide p='10px'>
       <Block column align='space-between center'>
@@ -22,16 +23,28 @@ function render ({props}) {
           h='60px'
           fs='l'
           color='white'
-          onClick={!hasRun ? [runCode, onRun] : [reset, () => abortRun('STOP')]}>
-          <Icon ml='-4px' mr='10px' name={!hasRun ? 'play_arrow' : 'replay'} />
-          {!hasRun ? 'RUN' : 'RESET'}
+          onClick={handleClick}>
+          <Icon ml='-4px' mr='10px' name={!running ? 'play_arrow' : 'pause'} />
+          {!running ? 'RUN' : 'PAUSE'}
         </Button>
-        <Block mt='1em' wide align='start center'>
+        <Block mt='1em' wide align='space-around center'>
           <SpeedDisplay speed={speed}/>
+          <StepperWidget steps={steps}/>
         </Block>
       </Block>
     </Card>
   )
+
+  function * handleClick () {
+    if (!hasRun && animal.sequence.length > 0) {
+      yield runCode()
+      yield onRun()
+    } else if (running) {
+      yield pauseRun()
+    } else {
+      yield resume()
+    }
+  }
 }
 
 export default {

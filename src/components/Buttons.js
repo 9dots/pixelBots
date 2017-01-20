@@ -9,7 +9,7 @@ function render ({props}) {
   const {inputType} = props
 
   return (
-    <Block w='200px' relative bgColor='offSecondary' tall>
+    <Block w='160px' relative bgColor='offSecondary' tall>
       <Block wide h='90%' p='10px' top='10%'>
         {inputType === 'icons'
           ? <IconButtons {...props} />

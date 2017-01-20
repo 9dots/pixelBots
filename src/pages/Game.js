@@ -97,7 +97,6 @@ function render ({props, state, local}) {
         relative
         display='flex'
         left='0'
-        bgColor='light'
         tall
         wide>
         {display}

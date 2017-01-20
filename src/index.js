@@ -54,7 +54,7 @@ const {subscribe, render, replaceReducer} = vdux({
     handleError(),
     fire.middleware(firebaseConfig),
     auth,
-    epicMiddleware,
+    // epicMiddleware,
     checkCompleted,
     // logger(),
     scroll,

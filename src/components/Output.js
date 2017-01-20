@@ -35,8 +35,8 @@ function render ({props, state, local}) {
 
   return (
     <Block mr='0'>
-      <Block relative p='10px'>
-        <Block absolute top='10px' left='10px' h={size} w={size} zIndex='99' opacity={opacity}>
+      <Block relative p='10px' pt='0'>
+        <Block absolute top='0' left='10px' h={size} w={size} zIndex='99' opacity={opacity}>
           <Level
             editMode
             animals={[]}
@@ -49,7 +49,6 @@ function render ({props, state, local}) {
         </Block>
         <Block h={size} w={size}>
           <Level
-            editMode={!running}
             animals={animals}
             running={running}
             active={active}
@@ -65,7 +64,13 @@ function render ({props, state, local}) {
             game={props}
             onChange={actions.setOpacity}/>
         </Block>
-        <RunWidget animal={animals[active]} hasRun={hasRun} speed={speed} onRun={onRun}/>
+        <RunWidget
+          steps={props.game.steps}
+          animal={animals[active]}
+          running={running}
+          hasRun={hasRun}
+          speed={speed}
+          onRun={onRun}/>
       </Block>
     </Block>
   )

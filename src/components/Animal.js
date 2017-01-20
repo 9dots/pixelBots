@@ -27,7 +27,7 @@ function render ({props}) {
       border={border}
       borderColor={'red'}
       transform={`rotate(${rot}deg) translate(${pos.left}px, ${pos.top}px)`}
-      transition={(!editMode && running) && `all ${animationSpeed}s ease-in-out`}
+      transition={(!editMode) && `all ${animationSpeed}s ease-in-out`}
       boxShadow={boxShadow}
       h={animalSize}
       w={animalSize}

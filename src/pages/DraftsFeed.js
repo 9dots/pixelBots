@@ -13,10 +13,10 @@ function render ({props}) {
       {reduce(toItems, [], drafts)}
     </Block>
   )
-}
 
-function toItems (arr, draft) {
-  return arr.concat(<DraftItem draftRef={draft.ref}/>)
+  function toItems (arr, draft, key) {
+	  return arr.concat(<DraftItem uid={props.uid} draftKey={key} draftRef={draft.ref}/>)
+	}
 }
 
 export default {

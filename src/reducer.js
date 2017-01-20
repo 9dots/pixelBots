@@ -8,6 +8,7 @@ import splice from '@f/splice'
 import map from '@f/map'
 
 import {setUserId, setUsername, setUserProfile} from './middleware/auth'
+import {incrementSteps, resume} from './middleware/codeRunner'
 
 import {
   togglePermission,
@@ -126,6 +127,12 @@ function reducer (state, action) {
         running: true,
         hasRun: true
       }
+    case resume.type: 
+      return {
+        ...state,
+        running: true,
+        hasRun: true
+      }
     case stopRun.type:
       return {
         ...state,
@@ -156,6 +163,14 @@ function reducer (state, action) {
           splice(state.game.animals[id].sequence, lineNum, 1, code)
         ), 'animals')
       }
+    case incrementSteps.type:
+      return {
+        ...state,
+        game: {
+          ...state.game,
+          steps: (state.game.steps || 0) + 1
+        }
+      }
     case refresh.type:
       return {
         ...state,
@@ -174,6 +189,7 @@ function reducer (state, action) {
         activeLine: -1,
         game: {
           ...state.game,
+          steps: 0,
           painted: state.game.initialPainted,
           animals: map((animal) => ({
             ...animal,
