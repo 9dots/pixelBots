@@ -7,14 +7,14 @@ import element from 'vdux/element'
 function render ({props, children}) {
   const {
     clickHandler = () => {},
+    color = 'black',
     size = '500px',
     hideAnimal,
+    my = '1em',
     paintMode,
     painted,
-    color = 'black',
     grid,
     game,
-    my = '1em',
     id,
     ...restProps
   } = props

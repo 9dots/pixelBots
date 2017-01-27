@@ -33,6 +33,7 @@ function render ({props, state}) {
     minHeight = '600px',
     running,
     animals,
+    canCode,
     active,
     saved
   } = props
@@ -55,12 +56,12 @@ function render ({props, state}) {
           inputType === 'icons'
             ? <Block wide tall align='center center'>
               {addButtons()}
-              <Code waitingForLoop={waitingForLoop} finishAddLoop={finishAddLoop} {...props} />
+              <Code canCode={canCode} waitingForLoop={waitingForLoop} finishAddLoop={finishAddLoop} {...props} />
             </Block>
             : <Block wide tall align='center center'>
               {addButtons()}
               <PrintContainer code={sequence} />
-              <CodeBox startCode={props.initialData && props.initialData.startCode} {...props} />
+              <CodeBox canCode={canCode} startCode={props.initialData && props.initialData.startCode} {...props} />
             </Block>
         }
       </Block>
@@ -81,6 +82,7 @@ function render ({props, state}) {
         startAddLoop={startAddLoop}
         selectedLine={selectedLine}
         running={running}
+        canCode={canCode}
         active={active}
         type={animals[active].type}
         editorActions={editorActions}

@@ -52,7 +52,7 @@ function render ({props, state}) {
 
 	function * handleSubmit () {
 		yield refresh()
-		yield setUrl(`/${textVal}`)
+		yield setUrl(`/${textVal.toUpperCase()}`)
 		yield clearMessage()
 	}
 }

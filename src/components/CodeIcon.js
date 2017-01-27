@@ -26,6 +26,7 @@ function render ({props}) {
     newElement,
     argument,
     iconName,
+    canCode,
     lineNum,
     animal,
     type,
@@ -51,10 +52,9 @@ function render ({props}) {
           {
             args && args.map((arg, i) => (
               <IconArgument
+                canCode={canCode}
                 argument={argument.split(',')[i]}
-                changeHandler={(val) => (
-                  handleUpdateLine({id: animal, lineNum, code: `${name}(${val})`})
-                )}
+                changeHandler={(val) => handleUpdateLine({id: animal, lineNum, code: `${name}(${val})`})}
                 arg={arg}/>
           ))}
         </Block>

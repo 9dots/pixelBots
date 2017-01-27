@@ -1,6 +1,6 @@
 /** @jsx element */
 
-import {initializeApp, createNew, refresh, setToast, setModalMessage, updateGame} from './actions'
+import {initializeApp, createNew, refresh, setToast, setModalMessage} from './actions'
 import IndeterminateProgress from './components/IndeterminateProgress'
 import HeaderElement from './components/HeaderElement'
 import PlaylistView from './pages/PlaylistView'
@@ -16,9 +16,8 @@ import Transition from 'vdux-transition'
 import Header from './components/Header'
 import Auth from './components/Auth'
 import Create from './pages/Create'
-import HomePage from './pages/Home'
+import HomePage from './pages/Explore'
 import element from 'vdux/element'
-import Game from './pages/Game'
 import enroute from 'enroute'
 
 import createAction from '@f/create-action'
@@ -29,6 +28,11 @@ const endLogin = createAction('END_LOGIN')
 const initialState = () => ({loggingIn: false})
 
 const router = enroute({
+  '/featured': () => <HomePage tab='featured'/>,
+  '/featured/:project': ({project}) => (
+    <HomePage tab='featured' project={project} />
+  ),
+  '/shared': () => <HomePage tab='shared'/>,
   '/create/:draftID/:slug': ({draftID, slug}, props) => (
     <Create left='60px' draftID={draftID} params={slug} {...props}/>
   ),
@@ -84,12 +88,14 @@ function render ({props, state, local}) {
       <Header w='90px' bgColor='primary' top='0' left='0'>
         <Block flex>
           <HeaderElement
-            image='/animalImages/zebra.jpg'
+            text='Home'
+            icon='home'
+            active={activeRoute === 'featured'}
             handleClick={[() => setUrl('/'), refresh]}/>
           <HeaderElement active={activeRoute === 'search'} onClick={() => setUrl('/search/games')} text='Search' icon='search'/>
           {(user && !user.isAnonymous) &&
             <Block>
-              <HeaderElement active={activeRoute === username} onClick={() => setUrl(`/${username}/games`)} text='Your Stuff' icon='dashboard'/>
+              <HeaderElement active={activeRoute === username} onClick={() => setUrl(`/${username}/challenges`)} text='Your Stuff' icon='dashboard'/>
               <HeaderElement active={activeRoute === 'create'} onClick={() => createNew(user.uid)} text='Create' icon='add'/>
             </Block>
           }

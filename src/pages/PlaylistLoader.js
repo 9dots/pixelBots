@@ -1,50 +1,50 @@
+/** @jsx element */
+
 import IndeterminateProgress from '../components/IndeterminateProgress'
-import createAction from '@f/create-action'
-import element from 'vdux/element'
-import createCode from '../utils'
-import Playlist from './Playlist'
 import {immediateSave} from '../middleware/saveCode'
 import {swapMode, reset} from '../actions'
 import fire, {refMethod} from 'vdux-fire'
+import element from 'vdux/element'
+import Playlist from './Playlist'
 
 function render ({props}) {
-	const {list} = props
+  const {list} = props
 
-	if (list.loading) return <IndeterminateProgress/>
+  if (list.loading) return <IndeterminateProgress />
 
-	const {sequence, current = 0} = list.value
+  const {sequence, current = 0} = list.value
 
-	return (
-		<Playlist current={current} {...props} listRef={props.ref} {...list.value} next={next} prev={prev}/>
-	)
+  return (
+    <Playlist current={current} {...props} listRef={props.ref} {...list.value} next={next} prev={prev} />
+  )
 
-	function * next () {
-		if (current + 1 < sequence.length) {
-			const tmp = yield immediateSave()
-			yield swapMode('icons')
-			yield reset()
-			yield refMethod({
-				ref: `/savedList/${props.ref}/current`,
-				updates: {method: 'transaction', value: (val) => val + 1}
-			})
-		}
-	}
+  function * next () {
+    if (current + 1 < sequence.length) {
+      yield immediateSave()
+      yield swapMode('icons')
+      yield reset()
+      yield refMethod({
+        ref: `/savedList/${props.ref}/current`,
+        updates: {method: 'transaction', value: (val) => val + 1}
+      })
+    }
+  }
 
-	function * prev () {
-		if (current - 1 >= 0) {
-			const tmp = yield immediateSave()
-			yield swapMode('icons')
-			yield reset()
-			yield refMethod({
-				ref: `/savedList/${props.ref}/current`,
-				updates: {method: 'transaction', value: (val) => val - 1}
-			})
-		}
-	}
+  function * prev () {
+    if (current - 1 >= 0) {
+      yield immediateSave()
+      yield swapMode('icons')
+      yield reset()
+      yield refMethod({
+        ref: `/savedList/${props.ref}/current`,
+        updates: {method: 'transaction', value: (val) => val - 1}
+      })
+    }
+  }
 }
 
 export default fire((props) => ({
   list: `/savedList/${props.ref}`
 }))({
-	render
+  render
 })

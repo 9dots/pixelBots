@@ -8,7 +8,7 @@ import docs from './docs'
 const imageURL = '/animalImages/zebra.jpg'
 const speed = 750
 
-function wrap (id, getState = () => {}) {
+function wrap (id) {
   const up = (line) => move(0, line)
   const right = (line) => move(1, line)
   const down = (line) => move(2, line)

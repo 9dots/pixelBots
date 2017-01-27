@@ -7,14 +7,6 @@ import {Block, Text} from 'vdux-ui'
 import {clearMessage} from '../actions'
 import WinAnimals from './WinAnimals'
 
-const fullScreenProps = {
-  w: '100%',
-  h: '100%',
-  m: '0',
-  top: '0',
-  pt: '5%'
-}
-
 function render ({props, state, children}) {
   const {
     header,
@@ -30,6 +22,16 @@ function render ({props, state, children}) {
     ...restProps
   } = props
 
+  const fullScreenProps = {
+    w: '100%',
+    h: '100%',
+    m: '0',
+    top: '0',
+    pt: props.headerBg ? '0' : '70px'
+  }
+
+  const headerBg = props.headerBg || 'transparent'
+
   const displayProps = fullscreen
     ? {...fullScreenProps, ...restProps}
     : restProps
@@ -40,7 +42,13 @@ function render ({props, state, children}) {
       onDismiss={dismiss}
       onKeyup={{esc: dismiss}}
       {...displayProps}>
-      <ModalHeader column align='center center' color={type === 'error' ? 'error' : headerColor} p='l' fs='xl'>
+      <ModalHeader
+        background={headerBg}
+        column
+        align='center center'
+        color={type === 'error' ? 'error' : headerColor}
+        p='l'
+        fs='xl'>
         {
           type === 'win' && <WinAnimals animals={animals} />
         }
@@ -56,7 +64,7 @@ function render ({props, state, children}) {
       )}
       {children}
       {fullscreen && <Block absolute top='1em' right='1em'>
-        <Button ml='1em' bgColor='blue' onClick={[(e) => e.stopPropagation(), dismiss, onSubmit]}>X</Button>
+        <Button ml='1em' bgColor={props.headerBg || 'blue'} onClick={[(e) => e.stopPropagation(), dismiss, onSubmit]}>X</Button>
       </Block>}
     </Modal>
   )

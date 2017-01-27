@@ -13,6 +13,7 @@ import objEqual from '@f/equal-obj'
 import element from 'vdux/element'
 import {Block} from 'vdux-ui'
 
+const EDIT_CODE = 'Edit Code'
 const updateTime = createAction('<Game/>: UPDATE_TIME')
 const updateInitialData = createAction('<Game/>: UPDATE_INITIAL_DATA')
 const changeTab = createAction('CHANGE_TAB')
@@ -81,6 +82,7 @@ function render ({props, state, local}) {
         initialData={initialData}
         activeLine={activeLine}
         inputType={inputType}
+        canCode={game.permissions.indexOf(EDIT_CODE) > -1}
         running={running}
         saveID={saveLink}
         saved={game.saved}

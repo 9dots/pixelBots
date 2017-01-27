@@ -6,6 +6,7 @@ const stackTrace = require('stack-trace')
 export default function () {
   return ({getState, dispatch}) => (next) => (action) => {
     if (action.type === throwError.type) {
+      console.log(action.payload)
       const errorLine = typeof (action.payload.lineNum) === 'number'
         ? action.payload.lineNum
         : stackTrace.parse(action.payload)[0].lineNumber - 5

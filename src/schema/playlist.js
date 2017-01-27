@@ -14,5 +14,7 @@ const playlist = Schema()
 	.required(['name', 'description'])
 
 export default {
-	playlist: validator(playlist)
+  playlist: validator(playlist),
+  name: validator(name),
+  description: validator(description)
 }

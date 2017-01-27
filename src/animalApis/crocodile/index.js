@@ -1,5 +1,6 @@
 import {
   paintSquare,
+  animalPaint,
   moveAnimal,
   turnAnimal
 } from '../../actions'
@@ -11,11 +12,11 @@ import docs from './docs'
 const imageURL = '/animalImages/crocodile.jpg'
 const speed = 750
 
-function wrap (id, getState = () => {}) {
+function wrap (id) {
   const move = (line) => moveCrocodile(line)
   const turnRight = (line) => turnAnimal({id, turn: 90}, line)
   const turnLeft = (line) => turnAnimal({id, turn: -90}, line)
-  const paint = (line) => paintSquare({id, getPaintColor}, line)
+  const paint = (line, color) => animalPaint(id, color, line)
 
   function moveCrocodile (lineNum) {
     return moveAnimal({id, getLocation: getNewLocation}, lineNum)

@@ -1,12 +1,12 @@
 /** @jsx element */
 
 import element from 'vdux/element'
-import {Block, Tooltip} from 'vdux-ui'
+import {Block} from 'vdux-ui'
 import {Input} from 'vdux-containers'
 import createAction from '@f/create-action'
 import html from 'hypervdux'
 import marked from 'marked'
-import {Dropdown, MenuItem} from 'vdux-containers'
+import {Dropdown, MenuItem, Tooltip} from 'vdux-containers'
 import {palette} from '../utils'
 import ColorPicker from './ColorPicker'
 
@@ -23,7 +23,7 @@ function initialState ({local}) {
   }
 }
 function render ({props, state}) {
-  const {arg, changeHandler, argument} = props
+  const {arg, changeHandler, argument, canCode} = props
   const {name, type, values, description} = arg
 
   const {show, actions} = state
@@ -50,7 +50,7 @@ function render ({props, state}) {
         onBlur={hideTip}
         inputProps={{textAlign: 'center', w: '60px'}}
         value={argument}
-        onClick={(e) => !propogate && e.stopPropagation()}
+        onClick={(e) => (!propogate && canCode) && e.stopPropagation()}
         onKeyup={(e) => keyUpHandler(e.target.value)} />
     )
   }
@@ -58,18 +58,22 @@ function render ({props, state}) {
   const getDropdown = () => (
     values === 'color'
       ? (<ColorPicker
+        disabled={!canCode}
         w='200px'
-        btn={<Block
-          p='10px'
-          h='20px'
-          w='60px'
-          boxShadow='inset 0 0 2px 1px rgba(0,0,0,0.2)'
-          bgColor={argument.replace(/\'/gi, '') || 'white'}
-          align='center center'/>}
-        clickHandler={(value) => keyUpHandler(`'${value}'`)}
+        btn={<Tooltip message={argument.replace(/\'/gi, '') || 'white'}>
+          <Block
+            p='10px'
+            h='20px'
+            w='60px'
+            boxShadow='inset 0 0 2px 1px rgba(0,0,0,0.2)'
+            bgColor={argument.replace(/\'/gi, '') || 'white'}
+            align='center center'/>
+        </Tooltip>}
+        clickHandler={(value) => canCode && keyUpHandler(`'${value}'`)}
         palette={palette}
       />)
       : (<Dropdown
+        disabled={!canCode}
         ref={function (api) { close = api.close }}
         zIndex='999'
         btn={<Block wide tall align='center center'>{getInput(true)}</Block>}>
@@ -98,11 +102,12 @@ function render ({props, state}) {
     </Block>
   )
 
-  function keyUpHandler (eValue) {
+  function * keyUpHandler (eValue) {
     const value = eValue === '' || isNaN(eValue)
       ? eValue
       : Number(eValue)
-    return changeHandler(value)
+    if (close) yield close()
+    yield changeHandler(value)
   }
 }
 

@@ -2,7 +2,7 @@
  * Imports
  */
 
-import {createEpicMiddleware} from 'redux-observable'
+import checkCompleted from './middleware/checkCompleted'
 import handleError from './middleware/handleError'
 import paintSquare from './middleware/paintSquare'
 import removeBlock from './middleware/removeBlock'
@@ -11,7 +11,6 @@ import moveAnimal from './middleware/moveAnimal'
 import location from 'redux-effects-location'
 import firebaseConfig from './firebaseConfig'
 import addCode from './middleware/addCodeMW'
-import checkCompleted from './middleware/checkCompleted'
 import saveCode from './middleware/saveCode'
 import scroll from './middleware/scroll'
 import auth from './middleware/auth'
@@ -20,13 +19,11 @@ import domready from '@f/domready'
 import reducer from './reducer'
 import firebase from 'firebase'
 import {initGame} from './utils'
-import rootEpic from './epics'
 import flow from 'redux-flo'
 import * as fire from 'vdux-fire'
 import vdux from 'vdux/dom'
 import theme from './theme'
 
-const epicMiddleware = createEpicMiddleware(rootEpic)
 firebase.initializeApp(firebaseConfig)
 
 var app = require('./app').default
@@ -54,9 +51,7 @@ const {subscribe, render, replaceReducer} = vdux({
     handleError(),
     fire.middleware(firebaseConfig),
     auth,
-    // epicMiddleware,
     checkCompleted,
-    // logger(),
     scroll,
     addCode,
     saveCode,

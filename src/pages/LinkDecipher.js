@@ -47,7 +47,7 @@ function render ({props}) {
 }
 
 export default fire((props) => ({
-	linkSnap: `/links/${props.link}`
+	linkSnap: `/links/${props.link.toUpperCase()}`
 }))({
 	render
 })

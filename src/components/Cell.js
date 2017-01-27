@@ -7,9 +7,9 @@ import deepEqual from '@f/deep-equal'
 import omit from '@f/omit'
 
 function shouldUpdate (prev, next) {
-  return !deepEqual(omit(['clickHandler', 'handleMouseOver'], prev.props), omit(['clickHandler', 'handleMouseOver'], next.props))
-    || !deepEqual(prev.children, next.children)
-    || prev.props.clickHandler.toString() !== next.props.clickHandler.toString()
+  return !deepEqual(omit(['clickHandler', 'handleMouseOver'], prev.props), omit(['clickHandler', 'handleMouseOver'], next.props)) ||
+    !deepEqual(prev.children, next.children) ||
+    prev.props.clickHandler.toString() !== next.props.clickHandler.toString()
 }
 
 function render ({props}) {
@@ -19,13 +19,11 @@ function render ({props}) {
     clickHandler,
     coordinates,
     hideBorder,
-    paintMode,
     showColor,
     editMode,
     dragging,
     size
   } = props
-
   return (
     <Block
       transition={!editMode && `background-color ${animationSpeed}s ease-in-out`}

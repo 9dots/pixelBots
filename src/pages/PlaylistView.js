@@ -1,3 +1,5 @@
+/** @jsx element */
+
 import IndeterminateProgress from '../components/IndeterminateProgress'
 import PlaylistGameLoader from '../components/PlaylistGameLoader'
 import {Block, Menu, Text} from 'vdux-ui'
@@ -35,17 +37,19 @@ const initialState = ({local}) => ({
 })
 
 function render ({props, state}) {
-  const {playlist, activeKey, mine, currentUser, profile} = props
+  const {playlist, activeKey, currentUser, profile = {}} = props
   const {uid} = currentUser
 
-  if (playlist.loading || !profile) {
+  if (playlist.loading) {
     return <IndeterminateProgress />
   }
 
-  const myPlaylistsValue = profile.playlists || []
+  const myPlaylistsValue = profile && profile.playlists || {}
   const playlistMatch = Object.keys(filter((list) => list.ref === activeKey, myPlaylistsValue))[0]
   const {sequence, name, followedBy = [], creatorID, creatorUsername, description} = playlist.value
   const {modal, actions, target, dragTarget} = state
+
+  const mine = uid === creatorID
 
   const followed = followedBy[props.username]
 
@@ -70,6 +74,7 @@ function render ({props, state}) {
             followed={followed}
             uid={uid}
             name={name}
+            description={description}
             activeKey={activeKey}
             setModal={actions.setModal}
             unfollow={unfollow} />

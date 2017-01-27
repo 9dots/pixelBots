@@ -1,92 +1,83 @@
 import animalApis from './animalApis'
 import {setActiveLine} from './actions'
+import getIterator from './getIterator'
 import {scrollTo} from './middleware/scroll'
+import sleep from '@f/sleep'
 import EventEmitter from 'events'
 
-class Runner extends EventEmitter {
-  constructor (it, dispatch, getState) {
-    super()
-    this.it = it
-    this.dispatch = dispatch
-    this.running = false
-    this.done = false
-    this.timeout = ''
-    this.stepsCompleted = 0
-    this.getState = getState
-    this.stepQueue = 0
-  }
-  stepForward () {
-  	var self = this
-    this.stepQueue++
-    if (this.stepQueue === 1) {
-    	run()
-    }
-    function run () {
-      const curState = self.getState()
-      const result = self.it.next()
-      const interval = getTimeout(curState.game.animals, result.value.payload.id) * 1 / curState.speed
-      self.step(result.value, interval)
-	      .then(() => {
-		      self.stepQueue--
-	        if (self.stepQueue > 0) {
-	         run()
-	        }
-	      })
-	     	.catch(() => {})
-    }
-  }
-  step (step, interval) {
-    return new Promise((resolve, reject) => {
-      step = step || this.it.next().value
-      if (step.type === 'END_RUN') {
-      	return reject('run over')
-      }
-      this.stepsCompleted += 1
-      this.emit('step', this.stepsCompleted)
-      if (step.meta) {
-        const lineNum = step.meta.lineNum
-        if (this.getState().game.inputType === 'icons') {
-          this.dispatch(scrollTo('.code-editor', `#code-icon-${lineNum}`))
-        }
-        this.dispatch(setActiveLine(lineNum))
-      }
-      this.dispatch(step)
-      setTimeout(() => resolve(), interval)
-    })
-  }
-  run () {
-    if (!this.done) {
-      const result = this.it.next()
-      const self = this
-      const curState = this.getState()
-      const interval = getTimeout(curState.game.animals, result.value.payload.id) * 1 / curState.speed
-       if (result.done) {
-        this.done = true
-        this.running = false
-      }
-      this.step(result.value, interval)
-        .then(() => this.running && this.run())
-        .catch((e) => this.done = true)
-    }
-  }
-  stop () {
-  	this.done = true
-    this.running = false
-    this.stepQueue = 0
-  }
-  pause () {
-    this.running = false
-  }
-  startRun () {
-    this.running = true
-    this.run()
-  }
+const RUN_OVER = 'RUN_OVER'
+
+function run (it, animals, getSpeed, onValue, onError, onCompleted = () => {}) {
+	let running
+	return {
+		pause: () => running = false,
+		run: () => {
+			running = true
+			keepStepping(it)
+		},
+		step: (id) => step(it.next(), getInterval(animals, id, getSpeed))
+	}
+
+	function keepStepping (it) {
+		const result = it.next()
+		const interval = getTimeout(animals,  result.value.payload.id) * 1 / getSpeed()
+		step(result, interval)
+			.then((action) => {
+				onValue(action)
+				running && keepStepping(...arguments)
+			})
+			.catch((e) => {
+				if (e === RUN_OVER) {
+					return onCompleted()
+				}
+				return onError(e)
+			})
+	}
 }
 
+function getInterval (animals, id, getSpeed) {
+	return getTimeout(animals, id) * 1 / getSpeed()
+}
+
+function step (nextStep, interval) {
+	const {value, done} = nextStep
+	return new Promise((resolve, reject) => {
+		if (value.type === 'END_RUN' || done) {
+	  	return reject(RUN_OVER)
+	  }
+	  return setTimeout(() => resolve(value), interval)
+	})
+}
+
+function createIterator (animal, id) {
+	return new Promise((resolve, reject) => {
+    const api = animalApis[animal.type].default(id)
+    const code = getIterator(animal, api, id)
+    if (code.error) {
+      return reject({message: code.error.name, lineNum: (code.error.loc.line) - 1})
+    }
+    return resolve(code)
+	})
+}
+
+function createIterators (animals) {
+	return new Promise((resolve, reject) => {
+	  Promise.all(animals.map((animal, id) => createIterator(animal, id)))
+	  	.then((iterators) => resolve(iterators))
+	  	.catch((e) => reject(e))
+	})
+}
+
+export {
+	createIterators,
+	getInterval,
+	step,
+	run
+}
+
+
 const getTimeout = (animals, id) => {
-  return id
+  return !isNaN(id)
     ? animalApis[animals[id].type].speed + 50
     : undefined
 }
-
-export default Runner

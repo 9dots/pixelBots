@@ -43,7 +43,8 @@ export default ({getState, dispatch}) => {
       dispatch(refresh())
     }
     if (action.type === setUserId.type && action.payload) {
-      firebase.database().ref(`/users/${action.payload.uid}`).on('value', (snap) => dispatch(setUserProfile(snap.val())))
+      firebase.database().ref(`/users/${action.payload.uid}`)
+        .on('value', (snap) => dispatch(setUserProfile(snap.val())))
     }
     return next(action)
   }

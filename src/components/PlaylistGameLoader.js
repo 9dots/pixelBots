@@ -16,7 +16,7 @@ function render ({props}) {
   }
 
   for (let c in challenges) {
-    if (challenges[c].loading) {
+    if (challenges[c] && challenges[c].loading) {
       return <IndeterminateProgress />
     }
   }
@@ -29,15 +29,15 @@ function render ({props}) {
         {
 					items.map((challenge, i) => (
 							challenge && <Block>
-  {challenge.name === dropTarget && getPlaceHolder(challenge.name, i)}
-  <PlaylistItem
-    idx={i}
-    listActions={listActions}
-    playlistKey={activeKey}
-    game={challenge.value}
-    mine={mine && currentUser.uid === creatorID}
-    ref={challenge.name} />
-							</Block>
+              {challenge.name === dropTarget && getPlaceHolder(challenge.name, i)}
+                <PlaylistItem
+                  idx={i}
+                  listActions={listActions}
+                  playlistKey={activeKey}
+                  game={challenge.value}
+                  mine={mine && currentUser.uid === creatorID}
+                  ref={challenge.name} />
+            	</Block>
 						)
 					)
 				}
@@ -69,9 +69,9 @@ function getProps (props, context) {
 export default fire(({sequence}) =>
 	sequence && sequence.length > 0
 		? sequence.reduce((cur, challenge) => ({
-  ...cur,
-  [challenge]: `/games/${challenge}`
-}), {})
+        ...cur,
+        [challenge]: `/games/${challenge}`
+      }), {})
 		: {}
 )({
   getProps,

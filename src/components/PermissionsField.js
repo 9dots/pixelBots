@@ -17,7 +17,7 @@ const initialState = () => ({
 })
 
 function render ({props, local, state}) {
-  const {label, fields, onSubmit, checked, handleClick, ...restProps} = props
+  const {label, fields, onSubmit, checked = [], handleClick, ...restProps} = props
   const {modal} = state
 
   const footer = (

@@ -23,7 +23,7 @@ function * onUpdate (prev, next) {
 }
 
 function render ({props}) {
-  const {active, activeLine, running, animals, startCode, hasRun, editorActions = {}} = props
+  const {active, activeLine, running, animals, startCode, hasRun, canCode = true, editorActions = {}} = props
   const sequence = animals[active].sequence || []
   const addCodeHandler = editorActions.aceUpdate || aceUpdate
 
@@ -48,6 +48,7 @@ function render ({props}) {
         width='100%'
         fontSize='18px'
         ref={_setValue => setValue = _setValue}
+        readOnly={!canCode}
         jsOptions={jsOptions}
         highlightActiveLine={false}
         activeLine={hasRun ? activeLine : -1}

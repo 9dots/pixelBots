@@ -1,10 +1,9 @@
 import createAction from '@f/create-action'
-import getIterator from '../getIterator.js'
-import animalApis from '../animalApis'
-import Runner from '../runner'
+import {run, createIterators} from '../runner'
+import {scrollTo} from './scroll'
 import {
+  setActiveLine,
   throwError,
-  moveError,
   startRun,
   stopRun,
   reset
@@ -17,59 +16,70 @@ const pauseRun = createAction('PAUSE_RUN')
 const incrementSteps = createAction('INCREMENT_STEPS')
 const resume = createAction('RESUME')
 
-let runner
-let steps = 0
+let runners
 
 function codeRunner () {
   return ({getState, dispatch}) => {
+    function getSpeed () {
+      return getState().speed
+    }
     return (next) => (action) => {
       let state = getState()
       if (action.type === runCode.type && !state.running && !state.hasRun) {
         const {animals} = state.game
-        for (var id in animals) {
-          const api = animalApis[animals[id].type].default(id, getState)
-          let code = getIterator(animals[id], api, id)
-          if (code.error) {
-            return dispatch(
-              throwError(code.error.name, (code.error.loc.line) - 1)
-            )
-          }
-          dispatch(startRun(code))
-        }
+        dispatch(startRun())
+        createIterators(animals)
+          .then((its) => {
+            runners = its.map((it) => {
+              return run(it, animals, getSpeed, onValue, (e) => console.warn(e))
+            })
+            runners.forEach((runner) => runner.run())
+          })
+          .catch(({message, lineNum}) => dispatch(throwError(message, lineNum)))
       }
       if (action.type === abortRun.type || action.type === throwError.type || action.type === reset.type) {
-        if (runner) {
-          runner.stop()
-          runner.removeAllListeners('step')
-          runner = undefined
+        if (runners) {
+          runners.forEach((runner) => runner.pause())
+          runners = undefined
         }
         dispatch(stopRun())
-      }
-      if (action.type === startRun.type) {
-        if (action.payload) {
-          runner = new Runner(action.payload, dispatch, getState)
-          runner.on('step', () => dispatch(incrementSteps()))
-          runner.startRun()
-        }
       }
       if (action.type === pauseRun.type) {
         dispatch(stopRun())
-        runner.pause()
+        runners.forEach((runner) => runner.pause())
       }
       if (action.type === resume.type) {
         dispatch(startRun())
-        runner.startRun()
+        runners.forEach((runner) => runner.run())
       }
       if (action.type === stepForward.type) {
-        if (!runner) {
-          const {animals} = state.game
-          const api = animalApis[animals[0].type].default(0, getState)
-          let code = getIterator(animals[0], api, 0)
-          runner = new Runner(code, dispatch, getState)
-          runner.on('step', () => dispatch(incrementSteps()))
+        const {animals} = state.game
+        if (!runners) {
+          createIterators(animals)
+          .then((its) => {
+            runners = its.map((it) => {
+              return run(it, animals, getSpeed, onValue, (e) => console.warn(e))
+            })
+            runners.forEach((runner, id) => runner.step(id).then((action) => onValue(action)))
+          })
+          .catch(({message, lineNum}) => dispatch(throwError(message, lineNum)))
+        } else {
+          runners.forEach((runner, id) => runner.step(id).then((action) => onValue(action)))
         }
-        runner.stepForward()
       }
+
+      function onValue (action) {
+        if (action.meta) {
+          const lineNum = action.meta.lineNum
+          if (getState().game.inputType === 'icons') {
+            dispatch(scrollTo('.code-editor', `#code-icon-${lineNum}`))
+          }
+          dispatch(setActiveLine(lineNum))
+        }
+        dispatch(incrementSteps())
+        return dispatch(action)
+      }
+
       return next(action)
     }
   }

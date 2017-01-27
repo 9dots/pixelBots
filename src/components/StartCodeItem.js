@@ -50,7 +50,11 @@ function render ({props, local, state}) {
       minHeight='400px'
       active='0'
       creatorMode
-      game={{...game, animals: game.animals.map((animal) => ({...animal, sequence: game.startCode}))}}
+      game={{
+        ...game,
+        permissions: ['EDIT_CODE'],
+        animals: game.animals.map((animal) => ({...animal, sequence: game.startCode}))
+      }}
       onChange={local(updateStartCode)}
       inputType={game.inputType}
     />

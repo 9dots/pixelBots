@@ -14,7 +14,7 @@ function render ({props}) {
 			active={active}
 			fontWeight='800'
 			highlight='false'
-			color={active ? '#333' : '#666'}
+			color={active ? '#333' : '#999'}
 			hoverProps={active && {color: '#666'}}
 			p='0'
 			handleClick={handleClick}>

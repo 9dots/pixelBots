@@ -3,19 +3,19 @@
 import IndeterminateProgress from '../components/IndeterminateProgress'
 import {Avatar, Block, Flex, Text} from 'vdux-ui'
 import AssignmentFeed from './AssignmentFeed'
+import {setUrl} from 'redux-effects-location'
 import DraftsFeed from './DraftsFeed'
 import ChallengeFeed from './ChallengeFeed'
 import SelectToolbar from './SelectToolbar'
 import createAction from '@f/create-action'
 import PlaylistFeed from './PlaylistFeed'
-import ProfileTabs from './ProfileTabs'
 import {maybeAddToArray} from '../utils'
+import Tabs from '../components/Tabs'
 import element from 'vdux/element'
 import filter from '@f/filter'
 import enroute from 'enroute'
 import fire from 'vdux-fire'
 
-const changeTab = createAction('PROFILE: CHANGE_TAB')
 const toggleSelected = createAction('PROFILE: TOGGLE_SELECTED')
 const clearSelected = createAction('PROFILE: CLEAR_SELECTED')
 const toggleSelectMode = createAction('PROFLIE: TOGGLE_SELECT_MODE')
@@ -30,7 +30,7 @@ const initialState = ({local}) => ({
 })
 
 const router = enroute({
-  'games': (params, props) => <ChallengeFeed
+  'challenges': (params, props) => <ChallengeFeed
     selected={props.selected}
     toggleSelected={props.actions.toggleSelected}
     uid={props.userKey}
@@ -54,7 +54,7 @@ const router = enroute({
 })
 
 function render ({props, state, local}) {
-  const {mine, thisProfile, currentUser, myProfile} = props
+  const {mine, thisProfile, currentUser, myProfile, username} = props
   const {actions, selected} = state
   const selectMode = selected.length > 0
 
@@ -76,14 +76,16 @@ function render ({props, state, local}) {
         </Block>
           {
           !selectMode
-            ? <ProfileTabs mine={mine} username={props.username} tab={props.params} changeTab={local((val) => changeTab(val))} />
+            ? <Tabs
+                tabs={['challenges', 'playlists', mine && 'drafts']}
+                onClick={(tab) => setUrl(`/${username}/${tab}`)}/>
             : <SelectToolbar
-              selected={selected}
-              playlists={filter((playlist) => playlist.creatorID === currentUser.uid, playlists)}
-              uid={props.userKey}
-              mine={mine}
-              clearSelected={actions.clearSelected}
-              num={selected.length} />
+                selected={selected}
+                playlists={filter((playlist) => playlist.creatorID === currentUser.uid, playlists)}
+                uid={props.userKey}
+                mine={mine}
+                clearSelected={actions.clearSelected}
+                num={selected.length} />
           }
       </Block>
       <Block maxHeight='calc(100% - 102px)' wide tall>

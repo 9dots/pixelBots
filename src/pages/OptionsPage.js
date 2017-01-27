@@ -7,9 +7,9 @@ import CodeDropdown from '../components/CodeSelectDropdown'
 import AnimalDropdown from '../components/AnimalDropdown'
 import StartCodeItem from '../components/StartCodeItem'
 import DropdownField from '../components/DropdownField'
-import {maybeAddToArray} from '../utils'
 import {Block, Icon, Text} from 'vdux-ui'
 import Button from '../components/Button'
+import {maybeAddToArray} from '../utils'
 import validator from '../schema/level'
 import EditLevel from './EditLevel'
 import element from 'vdux/element'
@@ -70,7 +70,8 @@ function render ({props, state}) {
             btn={dropdownBtn}
             setInputType={((type) => onEdit({
               inputType: type,
-              'animals/0/sequence': ''
+              'startCode': [],
+              'animals/0/sequence': []
             }))}/>
         </DropdownField>
         <DropdownField h='85px' label='Animal'>

@@ -1,11 +1,13 @@
-import {Flex, Menu, Icon, Text} from 'vdux-ui'
+/** @jsx element */
+
 import CreatePlaylist from '../components/CreatePlaylist'
+import {Flex, Menu, Icon, Text} from 'vdux-ui'
 import createAction from '@f/create-action'
 import PlaylistView from './PlaylistView'
 import {MenuItem} from 'vdux-containers'
+import mapValues from '@f/map-values'
 import deepEqual from '@f/deep-equal'
 import element from 'vdux/element'
-import mapValues from '@f/map-values'
 import reduce from '@f/reduce'
 
 const selectActivePlaylist = createAction('<PlaylistFeed/>: selectActivePlaylist')
@@ -70,7 +72,6 @@ function render ({props, state, local}) {
           </MenuItem>), [], items)}
       </Menu>
       {(items && items[active] && items[active].ref) && <PlaylistView
-        mine={mine}
         ref={items[active].key}
         uid={uid}
         activeKey={items[active].ref} />}

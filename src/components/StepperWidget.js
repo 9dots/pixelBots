@@ -4,12 +4,12 @@ import Button from './Button'
 import {Block, Icon, Text} from 'vdux-ui'
 import element from 'vdux/element'
 import {reset} from '../actions'
-import {pauseRun, stepForward} from '../middleware/codeRunner'
+import {stepForward} from '../middleware/codeRunner'
 
 function render ({props}) {
   const {steps, ...restProps} = props
   return (
-  	<Block column align='center center' {...restProps}>
+    <Block column align='center center' {...restProps}>
       <Block>
         <Text
           color='green'
@@ -25,7 +25,7 @@ function render ({props}) {
           fontWeight='800'
           borderWidth='0'
           color='green'
-          onClick={reset}><Icon name='replay'/></Button>
+          onClick={reset}><Icon name='replay' /></Button>
         <Text
           w='60px'
           textAlign='center'
@@ -40,7 +40,7 @@ function render ({props}) {
           fontWeight='800'
           borderWidth='0'
           color='green'
-          onClick={stepForward}><Icon name='skip_next'/></Button>
+          onClick={stepForward}><Icon name='skip_next' /></Button>
       </Block>
     </Block>
   )

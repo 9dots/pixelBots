@@ -32,7 +32,7 @@ function * checkForExisting (ref, id) {
 function * createCode (ref = '/links/') {
   const id = generateID()
   const exists = yield checkForExisting(ref, id)
-  console.log(exists)
+
   if (exists) {
     return yield createCode(ref)
   } else {
@@ -119,7 +119,7 @@ function range (low, hi) {
   return rangeRec(low, hi, [])
 }
 
-function maybeAddToArray (val, arr) {
+function maybeAddToArray (val, arr = []) {
   if (arr.indexOf(val) > -1) {
     return arr.filter((item) => item !== val)
   } else {
@@ -188,7 +188,26 @@ function arrayAt (obj, at) {
   }, obj)
 }
 
+function * createPlaylistLink (anonymous, key) {
+  const code = yield createCode()
+  yield refMethod({
+    ref: `/links/${code}`,
+    updates: {
+      method: 'set',
+      value: {
+        type: 'playlists',
+        payload: {
+          anonymous,
+          ref: key
+        }
+      }
+    }
+  })
+  return code
+}
+
 export {
+  createPlaylistLink,
   maybeAddToArray,
   nameToDirection,
   getDirection,

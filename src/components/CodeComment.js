@@ -1,4 +1,5 @@
-import LineNumber from './LineNumber'
+/** @jsx element */
+
 import element from 'vdux/element'
 import {Block, Icon} from 'vdux-ui'
 import {Input} from 'vdux-containers'
@@ -6,18 +7,17 @@ import {removeLine, updateLine} from '../actions'
 
 function render ({props}) {
   const {
-		shouldTransition,
-		newElement,
-		numLines,
-		lineNum,
+    shouldTransition,
+    newElement,
+    lineNum,
     animal,
     line
-	} = props
+  } = props
 
   const shouldFlash = !shouldTransition && newElement
-	const comment = line.replace('//', '').trim()
-	const handleUpdateLine = props.editorActions.updateLine || updateLine
-	const handleRemoveLine = props.editorActions.removeLine || removeLine
+  const comment = line.replace('//', '').trim()
+  const handleUpdateLine = props.editorActions.updateLine || updateLine
+  const handleRemoveLine = props.editorActions.removeLine || removeLine
 
   return (
     <Block relative wide>

@@ -12,6 +12,7 @@ import {incrementSteps, resume, stepForward} from './middleware/codeRunner'
 
 import {
   togglePermission,
+  incrementalPaint,
   setModalMessage,
   initializeGame,
   setActiveLine,
@@ -345,6 +346,18 @@ function reducer (state, action) {
         game: {
           ...state.game,
           startCode: action.payload
+        }
+      }
+    case incrementalPaint.type:
+      var {grid, coord, color} = action.payload
+      return {
+        ...state,
+        game: {
+          ...state.game,
+          [grid]: {
+            ...state.game[grid],
+            [coord]: state.game[grid][coord] === color ? 'white' : color
+          }
         }
       }
     case setPaint.type:

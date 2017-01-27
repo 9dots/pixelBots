@@ -9,7 +9,7 @@ import reduce from '@f/reduce'
 import {Block} from 'vdux-ui'
 
 function render ({props}) {
-  const {active, type, startAddLoop, selectedLine, editorActions = {}} = props
+  const {active, type, startAddLoop, selectedLine, editorActions = {}, canCode = true} = props
   const {incrementLine = () => {}} = editorActions
   const addCodeHandler = editorActions.addCode || addCode
   const docs = type ? animalApis[type].docs : {}
@@ -35,7 +35,7 @@ function render ({props}) {
         align='center center'
         boxShadow='0 2px 5px 0px rgba(0,0,0,.8)'
         transition='all .3s ease-in-out'
-        onClick={getClickHandler(active, name, args)}>
+        onClick={canCode && getClickHandler(active, name, args)}>
         <Icon bold fs='30px' name={nameToIcon(name)} color={nameToColor(name)}/>
       </Button>
     )

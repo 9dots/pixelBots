@@ -3,22 +3,31 @@
 import handleActions from '@f/handle-actions'
 import createAction from '@f/create-action'
 import EditLevelModal from './EditLevelModal'
-import {Block, Text} from 'vdux-ui'
+import {palette} from '../utils'
+import animalApis from '../animalApis'
+import ColorPicker from './ColorPicker'
+import {Block, Icon, Text} from 'vdux-ui'
 import {setPaint} from '../actions'
 import element from 'vdux/element'
 import Slider from './Slider'
 
-const hideModal = createAction('<OpacitySlider/>: HIDE_MODAL')
-const showModal = createAction('<OpacitySlider/>: SHOW_MODAL')
-
-const initialState = () => ({
-  modal: false
-})
-
 function render ({props, state, local}) {
-  const {opacity, onChange, game} = props
+  const {opacity, onChange, game, setFillColor, setPaintMode, color} = props
   const {permissions} = game
-  const {modal} = state
+
+  const canPaintColor = animalApis[game.animals[0].type].docs.paint.args
+  const blackAndWhite = [
+    {name: 'black', value: '#111'},
+    {name: 'white', value: '#FFF'}
+  ]
+
+  const btn = (
+    <Block onClick={() => setPaintMode(true)} align='flex-end center'>
+      <Icon fs='30px' name='format_color_fill'/>
+      <Block border='1px solid black' absolute top='25px' right='-1px' w='31px' h='8px' bgColor={color}/>
+    </Block>
+  )
+
   return (
     <Block align='space-around center'>
       <Slider
@@ -30,28 +39,20 @@ function render ({props, state, local}) {
         name='opacity-slider' />
       {
         permissions.indexOf('Tracer Paint') > -1
-          ? <Text cursor='pointer' color='blue' textDecoration='underline' onClick={local(showModal)}>GOAL</Text>
+          ? <Block bgColor='white'>
+              <ColorPicker
+                zIndex='999'
+                clickHandler={setFillColor}
+                palette={canPaintColor ? palette : blackAndWhite}
+                btn={btn} />
+            </Block>
           : <Text fontWeight='300' userSelect='none'>GOAL</Text>
       }
-      {modal && <EditLevelModal
-        field='targetPainted'
-        painted={game.targetPainted}
-        colorPicker
-        game={game}
-        onSubmit={(painted) => setPaint({grid: 'targetPainted', painted})}
-        dismiss={local(hideModal)}
-        title='Click to paint the tracer image'/>}
     </Block>
   )
 }
 
-const reducer = handleActions({
-  [showModal.type]: (state) => ({...state, modal: true}),
-  [hideModal.type]: (state) => ({...state, modal: false})
-})
 
 export default {
-  initialState,
-  reducer,
   render
 }

@@ -10,7 +10,7 @@ const speed = 750
 
 const colors = ['black', 'white']
 
-function wrap (id, getState = () => {}) {
+function wrap (id) {
   const up = (line, num) => move(0, line, parseInt(num))
   const right = (line, num) => move(1, line, parseInt(num))
   const down = (line, num) => move(2, line, parseInt(num))

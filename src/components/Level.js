@@ -1,7 +1,7 @@
 /** @jsx element */
 
 import element from 'vdux/element'
-import {Flex} from 'vdux-ui'
+import {Block, Flex} from 'vdux-ui'
 import Row from './Row'
 import Animal from './Animal'
 import reduce from '@f/reduce'
@@ -42,11 +42,10 @@ function render ({props, local, state, children}) {
 
   return (
     <Window onMouseUp={local(dragEnd)}>
-      <Flex
+      <Block
         w={w}
         h={h}
         relative
-        column
         id={id}
         onMouseDown={paintMode && local(dragStart)}
         onMouseUp={paintMode && local(dragEnd)}>
@@ -63,7 +62,7 @@ function render ({props, local, state, children}) {
             id={i}/>
         ))}
         {children}
-      </Flex>
+      </Block>
     </Window>
   )
 }

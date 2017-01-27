@@ -114,7 +114,7 @@ function maybeAddToArray (val, arr) {
 function getProps (props, {profile}) {
   return {
     ...props,
-    playlists: profile.playlists
+    playlists: profile && profile.playlists
   }
 }
 

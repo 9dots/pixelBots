@@ -1,10 +1,17 @@
 /** @jsx element */
 
-import element from 'vdux/element'
-import {Block} from 'vdux-ui'
-import Tab from './Tab'
-import createAction from '@f/create-action'
+import ProfileTab from '../components/ProfileTab'
 import handleActions from '@f/handle-actions'
+import createAction from '@f/create-action'
+import element from 'vdux/element'
+import {Flex} from 'vdux-ui'
+
+const colors = [
+  'red',
+  'blue',
+  'yellow',
+  'green'
+]
 
 const setActive = createAction('<Tabs/>: SET_ACTIVE')
 const initialState = ({props, local}) => ({
@@ -15,24 +22,18 @@ const initialState = ({props, local}) => ({
 })
 
 function render ({props, state, local}) {
-  const {tabs, onClick, ...restProps} = props
+  const {tabs, onClick, tabHeight, ...restProps} = props
   const {active, actions} = state
   return (
-    <Block
-      wide
-      align='start center'
-      bgColor='#999'
-      h='40px'
-      {...restProps}>
-      {tabs.map((tab) => <Tab
-        h='40px'
-        bgColor='#999'
-        color='white'
-        name={tab}
+    <Flex borderBottom='1px solid #999' wide relative bottom='0' color='lightBlue' h='42px' {...restProps}>
+      {tabs.map((tab, i) => <ProfileTab
+        title={tab}
+        h={tabHeight}
         active={tab === active}
         handleClick={handleClick}
+        underlineColor={colors[i % 4]}
       />)}
-    </Block>
+    </Flex>
   )
 
   function * handleClick (tab) {

@@ -38,7 +38,7 @@ function getIndent (line) {
 }
 
 function render ({props, state}) {
-  const {animals, active, activeLine, selectedLine, hasRun, finishAddLoop, waitingForLoop, editorActions = {}} = props
+  const {animals, active, activeLine, selectedLine, finishAddLoop, waitingForLoop, editorActions = {}, canCode = true} = props
   const handleSelectLine = editorActions.selectLine || selectLine
   const handleAddCode = editorActions.addCode || addCode
   const lineHeight = '36px'
@@ -68,11 +68,12 @@ function render ({props, state}) {
       argument,
       isActive,
       selectedLine,
-      editorActions
+      editorActions,
+      canCode
     }
 
     return (
-      <Block id={`code-icon-${i}`} cursor='pointer' onClick={[(e) => e.stopPropagation(), () => handleClick(active, i)]}>
+      <Block id={`code-icon-${i}`} cursor='pointer' onClick={canCode && [(e) => e.stopPropagation(), () => handleClick(active, i)]}>
         <Cursor w='250px' h='14px' active={selectedLine === i} />
         <Block align='center'>
           <LineNumber
@@ -138,6 +139,7 @@ function getElement (name, opts) {
     lineHeight,
     active,
     i,
+    canCode,
     type,
     argument,
     isActive,
@@ -148,6 +150,7 @@ function getElement (name, opts) {
       newElement={i === lastSelected && addedLine}
       h={lineHeight}
       bgColor='#666'
+      canCode={canCode}
       line={line}
       animal={active}
       editorActions={editorActions}
@@ -159,6 +162,7 @@ function getElement (name, opts) {
     return <CodeLoop
       newElement={i === lastSelected && addedLine}
       h={lineHeight}
+      canCode={canCode}
       bgColor='deepPurple'
       animal={active}
       editorActions={editorActions}
@@ -170,6 +174,7 @@ function getElement (name, opts) {
     return <CodeEndLoop
       newElement={i === lastSelected && addedLine}
       h={lineHeight}
+      canCode={canCode}
       editorActions={editorActions}
       bgColor='deepPurple'
       animal={active}
@@ -184,6 +189,7 @@ function getElement (name, opts) {
       newElement={i === lastSelected && addedLine}
       name={name}
       type={type}
+      canCode={canCode}
       editorActions={editorActions}
       bgColor={isActive ? '#B43C3C' : '#2C4770'}
       argument={argument}

@@ -45,6 +45,7 @@ const setActiveLine = createAction('SET_ACTIVE_LINE')
 const incrementLine = createAction('INCREMENT_LINE')
 const setActive = createAction('SET_ANIMAL_ACTIVE')
 const setAnimalPos = createAction('SET_ANIMAL_POS')
+const incrementalPaint = createAction('INCREMENTAL_PAINT')
 const addStartCode = createAction('ADD_START_CODE')
 const clearMessage = createAction('CLEAR_MESSAGE')
 const setGameData = createAction('SET_GAME_DATA')
@@ -98,10 +99,14 @@ function * saveProgress (animals, gameID, saveID) {
 
 function updateGame (ref) {
   return function * (data) {
-    yield refMethod({
-      updates: {method: 'update', value: {lastEdited: Date.now(), ...data}},
-      ref
-    })
+    try {
+      yield refMethod({
+        updates: {method: 'update', value: {lastEdited: Date.now(), ...data}},
+        ref
+      })
+    } catch (e) {
+      console.warn(e)
+    }
   }
 }
 
@@ -118,6 +123,7 @@ function * createNew (uid) {
 }
 
 export {
+  incrementalPaint,
   togglePermission,
   setModalMessage,
   initializeGame,
