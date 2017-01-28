@@ -2,20 +2,32 @@ import IndeterminateProgress from '../components/IndeterminateProgress'
 import {setUrl} from 'redux-effects-location'
 import fire, {refMethod} from 'vdux-fire'
 import {setSaveId, setGameId} from '../actions'
+import handleActions from '@f/handle-actions'
+import createAction from '@f/create-action'
 import {createCode} from '../utils'
 import Layout from '../layouts/HeaderAndBody'
-import {Block, Text} from 'vdux-ui'
 import element from 'vdux/element'
 import omit from '@f/omit'
 import Game from './Game'
 
-function * onCreate ({props}) {
+const setLoading = createAction('<GameLoader/>: SET_LOADING')
+
+const initialState = ({local}) => ({
+  loading: true,
+  actions: {
+    setLoading: local(setLoading)
+  }
+})
+
+function * onCreate ({props, state}) {
   if (props.noSave) {
+    yield state.actions.setLoading()
     yield setGameId(props.gameCode)
     yield setSaveId(null)
     return
   }
   if (props.saveID) {
+    yield state.actions.setLoading()
     yield setGameId(props.gameCode)
     return yield setSaveId(props.saveID)
   } else {
@@ -23,15 +35,17 @@ function * onCreate ({props}) {
   }
 }
 
-function * onUpdate (prev, {props}) {
-  if (!props.noSave && props.saveID !== prev.props.saveID) {
-    yield setSaveId(props.saveID)
+function * onUpdate (prev, next) {
+  if (!next.props.noSave && next.props.saveID !== prev.props.saveID) {
+    yield setSaveId(next.props.saveID)
   }
 }
 
-function render ({props}) {
+function render ({props, state}) {
   const {gameVal, savedProgress, playlist} = props
-  if (gameVal.loading || (props.saveID && savedProgress.loading)) {
+  const {actions, loading} = state
+
+  if (gameVal.loading || (props.saveID && savedProgress.loading) || loading) {
     return <IndeterminateProgress />
   }
 
@@ -77,6 +91,10 @@ function * createNewSave (gameCode) {
   yield setUrl(`/${code}`, true)
 }
 
+const reducer = handleActions({
+  [setLoading.type]: (state) => ({...state, loading: false})
+})
+
 export default fire((props) => {
   const savedProgress = props.saveID ? `/saved/${props.saveID}` : null
   return {
@@ -84,7 +102,9 @@ export default fire((props) => {
  		savedProgress
   }
 })({
+  initialState,
   onCreate,
   onUpdate,
+  reducer,
   render
 })

@@ -61,7 +61,7 @@ function render ({props, state, local}) {
               editMode
               animals={[]}
               paintMode={paintMode}
-              clickHandler={hidePaint && !paintMode ? () => {} : addPaint}
+              clickHandler={!paintMode ? () => {} : addPaint}
               color={color}
               active={active}
               painted={targetPainted}
