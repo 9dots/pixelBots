@@ -230,6 +230,7 @@ function reducer (state, action) {
         game: {
           ...action.payload,
           saved: true,
+          targetPainted: action.payload.targetPainted || {},
           animals: action.payload.animals.map((animal) => ({
             ...animal,
             sequence: !animal.sequence || animal.sequence.length === 0
@@ -357,7 +358,7 @@ function reducer (state, action) {
         game: {
           ...state.game,
           [grid]: {
-            ...state.game[grid],
+            ...state.game[grid] || {},
             [coord]: state.game[grid][coord] === color ? 'white' : color
           }
         }
