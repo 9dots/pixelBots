@@ -68,9 +68,6 @@ function homePage (params, props) {
   if (!props.user || (props.user && Object.keys(props.user).length === 0) || (!props.user.isAnonymous && !props.username)) {
     return <IndeterminateProgress/>
   }
-  if (props.user && props.username && !props.user.isAnonymous) {
-    return <ProfileLoader mine username={props.username} currentUser={props.user}/>
-  }
   return <HomePage {...props} />
 }
 

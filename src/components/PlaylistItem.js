@@ -4,7 +4,7 @@ import {refMethod} from 'vdux-fire'
 import {Block, Box, Icon} from 'vdux-ui'
 
 function render ({props}) {
-  const {game, playlistKey, mine, isTarget = false, listActions} = props
+  const {game, playlistKey, mine, isTarget = false, listActions = {}} = props
   const {dragEnter, dragStart, drop} = listActions
 
   return (

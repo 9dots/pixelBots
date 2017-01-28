@@ -8,7 +8,7 @@ import handleActions from '@f/handle-actions'
 import createAction from '@f/create-action'
 import {createPlaylistLink} from '../utils'
 import validator from '../schema/playlist'
-import {updateGame} from '../actions'
+import {updatePlaylist} from '../actions'
 import {Icon, Menu} from 'vdux-ui'
 import {refMethod} from 'vdux-fire'
 import element from 'vdux/element'
@@ -41,7 +41,7 @@ function render ({props, state, local}) {
     description
   } = props
   const {actions, open, edit} = state
-  const onEdit = updateGame(`/playlists/${activeKey}`)
+  const onEdit = updatePlaylist(activeKey)
   const btn = (
     <MenuItem bgColor='#e5e5e5' focusProps={{highlight: true}} ml='1em' align='center center' circle='40px'>
       <Icon name='more_vert' />

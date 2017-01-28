@@ -97,6 +97,22 @@ function * saveProgress (animals, gameID, saveID) {
   yield setSaved(true)
 }
 
+function updatePlaylist (ref) {
+  return function * (data) {
+    yield refMethod({
+      ref: '/queue/tasks',
+      updates: {
+        method: 'push',
+        value: {
+          _state: 'update_playlist',
+          updates: data,
+          ref
+        }
+      }
+    })
+  }
+}
+
 function updateGame (ref) {
   return function * (data) {
     try {
@@ -127,6 +143,7 @@ export {
   togglePermission,
   setModalMessage,
   initializeGame,
+  updatePlaylist,
   setActiveLine,
   incrementLine,
   initializeApp,
