@@ -31,6 +31,7 @@ function render ({props, state, local}) {
     targetPainted,
     permissions,
     levelSize,
+    completed,
     animals,
     running,
     painted,
@@ -95,6 +96,7 @@ function render ({props, state, local}) {
           steps={props.game.steps}
           animal={animals[active]}
           running={running}
+          completed={completed}
           hasRun={hasRun}
           canRun={permissions.indexOf(RUN_BUTTON) > -1}
           speed={speed}
