@@ -8,10 +8,10 @@ import SpeedDisplay from './Speed'
 import element from 'vdux/element'
 import {reset} from '../actions'
 import Button from './Button'
+import sleep from '@f/sleep'
 
 function render ({props}) {
-  const {hasRun, onRun = () => {}, speed, animal, running, canRun, steps = 0} = props
-
+  const {hasRun, onRun = () => {}, speed, animal, running, canRun, steps = 0, completed} = props
   const current = getSymbols(canRun, running)
 
   return (
@@ -47,6 +47,11 @@ function render ({props}) {
       yield onRun()
     } else if (running) {
       yield pauseRun()
+    } else if (completed) {
+      yield reset()
+      yield sleep(500)
+      yield runCode()
+      yield onRun()
     } else {
       yield resume()
     }

@@ -9,7 +9,6 @@ import fire, {refMethod} from 'vdux-fire'
 import {createCode} from '../../utils'
 import {Input} from 'vdux-containers'
 import element from 'vdux/element'
-import sleep from '@f/sleep'
 
 const setLoading = createAction('<MyPlaylist/>: SET_LOADING')
 
@@ -84,6 +83,7 @@ function * submit (listProps, assignmentRef, textVal = '') {
       }
     }
   })
+
   yield refMethod({
     ref: `/queue/tasks/${key}`,
     updates: {method: 'once', value: 'child_removed'}

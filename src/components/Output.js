@@ -31,6 +31,7 @@ function render ({props, state, local}) {
     targetPainted,
     permissions,
     levelSize,
+    completed,
     animals,
     running,
     painted,
@@ -43,6 +44,8 @@ function render ({props, state, local}) {
 
   const {opacity, paintMode, actions, color} = state
   const hidePaint = permissions.indexOf(RUN_BUTTON) === -1
+
+  console.log(paintMode)
 
   return (
     <Block mr='0'>
@@ -60,7 +63,7 @@ function render ({props, state, local}) {
               editMode
               animals={[]}
               paintMode={paintMode}
-              clickHandler={hidePaint && !paintMode ? () => {} : addPaint}
+              clickHandler={!paintMode ? () => {} : addPaint}
               color={color}
               active={active}
               painted={targetPainted}
@@ -95,6 +98,7 @@ function render ({props, state, local}) {
           steps={props.game.steps}
           animal={animals[active]}
           running={running}
+          completed={completed}
           hasRun={hasRun}
           canRun={permissions.indexOf(RUN_BUTTON) > -1}
           speed={speed}

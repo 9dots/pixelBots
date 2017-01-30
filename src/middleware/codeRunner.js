@@ -31,7 +31,7 @@ function codeRunner () {
         createIterators(animals)
           .then((its) => {
             runners = its.map((it) => {
-              return run(it, animals, getSpeed, onValue, (e) => console.warn(e))
+              return run(it, animals, getSpeed, onValue, (e) => console.warn(e), () => dispatch(stopRun(true)))
             })
             runners.forEach((runner) => runner.run())
           })
@@ -42,7 +42,7 @@ function codeRunner () {
           runners.forEach((runner) => runner.pause())
           runners = undefined
         }
-        dispatch(stopRun())
+        dispatch(stopRun(true))
       }
       if (action.type === pauseRun.type) {
         dispatch(stopRun())
@@ -55,10 +55,11 @@ function codeRunner () {
       if (action.type === stepForward.type) {
         const {animals} = state.game
         if (!runners) {
+          dispatch(reset())
           createIterators(animals)
           .then((its) => {
             runners = its.map((it) => {
-              return run(it, animals, getSpeed, onValue, (e) => console.warn(e))
+              return run(it, animals, getSpeed, onValue, (e) => console.warn(e), () => dispatch(stopRun(true)))
             })
             runners.forEach((runner, id) => runner.step(id).then((action) => onValue(action)))
           })

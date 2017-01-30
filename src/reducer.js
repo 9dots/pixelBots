@@ -128,7 +128,7 @@ function reducer (state, action) {
         running: true,
         hasRun: true
       }
-    case resume.type: 
+    case resume.type:
       return {
         ...state,
         running: true,
@@ -137,7 +137,8 @@ function reducer (state, action) {
     case stopRun.type:
       return {
         ...state,
-        running: false
+        running: false,
+        completed: action.payload || false
       }
     case setActiveLine.type:
       return {
@@ -187,6 +188,7 @@ function reducer (state, action) {
         ...state,
         running: false,
         hasRun: false,
+        completed: false,
         activeLine: -1,
         game: {
           ...state.game,
@@ -228,6 +230,7 @@ function reducer (state, action) {
         game: {
           ...action.payload,
           saved: true,
+          targetPainted: action.payload.targetPainted || {},
           animals: action.payload.animals.map((animal) => ({
             ...animal,
             sequence: !animal.sequence || animal.sequence.length === 0
@@ -302,7 +305,7 @@ function reducer (state, action) {
           })
         }
       }
-    case stepForward.type: 
+    case stepForward.type:
       return {
         ...state,
         hasRun: true
@@ -355,7 +358,7 @@ function reducer (state, action) {
         game: {
           ...state.game,
           [grid]: {
-            ...state.game[grid],
+            ...state.game[grid] || {},
             [coord]: state.game[grid][coord] === color ? 'white' : color
           }
         }
