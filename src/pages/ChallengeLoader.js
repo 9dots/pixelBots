@@ -2,15 +2,12 @@
 
 import IndeterminateProgress from '../components/IndeterminateProgress'
 import {Box, Block, Checkbox, Menu, Icon, Image} from 'vdux-ui'
-import deepEqual from '@f/deep-equal'
-import arrayEqual from '@f/array-equal'
-import objectEqual from '@f/object-equal'
 import {Dropdown, MenuItem} from 'vdux-containers'
 import {setUrl} from 'redux-effects-location'
 import {createAssignmentLink} from '../utils'
 import handleActions from '@f/handle-actions'
 import createAction from '@f/create-action'
-import fire, {refMethod} from 'vdux-fire'
+import fire from 'vdux-fire'
 import element from 'vdux/element'
 import moment from 'moment'
 
@@ -79,7 +76,7 @@ function render ({props, local, state}) {
             {item.title}
           </Box>
           <Box>
-          {(mine && hovering) && <Dropdown btn={btn} zIndex='999'>
+          {(hovering) && <Dropdown btn={btn} zIndex='999'>
               <Menu w='150px' column zIndex='999'>
                 <MenuItem onClick={() => setUrl(`/games/${props.ref}`)}>
                   Play
@@ -87,12 +84,16 @@ function render ({props, local, state}) {
                 <MenuItem onClick={() => assign(props.ref)}>
                   Assign
                 </MenuItem>
-                <MenuItem onClick={() => setUrl(`/edit/${props.ref}`)}>
-                  Edit
-                </MenuItem>
-                <MenuItem onClick={() => remove(uid, userRef)}>
-                  Remove
-                </MenuItem>
+                {
+                  mine && <Block>
+                    <MenuItem onClick={() => setUrl(`/edit/${props.ref}`)}>
+                      Edit
+                    </MenuItem>
+                    <MenuItem onClick={() => remove(uid, userRef)}>
+                      Remove
+                    </MenuItem>
+                  </Block>
+                }
               </Menu>
             </Dropdown>}
           </Box>
