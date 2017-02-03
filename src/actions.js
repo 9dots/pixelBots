@@ -2,6 +2,7 @@ import createAction from '@f/create-action'
 import {bindUrl, setUrl} from 'redux-effects-location'
 import {refMethod} from 'vdux-fire'
 import {createCode, initGame} from './utils'
+import pick from 'lodash/pick'
 
 const animalMove = createAction(
   'ANIMAL_MOVE',
@@ -119,6 +120,17 @@ function updateGame (ref) {
       yield refMethod({
         updates: {method: 'update', value: {lastEdited: Date.now(), ...data}},
         ref
+      })
+      yield refMethod({
+        ref: '/queue/tasks',
+        updates: {
+          method: 'push',
+          value: {
+            _state: 'update_game',
+            updates: pick(data, ['animal', 'inputType', 'lastEdited', 'name']),
+            ref
+          }
+        }
       })
     } catch (e) {
       console.warn(e)

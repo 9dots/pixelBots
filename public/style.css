@@ -169,6 +169,15 @@ svg {
   animation-delay: 1.9s;
 }
 
+.task-list-item-checkbox {
+  margin-left: -22px;
+  margin-right: 8px;
+}
+
+code.lang-js {
+  font-size: 14px;
+}
+
 @media print {
   body * {
     visibility: hidden;

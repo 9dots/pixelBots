@@ -55,7 +55,7 @@ function render ({props, state, children}) {
         <Block>{header}</Block>
       </ModalHeader>
       <ModalBody flex bgColor={props.bgColor || 'white'}>
-        <Text fs='m' fontFamily='ornate' color='#333'>{body}</Text>
+        <Text fontWeight='300' fs='m' fontFamily='ornate' color='#333'>{body}</Text>
       </ModalBody>
       {!noFooter && (
         <ModalFooter>

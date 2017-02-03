@@ -57,7 +57,7 @@ function render ({props, state, local}) {
   }
 
   const searchResults = <Block>
-    <Block align='center center'>
+    <Block m='20px' mb='0' align='center center'>
       <Input
         wide
         autofocus

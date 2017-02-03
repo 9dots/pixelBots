@@ -7,8 +7,7 @@ function render ({props, children}) {
   const {name, active, handleClick} = props
   return (
     <MenuItem
-      p='10px'
-      w='180px'
+      px='1.5em'
       align='center center'
       bgColor='#c5c5c5'
       textAlign='center'

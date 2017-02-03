@@ -15,11 +15,6 @@ import {Block, Text} from 'vdux-ui'
 import fire from 'vdux-fire'
 import Game from './Game'
 
-const nextStep = {
-  create: 'preview',
-  preview: 'publish'
-}
-
 function publishPage (draftID) {
   return (
     <Block column wide tall align='center center'>
@@ -45,7 +40,7 @@ function publishPage (draftID) {
 const router = enroute({
   'create': (params, props) => <OptionsPage
     {...props.newGame.value}
-    onEdit={updateGame(`/drafts/${props.draftID}`)}
+    onEdit={updateGame(props.new ? `/drafts/${props.draftID}` : `/games/${props.draftID}`)}
     {...props}/>,
   'preview': (params, props) => <Game
     initialData={props.newGame.value}
@@ -56,27 +51,38 @@ const router = enroute({
 
 function * onCreate ({props}) {
   if (!props.step) {
-    yield setUrl(`/edit/${props.draftID}/create`, true)
+    const path = props.new
+      ? `/create/${props.draftID}/create`
+      : `/edit/${props.draftID}/create`
+    yield setUrl(path, true)
   }
 }
 
 function render ({props, state, local}) {
   const {newGame, step} = props
+  const path = props.new ? 'create' : 'edit'
 
   if (newGame.loading || !step) {
     return <IndeterminateProgress/>
   }
 
+  const nextStep = {
+    create: 'preview',
+    preview: props.new && 'publish'
+  }
+
   const titleActions = <Block>
     <FlowTracker
-      onClick={(selection) => setUrl(`/edit/${props.draftID}/${selection}`)}
+      onClick={(selection) => setUrl(`/${path}/${props.draftID}/${selection}`)}
       active={step}
-      steps={['create', 'preview', 'publish']}/>
+      steps={['create', 'preview', props.new && 'publish']}/>
   </Block>
 
   return <Layout
-    category='create a challenge'
-    title={step.split('').map((char, i) => i === 0 ? char.toUpperCase() : char).join('')}
+    navigation={[{
+      category: 'create a challenge',
+      title: step.split('').map((char, i) => i === 0 ? char.toUpperCase() : char).join('')
+    }]}
     titleActions={titleActions}
     titleImg='/animalImages/panda.jpg'>
     {router(step, {newGame, ...props})}
@@ -88,23 +94,26 @@ function render ({props, state, local}) {
           py='18px'
           fontWeight='300'
           onClick={clickNext}
-          bgColor='blue'>Save & Continue</Button>
+          bgColor='blue'>{nextStep[step] ? 'Save & Continue' : 'Save'}</Button>
       </Block>
     }
   </Layout>
 
   function * clickNext () {
     if (nextStep[step]) {
-      yield setUrl(`/edit/${props.draftID}/${nextStep[step]}`)
+      const path = props.new ? 'create' : 'edit'
+      yield setUrl(`/${path}/${props.draftID}/${nextStep[step]}`)
       yield scrollTo('.action-bar-holder', '#top')
-    } else {
+    } else if (props.new) {
       yield publish()
+    } else {
+      yield setUrl('/')
     }
   }
 }
 
 export default fire((props) => ({
-  newGame: `drafts/${props.draftID}`
+  newGame: props.new ? `drafts/${props.draftID}` : `games/${props.draftID}`
 }))({
   onCreate,
   render

@@ -48,7 +48,7 @@ function render ({props, state, local}) {
       body={body}
       onSubmit={submit}
       footer={footer}
-      {...restProps}/>
+      {...restProps} />
   )
 
   function getTextArea () {
@@ -67,7 +67,8 @@ function render ({props, state, local}) {
       name={field}
       fs='18px'
       value={textValue}
-      onKeyUp={local((e) => setTextValue(e.target.value))}/>
+      onKeyDown={handleTab}
+      onKeyUp={local((e) => setTextValue(e.target.value))} />
   }
 
   function getInput () {
@@ -77,7 +78,21 @@ function render ({props, state, local}) {
       name={field}
       fs='18px'
       value={textValue}
-      onKeyUp={local((e) => setTextValue(e.target.value))}/>
+      onKeyUp={local((e) => setTextValue(e.target.value))} />
+  }
+}
+
+function handleTab (evt) {
+  if (evt.keyCode === 9) {
+    evt.preventDefault()
+    evt.stopPropagation()
+    const target = evt.target
+    var v = target.value
+    var s = target.selectionStart
+    var e = target.selectionEnd
+    target.value = v.substring(0, s) + '\t' + v.substring(e)
+    target.selectionStart = target.selectionEnd = s + 1
+    return false
   }
 }
 

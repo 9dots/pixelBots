@@ -1,26 +1,57 @@
 /** @jsx element */
 
-import {Avatar, Block, Text} from 'vdux-ui'
+import {Avatar, Block, Icon, Box, Text} from 'vdux-ui'
 import element from 'vdux/element'
 
 function render ({props, children}) {
-  const {title, titleImg, titleActions, category, leftAction, titleProps} = props
+  const {
+    title,
+    titleImg,
+    titleActions,
+    navigation = [],
+    leftAction,
+    titleProps,
+    bodyProps
+  } = props
+
   return (
     <Block id='top' column wide tall>
-      <Block relative wide color='#666' fontWeight='800'>
-        <Block align='start center' pb='10px' {...titleProps}>
-          {leftAction ? leftAction : <Block ml='1em'/>}
+      <Box relative wide color='#666' fontWeight='800'>
+        <Block p='20px' align='start center' pb='0px' {...titleProps}>
+          {leftAction || <Block ml='1em'/>}
           {titleImg && <Avatar boxShadow='0 0 1px 2px rgba(0,0,0,0.2)' h='70px' w='70px' src={titleImg} />}
-          <Block flex relative ml='1em'>
-            {category && <Text display='block' fontWeight='300' fs='xs'>{category.toUpperCase()}</Text>}
-            <Text display='block' fontWeight='500' fs='xl'>{title}</Text>
-          </Block>
+            <Block align='start center' flex relative ml='1em'>
+              {navigation.map(({category, title, onClick}, i) => (
+                <Block align='start center'>
+                  <Block
+                    onClick={!!onClick && onClick}
+                    cursor={onClick ? 'pointer' : 'default'}
+                    column
+                    align='start start'>
+                    {
+                      category && <Text
+                        display='block'
+                        fontWeight='300'
+                        fs='xs'>{category.toUpperCase()}
+                      </Text>
+                    }
+                    <Text
+                      display='block'
+                      fontWeight='500'
+                      fs='xl'>
+                      {title}
+                    </Text>
+                  </Block>
+                  {i < navigation.length - 1 && <Icon fs='l' mx='1em' name='keyboard_arrow_right'/>}
+              </Block>
+              ))}
+            </Block>
           {titleActions}
         </Block>
-      </Block>
-      <Block flex wide py='1em'>
+      </Box>
+      <Box flex wide py='1em' {...bodyProps}>
         {children}
-      </Block>
+      </Box>
     </Block>
   )
 }

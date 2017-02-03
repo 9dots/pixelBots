@@ -10,6 +10,7 @@ import codeRunner from './middleware/codeRunner'
 import moveAnimal from './middleware/moveAnimal'
 import location from 'redux-effects-location'
 import firebaseConfig from './firebaseConfig'
+import localstorage from 'redux-effects-localstorage'
 import addCode from './middleware/addCodeMW'
 import saveCode from './middleware/saveCode'
 import scroll from './middleware/scroll'
@@ -45,6 +46,7 @@ const {subscribe, render, replaceReducer} = vdux({
     flow(),
     effects,
     location(),
+    localstorage(),
     codeRunner(),
     moveAnimal(),
     paintSquare(),

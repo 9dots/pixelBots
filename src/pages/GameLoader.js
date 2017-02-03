@@ -1,28 +1,41 @@
+/** @jsx element */
+
 import IndeterminateProgress from '../components/IndeterminateProgress'
-import {setUrl} from 'redux-effects-location'
-import fire, {refMethod} from 'vdux-fire'
+import DescriptionModal from '../components/DescriptionModal'
+import {setItem, getItem} from 'redux-effects-localStorage'
 import {setSaveId, setGameId} from '../actions'
 import handleActions from '@f/handle-actions'
-import createAction from '@f/create-action'
-import {createCode} from '../utils'
+import {setUrl} from 'redux-effects-location'
 import Layout from '../layouts/HeaderAndBody'
+import createAction from '@f/create-action'
+import fire, {refMethod} from 'vdux-fire'
+import {createCode} from '../utils'
 import element from 'vdux/element'
+import {Block} from 'vdux-ui'
 import omit from '@f/omit'
 import Game from './Game'
 
+const showModal = createAction('<GameLoader/>: SHOW_MODAL')
+const hideModal = createAction('<GameLoader/>: HIDE_MODAL')
 const setLoading = createAction('<GameLoader/>: SET_LOADING')
+const setLocalDescription = createAction('<GameLoader/>: SET_LOCALDESCRIPTION')
 
 const initialState = ({local}) => ({
   loading: true,
+  show: false,
   actions: {
-    setLoading: local(setLoading)
+    setLoading: local(setLoading),
+    setDescription: local(setLocalDescription)
   }
 })
 
-function * onCreate ({props, state}) {
+function * onCreate ({props, state, local}) {
   if (props.noSave) {
+    const localStorageKey = `pixelBots-game-${props.gameCode}`
     yield state.actions.setLoading()
     yield setGameId(props.gameCode)
+    const description = yield getItem(localStorageKey)
+    yield state.actions.setDescription(description)
     yield setSaveId(null)
     return
   }
@@ -41,29 +54,69 @@ function * onUpdate (prev, next) {
   }
 }
 
-function render ({props, state}) {
+function render ({props, state, local}) {
   const {gameVal, savedProgress, playlist} = props
-  const {actions, loading} = state
+  const {loading, description, show} = state
 
   if (gameVal.loading || (props.saveID && savedProgress.loading) || loading) {
     return <IndeterminateProgress />
   }
 
   const mergeGameData = {...gameVal.value, ...savedProgress.value}
-  const game = <Game
+
+  const game = <Block wide tall>
+    <Game
     mine={props.mine}
     initialData={mergeGameData}
     gameData={gameVal.value}
     {...omit(['gameVal, savedProgress'], props)}
     left='60px' />
+    <DescriptionModal
+      show={show}
+      dismiss={local(hideModal)}
+      title={gameVal.value.title}
+      saveDocumentation={saveDocumentation(props.gameID, props.saveID)}
+      content={(!!savedProgress.value && savedProgress.value.description) || description || gameVal.value.description}/>
+  </Block>
   const gameLayout = <Layout
-    category='challenge'
-    title={mergeGameData.title}
+    navigation={[{category: 'challenge', title: mergeGameData.title, onClick: local(showModal)}]}
     titleImg={mergeGameData.imageUrl}>
     {game}
   </Layout>
 
-  return playlist ? game : gameLayout
+  return playlist ? getPlaylistLayout() : gameLayout
+
+  function saveDocumentation (gameID, saveID) {
+    const localStorageKey = `pixelBots-game-${gameID}`
+    return function * (description) {
+      if (saveID) {
+        yield refMethod({
+          ref: `/saved/${saveID}`,
+          updates: {
+            method: 'update',
+            value: {
+              description
+            }
+          }
+        })
+      } else {
+        yield setItem(localStorageKey, description)
+        yield state.actions.setDescription(description)
+      }
+    }
+  }
+
+  function getPlaylistLayout () {
+    return <Layout
+      navigation={[
+        {category: 'playlist', title: playlist.title},
+        {category: 'challenge', title: mergeGameData.title, onClick: local(showModal)}
+      ]}
+      titleActions={playlist.actions}
+      titleImg={playlist.img}>
+      {game}
+    </Layout>
+  }
 }
 
 function * createNewSave (gameCode) {
@@ -92,7 +145,10 @@ function * createNewSave (gameCode) {
 }
 
 const reducer = handleActions({
-  [setLoading.type]: (state) => ({...state, loading: false})
+  [setLoading.type]: (state) => ({...state, loading: false}),
+  [setLocalDescription.type]: (state, description) => ({...state, description}),
+  [showModal.type]: (state) => ({...state, show: true}),
+  [hideModal.type]: (state) => ({...state, show: false})
 })
 
 export default fire((props) => {

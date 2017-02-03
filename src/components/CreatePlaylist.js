@@ -1,7 +1,7 @@
 /** @jsx element */
 
 import {Modal, ModalBody, ModalHeader, ModalFooter} from 'vdux-ui'
-import {Input} from 'vdux-containers'
+import {Input, Textarea} from 'vdux-containers'
 import createAction from '@f/create-action'
 import validator from '../schema/playlist'
 import Button from '../components/Button'
@@ -65,64 +65,21 @@ function render ({props, local, state}) {
   )
 
   function * createPlaylist ({name, description}) {
-    const playlistRef = yield refMethod({
-      ref: `/playlists/`,
+    yield refMethod({
+      ref: '/queue/tasks',
       updates: {
         method: 'push',
         value: {
+          _state: 'create_playlist',
           name,
           description,
-          follows: 1,
-          creatorID: uid,
-          dateCreated: Date.now(),
-          creatorUsername: username,
-          followedBy: {
-            [username]: true
-          }
+          uid,
+          username,
+          selected
         }
       }
     })
-    if (selected.length > 0) {
-      yield addToPlaylist(playlistRef.key, name)
-    }
     yield handleDismiss()
-    yield refMethod({
-      ref: `/users/${uid}/playlists`,
-      updates: {
-        method: 'push',
-        value: {
-          name,
-          creatorID: uid,
-          ref: playlistRef.key,
-          creatorUsername: username,
-          dateAdded: 0 - Date.now()
-        }
-      }
-    })
-  }
-
-  function * addToPlaylist (code, name) {
-    yield refMethod({
-      ref: `/playlists/${code}`,
-      updates: {
-        method: 'transaction',
-        value: (val) => {
-          if (!val) {
-            return 0
-          } else {
-            const sequence = val.sequence ? union(val.sequence, selected) : selected
-            return {
-              ...val,
-              sequence
-            }
-          }
-        }
-      }
-    })
-    yield setToast(`${selected.length} added to ${name}`)
-    yield onAddToPlaylist()
-    yield sleep(3000)
-    yield setToast('')
   }
 }
 

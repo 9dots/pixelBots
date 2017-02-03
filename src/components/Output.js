@@ -45,8 +45,6 @@ function render ({props, state, local}) {
   const {opacity, paintMode, actions, color} = state
   const hidePaint = permissions.indexOf(RUN_BUTTON) === -1
 
-  console.log(paintMode)
-
   return (
     <Block mr='0'>
       <Block onMouseLeave={() => actions.setPaintMode(false)} relative p='10px' pt='0'>

@@ -1,10 +1,10 @@
+/** @jsx element */
+
 import omit from '@f/omit'
 import GameLoader from './GameLoader'
 import element from 'vdux/element'
-import fire from 'vdux-fire'
 import Button from '../components/Button'
 import {Block, Icon, Text} from 'vdux-ui'
-import Layout from '../layouts/HeaderAndBody'
 
 function render ({props}) {
   const isNext = props.current + 1 < props.sequence.length
@@ -12,12 +12,17 @@ function render ({props}) {
 
   const titleActions = (
     <Block>
-      <Text fs='m' mr='2em'>{props.current + 1} / {props.sequence.length}</Text>
-      {
-        isNext
-          ? <Button bgColor='blue' w='160px' onClick={props.next}>NEXT</Button>
-          : <Block w='160px' />
-      }
+      <Text fs='m'>{props.current + 1} / {props.sequence.length}</Text>
+      <Button
+        ml='2em'
+        mr='0.5em'
+        bgColor={isPrev ? 'blue' : 'disabled'}
+        disabled={!isPrev}
+        onClick={props.prev}>BACK</Button>
+      <Button
+        bgColor={isNext ? 'blue' : 'disabled'}
+        disabled={!isNext}
+        onClick={props.next}>NEXT</Button>
     </Block>
   )
 
@@ -35,16 +40,16 @@ function render ({props}) {
       <Icon name='arrow_back' />
     </Button>
 
-  return (
-    <Layout
-      category='playlist'
-      title={props.name}
-      leftAction={leftAction}
-      titleImg={props.imageUrl}
-      titleActions={titleActions}>
-      <GameLoader playlist gameCode={props.sequence[props.current]} saveID={props.saveIds[props.current]} {...omit('saveID', props)} />
-    </Layout>
-  )
+  return <GameLoader
+    playlist={{
+      leftAction,
+      title: props.name,
+      img: props.imageUrl,
+      actions: titleActions
+    }}
+    gameCode={props.sequence[props.current]}
+    saveID={props.saveIds[props.current]}
+    {...omit('saveID', props)} />
 }
 
 export default {

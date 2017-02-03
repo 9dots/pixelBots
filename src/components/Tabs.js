@@ -15,7 +15,7 @@ const colors = [
 
 const setActive = createAction('<Tabs/>: SET_ACTIVE')
 const initialState = ({props, local}) => ({
-  active: props.tabs[0],
+  active: props.active || props.tabs[0],
   actions: {
     setActive: local((tab) => setActive(tab))
   }
@@ -25,7 +25,14 @@ function render ({props, state, local}) {
   const {tabs, onClick, tabHeight, ...restProps} = props
   const {active, actions} = state
   return (
-    <Flex borderBottom='1px solid #999' wide relative bottom='0' color='lightBlue' h='42px' {...restProps}>
+    <Flex
+      borderBottom='1px solid #999'
+      wide
+      relative
+      bottom='0'
+      color='lightBlue'
+      h='42px'
+      {...restProps}>
       {tabs.map((tab, i) => <ProfileTab
         title={tab}
         h={tabHeight}

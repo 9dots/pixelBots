@@ -38,8 +38,7 @@ function render ({props}) {
 
   return (
     <Layout
-      category='Pixel Bots'
-      title='Explore'
+      navigation={[{category: 'Pixel Bots', title: 'Explore'}]}
       titleImg='/animalImages/panda.jpg'>
       <Block py='2em'>
         {router(tab, props)}

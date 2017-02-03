@@ -9,11 +9,11 @@ function render ({props}) {
   return (
     <Block align='center center'>
       {
-        steps.map((step, i) => typeof (step) === 'string'
+        steps.filter((step) => !!step).map((step, i, arr) => typeof (step) === 'string'
           ? <FlowItem
             flex
-            isComplete={i < steps.indexOf(active)}
-            lastItem={i >= steps.length - 1}
+            isComplete={i < arr.indexOf(active)}
+            lastItem={i >= arr.length - 1}
             active={step === active}
             onClick={onClick}
             label={step}/>

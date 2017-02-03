@@ -1,15 +1,56 @@
 /** @jsx element */
 
 import IndeterminateProgress from '../components/IndeterminateProgress'
-import {Box, Block, Icon, MenuItem, Image} from 'vdux-ui'
+import {Box, Block, Checkbox, Menu, Icon, Image} from 'vdux-ui'
+import deepEqual from '@f/deep-equal'
+import arrayEqual from '@f/array-equal'
+import objectEqual from '@f/object-equal'
+import {Dropdown, MenuItem} from 'vdux-containers'
 import {setUrl} from 'redux-effects-location'
+import {createAssignmentLink} from '../utils'
+import handleActions from '@f/handle-actions'
+import createAction from '@f/create-action'
 import fire, {refMethod} from 'vdux-fire'
-import Button from '../components/Button'
-import {createCode} from '../utils'
 import element from 'vdux/element'
+import moment from 'moment'
 
-function render ({props}) {
-  const {game, selected, mine, editable, toggleSelected, setModal, lastEdited} = props
+const mouseOver = createAction('<ChallengeLoader/>: MOUSE_OVER')
+const mouseOut = createAction('<ChallengeLoader/>: MOUSE_OUT')
+
+const initialState = () => ({
+  hovering: false
+})
+
+const btn = (
+  <MenuItem
+    bgColor='#e5e5e5'
+    mr='1em'
+    align='center center'
+    circle='40px'>
+    <Icon name='more_vert' />
+  </MenuItem>
+)
+
+function render ({props, local, state}) {
+  const {
+    handleClick = () => {},
+    lastEdited,
+    selected = [],
+    setModal,
+    editable,
+    userRef,
+    remove = () => {},
+    game,
+    mine,
+    key,
+    ref,
+    uid
+  } = props
+
+  const {hovering} = state
+  const selectMode = selected.length > 0
+  const isSelected = selected.indexOf(ref) > -1
+
 
   if (game.loading) {
     return <IndeterminateProgress />
@@ -24,14 +65,37 @@ function render ({props}) {
     <MenuItem
       wide
       relative
-      cursor={mine ? 'move' : 'default'}
+      cursor='default'
+      onMouseOver={local(mouseOver)}
+      onMouseOut={local(mouseOut)}
       fontWeight='300'
+      pl='5%'
       bgColor='transparent'
       borderTop='1px solid #999'>
       <Block align='start center'>
         <Box align='start center' flex minWidth='250px'>
-          <Image mr='2em' display='block' sq='50px' src={item.imageUrl} />
-          {item.title}
+          <Box align='start center' flex>
+            <Image mr='2em' display='block' sq='50px' src={item.imageUrl} />
+            {item.title}
+          </Box>
+          <Box>
+          {hovering && <Dropdown btn={btn} zIndex='999'>
+              <Menu w='150px' column zIndex='999'>
+                <MenuItem onClick={() => setUrl(`/games/${props.ref}`)}>
+                  Play
+                </MenuItem>
+                <MenuItem onClick={() => assign(props.ref)}>
+                  Assign
+                </MenuItem>
+                <MenuItem onClick={() => setUrl(`/edit/${props.ref}`)}>
+                  Edit
+                </MenuItem>
+                <MenuItem onClick={() => remove(uid, userRef)}>
+                  Remove
+                </MenuItem>
+              </Menu>
+            </Dropdown>}
+          </Box>
         </Box>
         <Box w='180px' minWidth='180px'>
           <Block align='start center'>
@@ -43,33 +107,37 @@ function render ({props}) {
           {item.inputType}
         </Box>
         <Box w='180px' minWidth='180px'>
-          {lastEdited}
+          {moment(lastEdited).fromNow()}
         </Box>
-        {mine && <Box absolute lineHeight='0' right='2em'>
-          <Icon name='delete' />
+        {(mine && (hovering || selectMode)) && <Box absolute lineHeight='0' right='1em'>
+          <Checkbox
+            cursor='pointer'
+            checked={isSelected}
+            transition='all .2s ease-in-out'
+            onChange={() => handleClick(props.ref)} />
         </Box>}
       </Block>
     </MenuItem>
   )
+
+  function * assign (ref) {
+    yield * createAssignmentLink(
+      'game',
+      ref,
+      (code) => setModal(code)
+    )
+  }
 }
+
+const reducer = handleActions({
+  [mouseOver.type]: (state) => ({...state, hovering: true}),
+  [mouseOut.type]: (state) => ({...state, hovering: false})
+})
 
 export default fire((props) => ({
   game: `/games/${props.ref}`
 }))({
+  initialState,
+  reducer,
   render
 })
-
-// function * createAssignment () {
-//   const code = yield createCode()
-//   yield refMethod({
-//     ref: `/links/${code}`,
-//     updates: {
-//       method: 'set',
-//       value: {
-//         type: 'game',
-//         payload: props.ref
-//       }
-//     }
-//   })
-//   yield setModal(code)
-// }

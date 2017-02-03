@@ -2,23 +2,25 @@
 
 import LinkModal from '../components/LinkModal'
 import SortHeader from '../components/SortHeader'
-import {Block, Flex, Icon, Menu, Text} from 'vdux-ui'
+import {Block, Flex, Menu, Text} from 'vdux-ui'
 import ChallengeLoader from './ChallengeLoader'
 import createAction from '@f/create-action'
 import handleActions from '@f/handle-actions'
-import fire, {refMethod} from 'vdux-fire'
+import {refMethod} from 'vdux-fire'
 import Button from '../components/Button'
-import {createNew} from '../actions'
 import sort from 'lodash/orderBy'
+import map from '@f/map'
 import element from 'vdux/element'
 import reduce from '@f/reduce'
-import moment from 'moment'
 
 const setModal = createAction('<ChallengeFeed/>: SET_MODAL')
 const setOrderType = createAction('<ChallengeFeed/>: SET_ORDER_TYPE')
 const setOrder = createAction('<ChallengeFeed/>: SET_ORDER')
 
-const caseInsensitiveName = (game) => game.name.toLowerCase()
+const caseInsensitiveName = (game) => game.name
+  ? game.name.toLowerCase()
+  : game.title.toLowerCase()
+
 const initialState = ({local}) => ({
   modal: '',
   orderBy: caseInsensitiveName,
@@ -30,12 +32,11 @@ const initialState = ({local}) => ({
   }
 })
 
-
 function render ({props, state}) {
-  const {games, editable, selected = [], toggleSelected, mine} = props
+  const {games, selected = [], mine, uid, toggleSelected} = props
   const {modal, order, actions, orderBy} = state
 
-  const sortedGames = sort(games, orderBy, order)
+  const sortedGames = sort(map((game, key) => ({...game, key}), games), orderBy, order)
 
   const modalFooter = (
     <Block>
@@ -44,39 +45,52 @@ function render ({props, state}) {
 	)
 
   return (
-    <Flex flexWrap='wrap'	w='80%'	margin='0 auto'>
+    <Flex flexWrap='wrap' wide margin='0 auto'>
       <Menu
-				column
-				wide
-        minWidth='820px'
-				mt='2em'>
-        <Block px='16px' color='#999' mt='1em' fontWeight='800' align='start center' bgColor='transparent' mb='4px'>
+        column
+        wide
+        minWidth='820px'>
+        <Block pl='5%' pr='16px' py='8px' color='#999' fontWeight='800' align='start center' bgColor='transparent'>
           <SortHeader
             onClick={() => handleClick(caseInsensitiveName)}
             minWidth='250px'
-						flex
-						dir={orderBy === caseInsensitiveName && order}
+            flex
+            dir={orderBy === caseInsensitiveName && order}
             label='NAME' />
           <SortHeader
             onClick={() => handleClick('animal')}
-						dir={orderBy === 'animal' && order}
+            dir={orderBy === 'animal' && order}
             minWidth='180px'
             w='180px'
             label='ANIMAL' />
           <SortHeader
             onClick={() => handleClick('inputType')}
-						dir={orderBy === 'inputType' && order}
+            dir={orderBy === 'inputType' && order}
             minWidth='180px'
             w='180px'
             label='CODE TYPE' />
-					<SortHeader
-						onClick={() => handleClick('lastEdited')}
-						dir={orderBy === 'lastEdited' && order}
+          <SortHeader
+            onClick={() => handleClick('lastEdited')}
+            dir={orderBy === 'lastEdited' && order}
             minWidth='180px'
             w='180px'
             label='LAST EDITED' />
         </Block>
-        {reduce((arr, game) => arr.concat(<ChallengeLoader lastEdited={moment(game.lastEdited).fromNow()} ref={game.ref} />), [], sortedGames)}
+        <Block>
+          {sortedGames.map((game, i) => (
+            <ChallengeLoader
+              lastEdited={game.lastEdited}
+              setModal={actions.setModal}
+              userRef={game.key}
+              remove={remove}
+              key={game.key}
+              selected={selected}
+              handleClick={toggleSelected}
+              uid={uid}
+              mine={mine}
+              ref={game.ref} />
+          ))}
+        </Block>
       </Menu>
       {modal && <LinkModal
         code={modal}
@@ -93,6 +107,15 @@ function render ({props, state}) {
       yield actions.setOrderType(cat)
     }
   }
+}
+
+function * remove (uid, ref) {
+  yield refMethod({
+    ref: `/users/${uid}/games/${ref}`,
+    updates: {
+      method: 'remove'
+    }
+  })
 }
 
 const reducer = handleActions({

@@ -46,7 +46,7 @@ function render ({props}) {
         mode='javascript'
         height='100%'
         width='100%'
-        fontSize='18px'
+        fontSize='14px'
         ref={_setValue => setValue = _setValue}
         readOnly={!canCode}
         jsOptions={jsOptions}

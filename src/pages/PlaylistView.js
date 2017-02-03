@@ -45,9 +45,18 @@ function render ({props, state}) {
   }
 
   const myPlaylistsValue = profile && profile.playlists || {}
-  const playlistMatch = Object.keys(filter((list) => list.ref === activeKey, myPlaylistsValue))[0]
-  const {sequence, name, followedBy = [], creatorID, creatorUsername, description} = playlist.value
+  const playlistMatch = Object.keys(
+    filter((list) => list.ref === activeKey, myPlaylistsValue)
+  )[0]
   const {modal, actions, target, dragTarget} = state
+  const {
+    sequence,
+    name,
+    followedBy = [],
+    creatorID,
+    creatorUsername,
+    description
+  } = playlist.value
 
   const mine = uid === creatorID
 
@@ -63,9 +72,16 @@ function render ({props, state}) {
     <Block flex ml='10px' tall overflowY='auto' minWidth='680px'>
       <Block align='space-between center' p='10px'>
         <Block>
-          <Text display='block' fs='xs' color='#777' fontWeight='300'>CREATED BY: {creatorUsername}</Text>
-          <Text display='block' fs='xxl' color='#555' fontWeight='500'>{name}</Text>
-          <Text display='block' fs='m' color='#777' fontWeight='300'>{description}</Text>
+          <Text
+            display='block'
+            fs='xs'
+            color='#777'
+            fontWeight='300'>CREATED BY: {creatorUsername}</Text>
+          <Text
+            display='block'
+            fs='xxl'
+            color='#555'
+            fontWeight='500'>{name}</Text>
         </Block>
         <Block>
           <PlaylistOptions
@@ -81,7 +97,13 @@ function render ({props, state}) {
         </Block>
       </Block>
       <Menu overflowY='auto' column>
-        <Block color='#999' mt='1em' fontWeight='800' align='start center' bgColor='transparent' mb='4px'>
+        <Block
+          color='#999'
+          mt='1em'
+          fontWeight='800'
+          align='start center'
+          bgColor='transparent'
+          mb='4px'>
           <Block minWidth='66px' w='66px' />
           <Text flex minWidth='200px' ml='2em'>CHALLENGE NAME</Text>
           <Text mr='2em' minWidth='100px' w='100px'>ANIMAL</Text>

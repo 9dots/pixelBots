@@ -6,7 +6,7 @@ import {setUrl} from 'redux-effects-location'
 import ConfirmDelete from './ConfirmDelete'
 import handleActions from '@f/handle-actions'
 import createAction from '@f/create-action'
-import {createPlaylistLink} from '../utils'
+import {createAssignmentLink} from '../utils'
 import validator from '../schema/playlist'
 import {updatePlaylist} from '../actions'
 import {Icon, Menu} from 'vdux-ui'
@@ -43,18 +43,30 @@ function render ({props, state, local}) {
   const {actions, open, edit} = state
   const onEdit = updatePlaylist(activeKey)
   const btn = (
-    <MenuItem bgColor='#e5e5e5' focusProps={{highlight: true}} ml='1em' align='center center' circle='40px'>
+    <MenuItem
+      bgColor='#e5e5e5'
+      focusProps={{highlight: true}}
+      ml='1em'
+      align='center center'
+      circle='40px'>
       <Icon name='more_vert' />
     </MenuItem>
 	)
   const followButton = followed
-		? <Button onClick={unfollow} bgColor='transparent' color='#666' border='1px solid #666'>Unfollow</Button>
+		? <Button
+      onClick={unfollow}
+      bgColor='transparent'
+      color='#666'
+      border='1px solid #666'>Unfollow</Button>
 		: <Button bgColor='primary' onClick={follow}>Follow</Button>
 
   return (
     <Block align='center center'>
       <Button mr='5px' bgColor='red' onClick={play}>Play</Button>
-      <Button mr='5px' bgColor='green' onClick={(e) => assign(e, true)}>Assign</Button>
+      <Button
+        mr='5px'
+        bgColor='green'
+        onClick={(e) => assign(e, true)}>Assign</Button>
       {followButton}
       {mine && <Dropdown btn={btn} zIndex='999'>
         <Menu w='150px' column zIndex='999'>
@@ -92,23 +104,19 @@ function render ({props, state, local}) {
   )
 
   function * play (e, anonymous = true) {
-    const code = yield * createPlaylistLink(anonymous, activeKey)
-    yield setUrl(`/${code}`)
+    yield * createAssignmentLink(
+      'playlists',
+       {anonymous: true, ref: activeKey},
+      (code) => setUrl(`/${code}`)
+    )
   }
 
   function * assign (e, anonymous = false) {
-    const code = yield * createPlaylistLink(anonymous, activeKey)
-    yield refMethod({
-      ref: '/assignments/',
-      updates: {
-        method: 'push',
-        value: {
-          name: name,
-          creatorID: uid
-        }
-      }
-    })
-    yield setModal(code)
+    yield * createAssignmentLink(
+      'playlists',
+      {anonymous, ref: activeKey},
+      (code) => setModal(code)
+    )
   }
 }
 

@@ -10,6 +10,7 @@ function render ({props}) {
       <Text lineHeight='1.4em'>{label}</Text>
       {dir && <Icon
         mb='1px'
+        ml='5px'
         fs='s'
         transition='transform 0.2s ease-in-out'
         transform={dir === 'desc' ? 'rotate(-180deg)' : 'rotate(0deg)'}

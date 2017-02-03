@@ -2,7 +2,7 @@
 
 import IndeterminateProgress from './IndeterminateProgress'
 import {setUrl} from 'redux-effects-location'
-import {createPlaylistLink} from '../utils'
+import {createAssignmentLink} from '../utils'
 import {Block, Icon, Image} from 'vdux-ui'
 import {Text} from 'vdux-containers'
 import element from 'vdux/element'
@@ -48,8 +48,11 @@ function render ({props}) {
   )
 
   function * play (e, anonymous = true) {
-    const code = yield * createPlaylistLink(anonymous, playlistRef)
-    yield setUrl(`/${code}`)
+    yield * createAssignmentLink(
+      'playlists',
+      {anonymous, ref: playlistRef},
+      (code) => setUrl(`/${code}`)
+    )
   }
 }
 

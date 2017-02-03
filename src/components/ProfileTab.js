@@ -12,11 +12,10 @@ function render ({props}) {
 			bgColor='#f5f5f5'
 			lineHeight='2.6em'
 			active={active}
-			fontWeight='800'
+			fontWeight='500'
 			highlight='false'
 			color={active ? '#333' : '#999'}
 			hoverProps={active && {color: '#666'}}
-			p='0'
 			handleClick={handleClick}>
 			{active && <Block absolute bgColor={underlineColor} wide  bottom='-1px' h='6px'/>}
 		</Tab>

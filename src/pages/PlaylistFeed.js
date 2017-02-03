@@ -7,6 +7,7 @@ import PlaylistView from './PlaylistView'
 import {MenuItem} from 'vdux-containers'
 import mapValues from '@f/map-values'
 import deepEqual from '@f/deep-equal'
+import orderBy from 'lodash/orderBy'
 import element from 'vdux/element'
 import reduce from '@f/reduce'
 
@@ -37,13 +38,12 @@ function * onUpdate (prev, {props, state}) {
 
 function render ({props, state, local}) {
   const {playlists = {}, mine, uid} = props
-
-  const items = mapValues((val) => val, playlists)
+  const items = orderBy(mapValues((val) => val, playlists), 'lastEdited', 'desc')
   const {actions, active, modal} = state
 
   return (
-    <Flex tall wide>
-      <Menu column spacing='2px' mt='2px' tall overflowY='auto'>
+    <Flex display='flex' tall wide px='20px'>
+      <Menu column spacing='2px' mt='2px' h='calc(100% - 1px)' overflowY='auto'>
         {mine && <MenuItem
           bgColor='#d5d5d5'
           align='start center'

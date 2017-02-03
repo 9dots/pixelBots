@@ -9,7 +9,7 @@ function render ({props}) {
   const {drafts} = props
 
   return (
-    <Block bgColor='white'>
+    <Block wide bgColor='white'>
       {reduce(toItems, [], drafts)}
     </Block>
   )

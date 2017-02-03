@@ -24,6 +24,7 @@ function getCells ({row, painted, color, numColumns, ...restProps}) {
   let cells = []
   for (var i = 0; i < numColumns; i++) {
     cells.push(<Cell
+      key={`${row}-${i}`}
       coordinates={[row, i]}
       paintColor={color}
       color={getColor(painted, i)}

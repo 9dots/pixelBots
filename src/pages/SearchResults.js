@@ -41,6 +41,19 @@ const router = enroute({
 	)
 })
 
+const reduceType = (cur, next) => {
+  return {
+    ...cur,
+    [next._type]: {
+      ...cur[next._type],
+      [next._id]: {
+        ...next._source.body,
+        ref: next._id
+      }
+    }
+  }
+}
+
 function render ({props, state}) {
   const {responses, tab, playlists, uid, searchQ = ''} = props
   const {actions, selected} = state
@@ -48,20 +61,7 @@ function render ({props, state}) {
 		? responses.value.hits
 		: {}
 
-  const byType = reduce((cur, next) => {
-    return {
-      ...cur,
-      [next._type]: {
-        ...cur[next._type],
-        [next._id]: {
-          ...next._source,
-          ref: next._id
-        }
-      }
-    }
-  },
-	{games: {}, playlists: {}, users: {}},
-	hits)
+  const byType = reduce(reduceType, {games: {}, playlists: {}, users: {}}, hits)
 
   const toolbar = <SelectToolbar
     selected={selected}
@@ -70,7 +70,7 @@ function render ({props, state}) {
     clearSelected={actions.clearSelected}
     num={selected.length} />
 
-  const tabs = <Flex borderBottom='1px solid #999' wide relative bottom='0' color='lightBlue' h='42px'>
+  const tabs = <Flex mx='20px' borderBottom='1px solid #999' wide relative bottom='0' color='lightBlue' h='42px'>
     <ProfileTab
       title={`${Object.keys(byType.games).length || 0} challenges`}
       underlineColor='red'

@@ -188,26 +188,23 @@ function arrayAt (obj, at) {
   }, obj)
 }
 
-function * createPlaylistLink (anonymous, key) {
+function * createAssignmentLink (type, payload, cb = () => {}) {
   const code = yield createCode()
   yield refMethod({
     ref: `/links/${code}`,
     updates: {
       method: 'set',
       value: {
-        type: 'playlists',
-        payload: {
-          anonymous,
-          ref: key
-        }
+        type,
+        payload
       }
     }
   })
-  return code
+  return yield cb(code)
 }
 
 export {
-  createPlaylistLink,
+  createAssignmentLink,
   maybeAddToArray,
   nameToDirection,
   getDirection,

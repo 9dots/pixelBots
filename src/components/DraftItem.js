@@ -20,7 +20,7 @@ function render ({props}) {
       fontWeight='300'
       align='space-between center'
       hoverProps={{bgColor: 'rgba(33, 150, 243, 0.2)'}}
-      onClick={() => setUrl(`/edit/${draftRef}`)}>
+      onClick={() => setUrl(`/create/${draftRef}`)}>
       {draftVal.title}
       <Icon name='delete' onClick={removeDraft}/>
     </MenuItem>

@@ -4,6 +4,7 @@ import IndeterminateProgress from '../components/IndeterminateProgress'
 import {Avatar, Block, Flex, Text} from 'vdux-ui'
 import AssignmentFeed from './AssignmentFeed'
 import {setUrl} from 'redux-effects-location'
+import Layout from '../layouts/HeaderAndBody'
 import DraftsFeed from './DraftsFeed'
 import ChallengeFeed from './ChallengeFeed'
 import SelectToolbar from './SelectToolbar'
@@ -65,21 +66,19 @@ function render ({props, state, local}) {
   const {playlists} = profile
 
   return (
-    <Flex column align='start' wide tall>
-      <Block relative wide color='#333' fontWeight='800'>
-        <Block align='start center' pb='10px' ml='1em'>
-          <Avatar boxShadow='0 0 1px 2px rgba(0,0,0,0.2)' h='70px' w='70px' src={profile.photoURL} />
-          <Block relative ml='1em'>
-            <Text display='block' fontWeight='300' fs='xs'>USER</Text>
-            <Text display='block' fontWeight='500' fs='xl'>{profile.displayName}</Text>
-          </Block>
-        </Block>
+    <Layout
+      navigation={[{category: 'user', title: profile.displayName}]}
+      bodyProps={{py: 0, display: 'flex'}}
+      titleImg={profile.photoURL}>
+      <Block column wide h='calc(100% - 1px)'>
+        <Block mt='10px' px='20px'>
           {
-          !selectMode
-            ? <Tabs
-                tabs={['challenges', 'playlists', mine && 'drafts']}
+            !selectMode
+              ? <Tabs
+                tabs={['playlists', 'challenges', mine && 'drafts']}
+                active={props.params}
                 onClick={(tab) => setUrl(`/${username}/${tab}`)}/>
-            : <SelectToolbar
+              : <SelectToolbar
                 selected={selected}
                 playlists={filter((playlist) => playlist.creatorID === currentUser.uid, playlists)}
                 uid={props.userKey}
@@ -87,11 +86,10 @@ function render ({props, state, local}) {
                 clearSelected={actions.clearSelected}
                 num={selected.length} />
           }
-      </Block>
-      <Block maxHeight='calc(100% - 102px)' wide tall>
+        </Block>
         {router(props.params, {...props, ...state, profile})}
       </Block>
-    </Flex>
+    </Layout>
   )
 }
 

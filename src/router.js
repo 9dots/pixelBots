@@ -33,8 +33,11 @@ const router = enroute({
     <HomePage tab='featured' project={project} />
   ),
   '/shared': () => <HomePage tab='shared'/>,
-  '/create/:draftID/:slug': ({draftID, slug}, props) => (
-    <Create left='60px' draftID={draftID} params={slug} {...props}/>
+  '/create/:draftID': ({draftID, step}, props) => (
+    <Create mine new left='60px' draftID={draftID} {...props}/>
+  ),
+  '/create/:draftID/:step': ({draftID, step}, props) => (
+    <Create mine new left='60px' draftID={draftID} step={step} {...props}/>
   ),
   '/edit/:draftID/:step': ({draftID, step}, props) => (
     <Create mine left='60px' draftID={draftID} step={step} {...props}/>
@@ -92,7 +95,7 @@ function render ({props, state, local}) {
           <HeaderElement active={activeRoute === 'search'} onClick={() => setUrl('/search/games')} text='Search' icon='search'/>
           {(user && !user.isAnonymous) &&
             <Block>
-              <HeaderElement active={activeRoute === username} onClick={() => setUrl(`/${username}/challenges`)} text='Your Stuff' icon='dashboard'/>
+              <HeaderElement active={activeRoute === username} onClick={() => setUrl(`/${username}/playlists`)} text='Your Stuff' icon='dashboard'/>
               <HeaderElement active={activeRoute === 'create'} onClick={() => createNew(user.uid)} text='Create' icon='add'/>
             </Block>
           }
@@ -103,7 +106,7 @@ function render ({props, state, local}) {
           : <HeaderElement handleClick={signOut} text='Sign Out' icon='exit_to_app'/>
         }
       </Header>
-      <Block class='action-bar-holder' overflowY='auto' relative left='90px' p='20px' column align='start' minHeight='100%' w='calc(100% - 90px)' tall>
+      <Block class='action-bar-holder' overflowY='auto' relative left='90px' column align='start' minHeight='100%' w='calc(100% - 90px)' h='100vh'>
       {
         (url && user) && router(url, props)
       }

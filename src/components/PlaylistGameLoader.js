@@ -9,7 +9,17 @@ import omit from '@f/omit'
 import Window from 'vdux/window'
 
 function render ({props}) {
-  const {sequence, currentUser, creatorID, activeKey, mine, listActions, dropTarget, dragTarget, ...challenges} = props
+  const {
+    sequence,
+    currentUser,
+    creatorID,
+    activeKey,
+    mine,
+    listActions,
+    dropTarget,
+    dragTarget,
+    ...challenges
+  } = props
 
   if (Object.keys(challenges).length === 0 || !sequence || sequence.length === 0) {
     return <div />
@@ -25,7 +35,7 @@ function render ({props}) {
 
   return (
     <Window onDrop={[(e) => e.stopPropagation(), (e) => listActions.drop(sequence.indexOf(dropTarget))]} onDragOver={(e) => e.preventDefault()}>
-      <Block>
+      <Block key={activeKey}>
         {
 					items.map((challenge, i) => (
 							challenge && <Block>
@@ -34,6 +44,7 @@ function render ({props}) {
                   idx={i}
                   listActions={listActions}
                   playlistKey={activeKey}
+                  key={challenge.name}
                   game={challenge.value}
                   mine={mine && currentUser.uid === creatorID}
                   ref={challenge.name} />
