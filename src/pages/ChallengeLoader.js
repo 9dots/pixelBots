@@ -79,7 +79,7 @@ function render ({props, local, state}) {
             {item.title}
           </Box>
           <Box>
-          {hovering && <Dropdown btn={btn} zIndex='999'>
+          {(mine && hovering) && <Dropdown btn={btn} zIndex='999'>
               <Menu w='150px' column zIndex='999'>
                 <MenuItem onClick={() => setUrl(`/games/${props.ref}`)}>
                   Play
