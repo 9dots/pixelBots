@@ -14,6 +14,8 @@ function render ({props}) {
 
   const {sequence, current = 0} = list.value
 
+  window.getPlaylistRef = () => list.value.assignmentRef
+
   return (
     <Playlist current={current} {...props} listRef={props.ref} {...list.value} next={next} prev={prev} />
   )

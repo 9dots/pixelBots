@@ -1,3 +1,5 @@
+/** @jsx element */
+
 import {MenuItem, Image} from 'vdux-containers'
 import element from 'vdux/element'
 import {refMethod} from 'vdux-fire'
@@ -9,11 +11,11 @@ function render ({props}) {
 
   return (
     <MenuItem
-      draggable={mine}
-      onDragEnter={handleDragEnter}
+      draggable={listActions && mine}
+      onDragEnter={listActions && handleDragEnter}
       onDragOver={(e) => e.preventDefault()}
-      onDragStart={() => dragStart(props.ref)}
-      onDrop={handleDrop}
+      onDragStart={() => listActions && dragStart(props.ref)}
+      onDrop={listActions && handleDrop}
       relative
       cursor={mine ? 'move' : 'default'}
       fontWeight='300'
@@ -39,16 +41,6 @@ function render ({props}) {
       </Block>
     </MenuItem>
   )
-
-  function * handleDrop (e) {
-    yield e.preventDefault()
-    yield drop(props.idx)
-  }
-
-  function * handleDragEnter (e) {
-    yield e.preventDefault()
-    yield dragEnter(props.ref)
-  }
 
   function * removeFromPlaylist () {
     yield refMethod({

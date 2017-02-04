@@ -94,12 +94,13 @@ function render ({props, state, local}) {
   )
 
   return (
-    <Block tall wide minHeight='600px' maxHeight='80vh'>
+    <Block tall wide minHeight='600px'>
       <Block
         relative
         display='flex'
         left='0'
         tall
+        pr='10px'
         wide>
         {display}
       </Block>

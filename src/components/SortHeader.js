@@ -6,7 +6,12 @@ import {Block, Text, Icon} from 'vdux-ui'
 function render ({props}) {
   const {label, dir, ...restProps} = props
   return (
-    <Block color={dir ? '#333' : '#999'} align='start center' cursor='pointer' {...restProps}>
+    <Block
+      userSelect='none'
+      color={dir ? '#333' : '#999'}
+      align='start center'
+      cursor='pointer'
+      {...restProps}>
       <Text lineHeight='1.4em'>{label}</Text>
       {dir && <Icon
         mb='1px'

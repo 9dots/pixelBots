@@ -1,6 +1,5 @@
 /** @jsx element */
 
-import PrintContainer from '../pages/PrintContainer'
 import handleActions from '@f/handle-actions'
 import createAction from '@f/create-action'
 import {Block} from 'vdux-containers'
@@ -60,7 +59,6 @@ function render ({props, state}) {
             </Block>
             : <Block wide tall align='center center'>
               {addButtons()}
-              <PrintContainer code={sequence} />
               <CodeBox canCode={canCode} startCode={props.initialData && props.initialData.startCode} {...props} />
             </Block>
         }

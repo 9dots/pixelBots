@@ -79,6 +79,7 @@ function render ({props, state, local}) {
       content={(!!savedProgress.value && savedProgress.value.description) || description || gameVal.value.description}/>
   </Block>
   const gameLayout = <Layout
+    bodyProps={{display: 'flex'}}
     navigation={[{category: 'challenge', title: mergeGameData.title, onClick: local(showModal)}]}
     titleImg={mergeGameData.imageUrl}>
     {game}
@@ -112,6 +113,7 @@ function render ({props, state, local}) {
         {category: 'playlist', title: playlist.title},
         {category: 'challenge', title: mergeGameData.title, onClick: local(showModal)}
       ]}
+      bodyProps={{display: 'flex'}}
       titleActions={playlist.actions}
       titleImg={playlist.img}>
       {game}

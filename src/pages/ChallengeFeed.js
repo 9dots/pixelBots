@@ -2,7 +2,7 @@
 
 import LinkModal from '../components/LinkModal'
 import SortHeader from '../components/SortHeader'
-import {Block, Flex, Menu, Text} from 'vdux-ui'
+import {Block, Flex, Menu} from 'vdux-ui'
 import ChallengeLoader from './ChallengeLoader'
 import createAction from '@f/create-action'
 import handleActions from '@f/handle-actions'
@@ -11,7 +11,6 @@ import Button from '../components/Button'
 import sort from 'lodash/orderBy'
 import map from '@f/map'
 import element from 'vdux/element'
-import reduce from '@f/reduce'
 
 const setModal = createAction('<ChallengeFeed/>: SET_MODAL')
 const setOrderType = createAction('<ChallengeFeed/>: SET_ORDER_TYPE')
@@ -23,8 +22,8 @@ const caseInsensitiveName = (game) => game.name
 
 const initialState = ({local}) => ({
   modal: '',
-  orderBy: caseInsensitiveName,
-  order: 'asc',
+  orderBy: 'lastEdited',
+  order: 'desc',
   actions: {
     setOrder: local(setOrder),
     setModal: local(setModal),
@@ -79,6 +78,7 @@ function render ({props, state}) {
         <Block>
           {sortedGames.map((game, i) => (
             <ChallengeLoader
+              checkbox
               lastEdited={game.lastEdited}
               setModal={actions.setModal}
               userRef={game.key}
@@ -92,9 +92,10 @@ function render ({props, state}) {
           ))}
         </Block>
       </Menu>
-      {modal && <LinkModal
-        code={modal}
-        footer={modalFooter} />
+      {
+        modal && <LinkModal
+          code={modal}
+          footer={modalFooter} />
 			}
     </Flex>
   )

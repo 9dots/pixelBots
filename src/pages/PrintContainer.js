@@ -11,8 +11,11 @@ marked.setOptions({
 
 function render ({props}) {
   const {code = ''} = props
+  console.log(code)
   return (
-    <Block id='print-container' visibility='hidden' fixed top='0' left='0' wide innerHTML={marked(stringify(code))}/>
+    <Block overflow='visible' id='print-container' visibility='hidden' absolute top='0' left='0' wide >
+      <Block innerHTML={marked(stringify(code))}/>
+    </Block>
   )
 }
 

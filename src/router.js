@@ -3,6 +3,7 @@
 import {initializeApp, createNew, refresh, setToast, setModalMessage} from './actions'
 import IndeterminateProgress from './components/IndeterminateProgress'
 import HeaderElement from './components/HeaderElement'
+import PrintContainer from './pages/PrintContainer'
 import PlaylistView from './pages/PlaylistView'
 import ProfileLoader from './pages/ProfileLoader'
 import {Block, Text, Toast} from 'vdux-ui'
@@ -84,7 +85,8 @@ function render ({props, state, local}) {
   const activeRoute = url.split('/')[1]
 
   return (
-    <Block tall wide>
+    <Block>
+      <PrintContainer code={!!props.game && props.game.animals[0].sequence}/>
       <Header w='90px' bgColor='primary' top='0' left='0'>
         <Block flex>
           <HeaderElement
