@@ -147,7 +147,7 @@ function * createNew (uid) {
     ref: `/users/${uid}/drafts`,
     updates: {method: 'push', value: {ref: key}}
   })
-  yield setUrl(`/edit/${key}`)
+  yield setUrl(`/create/${key}`)
 }
 
 export {
