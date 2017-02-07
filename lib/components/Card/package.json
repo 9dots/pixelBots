@@ -1,0 +1,5 @@
+{
+  "name": "Card",
+  "main": "Card.js",
+  "browser": "Card.js"
+}

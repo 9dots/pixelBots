@@ -1,0 +1,5 @@
+{
+  "name": "App",
+  "main": "App.js",
+  "browser": "App.js"
+}

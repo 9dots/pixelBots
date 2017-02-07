@@ -1,0 +1,5 @@
+{
+  "name": "Router",
+  "main": "Router.js",
+  "browser": "Router.js"
+}

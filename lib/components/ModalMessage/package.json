@@ -1,0 +1,5 @@
+{
+  "name": "ModalMessage",
+  "main": "ModalMessage.js",
+  "browser": "ModalMessage.js"
+}
