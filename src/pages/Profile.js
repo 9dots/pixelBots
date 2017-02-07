@@ -67,7 +67,7 @@ function render ({props, state, local}) {
 
   return (
     <Layout
-      navigation={[{category: 'user', title: profile.displayName}]}
+      navigation={[{category: 'userss', title: profile.displayName}]}
       bodyProps={{py: 0, display: 'flex'}}
       titleImg={profile.photoURL}>
       <Block column wide h='calc(100% - 1px)'>

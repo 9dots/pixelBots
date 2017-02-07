@@ -27,6 +27,8 @@ const router = enroute({
 function render ({props}) {
   const {linkSnap} = props
 
+  console.log(linkSnap)
+
   if (linkSnap.loading) {
     return <IndeterminateProgress />
   }

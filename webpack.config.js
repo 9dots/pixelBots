@@ -1,27 +1,92 @@
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 var webpack = require('webpack')
 var path = require('path')
-var nodeExternals = require('webpack-node-externals')
+var net = require('net')
+var fs = require('fs')
+var WebpackDevServer = require('webpack-dev-server')
 
-module.exports = {
-	entry: {
-		app: './src/index.js'
-	},
-	output: {
-		filename: 'bundle.js',
-		path: __dirname + '/public'
-	},
-	resolve: {
-    extensions:[".js",".jsx",".json"]
-  },
-	module: {
-    loaders: [
-      {
-        test: /.js$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader'
-      }
-    ]
-  },
-  target: 'web',
-  externals: [nodeExternals()]
+const folders = fs.readdirSync(path.resolve(__dirname, 'lib'))
+  .reduce((cur, next) => (
+    Object.assign(
+      {},
+      cur,
+      {[next]: path.resolve(__dirname, `lib/${next}/`)}
+    )
+  ), {})
+
+function config (env) {
+  return {
+    entry: {
+      main: [
+        'webpack-dev-server/client?http://localhost:8080',
+        'webpack/hot/only-dev-server',
+        './lib/client/index.js'
+      ],
+      vendor: [
+        'lodash'
+      ]
+    },
+    output: {
+      filename: '[hash].[name].js',
+      path: path.resolve(__dirname, 'public')
+    },
+    resolve: {
+      alias: folders
+    },
+    module: {
+      loaders: [
+        {
+          test: /.js$/,
+          exclude: /node_modules/,
+          loader: 'babel-loader'
+        },
+        {
+	        test: /\.css$/,
+	        loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+	      }
+      ]
+    },
+    target: 'web',
+    plugins: [
+			new webpack.HotModuleReplacementPlugin(),
+      new webpack.NamedModulesPlugin(),
+      new webpack.optimize.CommonsChunkPlugin({
+        names: ['vendor', 'manifest'] // Specify the common bundle's name.
+      }),
+      new HtmlWebpackPlugin({
+		    title: 'pixelBots',
+		    template: 'my-index.html' // Load a custom template (ejs by default see the FAQ for details)
+		  })
+    ],
+    node: {
+      module: 'empty',
+      console: 'mock'
+    },
+    externals: {
+      net: net,
+      fs: fs
+    },
+		devtool: 'sourcemap'
+  }
 }
+
+var myServer = new WebpackDevServer(webpack(config()), {
+  hot: true,
+  inline: true,
+  contentBase: 'public',
+  historyApiFallback: {
+    rewrites: [{
+      from: /([\d\w\-\.]*)(\.js$|\.json$)/,
+      to: context => '/' + context.match[0]
+    }, {
+      from: /([\d\w]*\.)([\d\w]*\.)([\d\w\-]*)(\.js$|\.json$)/,
+      to: context => '/' + console.log('here\n\n\n', context)
+    }],
+    index: '/index.html'
+  }
+})
+
+myServer.listen(8080)
+
+module.exports = config
