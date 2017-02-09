@@ -41,11 +41,15 @@ const router = enroute({
   'create': (params, props) => <OptionsPage
     {...props.newGame.value}
     onEdit={updateGame(props.new ? `/drafts/${props.draftID}` : `/games/${props.draftID}`)}
-    {...props}/>,
+    {...props}>
+    {props.btn}
+    </OptionsPage>,
   'preview': (params, props) => <Game
     initialData={props.newGame.value}
     gameData={props.newGame.value}
-    {...props}/>,
+    {...props}>
+    {props.btn}
+    </Game>,
   'publish': (params, props) => publishPage(props.draftID)
 })
 
@@ -71,6 +75,16 @@ function render ({props, state, local}) {
     preview: props.new && 'publish'
   }
 
+  const btn = <Block my='1em' align='center center'>
+    <Button
+      w='30%'
+      fs='l'
+      py='18px'
+      fontWeight='300'
+      onClick={clickNext}
+      bgColor='blue'>{nextStep[step] ? 'Save & Continue' : 'Save'}</Button>
+  </Block>
+
   const titleActions = <Block>
     <FlowTracker
       onClick={(selection) => setUrl(`/${path}/${props.draftID}/${selection}`)}
@@ -85,18 +99,7 @@ function render ({props, state, local}) {
     }]}
     titleActions={titleActions}
     titleImg='/animalImages/panda.jpg'>
-    {router(step, {newGame, ...props})}
-    {
-      step !== 'publish' && <Block my='1em' align='center center'>
-        <Button
-          w='30%'
-          fs='l'
-          py='18px'
-          fontWeight='300'
-          onClick={clickNext}
-          bgColor='blue'>{nextStep[step] ? 'Save & Continue' : 'Save'}</Button>
-      </Block>
-    }
+    {router(step, {newGame, ...props, btn})}
   </Layout>
 
   function * clickNext () {

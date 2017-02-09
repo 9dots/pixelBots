@@ -31,7 +31,6 @@ function initialState ({props, local}) {
 }
 
 function * onCreate ({props, state, local}) {
-  // yield state.actions.tabChanged('display')
   if (props.initialData) {
     yield initializeGame(props.initialData)
   }
@@ -46,7 +45,7 @@ function * onUpdate (prev, {props, state, local}) {
   }
 }
 
-function render ({props, state, local}) {
+function render ({props, state, local, children}) {
   const {
     selectedLine,
     activeLine,
@@ -104,6 +103,7 @@ function render ({props, state, local}) {
         wide>
         {display}
       </Block>
+      {children}
     </Block>
   )
 }

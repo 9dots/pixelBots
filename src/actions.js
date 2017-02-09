@@ -79,20 +79,16 @@ function initializeApp () {
   return bindUrl(newRoute)
 }
 
-function * saveProgress (animals, gameID, saveID) {
-  const id = saveID ? saveID : yield createCode('/saved')
+function * saveProgress (game, saveID) {
   yield refMethod({
-    ref: 'saved/' + id,
+    ref: 'saved/' + saveID,
     updates: {
-      method: 'transaction',
-      value: (cur) => {
-        cur = cur || {}
-        if (gameID) {
-          cur.gameID = gameID
-        }
-        cur.animals = animals.map((animal) => ({...animal, current: animal.initial}))
-        return cur
-      }
+      method: 'update',
+      value: ({
+        lastEdited: Date.now(),
+        animals: game.animals.map((animal) => ({...animal, current: animal.initial})),
+        targetPainted: game.targetPainted
+      })
     }
   })
   yield setSaved(true)
