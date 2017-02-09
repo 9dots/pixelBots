@@ -38,7 +38,7 @@ function render ({props, local, state, children}) {
   const thisAnimal = animals[0] ? animalApis[animals[0].type] : undefined
   const animationSpeed = thisAnimal
     ? (thisAnimal.speed * (1 / speed)) / 1000
-    : 0.75
+    : (500 * (1 / speed)) / 1000
 
   return (
     <Window onMouseUp={local(dragEnd)}>

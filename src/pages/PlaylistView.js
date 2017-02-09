@@ -2,7 +2,7 @@
 
 import IndeterminateProgress from '../components/IndeterminateProgress'
 import PlaylistGameLoader from '../components/PlaylistGameLoader'
-import {Block, Menu, Text} from 'vdux-ui'
+import {Box, Block, Flex, Menu, Text} from 'vdux-ui'
 import PlaylistOptions from '../components/PlaylistOptions'
 import LinkModal from '../components/LinkModal'
 import handleActions from '@f/handle-actions'
@@ -37,7 +37,7 @@ const initialState = ({local}) => ({
 })
 
 function render ({props, state}) {
-  const {playlist, activeKey, currentUser, profile = {}} = props
+  const {playlist, activeKey, currentUser, profile = {}, ...restProps} = props
   const {uid} = currentUser
 
   if (playlist.loading) {
@@ -69,7 +69,7 @@ function render ({props, state}) {
 	)
 
   return (
-    <Block flex ml='10px' tall overflowY='auto' minWidth='680px'>
+    <Block flex px='10px' tall overflowY='auto' overflowX='hidden' minWidth='680px' {...restProps}>
       <Block align='space-between center' p='10px'>
         <Block>
           <Text
@@ -96,7 +96,7 @@ function render ({props, state}) {
             unfollow={unfollow} />
         </Block>
       </Block>
-      <Menu overflowY='auto' column>
+      <Menu w='calc(100% - 17px)' overflowY='auto' overflowX='visible' column>
         <Block
           color='#999'
           mt='1em'

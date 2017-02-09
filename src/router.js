@@ -1,7 +1,7 @@
 /** @jsx element */
 
 import {initializeApp, createNew, refresh, setToast, setModalMessage} from './actions'
-import IndeterminateProgress from './components/IndeterminateProgress'
+import Loading from './components/Loading'
 import HeaderElement from './components/HeaderElement'
 import PrintContainer from './pages/PrintContainer'
 import PlaylistView from './pages/PlaylistView'
@@ -56,7 +56,7 @@ const router = enroute({
     <SearchPage searchType={searchType} searchQ={searchQ} user={props.user}/>
   ),
   '/playlist/:playlistID': ({playlistID, username}, props) => (
-    <PlaylistView activeKey={playlistID} uid={props.user.uid}/>
+    <PlaylistView w='80%' minWidth='680px' margin='0 auto' activeKey={playlistID} uid={props.user.uid}/>
   ),
   '/games/:gameID': ({gameID}, props) => (
     <GameLoader {...props} left='60px' noSave gameCode={gameID}/>
@@ -64,13 +64,20 @@ const router = enroute({
   '/:username/:activity': ({username, activity}, props) => (
     <ProfileLoader params={activity} currentUser={props.user} username={username}/>
   ),
+  '/:username/:activity/:category': ({username, activity, category}, props) => (
+    <ProfileLoader
+      params={activity}
+      category={category}
+      currentUser={props.user}
+      username={username}/>
+  ),
   '/:link': ({link}, props) => <LinkDecipher link={link} {...props}/>,
   '*': homePage
 })
 
 function homePage (params, props) {
   if (!props.user || (props.user && Object.keys(props.user).length === 0) || (!props.user.isAnonymous && !props.username)) {
-    return <IndeterminateProgress/>
+    return <Loading/>
   }
   return <HomePage {...props} />
 }
@@ -85,7 +92,7 @@ function render ({props, state, local}) {
   const activeRoute = url.split('/')[1]
 
   return (
-    <Block>
+    <Block tall>
       <PrintContainer code={!!props.game && props.game.animals[0].sequence}/>
       <Header w='90px' bgColor='primary' top='0' left='0'>
         <Block flex>
@@ -97,7 +104,7 @@ function render ({props, state, local}) {
           <HeaderElement active={activeRoute === 'search'} onClick={() => setUrl('/search/games')} text='Search' icon='search'/>
           {(user && !user.isAnonymous) &&
             <Block>
-              <HeaderElement active={activeRoute === username} onClick={() => setUrl(`/${username}/playlists`)} text='Your Stuff' icon='dashboard'/>
+              <HeaderElement active={activeRoute === username} onClick={() => setUrl(`/${username}/pixel%20art`)} text='Your Stuff' icon='dashboard'/>
               <HeaderElement active={activeRoute === 'create'} onClick={() => createNew(user.uid)} text='Create' icon='add'/>
             </Block>
           }
@@ -108,7 +115,7 @@ function render ({props, state, local}) {
           : <HeaderElement handleClick={signOut} text='Sign Out' icon='exit_to_app'/>
         }
       </Header>
-      <Block class='action-bar-holder' overflowY='auto' relative left='90px' column align='start' minHeight='100%' w='calc(100% - 90px)' h='100vh'>
+      <Block class='action-bar-holder' tall overflowY='auto' relative left='90px' column align='start' minHeight='100%' w='calc(100% - 90px)'>
       {
         (url && user) && router(url, props)
       }

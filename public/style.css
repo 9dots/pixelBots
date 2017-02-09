@@ -53,7 +53,7 @@ body {
 
 @keyframes spin {
   from {transform: rotate(0deg);}
-  to {transform: rotate(360deg);}
+  to {transform: rotate(1080deg);}
 }
 
 .spinning {
@@ -184,6 +184,7 @@ code.lang-js {
   #print-container, #print-container * {
     visibility: visible;
     overflow-y: visible;
+    display: block;
   }
   #print-container {
     position: static !important;

@@ -35,7 +35,7 @@ const inputProps = {
 function * onUpdate (prev, {props, state}) {
   if (!state.loading && props.anonymous && props.playlist.value) {
     yield state.actions.setLoading()
-    yield submit(props.playlist.value, props.ref)
+    yield submit(props.playlist.value, props.ref, props.current)
   }
 }
 
@@ -55,7 +55,7 @@ function render ({props, state}) {
       <Input inputProps={inputProps} />
     </ModalBody>
     <ModalFooter>
-      <Button bgColor='primary' onClick={[actions.setLoading(), () => submit(listProps, props.ref, 'Daniel')]}>Save</Button>
+      <Button bgColor='primary' onClick={[actions.setLoading(), () => submit(listProps, props.ref, props.current, 'Daniel')]}>Save</Button>
     </ModalFooter>
   </Modal>
 
@@ -66,7 +66,7 @@ function render ({props, state}) {
   )
 }
 
-function * submit (listProps, assignmentRef, textVal = '') {
+function * submit (listProps, assignmentRef, current = 0, textVal = '') {
   const saveIds = yield createSaveCodes(listProps.sequence.length)
   const code = yield createCode()
   const {key} = yield refMethod({
@@ -79,6 +79,7 @@ function * submit (listProps, assignmentRef, textVal = '') {
         assignmentRef,
         listProps,
         saveIds,
+        current,
         code
       }
     }

@@ -20,16 +20,6 @@ const initialState = () => ({
   hovering: false
 })
 
-const btn = (
-  <MenuItem
-    align='center center'
-    bgColor='#e5e5e5'
-    circle='40px'
-    mr='1em'>
-    <Icon name='more_vert' />
-  </MenuItem>
-)
-
 function render ({props, local, state}) {
   const {
     playClick = () => setUrl(`/games/${props.ref}`),
@@ -37,6 +27,7 @@ function render ({props, local, state}) {
     handleClick = () => {},
     remove = () => {},
     selected = [],
+    noAssign,
     lastEdited,
     checkbox,
     draggable,
@@ -90,24 +81,28 @@ function render ({props, local, state}) {
         <Block align='start center'>
           <Box align='start center' flex minWidth='250px'>
             <Box align='start center' flex>
-              <ImageSelect
-                hoverItem={(mine && !checkbox) && <Icon id={`drag-handle-${ref}`} cursor='move' name='drag_handle'/>}
-                selectMode={selectMode}
-                imageUrl={item.imageUrl || animalImg}
-                isSelected={isSelected}
-                onSelect={handleClick}
-                ref={ref}/>
+              {
+                mine || checkbox
+                  ? <ImageSelect
+                      hoverItem={(mine && !checkbox) && <Icon id={`drag-handle-${ref}`} cursor='move' name='drag_handle'/>}
+                      selectMode={selectMode}
+                      imageUrl={item.imageUrl || animalImg}
+                      isSelected={isSelected}
+                      onSelect={handleClick}
+                      ref={ref}/>
+                  : <Image mr='2em' sq='50px' src={item.imageUrl || animalImg} />
+              }
               {item.title}
             </Box>
-            <Box>
+            <Box auto pr='2em'>
             {(hovering && !selectMode) && (
-              <Block mr='1em' align='center center' btn={btn} zIndex='999'>
+              <Block align='center center' zIndex='999'>
                 <IconButton
                   name='play_arrow'
                   onClick={playClick}/>
-                <IconButton
+                {!noAssign && <IconButton
                   name='assignment'
-                  onClick={assignmentClick}/>
+                  onClick={assignmentClick}/>}
                 {
                   mine && <Block align='center center'>
                     <IconButton

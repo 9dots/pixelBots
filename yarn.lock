@@ -76,6 +76,10 @@
     "@f/is-array" "^1.1.1"
     "@f/slice" "^1.1.2"
 
+"@f/color-names@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@f/color-names/-/color-names-1.0.0.tgz#fdbb7023eddd2ad4af92690606c801a0f36fb4f8"
+
 "@f/combine-reducers@^1.2.0", "@f/combine-reducers@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@f/combine-reducers/-/combine-reducers-1.2.1.tgz#b85cadaefb507b0d77b73e0572b7ff50d551aae6"
@@ -343,9 +347,29 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@f/hash-str/-/hash-str-1.0.0.tgz#059d14538be23ca812536392105c6efe76058c04"
 
+"@f/hex-to-rgba@^1.0.0":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@f/hex-to-rgba/-/hex-to-rgba-1.0.1.tgz#f4b23d6897129c8198a20e13ccd84ea70f50f2ce"
+  dependencies:
+    "@f/is-number" "^1.1.1"
+
+"@f/hsl-to-rgb@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@f/hsl-to-rgb/-/hsl-to-rgb-1.0.0.tgz#8dd185bd7c067c044089b88ed2993d27e9f65dbe"
+
+"@f/hsv-to-rgb@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@f/hsv-to-rgb/-/hsv-to-rgb-1.0.0.tgz#9a6b29898db8a60cd2bad0afa2516c9983ece058"
+
 "@f/html-attrs@^1.0.1", "@f/html-attrs@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@f/html-attrs/-/html-attrs-1.0.2.tgz#66494a69755b16457c00c473a4156e3d806afc42"
+
+"@f/hwb-to-rgb@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@f/hwb-to-rgb/-/hwb-to-rgb-1.0.0.tgz#3a529831575585891d8445e0bbb6a4233d1d4f3c"
+  dependencies:
+    "@f/hsl-to-rgb" "^1.0.0"
 
 "@f/hyphenate@^1.0.0":
   version "1.0.0"
@@ -566,6 +590,12 @@
     "@f/is-function" "^1.1.1"
     "@f/is-object" "^1.1.4"
 
+"@f/parse-color@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@f/parse-color/-/parse-color-1.0.1.tgz#23d3ab4741eee01fdd4017c50b14e4cc7f630fa2"
+  dependencies:
+    "@f/hex-to-rgba" "^1.0.0"
+
 "@f/pick@^1.1.4":
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/@f/pick/-/pick-1.1.4.tgz#2a7cbe55616f8dfb2f864aad7583aaa662f0cd2a"
@@ -630,6 +660,13 @@
 "@f/replace-element@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@f/replace-element/-/replace-element-1.0.0.tgz#ad4b50433353ad3579a43a8c174c2d5237e71913"
+
+"@f/rgba@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@f/rgba/-/rgba-1.0.0.tgz#ba264f4a1deb1f879ad5433a44f0483513ddf7a5"
+  dependencies:
+    "@f/color-names" "^1.0.0"
+    "@f/to-rgba" "^1.0.1"
 
 "@f/self-closing-tags@^1.0.1":
   version "1.0.1"
@@ -768,6 +805,16 @@
     "@f/is-promise" "^1.1.1"
     "@f/obj-to-promise" "^1.2.0"
     "@f/thunk-to-promise" "^1.1.1"
+
+"@f/to-rgba@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@f/to-rgba/-/to-rgba-1.0.1.tgz#2306a500d3e5bd2a7afd09e6e08b1f1b63992ab2"
+  dependencies:
+    "@f/hsl-to-rgb" "^1.0.0"
+    "@f/hsv-to-rgb" "^1.0.0"
+    "@f/hwb-to-rgb" "^1.0.0"
+    "@f/is-array" "^1.1.1"
+    "@f/parse-color" "^1.0.1"
 
 "@f/trigger-event@^1.0.2":
   version "1.0.2"

@@ -1,6 +1,6 @@
 /** @jsx element */
 
-import IndeterminateProgress from '../components/IndeterminateProgress'
+import Loading from '../components/Loading'
 import ModalMessage from '../components/ModalMessage'
 import ShowcaseView from '../components/ShowcaseView'
 import {setUrl} from 'redux-effects-location'
@@ -16,7 +16,7 @@ function render ({props}) {
   const {project, coursesVal} = props
   const {loading, value} = coursesVal
 
-  if (loading) return <IndeterminateProgress/>
+  if (loading) return <Loading/>
 
   const courses = map((course, key) => (
     {...course, color: palette[Object.keys(value).indexOf(key) + 5].value}

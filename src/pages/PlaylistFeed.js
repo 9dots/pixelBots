@@ -1,112 +1,18 @@
 /** @jsx element */
 
-import CreatePlaylist from '../components/CreatePlaylist'
-import {Flex, Menu, Icon, Text} from 'vdux-ui'
-import createAction from '@f/create-action'
-import PlaylistView from './PlaylistView'
-import {MenuItem} from 'vdux-containers'
-import mapValues from '@f/map-values'
-import deepEqual from '@f/deep-equal'
-import orderBy from 'lodash/orderBy'
+import ShowcaseItem from '../components/PlaylistItem'
 import element from 'vdux/element'
-import reduce from '@f/reduce'
+import {Block} from 'vdux-ui'
 
-const selectActivePlaylist = createAction('<PlaylistFeed/>: selectActivePlaylist')
-const setModal = createAction('<PlaylistFeed/>: setModal')
-const clearModal = createAction('<PlaylistFeed/>: clearModal')
-
-const initialState = ({props, local}) => ({
-  modal: false,
-  active: props.playlists ? 0 : '',
-  actions: {
-    selectActivePlaylist: local((val) => selectActivePlaylist(val)),
-    setModal: local(setModal),
-    clearModal: local(clearModal)
-  }
-})
-
-function * onUpdate (prev, {props, state}) {
-  if (!deepEqual(prev.state, state) || !deepEqual(prev.props, props)) {
-    if (!props.playlists) {
-      return yield state.actions.selectActivePlaylist(' ')
-    }
-    if (Object.keys(props.playlists).length < prev.state.active) {
-      return yield state.actions.selectActivePlaylist(0)
-    }
-  }
-}
-
-function render ({props, state, local}) {
-  const {playlists = {}, mine, uid} = props
-  const items = orderBy(mapValues((val) => val, playlists), 'lastEdited', 'desc')
-  const {actions, active, modal} = state
-
+function render ({props}) {
+  const {playlists, color} = props
   return (
-    <Flex display='flex' tall wide px='20px'>
-      <Menu column spacing='2px' mt='2px' h='calc(100% - 1px)' overflowY='auto'>
-        {mine && <MenuItem
-          bgColor='#d5d5d5'
-          align='start center'
-          relative
-          w='300px'
-          onClick={actions.setModal}
-          p='20px'
-          color='#333'>
-          <Icon name='add' mr='1em' />
-          <Text fs='m' fontWeight='300'>New Playlist</Text>
-        </MenuItem>}
-        {reduce((cur, item, key) => cur.concat(
-          <MenuItem
-            bgColor='#d5d5d5'
-            relative
-            w='300px'
-            h='65px'
-            column
-            align='space-around'
-            highlight={active === key}
-            p='10px 20px'
-            onClick={() => actions.selectActivePlaylist(key)}
-            color='#333'>
-            <Text fs='m' fontWeight='300'>{item.name}</Text>
-            {uid !== item.creatorID && <Text fs='xs'>by {item.creatorUsername}</Text>}
-          </MenuItem>), [], items)}
-      </Menu>
-      {(items && items[active] && items[active].ref) && <PlaylistView
-        ref={items[active].key}
-        uid={uid}
-        activeKey={items[active].ref} />}
-      {modal && <CreatePlaylist
-        uid={uid}
-        handleDismiss={actions.clearModal} />
-			}
-    </Flex>
+    <Block px='10px' wide column align='center center'>
+      {playlists.map((playlist) => <ShowcaseItem color={color} playlistRef={playlist}/>)}
+    </Block>
   )
 }
 
-function reducer (state, action) {
-  switch (action.type) {
-    case selectActivePlaylist.type:
-      return {
-        ...state,
-        active: action.payload
-      }
-    case setModal.type:
-      return {
-        ...state,
-        modal: true
-      }
-    case clearModal.type:
-      return {
-        ...state,
-        modal: false
-      }
-  }
-  return state
-}
-
 export default {
-  initialState,
-  onUpdate,
-  reducer,
   render
 }

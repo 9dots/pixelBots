@@ -14,7 +14,7 @@ import validator from '../schema/level'
 import EditLevel from './EditLevel'
 import element from 'vdux/element'
 
-function render ({props, state}) {
+function render ({props, state, children}) {
   const {selectedLine, onEdit} = props
   const type = props.animals[0].type
   const inputType = props.inputType
@@ -127,6 +127,7 @@ function render ({props, state}) {
           checked={props.permissions}
           fields={['Run Button', 'Edit Code', 'Tracer Paint']}/>
       </Block>
+      {children}
     </Block>
   )
 }

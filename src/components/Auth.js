@@ -1,12 +1,6 @@
 import element from 'vdux/element'
-import firebase from 'firebase'
-import config from '../firebaseConfig'
 import {Block, Flex, Modal, ModalBody, ModalHeader, Text} from 'vdux-ui'
-import {IconButton} from 'vdux-containers'
-import {signInWithProvider} from '../middleware/auth'
-import Button from './Button'
-
-// Copy this from the Firebase Console.
+import {Button} from 'vdux-containers'
 
 function render ({props}) {
   const {handleDismiss} = props
@@ -21,7 +15,7 @@ function render ({props}) {
               <Block relative left='10px'><Text>Sign in with Google</Text></Block>
             </Button>
             <Button textAlign='right' bgColor='#4267B2' onClick={() => handleSignIn('facebook')}  mb='10px' px='15px'  fs='s'>
-              <img style={{position: 'absolute', left:'8px', height:'24px', width:'24px'}} src='/authImages/facebook.png'/>
+              <img style={{position: 'absolute', left: '8px', height: '24px', width: '24px'}} src='/authImages/facebook.png'/>
               <Block relative left='19px'><Text>Sign in with Facebook</Text></Block>
             </Button>
           </Flex>

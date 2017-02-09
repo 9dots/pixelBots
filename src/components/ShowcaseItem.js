@@ -15,7 +15,7 @@ function render ({props}) {
   if (loading) return <IndeterminateProgress/>
 
   return (
-    <Block w='60%' py='1em' align='start start' borderBottom='1px solid #aaa'>
+    <Block wide py='1em' align='start start' borderBottom='1px solid #aaa'>
       <Block w='60px'>
         <Image h='40px' w='40px' src={value.imageUrl}/>
       </Block>
@@ -36,7 +36,7 @@ function render ({props}) {
         <Block wide align='start center'>
           <Block mx='1em' ml='0' fs='xs' fontWeight='300' align='center center'>
             <Icon fs='xs' name='collections'/>
-            <Text ml='4px'>{value.sequence.length} challenges</Text>
+            <Text ml='4px'>{value.sequence ? value.sequence.length : 0} challenges</Text>
           </Block>
           <Block mx='1em' fs='xs' fontWeight='300' align='center center'>
             <Icon fs='xs' name='play_arrow'/>

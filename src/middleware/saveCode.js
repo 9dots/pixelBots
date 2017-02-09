@@ -1,9 +1,10 @@
-import {addCode, removeLine, updateLine, aceUpdate, setSaved, saveProgress} from '../actions'
 import debounce from '@f/debounce'
 import createAction from '@f/create-action'
 
+import {addCode, removeLine, updateLine, aceUpdate, setSaved, saveProgress, incrementalPaint} from '../actions'
+
 const immediateSave = createAction('saveCode.js: IMMEDIATE_SAVE')
-const typesToCheck = [addCode.type, removeLine.type, updateLine.type, aceUpdate.type]
+const typesToCheck = [addCode.type, removeLine.type, updateLine.type, aceUpdate.type, incrementalPaint.type]
 let cancel
 
 export default ({getState, dispatch}) => {
@@ -25,11 +26,11 @@ export default ({getState, dispatch}) => {
 }
 
 function save (getState, dispatch) {
-  const {saveID, gameID, game} = getState()
+  const {saveID, game} = getState()
   const {animals} = game
 
   if (saveID) {
-    dispatch(saveProgress(animals, gameID, saveID))
+    dispatch(saveProgress(game, saveID))
   }
   cancel = null
 }

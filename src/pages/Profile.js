@@ -1,6 +1,7 @@
 /** @jsx element */
 
 import IndeterminateProgress from '../components/IndeterminateProgress'
+import PixelArt from './PixelArt'
 import {Avatar, Block, Flex, Text} from 'vdux-ui'
 import AssignmentFeed from './AssignmentFeed'
 import {setUrl} from 'redux-effects-location'
@@ -13,6 +14,7 @@ import PlaylistFeed from './PlaylistFeed'
 import {maybeAddToArray} from '../utils'
 import Tabs from '../components/Tabs'
 import element from 'vdux/element'
+import Authored from './Authored'
 import filter from '@f/filter'
 import enroute from 'enroute'
 import fire from 'vdux-fire'
@@ -31,27 +33,8 @@ const initialState = ({local}) => ({
 })
 
 const router = enroute({
-  'challenges': (params, props) => <ChallengeFeed
-    selected={props.selected}
-    toggleSelected={props.actions.toggleSelected}
-    uid={props.userKey}
-    games={props.profile.games}
-    mine={props.mine}
-    cat={props.tab} />,
-  'playlists': (params, props) => <PlaylistFeed
-    playlists={props.profile.playlists}
-    uid={props.userKey}
-    mine={props.mine}
-    cat={props.tab} />,
-  'drafts': (params, props) => <DraftsFeed
-    drafts={props.profile.drafts}
-    uid={props.userKey}
-    mine={props.mine}
-    cat={props.tab}/>,
-  'assignments': (params, props) => <AssignmentFeed
-    mine={props.mine}
-    uid={props.userKey}
-    cat={props.tab} />
+  'authored': (params, props) => <Authored {...props} />,
+  'pixel art': (params, props) => <PixelArt {...props} />
 })
 
 function render ({props, state, local}) {
@@ -75,16 +58,16 @@ function render ({props, state, local}) {
           {
             !selectMode
               ? <Tabs
-                tabs={['playlists', 'challenges', mine && 'drafts']}
-                active={props.params}
-                onClick={(tab) => setUrl(`/${username}/${tab}`)}/>
+                  tabs={['pixel art', 'authored']}
+                  active={props.params}
+                  onClick={(tab) => setUrl(`/${username}/${tab}`)}/>
               : <SelectToolbar
-                selected={selected}
-                playlists={filter((playlist) => playlist.creatorID === currentUser.uid, playlists)}
-                uid={props.userKey}
-                mine={mine}
-                clearSelected={actions.clearSelected}
-                num={selected.length} />
+                  selected={selected}
+                  playlists={filter((playlist) => playlist.creatorID === currentUser.uid, playlists)}
+                  uid={props.userKey}
+                  mine={mine}
+                  clearSelected={actions.clearSelected}
+                  num={selected.length} />
           }
         </Block>
         {router(props.params, {...props, ...state, profile})}

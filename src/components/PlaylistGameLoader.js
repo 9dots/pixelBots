@@ -1,13 +1,11 @@
-import IndeterminateProgress from './IndeterminateProgress'
 import ChallengeLoader from '../pages/ChallengeLoader'
-import PlaylistItem from './PlaylistItem'
+import {setUrl} from 'redux-effects-location'
+import {createAssignmentLink} from '../utils'
+import LinkModal from './LinkModal'
+import {refMethod} from 'vdux-fire'
 import element from 'vdux/element'
-import reduce from '@f/reduce'
-import {Block} from 'vdux-ui'
-import fire from 'vdux-fire'
-import filter from '@f/filter'
-import omit from '@f/omit'
 import Window from 'vdux/window'
+import {Block} from 'vdux-ui'
 
 function render ({props, state, local}) {
   const {
@@ -42,9 +40,12 @@ function render ({props, state, local}) {
               handleDrop={handleDrop(i)}
               handleDragEnter={handleDragEnter(ref)}
               handleDragStart={handleDragStart(ref)}
+              remove={remove(activeKey, ref)}
               draggable={mine}
               playlistKey={activeKey}
+              playClick={play(i)}
               key={ref}
+              noAssign
               uid={currentUser.uid}
               mine={mine && currentUser.uid === creatorID}
               ref={ref} />
@@ -90,6 +91,33 @@ function render ({props, state, local}) {
       yield e.preventDefault()
       yield dragEnter(ref)
     }
+  }
+
+  function play (current, anonymous = true) {
+    return function * () {
+      yield * createAssignmentLink(
+        'playlists',
+         {anonymous: true, ref: activeKey, current},
+        (code) => setUrl(`/${code}`)
+      )
+    }
+  }
+}
+
+function remove (playlistKey, gameRef) {
+  return function * () {
+    yield refMethod({
+      ref: `/playlists/${playlistKey}`,
+      updates: {
+        method: 'transaction',
+        value: (val) => {
+          return {
+            ...val,
+            sequence: val.sequence.filter((ref) => ref !== gameRef)
+          }
+        }
+      }
+    })
   }
 }
 

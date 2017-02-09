@@ -34,6 +34,7 @@
     "@f/is-generator-object": "^1.3.0",
     "@f/map-values": "^1.0.0",
     "@f/omit": "^2.2.3",
+    "@f/rgba": "^1.0.0",
     "@f/set-prop": "^1.0.0",
     "@f/sleep": "^1.0.0",
     "@f/splice": "^1.0.0",

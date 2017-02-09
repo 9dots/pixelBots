@@ -24,6 +24,7 @@ function render ({props}) {
     dragging,
     size
   } = props
+
   return (
     <Block
       transition={!editMode && `background-color ${animationSpeed}s ease-in-out`}

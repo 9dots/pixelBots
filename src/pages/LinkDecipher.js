@@ -1,6 +1,7 @@
 import IndeterminateProgress from '../components/IndeterminateProgress'
 import PlaylistLoader from './PlaylistLoader'
 import ProfileLoader from './ProfileLoader'
+import SharedProject from './SharedProject'
 import MyPlaylist from './MyPlaylist'
 import GameLoader from './GameLoader'
 import element from 'vdux/element'
@@ -15,10 +16,13 @@ const router = enroute({
     <GameLoader {...props} left='60px' saveLink={props.link} gameCode={props.payload.gameRef} saveID={props.payload.saveRef} />
   ),
   'playlists': (params, props) => (
-    <MyPlaylist anonymous={props.payload.anonymous} saveLink={props.link} ref={props.payload.ref} user={props.user} />
+    <MyPlaylist anonymous={props.payload.anonymous} current={props.payload.current} saveLink={props.link} ref={props.payload.ref} user={props.user} />
   ),
   'list': (params, props) => (
     <PlaylistLoader {...props} ref={props.payload} saveLink={props.link} user={props.user} />
+  ),
+  'shared': (params, props) => (
+    <SharedProject {...props} saveID={props.payload.saveRef} gameCode={props.payload.gameRef}/>
   ),
   ':username': ({username}, props) => <ProfileLoader currentUser={props.user} username={username} />,
   '*': () => <div>Bad Link</div>

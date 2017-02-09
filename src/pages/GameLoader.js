@@ -1,6 +1,6 @@
 /** @jsx element */
 
-import IndeterminateProgress from '../components/IndeterminateProgress'
+import Loading from '../components/Loading'
 import DescriptionModal from '../components/DescriptionModal'
 import {setItem, getItem} from 'redux-effects-localStorage'
 import {setSaveId, setGameId} from '../actions'
@@ -44,7 +44,7 @@ function * onCreate ({props, state, local}) {
     yield setGameId(props.gameCode)
     return yield setSaveId(props.saveID)
   } else {
-    yield createNewSave(props.gameCode)
+    yield createNewSave(props.gameCode, props.user)
   }
 }
 
@@ -55,11 +55,11 @@ function * onUpdate (prev, next) {
 }
 
 function render ({props, state, local}) {
-  const {gameVal, savedProgress, playlist} = props
+  const {gameVal, savedProgress, playlist, username, user} = props
   const {loading, description, show} = state
 
   if (gameVal.loading || (props.saveID && savedProgress.loading) || loading) {
-    return <IndeterminateProgress />
+    return <Loading />
   }
 
   const mergeGameData = {...gameVal.value, ...savedProgress.value}
@@ -85,7 +85,9 @@ function render ({props, state, local}) {
     {game}
   </Layout>
 
-  return playlist ? getPlaylistLayout() : gameLayout
+  return <Block absolute tall wide>
+    {playlist ? getPlaylistLayout() : gameLayout}
+  </Block>
 
   function saveDocumentation (gameID, saveID) {
     const localStorageKey = `pixelBots-game-${gameID}`
@@ -121,7 +123,7 @@ function render ({props, state, local}) {
   }
 }
 
-function * createNewSave (gameCode) {
+function * createNewSave (gameCode, user) {
   const code = yield createCode()
   const saveRef = yield refMethod({
     ref: '/saved/',
@@ -143,6 +145,19 @@ function * createNewSave (gameCode) {
       }
     }
   })
+  if (!user.isAnonymous) {
+    yield refMethod({
+      ref: `/users/${user.uid}/inProgress`,
+      updates: {
+        method: 'push',
+         value: {
+          saveRef: saveRef.key,
+          gameRef: gameCode,
+          saveLink: code
+        }
+      }
+    })
+  }
   yield setUrl(`/${code}`, true)
 }
 
@@ -153,6 +168,14 @@ const reducer = handleActions({
   [hideModal.type]: (state) => ({...state, show: false})
 })
 
+function getProps (props, context) {
+  return {
+    ...props,
+    username: context.username,
+    user: context.currentUser
+  }
+}
+
 export default fire((props) => {
   const savedProgress = props.saveID ? `/saved/${props.saveID}` : null
   return {
@@ -161,6 +184,7 @@ export default fire((props) => {
   }
 })({
   initialState,
+  getProps,
   onCreate,
   onUpdate,
   reducer,

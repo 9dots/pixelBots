@@ -27,11 +27,17 @@ function codeRunner () {
       let state = getState()
       if (action.type === runCode.type && !state.running && !state.hasRun) {
         const {animals} = state.game
+        function * onComplete () {
+          yield stopRun()
+          if (typeof (action.payload) === 'function') {
+            yield action.payload()
+          }
+        }
         dispatch(startRun())
         createIterators(animals)
           .then((its) => {
             runners = its.map((it) => {
-              return run(it, animals, getSpeed, onValue, (e) => console.warn(e), () => dispatch(stopRun(true)))
+              return run(it, animals, getSpeed, onValue, (e) => console.warn(e), () => dispatch(onComplete()))
             })
             runners.forEach((runner) => runner.run())
           })
