@@ -6,6 +6,7 @@ import {setUrl} from 'redux-effects-location'
 import Layout from '../layouts/HeaderAndBody'
 import {scrollTo} from '../middleware/scroll'
 import Button from '../components/Button'
+import omit from '@f/omit'
 import OptionsPage from './OptionsPage'
 import {updateGame} from '../actions'
 import element from 'vdux/element'
@@ -46,8 +47,8 @@ const router = enroute({
     </OptionsPage>,
   'preview': (params, props) => <Game
     initialData={props.newGame.value}
-    gameData={props.newGame.value}
-    {...props}>
+    game={props.newGame.value}
+    {...omit('game', props)}>
     {props.btn}
     </Game>,
   'publish': (params, props) => publishPage(props.draftID)

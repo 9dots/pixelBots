@@ -1,3 +1,4 @@
+
 /** @jsx element */
 
 import handleActions from '@f/handle-actions'
@@ -15,13 +16,15 @@ const updateStartCode = createAction('<PermissionsField/>: UPDATE_START_CODE')
 const showModal = createAction('<PermissionsField/>: SHOW_MODAL')
 const hideModal = createAction('<PermissionsField/>: HIDE_MODAL')
 
-const initialState = ({local, props}) => ({
-  modal: false,
-  startCode: props.startCode || '',
-  actions: {
-    hideModal: local(hideModal)
-  }
-})
+const initialState = ({local, props}) => {
+  return ({
+    modal: false,
+    startCode: props.game.startCode || '',
+    actions: {
+      hideModal: local(hideModal)
+    }
+  })
+}
 
 function render ({props, local, state}) {
   const {label, game, onSubmit, ...restProps} = props
