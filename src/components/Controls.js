@@ -30,6 +30,7 @@ function render ({props, state}) {
     selectedLine,
     inputType,
     minHeight = '600px',
+    gameData = {},
     running,
     animals,
     canCode,
@@ -68,9 +69,10 @@ function render ({props, state}) {
         initialData={props.initialData}
         saveID={props.saveID}
         saved={props.saveID && saved}
+        canAutoComplete={!!gameData.targetPainted}
         loc={loc}
         creatorMode
-        inputType={inputType}/>}
+        inputType={inputType} />}
     </Block>
   )
 

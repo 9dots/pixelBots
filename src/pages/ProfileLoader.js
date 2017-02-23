@@ -6,13 +6,17 @@ import fire from 'vdux-fire'
 
 function * onCreate ({props}) {
 	if (!props.params) {
-		yield setUrl(`/${props.username}/challenges`, true)
+		props.mine
+			? yield setUrl(`/${props.username}/studio`, true)
+			: yield setUrl(`/${props.username}/gallery`, true)
 	}
 }
 
 function * onUpdate (prev, {props}) {
 	if (!props.params) {
-		yield setUrl(`/${props.username}/challenges`, true)
+		props.mine
+			? yield setUrl(`/${props.username}/studio`, true)
+			: yield setUrl(`/${props.username}/gallery`, true)
 	}
 }
 

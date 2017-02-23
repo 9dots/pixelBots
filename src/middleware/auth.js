@@ -23,6 +23,8 @@ export default ({getState, dispatch}) => {
     }
     if (user && !user.isAnonymous) {
       dispatch(maybeCreateNewUser(user))
+    } else if (user.isAnonymous) {
+      dispatch(setUsername(null))
     }
     return dispatch(setUserId(user))
   })

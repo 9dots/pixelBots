@@ -1,15 +1,16 @@
 /** @jsx element */
 
-import {animalPaint, reset, setModalMessage} from '../actions'
-import element from 'vdux/element'
-import {Block, Text} from 'vdux-ui'
-import {abortRun} from './codeRunner'
-import objEqual from '@f/equal-obj'
-import {getLoc} from '../utils'
-import filter from '@f/filter'
+import {animalPaint, reset, setModalMessage, completeChallenge} from '../actions'
 import {createIterators, run} from '../runner'
 import createAction from '@f/create-action'
+import {getLoc, fbTask} from '../utils'
+import {abortRun, incrementSteps} from './codeRunner'
+import {Block, Text} from 'vdux-ui'
+import objEqual from '@f/equal-obj'
+import element from 'vdux/element'
+import filter from '@f/filter'
 
+const completeProject = createAction('<checkCompleted/>: COMPLETE_PROJECT')
 const checkDrawing = createAction('<checkCompleted/>: CHECK_DRAWING')
 
 function winMessage (msg) {
@@ -34,9 +35,6 @@ function loseMessage (msg) {
     body
   }
 }
-
-// You wrote {loc} lines of code to draw this picture!
-// getLoc(game.animals[0].sequence))
 
 export default ({getState, dispatch}) => (next) => (action) => {
   if (action.type === animalPaint.type) {
@@ -66,13 +64,31 @@ export default ({getState, dispatch}) => (next) => (action) => {
       }
       dispatch(reset())
     }
-
+  }
+  if (action.type === completeProject.type) {
+    const {animals} = getState().game
+    createIterators(animals)
+      .then((its) => its.map((it) => {
+        return run(it, animals, () => 2000, onValue, (e) => console.warn(e), handleCorrect).run()
+      }))
   }
   return next(action)
 
+  function onValue (action) {
+    dispatch(incrementSteps())
+    return dispatch(action)
+  }
+
   function handleCorrect (msg) {
     setTimeout(function () {
+      const {gameID, saveID, game, user} = getState()
       dispatch(abortRun('STOP'))
+      dispatch(completeChallenge(gameID, saveID, user.uid, game))
+      dispatch(fbTask('create_gif', {
+        frames: game.frames.concat(game.painted),
+        saveID: saveID,
+        gridSize: game.levelSize[0]
+      }))
       dispatch(setModalMessage(winMessage(msg)))
     }, 800)
   }
@@ -92,5 +108,6 @@ function filterWhite (square) {
 }
 
 export {
-  checkDrawing
+  checkDrawing,
+  completeProject
 }

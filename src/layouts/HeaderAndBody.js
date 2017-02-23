@@ -16,10 +16,10 @@ function render ({props, children}) {
 
   return (
     <Block id='top' column wide tall>
-      <Box relative wide color='#666' fontWeight='800'>
+      <Box relative wide color='#767676' fontWeight='800' h='90px'>
         <Block p='20px' align='start center' pb='0px' {...titleProps}>
           {leftAction || <Block ml='1em'/>}
-          {titleImg && <Avatar boxShadow='0 0 1px 2px rgba(0,0,0,0.2)' h='70px' w='70px' src={titleImg} />}
+          {titleImg && <Avatar boxShadow='0 0 1px 2px rgba(0,0,0,0.2)' h='60px' w='60px' src={titleImg} />}
             <Block align='start center' flex relative ml='1em'>
               {navigation.map(({category, title, onClick}, i) => (
                 <Block align='start center'>
@@ -38,7 +38,7 @@ function render ({props, children}) {
                     <Text
                       display='block'
                       fontWeight='500'
-                      fs='xl'>
+                      fs='l'>
                       {title}
                     </Text>
                   </Block>
@@ -49,7 +49,7 @@ function render ({props, children}) {
           {titleActions}
         </Block>
       </Box>
-      <Box flex wide py='1em' {...bodyProps}>
+      <Box h='calc(100% - 90px)' flex wide py='1em' {...bodyProps}>
         {children}
       </Box>
     </Block>

@@ -1,7 +1,7 @@
 import createAction from '@f/create-action'
 import {bindUrl, setUrl} from 'redux-effects-location'
 import {refMethod} from 'vdux-fire'
-import {createCode, initGame} from './utils'
+import {createCode, initGame, fbTask} from './utils'
 import pick from 'lodash/pick'
 
 const animalMove = createAction(
@@ -79,35 +79,36 @@ function initializeApp () {
   return bindUrl(newRoute)
 }
 
-function * saveProgress (game, saveID) {
-  yield refMethod({
-    ref: 'saved/' + saveID,
-    updates: {
-      method: 'update',
-      value: ({
-        lastEdited: Date.now(),
-        animals: game.animals.map((animal) => ({...animal, current: animal.initial})),
-        targetPainted: game.targetPainted
-      })
-    }
+function * saveProgress (game, saveID, gameID, uid) {
+  const {animals, targetPainted} = game
+  yield fbTask('on_save', {
+    targetPainted,
+    animals,
+    saveID,
+    gameID,
+    uid
   })
   yield setSaved(true)
 }
 
 function updatePlaylist (ref) {
   return function * (data) {
-    yield refMethod({
-      ref: '/queue/tasks',
-      updates: {
-        method: 'push',
-        value: {
-          _state: 'update_playlist',
-          updates: data,
-          ref
-        }
-      }
+    yield fbTask('update_playlist', {
+      updates: data,
+      ref
     })
   }
+}
+
+function * completeChallenge (gameID, saveID, userID, game) {
+  const linkRef = yield createCode()
+  yield fbTask('on_complete', {
+    gameID,
+    saveID,
+    userID,
+    linkRef,
+    code: game.animals[0].sequence
+  })
 }
 
 function updateGame (ref) {
@@ -117,16 +118,9 @@ function updateGame (ref) {
         updates: {method: 'update', value: {lastEdited: Date.now(), ...data}},
         ref
       })
-      yield refMethod({
-        ref: '/queue/tasks',
-        updates: {
-          method: 'push',
-          value: {
-            _state: 'update_game',
-            updates: pick(data, ['animal', 'inputType', 'lastEdited', 'name']),
-            ref
-          }
-        }
+      yield fbTask('update_game', {
+        ...pick(data, ['animal', 'inputType', 'lastEdited', 'name']),
+        ref
       })
     } catch (e) {
       console.warn(e)
@@ -147,6 +141,7 @@ function * createNew (uid) {
 }
 
 export {
+  completeChallenge,
   incrementalPaint,
   togglePermission,
   setModalMessage,

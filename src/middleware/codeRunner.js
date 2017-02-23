@@ -1,6 +1,10 @@
 import createAction from '@f/create-action'
+import firebase from 'firebase'
+import sleep from '@f/sleep'
 import {run, createIterators} from '../runner'
+import html2canvas from 'html2canvas'
 import {scrollTo} from './scroll'
+import {fbTask} from '../utils'
 import {
   setActiveLine,
   throwError,
@@ -27,17 +31,11 @@ function codeRunner () {
       let state = getState()
       if (action.type === runCode.type && !state.running && !state.hasRun) {
         const {animals} = state.game
-        function * onComplete () {
-          yield stopRun()
-          if (typeof (action.payload) === 'function') {
-            yield action.payload()
-          }
-        }
         dispatch(startRun())
         createIterators(animals)
           .then((its) => {
             runners = its.map((it) => {
-              return run(it, animals, getSpeed, onValue, (e) => console.warn(e), () => dispatch(onComplete()))
+              return run(it, animals, getSpeed, onValue, (e) => console.warn(e), () => dispatch(onComplete(action.payload)))
             })
             runners.forEach((runner) => runner.run())
           })
@@ -87,6 +85,20 @@ function codeRunner () {
         return dispatch(action)
       }
 
+      function * onComplete (payload) {
+        const {game, saveID} = getState()
+        yield stopRun()
+        if (typeof (payload) === 'function') {
+          yield payload()
+        }
+        if (saveID) {
+          yield fbTask('update_saved_image', {
+            painted: game.painted,
+            levelSize: game.levelSize[0],
+            url: saveID
+          })
+        }
+      }
       return next(action)
     }
   }

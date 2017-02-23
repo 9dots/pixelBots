@@ -1,10 +1,11 @@
 /** @jsx element */
 
 import {initializeGame, clearMessage, setModalMessage} from '../actions'
+import {completeProject} from '../middleware/checkCompleted'
 import ConfirmDelete from '../components/ConfirmDelete'
 import {abortRun} from '../middleware/codeRunner'
-import LinkModal from '../components/LinkModal'
 import {Block, Icon, Text} from 'vdux-containers'
+import LinkModal from '../components/LinkModal'
 import element from 'vdux/element'
 import Button from './Button'
 
@@ -27,7 +28,15 @@ function createButton (icon, text, bgColor, clickHandler) {
 }
 
 function render ({props, state, local}) {
-  const {initialData, saveID = '', inputType, saved, loc, ...restProps} = props
+  const {
+    canAutoComplete,
+    initialData,
+    saveID = '',
+    inputType,
+    saved,
+    loc,
+    ...restProps
+  } = props
 
   const deleteModal = <ConfirmDelete
     header='Start Over?'
@@ -35,13 +44,20 @@ function render ({props, state, local}) {
     dismiss={clearMessage}
     action={startOver} />
 
-  const saveModal = <LinkModal code={saveID}/>
+  const completeModal = <ConfirmDelete
+    header='Complete Project?'
+    message='submit this project as completed?'
+    dismiss={clearMessage}
+    action={completeProject} />
+
+  const saveModal = <LinkModal code={saveID} />
 
   const playButtons = (
     <Block h='80%' align='center center'>
       {createButton('delete_forever', 'Start Over', '#666', () => setModalMessage(deleteModal))}
       {inputType === 'code' && createButton('print', 'Print', '#666', () => window.print())}
       {saveID && createButton('save', 'Save', '#2C4770', () => setModalMessage(saveModal))}
+      {!canAutoComplete && createButton('check', 'Completed', 'green', () => setModalMessage(completeModal))}
     </Block>
   )
   return (

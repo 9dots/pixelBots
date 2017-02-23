@@ -40,11 +40,11 @@ function render ({props, state, local}) {
   return (
     <ModalMessage
       fullscreen={textarea}
-      bgColor={textarea ? '#e5e5e5' : 'white'}
       dismiss={dismiss}
       header={`Edit ${label}`}
       noFooter={textarea}
       headerColor='#666'
+      bgColor='#FAFAFA'
       body={body}
       onSubmit={submit}
       footer={footer}

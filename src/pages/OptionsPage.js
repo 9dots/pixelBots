@@ -23,7 +23,7 @@ function render ({props, state, children}) {
     <Button w='160px' h='42px' fs='16px' px='16px'>
       <Block wide align='space-between center'>
         <Text textAlign='left' flex>{type}</Text>
-        <Icon relative right='0' mt='3px' name='keyboard_arrow_down'/>
+        <Icon relative right='0' mt='3px' name='keyboard_arrow_down' />
       </Block>
     </Button>
   )
@@ -32,27 +32,27 @@ function render ({props, state, children}) {
     <Button w='160px' h='42px' fs='16px' px='16px'>
       <Block wide align='space-between center'>
         <Text textAlign='left' flex>{inputType !== 'code' ? inputType : 'javascript'}</Text>
-        <Icon float='right' mt='3px' name='keyboard_arrow_down'/>
+        <Icon float='right' mt='3px' name='keyboard_arrow_down' />
       </Block>
     </Button>
   )
 
   return (
-    <Block wide>
-      <Block bgColor='white' wide>
+    <Block mx='20px' bgColor='white' border='1px solid #e0e0e0'>
+      <Block wide>
         <EditableTextField
           onSubmit={({title}) => onEdit({title})}
           value={props.title || 'Untitled'}
           validate={({title}) => validator.title(title)}
           field='title'
-          label='Name'/>
+          label='Name' />
         <EditableTextField
           onSubmit={({description}) => onEdit({description})}
           value={props.description || ''}
           validate={({description}) => validator.description(description)}
           textarea
           field='description'
-          label='Description'/>
+          label='Description' />
         <EditableTextField
           onSubmit={(({levelSize}) => onEdit({
             levelSize: [levelSize, levelSize],
@@ -62,7 +62,7 @@ function render ({props, state, children}) {
           value={props.levelSize[0]}
           validate={({levelSize}) => validator.levelSize(isNaN(levelSize) ? levelSize : Number(levelSize))}
           field='levelSize'
-          label='Grid Size'/>
+          label='Grid Size' />
         <DropdownField h='85px' label='Code Type'>
           <CodeDropdown
             name='inputType'
@@ -72,7 +72,7 @@ function render ({props, state, children}) {
               inputType: type,
               'startCode': [],
               'animals/0/sequence': []
-            }))}/>
+            }))} />
         </DropdownField>
         <DropdownField h='85px' label='Animal'>
           <AnimalDropdown
@@ -84,7 +84,7 @@ function render ({props, state, children}) {
               painted: 0
             })}
             value={type}
-            name='setAnimal'/>
+            name='setAnimal' />
         </DropdownField>
         <EditableLevelItem
           game={props}
@@ -94,7 +94,7 @@ function render ({props, state, children}) {
           painted={props.targetPainted}
           onSubmit={(data) => onEdit({targetPainted: data})}
           colorPicker
-          value={getLevel({painted: props.targetPainted, hideAnimal: true, game: props})}/>
+          value={getLevel({painted: props.targetPainted, hideAnimal: true, game: props})} />
         <EditableLevelItem
           game={props}
           label='Start Grid'
@@ -103,7 +103,7 @@ function render ({props, state, children}) {
           painted={props.initialPainted}
           onSubmit={(data) => onEdit({initialPainted: data, painted: data})}
           colorPicker
-          value={getLevel({painted: props.initialPainted, hideAnimal: true, game: props})}/>
+          value={getLevel({painted: props.initialPainted, hideAnimal: true, game: props})} />
         <EditableLevelItem
           title='Click the grid to set the starting position'
           game={props}
@@ -113,19 +113,19 @@ function render ({props, state, children}) {
             'animals/0/current/location': coord,
             'animals/0/initial/location': coord
           })}
-          value={getLevel({painted: [], game: props})}/>
+          value={getLevel({painted: [], game: props})} />
         <StartCodeItem
           label='Add Start Code'
           selectedLine={selectedLine}
           onSubmit={(startCode) => onEdit({startCode})}
-          game={props}/>
+          game={props} />
         <PermissionsField
           label='Student Permissions'
           handleClick={(field) => onEdit({
             permissions: maybeAddToArray(field, props.permissions)
           })}
           checked={props.permissions}
-          fields={['Run Button', 'Edit Code', 'Tracer Paint']}/>
+          fields={['Run Button', 'Edit Code', 'Tracer Paint']} />
       </Block>
       {children}
     </Block>
@@ -133,13 +133,14 @@ function render ({props, state, children}) {
 }
 
 function getLevel ({painted, hideAnimal, game}) {
-  return <EditLevel
-    my='0'
-    painted={painted}
-    hideAnimal={hideAnimal}
-    size='80px'
-    game={game}
-  />
+  return <Block display='block' w='82px'>
+    <EditLevel
+      my='0'
+      painted={painted}
+      hideAnimal={hideAnimal}
+      size='80px'
+      game={game} />
+  </Block>
 }
 
 export default {

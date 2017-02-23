@@ -7,6 +7,7 @@ import createAction from '@f/create-action'
 import Output from '../components/Output'
 import {initializeGame} from '../actions'
 import Button from '../components/Button'
+import html2canvas from 'html2canvas'
 import OptionsPage from './OptionsPage'
 import Tabs from '../components/Tabs'
 import objEqual from '@f/equal-obj'
@@ -31,7 +32,6 @@ function initialState ({props, local}) {
 }
 
 function * onCreate ({props, state, local}) {
-  // yield state.actions.tabChanged('display')
   if (props.initialData) {
     yield initializeGame(props.initialData)
   }
@@ -50,7 +50,7 @@ function render ({props, state, local, children}) {
   const {
     selectedLine,
     activeLine,
-    saveLink,
+    saveID,
     gameData,
     publish,
     running,
@@ -76,7 +76,7 @@ function render ({props, state, local, children}) {
         tab={tab}
         hasRun={hasRun}
         {...game}
-        {...props}/>
+        {...props} />
       <Controls
         selectedLine={selectedLine}
         initialData={initialData}
@@ -84,12 +84,13 @@ function render ({props, state, local, children}) {
         inputType={inputType}
         canCode={game.permissions.indexOf(EDIT_CODE) > -1}
         running={running}
-        saveID={saveLink}
+        saveID={saveID}
         saved={game.saved}
         animals={animals}
+        gameData={gameData}
         hasRun={hasRun}
         active={active}
-        tab={tab}/>
+        tab={tab} />
     </Block>
   )
 

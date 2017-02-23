@@ -1,18 +1,27 @@
 import {setUrl} from 'redux-effects-location'
 import Loading from '../components/Loading'
 import LeftNav from '../layouts/LeftNav'
-import InProgress from './InProgress'
+import Challenges from './Challenges'
 import element from 'vdux/element'
+import CardFeed from './CardFeed'
 import enroute from 'enroute'
 
 const router = enroute({
-	'in progress': (params, props) => (<InProgress inProgress={props.profile.inProgress}/>)
+	'inProgress': (params, props) => (
+		<Challenges items={props.profile.inProgress}/>
+	),
+	'completed': (params, props) => (
+		<Challenges items={props.profile.completed}/>
+	)
 })
 
 function * onCreate ({props}) {
-	const {category, username, params} = props
+	const {category, username, params, mine} = props
+	if (!mine) {
+		return yield setUrl(`/${username}`)
+	}
 	if (!category) {
-		yield setUrl(`/${username}/${params}/In Progress`)
+		return yield setUrl(`/${username}/${params}/inProgress`)
 	}
 }
 

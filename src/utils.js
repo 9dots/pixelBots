@@ -203,19 +203,43 @@ function * createAssignmentLink (type, payload, cb = () => {}) {
   return yield cb(code)
 }
 
+function fbTask (state, payload) {
+  return refMethod({
+    ref: `/queue/tasks`,
+    updates: {
+      method: 'push',
+      value: {
+        _state: state,
+        ...payload
+      }
+    }
+  })
+}
+
+function toCamelCase (str) {
+  return str.split(' ').map((s, i) => i >= 1 ? capitalize(s) : s.toLowerCase()).join('')
+}
+
+function capitalize (str) {
+  return str.split('').map((s, i) => i === 0 ? s.toUpperCase() : s).join('')
+}
+
 export {
   createAssignmentLink,
   maybeAddToArray,
   nameToDirection,
   getDirection,
+  toCamelCase,
   nameToColor,
   nameToIcon,
   createCode,
+  capitalize,
   initGame,
   publish,
   palette,
   arrayAt,
   isLocal,
+  fbTask,
   getLoc,
   range
 }

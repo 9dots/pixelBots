@@ -12,7 +12,6 @@ import createAction from '@f/create-action'
 import PlaylistFeed from './PlaylistFeed'
 import {maybeAddToArray} from '../utils'
 import Tabs from '../components/Tabs'
-import mapValues from '@f/map-values'
 import element from 'vdux/element'
 import filter from '@f/filter'
 import enroute from 'enroute'
@@ -23,11 +22,11 @@ const router = enroute({
     selected={props.selected}
     toggleSelected={props.actions.toggleSelected}
     uid={props.userKey}
-    games={props.profile.games}
+    games={props.profile.games || {}}
     mine={props.mine}
     cat={props.tab} />,
-  'playlists': (params, props) => <ShowcaseView
-    playlists={mapValues((p) => p.ref, props.profile.playlists)}
+  'playlists': (params, props) => <PlaylistFeed
+    playlists={props.profile.playlists || {}}
     uid={props.userKey}
     mine={props.mine}
     cat={props.tab} />,
@@ -45,7 +44,7 @@ const router = enroute({
 function onCreate ({props}) {
   const {category, params, username} = props
   if (!props.category) {
-    return setUrl(`/${username}/${params}/playlists`)
+    return setUrl(`/${username}/${params}/playlists`, true)
   }
 }
 

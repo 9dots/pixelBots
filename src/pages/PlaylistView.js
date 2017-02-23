@@ -2,17 +2,18 @@
 
 import IndeterminateProgress from '../components/IndeterminateProgress'
 import PlaylistGameLoader from '../components/PlaylistGameLoader'
-import {Box, Block, Flex, Menu, Text} from 'vdux-ui'
 import PlaylistOptions from '../components/PlaylistOptions'
+import {Box, Block, Flex, Menu, Text} from 'vdux-ui'
 import LinkModal from '../components/LinkModal'
 import handleActions from '@f/handle-actions'
 import createAction from '@f/create-action'
 import Button from '../components/Button'
+import findIndex from '@f/find-index'
 import {refMethod} from 'vdux-fire'
 import {setToast} from '../actions'
 import element from 'vdux/element'
+import {fbTask} from '../utils'
 import filter from '@f/filter'
-import findIndex from '@f/find-index'
 import splice from '@f/splice'
 import sleep from '@f/sleep'
 import fire from 'vdux-fire'
@@ -37,7 +38,7 @@ const initialState = ({local}) => ({
 })
 
 function render ({props, state}) {
-  const {playlist, activeKey, currentUser, profile = {}, ...restProps} = props
+  const {playlist, activeKey, currentUser, profile = {}, username, ...restProps} = props
   const {uid} = currentUser
 
   if (playlist.loading) {
@@ -66,10 +67,10 @@ function render ({props, state}) {
     <Block>
       <Button ml='m' onClick={() => actions.setModal('')}>Done</Button>
     </Block>
-	)
+  )
 
   return (
-    <Block flex px='10px' tall overflowY='auto' overflowX='hidden' minWidth='680px' {...restProps}>
+    <Block wide bgColor='#FAFAFA' flex px='10px' tall overflowY='auto' overflowX='hidden' minWidth='680px' {...restProps}>
       <Block align='space-between center' p='10px'>
         <Block>
           <Text
@@ -103,11 +104,12 @@ function render ({props, state}) {
           fontWeight='800'
           align='start center'
           bgColor='transparent'
+          p='8px 14px 8px 65px'
           mb='4px'>
-          <Block minWidth='66px' w='66px' />
-          <Text flex minWidth='200px' ml='2em'>CHALLENGE NAME</Text>
-          <Text mr='2em' minWidth='100px' w='100px'>ANIMAL</Text>
-          <Text mr='2em' minWidth='180px' w='180px'>CODE TYPE</Text>
+          <Text flex minWidth='200px'>CHALLENGE NAME</Text>
+          <Text minWidth='180px' w='180px'>ANIMAL</Text>
+          <Text minWidth='180px' w='180px'>CODE TYPE</Text>
+          <Block minWidth='180px' w='180px' />
         </Block>
         <PlaylistGameLoader
           dragTarget={dragTarget}
@@ -132,42 +134,23 @@ function render ({props, state}) {
       updates: {
         method: 'transaction',
         value: (seq) => (
-					seq
-						? splice(splice(seq, removeIdx, 1), removeIdx > idx ? idx : idx - 1, 0, dragTarget)
-						: 0
-				)
+          seq
+            ? splice(splice(seq, removeIdx, 1), removeIdx > idx ? idx : idx - 1, 0, dragTarget)
+            : 0
+        )
       }
     })
     yield actions.handleDrop()
   }
 
   function * follow () {
-    yield refMethod({
-      ref: `/playlists/${activeKey}/follows`,
-      updates: {
-        method: 'transaction',
-        value: (val) => val + 1
-      }
-    })
-    yield refMethod({
-      ref: `/playlists/${activeKey}/followedBy/${props.username}`,
-      updates: {
-        method: 'set',
-        value: true
-      }
-    })
-    yield refMethod({
-      ref: `/users/${uid}/playlists/`,
-      updates: {
-        method: 'push',
-        value: {
-          name,
-          creatorID,
-          creatorUsername,
-          ref: props.activeKey,
-          dateAdded: 0 - Date.now()
-        }
-      }
+    yield fbTask('follow_playlist', {
+      uid,
+      username,
+      creatorID,
+      creatorUsername,
+      title: name,
+      ref: activeKey
     })
     yield setToast(`followed ${name}`)
     yield sleep(3000)
@@ -175,20 +158,10 @@ function render ({props, state}) {
   }
 
   function * unfollow () {
-    yield refMethod({
-      ref: `/playlists/${activeKey}/follows`,
-      updates: {
-        method: 'transaction',
-        value: (val) => val - 1
-      }
-    })
-    yield refMethod({
-      ref: `/playlists/${activeKey}/followedBy/${props.username}`,
-      updates: {method: 'remove'}
-    })
-    yield refMethod({
-      ref: `/users/${uid}/playlists/${playlistMatch}`,
-      updates: {method: 'remove'}
+    yield fbTask('unfollow_playlist', {
+      uid,
+      username,
+      ref: activeKey
     })
     yield setToast(`unfollowed ${name}`)
     yield sleep(3000)

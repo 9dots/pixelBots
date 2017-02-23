@@ -3,14 +3,15 @@
 import ProfileTab from '../components/ProfileTab'
 import handleActions from '@f/handle-actions'
 import createAction from '@f/create-action'
+import {toCamelCase} from '../utils'
 import element from 'vdux/element'
 import {Flex} from 'vdux-ui'
 
 const colors = [
   'red',
   'blue',
+  'green',
   'yellow',
-  'green'
 ]
 
 const setActive = createAction('<Tabs/>: SET_ACTIVE')
@@ -26,15 +27,16 @@ function render ({props, state, local}) {
   const {active, actions} = state
   return (
     <Flex
-      borderBottom='1px solid #999'
+      borderBottom='1px solid #e0e0e0'
       wide
       relative
       bottom='0'
       color='lightBlue'
       h='42px'
       {...restProps}>
-      {tabs.map((tab, i) => <ProfileTab
-        title={tab}
+      {tabs.filter(removeEmpty).map(toCamelCase).map((tab, i, arr) => <ProfileTab
+        label={tabs[tabs.length - arr.length + i]}
+        name={tab}
         h={tabHeight}
         active={tab === active}
         handleClick={handleClick}
@@ -47,6 +49,10 @@ function render ({props, state, local}) {
     yield onClick(tab)
     yield actions.setActive(tab)
   }
+}
+
+function removeEmpty (elem) {
+  return !!elem
 }
 
 const reducer = handleActions({

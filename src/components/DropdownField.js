@@ -8,7 +8,7 @@ function render ({props, children}) {
   return (
     <MenuItem
       wide
-      borderBottom='1px solid #ccc'
+      borderBottom='1px solid #e0e0e0'
       fs='m'
       align='start center'
       fontWeight='300'

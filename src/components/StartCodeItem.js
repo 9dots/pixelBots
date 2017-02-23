@@ -1,3 +1,4 @@
+
 /** @jsx element */
 
 import handleActions from '@f/handle-actions'
@@ -78,7 +79,7 @@ function render ({props, local, state}) {
         pt='5%'
         column
         headerColor='#666'
-        bgColor='#e5e5e5'
+        bgColor='#FAFAFA'
         header={label}
         noFooter
         dismiss={saveStartCode}

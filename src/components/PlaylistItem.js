@@ -1,11 +1,13 @@
 /** @jsx element */
 
 import IndeterminateProgress from './IndeterminateProgress'
+import DetailInfo from './DetailInfo'
 import {setUrl} from 'redux-effects-location'
 import {createAssignmentLink} from '../utils'
 import {Block, Icon, Image} from 'vdux-ui'
 import {Text} from 'vdux-containers'
 import element from 'vdux/element'
+import moment from 'moment'
 import fire from 'vdux-fire'
 
 function render ({props}) {
@@ -15,8 +17,8 @@ function render ({props}) {
   if (loading) return <IndeterminateProgress/>
 
   return (
-    <Block wide py='1em' align='start start' borderBottom='1px solid #aaa'>
-      <Block px='10px'>
+    <Block bgColor='white' wide p='1em' align='start start' border='1px solid #e0e0e0' borderTopWidth='0'>
+      <Block mr='20px'>
         <Image sq='40px' src={value.imageUrl}/>
       </Block>
       <Block color='#666' flex column>
@@ -31,18 +33,19 @@ function render ({props}) {
           </Text>
         </Block>
         <Block wide align='start center'>
-          <Block mx='1em' ml='0' fs='xs' fontWeight='300' align='center center'>
-            <Icon fs='xs' name='collections'/>
-            <Text ml='4px'>{value.sequence ? value.sequence.length : 0} challenges</Text>
-          </Block>
-          <Block mx='1em' fs='xs' fontWeight='300' align='center center'>
-            <Icon fs='xs' name='play_arrow'/>
-            <Text ml='4px'>{value.plays || 0} plays</Text>
-          </Block>
-          <Block mx='1em' fs='xs' fontWeight='300' align='center center'>
-            <Icon fs='xs' name='person'/>
-            <Text ml='4px'>{value.creatorUsername}</Text>
-          </Block>
+          <DetailInfo
+            icon='collections'
+            label={`${value.sequence ? value.sequence.length : 0} challenges`}/>
+          <DetailInfo
+            icon='play_arrow'
+            label={`${value.plays || 0} plays`}/>
+          <DetailInfo
+            icon='person'
+            onClick={() => setUrl(`/${value.creatorUsername}/authored/playlists`)}
+            label={value.creatorUsername}/>
+          <DetailInfo
+            icon='date_range'
+            label={moment(value.lastEdited).fromNow()}/>
         </Block>
       </Block>
     </Block>

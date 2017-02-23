@@ -50,8 +50,8 @@ function render ({props, local, state}) {
           top='0'
           color='white'
           zIndex='999'
-          left={position === 'fixed' ? '90px' : '0'}
-          w={position === 'fixed' ? 'calc(100% - 90px)' : '100%'}
+          left={position === 'fixed' ? '80px' : '0'}
+          w={position === 'fixed' ? 'calc(100% - 80px)' : '100%'}
           h='42px'
           bgColor='blue'
           align='start center'>
@@ -82,7 +82,7 @@ function render ({props, local, state}) {
               circle='25px'
               hoverProp={{hightlight: true}}
               onClick={local(() => setModal(setConfirmDelete()))}>
-              <Icon color='white' name='delete'/>
+              <Icon color='white' name='delete' />
             </MenuItem>
           </Block>
           {modal && modal}

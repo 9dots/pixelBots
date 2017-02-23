@@ -12,12 +12,12 @@ function render ({props}) {
   const {playlist, playlistRef} = props
   const {loading, value} = playlist
 
-  if (loading) return <IndeterminateProgress/>
+  if (loading) return <IndeterminateProgress />
 
   return (
-    <Block wide py='1em' align='start start' borderBottom='1px solid #aaa'>
+    <Block bgColor='white' wide py='1em' align='start start' borderBottom='1px solid #e0e0e0'>
       <Block w='60px'>
-        <Image h='40px' w='40px' src={value.imageUrl}/>
+        <Image h='40px' w='40px' src={value.imageUrl} />
       </Block>
       <Block flex column>
         <Block h='45px' align='start center'>
@@ -35,11 +35,11 @@ function render ({props}) {
         </Block>
         <Block wide align='start center'>
           <Block mx='1em' ml='0' fs='xs' fontWeight='300' align='center center'>
-            <Icon fs='xs' name='collections'/>
+            <Icon fs='xs' name='collections' />
             <Text ml='4px'>{value.sequence ? value.sequence.length : 0} challenges</Text>
           </Block>
           <Block mx='1em' fs='xs' fontWeight='300' align='center center'>
-            <Icon fs='xs' name='play_arrow'/>
+            <Icon fs='xs' name='play_arrow' />
             <Text ml='4px'>{value.plays || 0} plays</Text>
           </Block>
         </Block>

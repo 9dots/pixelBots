@@ -38,8 +38,8 @@ function render ({props, state, local}) {
 
   const btn = (
     <Block align='flex-end center'>
-      <Icon fs='30px' name='format_color_fill'/>
-      <Block border='1px solid black' absolute top='25px' right='-1px' w='31px' h='8px' bgColor={color}/>
+      <Icon fs='30px' name='format_color_fill' />
+      <Block border='1px solid black' absolute top='25px' right='-1px' w='31px' h='8px' bgColor={color} />
     </Block>
   )
 
@@ -82,7 +82,7 @@ function render ({props, state, local}) {
       top='0'
       pt='5%'
       headerColor='#666'
-      bgColor='#e5e5e5'
+      bgColor='#FAFAFA'
       header={title}
       dismiss={dismiss}
       noFooter

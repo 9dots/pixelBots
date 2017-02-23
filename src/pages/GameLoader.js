@@ -1,12 +1,12 @@
 /** @jsx element */
 
-import Loading from '../components/Loading'
+import {setSaveId, setGameId, reset, refresh} from '../actions'
 import DescriptionModal from '../components/DescriptionModal'
 import {setItem, getItem} from 'redux-effects-localStorage'
-import {setSaveId, setGameId} from '../actions'
 import handleActions from '@f/handle-actions'
 import {setUrl} from 'redux-effects-location'
 import Layout from '../layouts/HeaderAndBody'
+import Loading from '../components/Loading'
 import createAction from '@f/create-action'
 import fire, {refMethod} from 'vdux-fire'
 import {createCode} from '../utils'
@@ -18,7 +18,7 @@ import Game from './Game'
 const showModal = createAction('<GameLoader/>: SHOW_MODAL')
 const hideModal = createAction('<GameLoader/>: HIDE_MODAL')
 const setLoading = createAction('<GameLoader/>: SET_LOADING')
-const setLocalDescription = createAction('<GameLoader/>: SET_LOCALDESCRIPTION')
+const setLocalDescription = createAction('<GameLoader/>: SET_LOCAL_DESCRIPTION')
 
 const initialState = ({local}) => ({
   loading: true,
@@ -29,36 +29,35 @@ const initialState = ({local}) => ({
   }
 })
 
-function * onCreate ({props, state, local}) {
-  if (props.noSave) {
-    const localStorageKey = `pixelBots-game-${props.gameCode}`
-    yield state.actions.setLoading()
-    yield setGameId(props.gameCode)
-    const description = yield getItem(localStorageKey)
-    yield state.actions.setDescription(description)
-    yield setSaveId(null)
-    return
-  }
+function * onCreate ({props}) {
   if (props.saveID) {
-    yield state.actions.setLoading()
     yield setGameId(props.gameCode)
-    return yield setSaveId(props.saveID)
-  } else {
-    yield createNewSave(props.gameCode, props.user)
+    yield setSaveId(props.saveID)
+    // yield props.actions.update({savedProgress: `/saved/${props.saveID}`})
   }
 }
 
-function * onUpdate (prev, next) {
-  if (!next.props.noSave && next.props.saveID !== prev.props.saveID) {
-    yield setSaveId(next.props.saveID)
+function * onUpdate (prev, {props, state}) {
+  if (!props.inProgress.loading && !props.saveID) {
+    if (props.inProgress.value && props.inProgress.value[props.gameCode]) {
+      yield setGameId(props.gameCode)
+      yield setSaveId(props.inProgress.value[props.gameCode].saveRef)
+    } else {
+      return yield createNewSave(props.gameCode, props.user, props.username)
+    }
+  }
+
+  if (prev.props.saveID !== props.saveID) {
+    yield setSaveId(props.saveID)
+    // yield props.actions.update({savedProgress: `/saved/${props.saveID}`})
   }
 }
 
 function render ({props, state, local}) {
-  const {gameVal, savedProgress, playlist, username, user} = props
+  const {gameVal, savedProgress, playlist, username, user, saveID, gameCode} = props
   const {loading, description, show} = state
 
-  if (gameVal.loading || (props.saveID && savedProgress.loading) || loading) {
+  if (gameVal.loading || !savedProgress || savedProgress.loading) {
     return <Loading />
   }
 
@@ -66,17 +65,18 @@ function render ({props, state, local}) {
 
   const game = <Block wide tall>
     <Game
-    mine={props.mine}
-    initialData={mergeGameData}
-    gameData={gameVal.value}
-    {...omit(['gameVal, savedProgress'], props)}
-    left='60px' />
+      mine={props.mine}
+      onRun={onRun(user, saveID, gameCode)}
+      initialData={mergeGameData}
+      gameData={gameVal.value}
+      {...omit(['gameVal, savedProgress'], props)}
+      left='60px' />
     <DescriptionModal
       show={show}
       dismiss={local(hideModal)}
       title={gameVal.value.title}
       saveDocumentation={saveDocumentation(props.gameID, props.saveID)}
-      content={(!!savedProgress.value && savedProgress.value.description) || description || gameVal.value.description}/>
+      content={description || gameVal.value.description} />
   </Block>
   const gameLayout = <Layout
     bodyProps={{display: 'flex'}}
@@ -123,42 +123,48 @@ function render ({props, state, local}) {
   }
 }
 
-function * createNewSave (gameCode, user) {
+function onRun (user, saveID, gameID) {
+  return function * (code) {
+    if (user.uid && saveID) {
+      yield refMethod({
+        ref: '/queue/tasks',
+        updates: {
+          method: 'push',
+          value: {
+            _state: 'on_run',
+            userID: user.uid,
+            saveID,
+            gameID,
+            code
+          }
+        }
+      })
+    }
+  }
+}
+
+function * createNewSave (gameCode, user, username) {
   const code = yield createCode()
   const saveRef = yield refMethod({
     ref: '/saved/',
     updates: {
       method: 'push',
-      value: ''
+      value: {username}
     }
   })
   yield refMethod({
-    ref: `/links/${code}`,
+    ref: `/users/${user.uid}/inProgress/${gameCode}`,
     updates: {
       method: 'set',
       value: {
-        type: 'saved',
-        payload: {
-          saveRef: `${saveRef.key}`,
-          gameRef: `${gameCode}`
-        }
+        saveRef: saveRef.key,
+        gameRef: gameCode,
+        saveLink: code,
+        lastEdited: Date.now()
       }
     }
   })
-  if (!user.isAnonymous) {
-    yield refMethod({
-      ref: `/users/${user.uid}/inProgress`,
-      updates: {
-        method: 'push',
-         value: {
-          saveRef: saveRef.key,
-          gameRef: gameCode,
-          saveLink: code
-        }
-      }
-    })
-  }
-  yield setUrl(`/${code}`, true)
+  return yield code
 }
 
 const reducer = handleActions({
@@ -176,17 +182,22 @@ function getProps (props, context) {
   }
 }
 
+function * onRemove () {
+  yield refresh()
+}
+
 export default fire((props) => {
-  const savedProgress = props.saveID ? `/saved/${props.saveID}` : null
-  return {
-    gameVal: `/games/${props.gameCode}`,
- 		savedProgress
+  const refs = {
+    inProgress: `/users/${props.user.uid}/inProgress`,
+    gameVal: `/games/${props.gameCode}`
   }
+  return props.saveID ? {...refs, savedProgress: `/saved/${props.saveID}`} : refs
 })({
   initialState,
   getProps,
   onCreate,
   onUpdate,
+  onRemove,
   reducer,
   render
 })

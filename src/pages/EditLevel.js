@@ -20,7 +20,7 @@ function render ({props, children}) {
   } = props
 
   return (
-    <Block my={my} textAlign='center'>
+    <Block my={my} textAlign='center' border='1px solid #e0e0e0'>
       {children}
       <Level
         editMode
@@ -36,8 +36,7 @@ function render ({props, children}) {
         clickHandler={(coord) => clickHandler({grid, coord, color})}
         numRows={game.levelSize[0]}
         numColumns={game.levelSize[1]}
-        {...restProps}>
-      </Level>
+        {...restProps} />
     </Block>
   )
 }

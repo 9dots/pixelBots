@@ -16,14 +16,14 @@ function render ({props}) {
   const {project, coursesVal} = props
   const {loading, value} = coursesVal
 
-  if (loading) return <Loading/>
+  if (loading) return <Loading />
 
   const courses = map((course, key) => (
     {...course, color: palette[Object.keys(value).indexOf(key) + 5].value}
   ), value)
 
   return (
-    <Block m='0 auto' w='980px' align='start center' column>
+    <Block color='#333' m='0 auto' w='980px' align='start center' column>
       {project && getModal(courses[project])}
       <Text fs='xl'>Courses</Text>
       <Text display='block' mt='0.5em' fontWeight='200' fs='m'>
@@ -42,11 +42,11 @@ function getModal (project) {
   return <ModalMessage
     fullscreen
     headerColor='#666'
-    bgColor='#e5e5e5'
+    bgColor='#FAFAFA'
     header={project.title}
     dismiss={() => setUrl('/featured')}
     noFooter
-    body={<ShowcaseView color={project.color} playlists={project.playlists}/>}/>
+    body={<ShowcaseView color={project.color} playlists={project.playlists} />} />
 }
 
 function reduceToCards (arr, feature, key) {
@@ -57,12 +57,12 @@ function reduceToCards (arr, feature, key) {
       my='10px'
       minHeight='200px'
       cursor='pointer'
-      hoverProps={{boxShadow: 'rgba(0, 0, 0, 0.2) 0px 3px 2px 0px'}}
+      hoverProps={{boxShadow: 'rgba(0, 0, 0, 0.40) 0px 1px 7px 0px'}}
       onClick={() => setUrl(`/featured/${key}`)}
       cardTitle={feature.title}
       cardFooter={
         <Block fs='xs' align='start center'>
-          <Icon fs='m' name='collections'/>
+          <Icon fs='m' name='collections' />
           <Text ml='6px'>{feature.playlists.length} playlists</Text>
         </Block>
       }

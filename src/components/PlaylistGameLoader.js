@@ -30,9 +30,9 @@ function render ({props, state, local}) {
 
   return (
     <Window onDrop={[(e) => e.stopPropagation(), (e) => drop(sequence.indexOf(dropTarget))]} onDragOver={(e) => e.preventDefault()}>
-      <Block>
+      <Block border='1px solid #e0e0e0' borderBottomWidth='0'>
         {
-					sequence.filter((ref) => ref !== dragTarget).map((ref, i) => (
+          sequence.filter((ref) => ref !== dragTarget).map((ref, i) => (
             <ChallengeLoader
               idx={i}
               dummy={getDummyPosition(i) === sequence.indexOf(dropTarget) && getPlaceHolder(ref, i)}
@@ -49,9 +49,9 @@ function render ({props, state, local}) {
               uid={currentUser.uid}
               mine={mine && currentUser.uid === creatorID}
               ref={ref} />
-						)
-					)
-				}
+            )
+          )
+        }
         {
           modal && <LinkModal
             code={modal}

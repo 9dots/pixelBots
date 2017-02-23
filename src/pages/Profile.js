@@ -15,6 +15,7 @@ import {maybeAddToArray} from '../utils'
 import Tabs from '../components/Tabs'
 import element from 'vdux/element'
 import Authored from './Authored'
+import CardFeed from './CardFeed'
 import filter from '@f/filter'
 import enroute from 'enroute'
 import fire from 'vdux-fire'
@@ -34,7 +35,8 @@ const initialState = ({local}) => ({
 
 const router = enroute({
   'authored': (params, props) => <Authored {...props} />,
-  'pixel art': (params, props) => <PixelArt {...props} />
+  'studio': (params, props) => <PixelArt {...props} />,
+  'gallery': (params, props) => <CardFeed items={props.profile.showcase} {...props} />
 })
 
 function render ({props, state, local}) {
@@ -58,7 +60,7 @@ function render ({props, state, local}) {
           {
             !selectMode
               ? <Tabs
-                  tabs={['pixel art', 'authored']}
+                  tabs={['gallery', mine && 'studio', 'authored']}
                   active={props.params}
                   onClick={(tab) => setUrl(`/${username}/${tab}`)}/>
               : <SelectToolbar

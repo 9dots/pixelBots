@@ -1,5 +1,6 @@
 import {Block, Box, Flex, Menu, Text} from 'vdux-ui'
 import {MenuItem} from 'vdux-containers'
+import {toCamelCase} from '../utils'
 import element from 'vdux/element'
 
 function render ({props, children}) {
@@ -7,21 +8,20 @@ function render ({props, children}) {
 	return (
 		<Flex px='20px'>
 			<Box>
-				<Menu column spacing='2px' mt='2px' h='calc(100% - 1px)' overflowY='auto'>
+				<Menu column spacing='2px' overflowY='auto'>
 					{
-						navItems.map((item) => (
+						navItems.map(toCamelCase).map((item, i) => (
 							<MenuItem
 		            relative
 		            w='240px'
 		            h='65px'
 		            column
-		            bgColor='#e5e5e5'
+		            bgColor={compare(active, item) ? '#e5e5e5' : '#FAFAFA'}
 		            align='space-around'
-		            highlight={compare(active, item)}
 		            p='10px 20px'
 		            onClick={() => onClick(item)}
-	            	color='#333'>
-	            	<Text fs='m' fontWeight='300'>{item}</Text>
+	            	color='#767676'>
+	            	<Text fs='m' fontWeight='300'>{navItems[i]}</Text>
 	            </MenuItem>
 						))
 					}

@@ -3,6 +3,7 @@
 import {initGame, arrayAt, maybeAddToArray} from './utils'
 import ModalMessage from './components/ModalMessage'
 import element from 'vdux/element'
+import objEqual from '@f/equal-obj'
 import setProp from '@f/set-prop'
 import splice from '@f/splice'
 import map from '@f/map'
@@ -166,10 +167,12 @@ function reducer (state, action) {
         ), 'animals')
       }
     case incrementSteps.type:
+      const frames = state.game.frames || []
       return {
         ...state,
         game: {
           ...state.game,
+          frames: state.game.painted ? frames.concat(state.game.painted) : frames,
           steps: (state.game.steps || 0) + 1
         }
       }
@@ -192,6 +195,7 @@ function reducer (state, action) {
         activeLine: -1,
         game: {
           ...state.game,
+          frames: [],
           steps: 0,
           painted: state.game.initialPainted,
           animals: map((animal) => ({
@@ -316,6 +320,7 @@ function reducer (state, action) {
         toast: action.payload
       }
     case setSaveId.type:
+      console.log(action.payload)
       return {
         ...state,
         saveID: action.payload
@@ -334,14 +339,6 @@ function reducer (state, action) {
       return {
         ...state,
         profile: action.payload
-      }
-    case setTitle.type:
-      return {
-        ...state,
-        game: {
-          ...state.game,
-          title: action.payload
-        }
       }
     case addStartCode.type:
       return {
@@ -387,6 +384,11 @@ function reducer (state, action) {
           ...state.game,
           saved: action.payload
         }
+      }
+    case setTitle.type:
+      return {
+        ...state,
+        title: action.payload
       }
   }
   return state

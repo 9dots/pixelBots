@@ -11,7 +11,7 @@ function render ({props}) {
     <Button
       borderWidth='0'
       boxShadow='0'
-      bgColor='#e5e5e5'
+      bgColor='#FAFAFA'
       color='#666'
       align='center center'
       onClick={onClick}

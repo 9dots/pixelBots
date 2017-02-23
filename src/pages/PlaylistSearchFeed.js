@@ -9,8 +9,6 @@ import reduce from '@f/reduce'
 function render ({props}) {
   const {playlists} = props
 
-  console.log(playlists)
-
   return (
     <Flex wide flexWrap='wrap'>
       {reduce((cur, body) => body && cur.concat(
@@ -20,7 +18,7 @@ function render ({props}) {
           h='auto'
           onClick={() => setUrl(`/playlist/${body.ref}`)}
           cursor='pointer'
-          cardImage={<Image h='150px' w='150px' src={body.imageUrl} />}
+          cardImage={<Image display='block' h='150px' w='150px' src={body.imageUrl} />}
           cardFooter={getCardFooter(body)}
           cardTitle={body.name}>
           <Block mt='-10px' fontWeight='800' fs='xxs'>

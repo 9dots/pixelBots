@@ -26,15 +26,18 @@ export default ({getState, dispatch}) => {
 }
 
 function save (getState, dispatch) {
-  const {saveID, game} = getState()
+  const {saveID, game, gameID, user} = getState()
   const {animals} = game
 
+  console.log(user)
+
   if (saveID) {
-    dispatch(saveProgress(game, saveID))
+    dispatch(saveProgress(game, saveID, gameID, user.uid))
   }
+
   cancel = null
 }
 
 export {
-	immediateSave
+  immediateSave
 }

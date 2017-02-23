@@ -47,8 +47,9 @@ function render ({props}) {
       img: props.imageUrl,
       actions: titleActions
     }}
+    key={props.sequence[props.current]}
+    saveID={props.saveID}
     gameCode={props.sequence[props.current]}
-    saveID={props.saveIds[props.current]}
     {...omit('saveID', props)} />
 }
 

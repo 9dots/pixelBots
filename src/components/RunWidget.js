@@ -15,7 +15,7 @@ function render ({props}) {
   const current = getSymbols(canRun, running)
 
   return (
-    <Card mt='0.5em' wide p='10px'>
+    <Block bgColor='white' border='1px solid #e6e6e6' mt='0.5em' wide p='10px'>
       <Block column align='space-between center'>
         <Button
           tall
@@ -35,7 +35,7 @@ function render ({props}) {
           <StepperWidget sequence={animal.sequence} steps={steps}/>
         </Block>}
       </Block>
-    </Card>
+    </Block>
   )
 
   function * handleClick () {
@@ -44,14 +44,14 @@ function render ({props}) {
     }
     if (!hasRun && animal.sequence.length > 0) {
       yield runCode()
-      yield onRun()
+      yield onRun(animal.sequence)
     } else if (running) {
       yield pauseRun()
     } else if (completed) {
       yield reset()
       yield sleep(500)
       yield runCode()
-      yield onRun()
+      yield onRun(animal.sequence)
     } else {
       yield resume()
     }

@@ -44,21 +44,21 @@ function render ({props, state, local}) {
   const onEdit = updatePlaylist(activeKey)
   const btn = (
     <MenuItem
-      bgColor='#e5e5e5'
+      bgColor='#FAFAFA'
       focusProps={{highlight: true}}
       ml='1em'
       align='center center'
       circle='40px'>
       <Icon name='more_vert' />
     </MenuItem>
-	)
+  )
   const followButton = followed
-		? <Button
-      onClick={unfollow}
-      bgColor='transparent'
-      color='#666'
-      border='1px solid #666'>Unfollow</Button>
-		: <Button bgColor='primary' onClick={follow}>Follow</Button>
+    ? <Button
+  onClick={unfollow}
+  bgColor='transparent'
+  color='#666'
+  border='1px solid #666'>Unfollow</Button>
+    : <Button bgColor='primary' onClick={follow}>Follow</Button>
 
   return (
     <Block align='center center'>

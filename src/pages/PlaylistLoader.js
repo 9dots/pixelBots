@@ -2,7 +2,7 @@
 
 import IndeterminateProgress from '../components/IndeterminateProgress'
 import {immediateSave} from '../middleware/saveCode'
-import {swapMode, reset} from '../actions'
+import {swapMode, refresh} from '../actions'
 import fire, {refMethod} from 'vdux-fire'
 import element from 'vdux/element'
 import Playlist from './Playlist'
@@ -15,7 +15,6 @@ function render ({props}) {
   const {sequence, current = 0} = list.value
 
   window.getPlaylistRef = () => list.value.assignmentRef
-
   return (
     <Playlist current={current} {...props} listRef={props.ref} {...list.value} next={next} prev={prev} />
   )
@@ -23,8 +22,7 @@ function render ({props}) {
   function * next () {
     if (current + 1 < sequence.length) {
       yield immediateSave()
-      yield swapMode('icons')
-      yield reset()
+      yield refresh()
       yield refMethod({
         ref: `/savedList/${props.ref}/current`,
         updates: {method: 'transaction', value: (val) => val + 1}
@@ -35,8 +33,7 @@ function render ({props}) {
   function * prev () {
     if (current - 1 >= 0) {
       yield immediateSave()
-      yield swapMode('icons')
-      yield reset()
+      yield refresh()
       yield refMethod({
         ref: `/savedList/${props.ref}/current`,
         updates: {method: 'transaction', value: (val) => val - 1}

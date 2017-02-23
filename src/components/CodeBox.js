@@ -18,13 +18,16 @@ function * onUpdate (prev, next) {
     : animals[active].sequence
   const prevSequence = prev.props.animals[active].sequence
   if (prevSequence !== sequence && sequence === startCode && setValue) {
-    setValue(startCode)
+    return setValue(startCode)
   }
 }
 
 function render ({props}) {
   const {active, activeLine, running, animals, startCode, hasRun, canCode = true, editorActions = {}} = props
-  const sequence = animals[active].sequence || []
+  
+  const sequence = animals[active].sequence.length > 0
+    ? animals[active].sequence
+    : ''
   const addCodeHandler = editorActions.aceUpdate || aceUpdate
 
   const jsOptions = {
@@ -38,6 +41,9 @@ function render ({props}) {
       'console'
     ]
   }
+
+  console.log(animals[active].sequence)
+  if (typeof sequence === 'object') return <div/>
 
   return (
     <Box relative flex tall fontFamily='code' class='code-editor'>

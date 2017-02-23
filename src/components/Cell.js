@@ -31,7 +31,7 @@ function render ({props}) {
       onMouseOver={handleMouseOver}
       onMouseDown={() => clickHandler(coordinates)}
       borderWidth={hideBorder ? 0 : 0.5}
-      borderColor='#999'
+      borderColor='#bbb'
       bgColor={color}
       h={size}
       w={size}

@@ -8,11 +8,11 @@ function render ({props, children}) {
     <Block
       column
       align='center center'
-      my='25px'
+      my='18px'
       cursor='pointer'
       onClick={handleClick}
-      color={active ? '#f5f5f5' : 'disabled'}
-      hoverProps={{color: '#fff'}}
+      color={active ? '#404040' : '#767676'}
+      hoverProps={{color: '#404040'}}
       transition={'all .3s ease-in-out'}
       relative
       {...restProps}>
@@ -22,9 +22,9 @@ function render ({props, children}) {
         cursor='pointer'
         align='center center'>
         {image && <Image src={image} sq='50px' margin='auto'/>}
-        {icon && <Icon name={icon} fs='34px'/>}
+        {icon && <Icon name={icon} fs='30px'/>}
       </Block>
-      {text && <Text mt='8px' fs='xs' fontWeight='600'>{text}</Text>}
+      {text && <Text mt='8px' fs='xxs' fontWeight='600'>{text}</Text>}
       {children}
     </Block>
   )

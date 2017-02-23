@@ -1,6 +1,7 @@
 import element from 'vdux/element'
 import {Block, Flex, Modal, ModalBody, ModalHeader, Text} from 'vdux-ui'
 import {Button} from 'vdux-containers'
+import {signInWithProvider} from '../middleware/auth'
 
 function render ({props}) {
   const {handleDismiss} = props

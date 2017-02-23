@@ -30,11 +30,11 @@ marked.setOptions({
 })
 
 function render ({props}) {
-  const {content, saveDocumentation} = props
+  const {content, saveDocumentation = () => {}, ...restProps} = props
 
   const html = content ? marked(content) : ''
 
-  return <Block w='60%' m='0 auto'>
+  return <Block w='60%' m='0 auto' {...restProps}>
     <Block onClick={handleClick} innerHTML={html}/>
   </Block>
 

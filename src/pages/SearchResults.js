@@ -7,6 +7,7 @@ import {setUrl} from 'redux-effects-location'
 import handleActions from '@f/handle-actions'
 import ChallengeFeed from './ChallengeFeed'
 import SelectToolbar from './SelectToolbar'
+import Loading from '../components/Loading'
 import createAction from '@f/create-action'
 import {Block, Flex} from 'vdux-ui'
 import element from 'vdux/element'
@@ -57,6 +58,8 @@ const reduceType = (cur, next) => {
 function render ({props, state}) {
   const {responses, tab, playlists, uid, searchQ = ''} = props
   const {actions, selected} = state
+  console.log(responses)
+  if (responses.loading) return <Loading/>
   const hits = responses.value
 		? responses.value.hits
 		: {}
@@ -72,12 +75,12 @@ function render ({props, state}) {
 
   const tabs = <Flex mx='20px' borderBottom='1px solid #999' wide relative bottom='0' color='lightBlue' h='42px'>
     <ProfileTab
-      title={`${Object.keys(byType.games).length || 0} challenges`}
+      label={`${Object.keys(byType.games).length || 0} challenges`}
       underlineColor='red'
       active={tab === 'games'}
       handleClick={() => setUrl(`/search/games/${searchQ}`)} />
     <ProfileTab
-      title={`${Object.keys(byType.playlists).length || 0} playlists`}
+      label={`${Object.keys(byType.playlists).length || 0} playlists`}
       underlineColor='lightBlue'
       active={tab === 'playlists'}
       handleClick={() => setUrl(`/search/playlists/${searchQ}`)} />

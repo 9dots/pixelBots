@@ -12,7 +12,8 @@ function render ({props}) {
     onSelect,
     ref,
     selectMode,
-    hoverItem
+    hoverItem,
+    ...restProps
   } = props
 
   return (
@@ -21,9 +22,9 @@ function render ({props}) {
         (hovering || selectMode)
           ? hoverItem || getCheckBox()
           : <Image
-            sq='50px'
-            display='block'
-            src={imageUrl}/>
+              sq='50px'
+              display='block'
+              src={imageUrl}/>
       }
     </Block>
   )
@@ -36,6 +37,7 @@ function render ({props}) {
         cursor='pointer'
         checked={isSelected}
         transition='all .2s ease-in-out'
+        onClick={(e) => e.stopPropagation()}
         onChange={() => onSelect(ref)} />
     )
   }
@@ -48,3 +50,4 @@ export default wrap(CSSContainer, {
 })({
   render
 })
+

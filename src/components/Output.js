@@ -72,6 +72,7 @@ function render ({props, state, local}) {
           </Block>
           <Block h={size} w={size}>
             <Level
+              id='pixel-art'
               hasRun={hasRun}
               animals={hidePaint ? animals.map(animalToInitial) : animals}
               running={running}
@@ -82,7 +83,7 @@ function render ({props, state, local}) {
               numRows={levelSize[0]}
               numColumns={levelSize[1]} />
           </Block>
-          <Block border='1px solid #999' bgColor='white' p='10px' py='20px' wide>
+          <Block border='1px solid #e6e6e6' bgColor='white' p='10px' py='20px' wide>
             <OpacitySlider
               opacity={opacity}
               color={color}

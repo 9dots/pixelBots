@@ -25,6 +25,7 @@ function render ({props, children}) {
       h='288px'
       w='192px'
       relative
+      boxShadow='0 1px 4px 0 rgba(0,0,0,0.37)'
       borderRadius={borderRadius}
       hoverProps={hoverProps}
       display='flex'
@@ -40,7 +41,7 @@ function render ({props, children}) {
       }
       {
         headerColor && (
-          <Block borderRadius={`${borderRadius} ${borderRadius} 0 0`} relative wide h='10px' top='0' bgColor={headerColor}/>
+          <Block borderRadius={`${borderRadius} ${borderRadius} 0 0`} relative wide h='14px' top='0' bgColor={headerColor}/>
         )
       }
       {
@@ -58,7 +59,6 @@ function render ({props, children}) {
           <Block mb='10px'>
             <Block
               fs='m'
-              fontWeight='300'
               maxWidth='130px'
               textOverflow='ellipsis'
               whiteSpace='nowrap'

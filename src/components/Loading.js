@@ -25,6 +25,7 @@ function render ({props}) {
       </Block>
       <Block
         sq='80px'
+        relative
         align='center center'
         animation='spin ease-in-out'
         animationDuration='6s'
@@ -36,12 +37,11 @@ function render ({props}) {
               <Block
                 my={0}
                 absolute
-                inlineBlock
+                top='calc(50% - 7.5px)'
+                left='calc(50% - 7.5px)'
                 bgColor={colors[i]}
                 circle='15'
-                transform={getTransform(i)}
-                animation='wave 2s infinite ease-in-out'
-                animationDelay={0.1 * (i + 1) + 's'} />)
+                transform={getTransform(i)} />)
             })
         }
       </Block>

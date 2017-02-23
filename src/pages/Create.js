@@ -8,11 +8,12 @@ import {scrollTo} from '../middleware/scroll'
 import Button from '../components/Button'
 import OptionsPage from './OptionsPage'
 import {updateGame} from '../actions'
+import {Block, Text} from 'vdux-ui'
 import element from 'vdux/element'
 import {publish} from '../utils'
 import enroute from 'enroute'
-import {Block, Text} from 'vdux-ui'
 import fire from 'vdux-fire'
+import omit from '@f/omit'
 import Game from './Game'
 
 function publishPage (draftID) {
@@ -41,13 +42,13 @@ const router = enroute({
   'create': (params, props) => <OptionsPage
     {...props.newGame.value}
     onEdit={updateGame(props.new ? `/drafts/${props.draftID}` : `/games/${props.draftID}`)}
-    {...props}>
+    {...omit('title', props)}>
     {props.btn}
     </OptionsPage>,
   'preview': (params, props) => <Game
     initialData={props.newGame.value}
-    gameData={props.newGame.value}
-    {...props}>
+    game={props.newGame.value}
+    {...omit('game', props)}>
     {props.btn}
     </Game>,
   'publish': (params, props) => publishPage(props.draftID)
@@ -98,7 +99,7 @@ function render ({props, state, local}) {
       title: step.split('').map((char, i) => i === 0 ? char.toUpperCase() : char).join('')
     }]}
     titleActions={titleActions}
-    titleImg='/animalImages/panda.jpg'>
+    titleImg={`/animalImages/${newGame.value.animals[0].type}.jpg`}>
     {router(step, {newGame, ...props, btn})}
   </Layout>
 

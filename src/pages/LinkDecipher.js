@@ -22,9 +22,9 @@ const router = enroute({
     <PlaylistLoader {...props} ref={props.payload} saveLink={props.link} user={props.user} />
   ),
   'shared': (params, props) => (
-    <SharedProject {...props} saveID={props.payload.saveRef} gameCode={props.payload.gameRef}/>
+    <SharedProject {...props} saveRef={props.payload.saveRef} gameRef={props.payload.gameRef}/>
   ),
-  ':username': ({username}, props) => <ProfileLoader currentUser={props.user} username={username} />,
+  ':username': ({username}, props) => <ProfileLoader mine={props.user.username === username} currentUser={props.user} username={username} />,
   '*': () => <div>Bad Link</div>
 })
 
@@ -44,7 +44,6 @@ function render ({props}) {
   }
 
   const {type, payload} = linkSnap.value
-
   return (
 		router(type, {...props, payload})
   )

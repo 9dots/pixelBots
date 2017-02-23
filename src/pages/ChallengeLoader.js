@@ -10,6 +10,8 @@ import {createAssignmentLink} from '../utils'
 import handleActions from '@f/handle-actions'
 import createAction from '@f/create-action'
 import element from 'vdux/element'
+import objEqual from '@f/equal-obj'
+import {diff} from 'deep-diff'
 import fire from 'vdux-fire'
 import moment from 'moment'
 
@@ -20,20 +22,25 @@ const initialState = () => ({
   hovering: false
 })
 
+// function onUpdate (prev, next) {
+//   console.log(diff(prev.props, next.props))
+// }
+
 function render ({props, local, state}) {
   const {
-    playClick = () => setUrl(`/games/${props.ref}`),
+    playClick = () => setUrl(`/play/${props.ref}`),
     assignmentClick = () => assign(props.ref),
     handleClick = () => {},
     remove = () => {},
-    selected = [],
+    isSelected,
+    selectMode,
     noAssign,
     lastEdited,
     checkbox,
     draggable,
-    handleDragStart,
-    handleDragEnter,
-    handleDrop,
+    handleDragStart = () => {},
+    handleDragEnter = () => {},
+    handleDrop = () => {},
     dummy,
     setModal,
     userRef,
@@ -43,8 +50,6 @@ function render ({props, local, state}) {
     uid
   } = props
 
-  const isSelected = selected.indexOf(ref) > -1
-  const selectMode = selected.length > 0
   const {hovering} = state
 
   if (game.loading) {
@@ -62,10 +67,11 @@ function render ({props, local, state}) {
     <Block>
       {dummy && dummy}
       <MenuItem
+        onClick={() => setUrl(`/games/${ref}`)}
         wide
         relative
         userSelect='none'
-        cursor='default'
+        cursor='pointer'
         id={`game-${ref}`}
         draggable={draggable}
         onDragStart={draggable && maybeDragStart}
@@ -76,41 +82,42 @@ function render ({props, local, state}) {
         onMouseOut={local(mouseOut)}
         fontWeight='300'
         pl='5%'
-        bgColor='transparent'
-        borderTop='1px solid #999'>
+        bgColor='white'
+        borderBottom='1px solid #e0e0e0'>
         <Block align='start center'>
           <Box align='start center' flex minWidth='250px'>
             <Box align='start center' flex>
               {
                 mine || checkbox
                   ? <ImageSelect
-                      hoverItem={(mine && !checkbox) && <Icon id={`drag-handle-${ref}`} cursor='move' name='drag_handle'/>}
-                      selectMode={selectMode}
-                      imageUrl={item.imageUrl || animalImg}
-                      isSelected={isSelected}
-                      onSelect={handleClick}
-                      ref={ref}/>
+                    hoverItem={(mine && !checkbox) && <Icon id={`drag-handle-${ref}`} cursor='move' name='drag_handle' />}
+                    selectMode={selectMode}
+                    border='1px solid #e0e0e0'
+                    imageUrl={item.imageUrl || animalImg}
+                    isSelected={isSelected}
+                    onSelect={handleClick}
+                    ref={ref} />
                   : <Image mr='2em' sq='50px' src={item.imageUrl || animalImg} />
               }
-              {item.title}
+              <Block w='60%' whiteSpace='nowrap' overflow='hidden' textOverflow='ellipsis'>{item.title}</Block>
             </Box>
-            <Box auto pr='2em'>
-            {(hovering && !selectMode) && (
+            <Box auto>
+              {(hovering && !selectMode) && (
               <Block align='center center' zIndex='999'>
                 <IconButton
+                  bgColor='transparent'
                   name='play_arrow'
-                  onClick={playClick}/>
-                {!noAssign && <IconButton
-                  name='assignment'
-                  onClick={assignmentClick}/>}
+                  onClick={[(e) => e.stopPropagation(), playClick]} />
                 {
                   mine && <Block align='center center'>
                     <IconButton
+                      bgColor='transparent'
                       name='edit'
-                      onClick={() => setUrl(`/edit/${props.ref}`)}/>
+                      onClick={[(e) => e.stopPropagation(), () => setUrl(`/edit/${props.ref}`)]} />
                     <IconButton
+                      bgColor='transparent'
                       name='delete'
-                      onClick={() => remove(uid, userRef)}/>
+                      onClick={[(e) => e.stopPropagation(), () => remove(uid, userRef)]} />
                   </Block>
                 }
               </Block>
@@ -124,11 +131,11 @@ function render ({props, local, state}) {
             </Block>
           </Box>
           <Box w='180px' minWidth='180px'>
-            {item.inputType}
+            {item.inputType === 'code' ? 'javascript' : item.inputType}
           </Box>
-          {lastEdited && <Box w='180px' minWidth='180px'>
-            {moment(lastEdited).fromNow()}
-          </Box>}
+          <Box w='180px' minWidth='180px'>
+            {lastEdited && moment(lastEdited).fromNow()}
+          </Box>
         </Block>
       </MenuItem>
     </Block>
@@ -141,14 +148,6 @@ function render ({props, local, state}) {
     }
     e.preventDefault()
   }
-
-  function * assign (ref) {
-    yield * createAssignmentLink(
-      'game',
-      ref,
-      (code) => setModal(code)
-    )
-  }
 }
 
 const reducer = handleActions({
@@ -160,6 +159,7 @@ export default fire((props) => ({
   game: `/games/${props.ref}`
 }))({
   initialState,
+  // onUpdate,
   reducer,
   render
 })

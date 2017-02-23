@@ -34,6 +34,7 @@ const inputProps = {
 
 function * onUpdate (prev, {props, state}) {
   if (!state.loading && props.anonymous && props.playlist.value) {
+    console.log(props.playlist.value)
     yield state.actions.setLoading()
     yield submit(props.playlist.value, props.ref, props.current)
   }
@@ -67,7 +68,7 @@ function render ({props, state}) {
 }
 
 function * submit (listProps, assignmentRef, current = 0, textVal = '') {
-  const saveIds = yield createSaveCodes(listProps.sequence.length)
+  // const saveIds = yield createSaveCodes(listProps.sequence.length)
   const code = yield createCode()
   const {key} = yield refMethod({
     ref: '/queue/tasks',
@@ -78,7 +79,6 @@ function * submit (listProps, assignmentRef, current = 0, textVal = '') {
         studentName: textVal,
         assignmentRef,
         listProps,
-        saveIds,
         current,
         code
       }

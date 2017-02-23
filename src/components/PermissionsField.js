@@ -38,7 +38,7 @@ function render ({props, local, state}) {
       labelProps={{ml: '2em', flex: true}}
       startActive={checked.indexOf(field) > -1}
       onClick={() => handleClick(field)}
-      type='checkbox'/>)}
+      type='checkbox' />)}
   </Block>
 
   return (
@@ -50,7 +50,7 @@ function render ({props, local, state}) {
         top='0'
         pt='5%'
         headerColor='#666'
-        bgColor='#e5e5e5'
+        bgColor='#FAFAFA'
         header={label}
         noFooter
         dismiss={local(hideModal)}
