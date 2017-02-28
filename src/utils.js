@@ -3,7 +3,9 @@ import {refMethod} from 'vdux-fire'
 import isArray from '@f/is-array'
 import Analyse from 'js-analyse'
 import reduce from '@f/reduce'
+import {setToast} from './actions'
 import Hashids from 'hashids'
+import sleep from '@f/sleep'
 import map from '@f/map'
 import _ from 'lodash'
 
@@ -216,6 +218,39 @@ function fbTask (state, payload) {
   })
 }
 
+function * addToPlaylist (code, name, selected, playlistName) {
+  yield refMethod({
+    ref: '/queue/tasks/',
+    updates: {
+      method: 'push',
+      value: {
+        _state: 'add_to_playlist',
+        newGames: selected,
+        playlist: code
+      }
+    }
+  })
+  yield setToast(`${playlistName} added to ${name}`)
+  yield sleep(3000)
+  yield setToast('')
+}
+
+function * addToPlaylists (gameID, playlists) {
+  yield setToast(`added game to ${playlists.length} ${pluralize('playlist', playlists.length)}`)
+  for (let ref in playlists) {
+    yield fbTask('add_to_playlist', {
+      newGames: [gameID],
+      playlist: playlists[ref]
+    })
+  }
+  yield sleep(3000)
+  yield setToast('')
+}
+
+function pluralize (str, count) {
+  return count === 1 ? str : `${str}s`
+}
+
 function toCamelCase (str) {
   return str.split(' ').map((s, i) => i >= 1 ? capitalize(s) : s.toLowerCase()).join('')
 }
@@ -228,6 +263,8 @@ export {
   createAssignmentLink,
   maybeAddToArray,
   nameToDirection,
+  addToPlaylists,
+  addToPlaylist,
   getDirection,
   toCamelCase,
   nameToColor,

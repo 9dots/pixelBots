@@ -1,8 +1,9 @@
 import createAction from '@f/create-action'
 import {bindUrl, setUrl} from 'redux-effects-location'
-import {refMethod} from 'vdux-fire'
+import {refMethod, set} from 'vdux-fire'
 import {createCode, initGame, fbTask} from './utils'
 import pick from 'lodash/pick'
+import omit from '@f/omit'
 
 const animalMove = createAction(
   'ANIMAL_MOVE',
@@ -40,13 +41,14 @@ const turnAnimal = createAction(
 )
 const paintSquare = createAction('PAINT_SQUARE', (opts) => opts, (opts, lineNum) => ({lineNum}))
 const togglePermission = createAction('TOGGLE_PERMISSION')
+const incrementalPaint = createAction('INCREMENTAL_PAINT')
 const setModalMessage = createAction('SET_MODAL_MESSAGE')
+const setPlaylistKey = createAction('SET_PLAYLIST_KEY')
 const initializeGame = createAction('INITIALIZE_GAME')
 const setActiveLine = createAction('SET_ACTIVE_LINE')
 const incrementLine = createAction('INCREMENT_LINE')
 const setActive = createAction('SET_ANIMAL_ACTIVE')
 const setAnimalPos = createAction('SET_ANIMAL_POS')
-const incrementalPaint = createAction('INCREMENTAL_PAINT')
 const addStartCode = createAction('ADD_START_CODE')
 const clearMessage = createAction('CLEAR_MESSAGE')
 const setGameData = createAction('SET_GAME_DATA')
@@ -100,12 +102,15 @@ function updatePlaylist (ref) {
   }
 }
 
-function * completeChallenge (gameID, saveID, userID, game) {
+function * completeChallenge (data) {
+  const {game, uid, gameID, playlistKey = '', saveID} = data
   const linkRef = yield createCode()
+  if (playlistKey) {
+    yield set(`/users/${uid}/lists/${playlistKey}/completed/${gameID}`, saveID)
+  }
+
   yield fbTask('on_complete', {
-    gameID,
-    saveID,
-    userID,
+    ...omit('playlistKey', data),
     linkRef,
     code: game.animals[0].sequence
   })
@@ -118,10 +123,10 @@ function updateGame (ref) {
         updates: {method: 'update', value: {lastEdited: Date.now(), ...data}},
         ref
       })
-      yield fbTask('update_game', {
-        ...pick(data, ['animal', 'inputType', 'lastEdited', 'name']),
-        ref
-      })
+      // yield fbTask('update_game', {
+      //   updates: data,
+      //   ref
+      // })
     } catch (e) {
       console.warn(e)
     }
@@ -145,6 +150,7 @@ export {
   incrementalPaint,
   togglePermission,
   setModalMessage,
+  setPlaylistKey,
   initializeGame,
   updatePlaylist,
   setActiveLine,

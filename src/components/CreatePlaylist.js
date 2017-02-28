@@ -1,6 +1,6 @@
 /** @jsx element */
 
-import {Modal, ModalBody, ModalHeader, ModalFooter} from 'vdux-ui'
+import {Block} from 'vdux-ui'
 import {Input, Textarea} from 'vdux-containers'
 import createAction from '@f/create-action'
 import validator from '../schema/playlist'
@@ -36,32 +36,35 @@ const initialState = () => ({
 
 function render ({props, local, state}) {
   const {uid, username, selected = [], handleDismiss = () => {}, onAddToPlaylist = () => {}} = props
-  const {modal, playlistName, playlistDescription} = state
+  const {playlistName, playlistDescription} = state
 
   return (
-    <Modal color='#333' onDismiss={handleDismiss} overlayProps={modalProps}>
+    <Block>
       <Form id='create-playlist' onSubmit={createPlaylist} validate={validator.playlist}>
-        <ModalHeader fs='xl' py='1em'>Create a Playlist</ModalHeader>
-        <ModalBody>
+        <Block>
           <Input h='42px'
             name='playlistTitle'
             placeholder='Title'
             name='name'
+            fontWeight='300'
+            fs='s'
             required
             inputProps={inputProps} />
           <Input h='42px'
             name='playlistDescription'
             placeholder='Description'
             name='description'
+            fontWeight='300'
+            fs='s'
             required
             inputProps={inputProps} />
-        </ModalBody>
-        <ModalFooter>
-          <Button onClick={handleDismiss} bgColor='secondary'>Cancel</Button>
-          <Button form='create-playlist' type='submit' ml='1em' bgColor='primary'>Save</Button>
-        </ModalFooter>
+        </Block>
+        <Block align='end center' mt='1em'>
+          <Button hoverProps={{color: 'blue', borderColor: 'blue'}} onClick={handleDismiss} color='#999' bgColor='transparent'>Cancel</Button>
+          <Button form='create-playlist' type='submit' ml='6px' bgColor='blue'>Save</Button>
+        </Block>
       </Form>
-    </Modal>
+    </Block>
   )
 
   function * createPlaylist ({name, description}) {
@@ -79,6 +82,7 @@ function render ({props, local, state}) {
         }
       }
     })
+    yield onAddToPlaylist()
     yield handleDismiss()
   }
 }

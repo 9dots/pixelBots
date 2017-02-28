@@ -1,14 +1,16 @@
 /** @jsx element */
 
 import IndeterminateProgress from '../components/IndeterminateProgress'
+import AddToPlaylistModal from '../components/AddToPlaylistModal'
 import {Box, Block, Checkbox, Menu, Icon, Image} from 'vdux-ui'
 import ImageSelect from '../components/ImageSelect'
-import IconButton from '../components/IconButton'
 import {Dropdown, MenuItem} from 'vdux-containers'
+import IconButton from '../components/IconButton'
 import {setUrl} from 'redux-effects-location'
 import {createAssignmentLink} from '../utils'
 import handleActions from '@f/handle-actions'
 import createAction from '@f/create-action'
+import {setModalMessage} from '../actions'
 import element from 'vdux/element'
 import objEqual from '@f/equal-obj'
 import {diff} from 'deep-diff'
@@ -21,10 +23,6 @@ const mouseOut = createAction('<ChallengeLoader/>: MOUSE_OUT')
 const initialState = () => ({
   hovering: false
 })
-
-// function onUpdate (prev, next) {
-//   console.log(diff(prev.props, next.props))
-// }
 
 function render ({props, local, state}) {
   const {
@@ -61,7 +59,7 @@ function render ({props, local, state}) {
   }
 
   const item = game.value
-  const animalImg = `/animalImages/${item.animals[0].type}.jpg`
+  const animalImg = `/animalImages/${item.animals[0]}.jpg`
 
   return (
     <Block>
@@ -69,8 +67,11 @@ function render ({props, local, state}) {
       <MenuItem
         onClick={() => setUrl(`/games/${ref}`)}
         wide
+        pl='5%'
         relative
         userSelect='none'
+        fontWeight='300'
+        bgColor='white'
         cursor='pointer'
         id={`game-${ref}`}
         draggable={draggable}
@@ -80,15 +81,12 @@ function render ({props, local, state}) {
         onDrop={draggable && handleDrop}
         onMouseOver={local(mouseOver)}
         onMouseOut={local(mouseOut)}
-        fontWeight='300'
-        pl='5%'
-        bgColor='white'
         borderBottom='1px solid #e0e0e0'>
         <Block align='start center'>
           <Box align='start center' flex minWidth='250px'>
-            <Box align='start center' flex>
+            <Block>
               {
-                mine || checkbox
+                mine && !checkbox
                   ? <ImageSelect
                     hoverItem={(mine && !checkbox) && <Icon id={`drag-handle-${ref}`} cursor='move' name='drag_handle' />}
                     selectMode={selectMode}
@@ -99,16 +97,23 @@ function render ({props, local, state}) {
                     ref={ref} />
                   : <Image mr='2em' sq='50px' src={item.imageUrl || animalImg} />
               }
-              <Block w='60%' whiteSpace='nowrap' overflow='hidden' textOverflow='ellipsis'>{item.title}</Block>
-            </Box>
-            <Box auto>
-              {(hovering && !selectMode) && (
-              <Block align='center center' zIndex='999'>
-                <IconButton
-                  bgColor='transparent'
-                  name='play_arrow'
-                  onClick={[(e) => e.stopPropagation(), playClick]} />
-                {
+            </Block>
+            <Block w='60%' whiteSpace='nowrap' overflow='hidden' textOverflow='ellipsis'>{item.title}</Block>
+            <Block mr='10px' auto>
+              {(hovering) && (
+                <Block id='challenge-loader-buttons' align='center center' zIndex='999'>
+                  <IconButton
+                    bgColor='transparent'
+                    name='play_arrow'
+                    onClick={[(e) => e.stopPropagation(), playClick]} />
+                  <IconButton
+                    bgColor='transparent'
+                    name='add'
+                    onClick={[
+                      (e) => e.stopPropagation(),
+                      () => setModalMessage(<AddToPlaylistModal gameID={ref} uid={uid} />)
+                    ]} />
+                  {
                   mine && <Block align='center center'>
                     <IconButton
                       bgColor='transparent'
@@ -120,14 +125,14 @@ function render ({props, local, state}) {
                       onClick={[(e) => e.stopPropagation(), () => remove(uid, userRef)]} />
                   </Block>
                 }
-              </Block>
+                </Block>
             )}
-            </Box>
+            </Block>
           </Box>
           <Box w='180px' minWidth='180px'>
             <Block align='start center'>
               <Image mr='1em' sq='40px' src={animalImg} />
-              {item.animals[0].type}
+              {item.animals[0]}
             </Block>
           </Box>
           <Box w='180px' minWidth='180px'>
@@ -156,10 +161,9 @@ const reducer = handleActions({
 })
 
 export default fire((props) => ({
-  game: `/games/${props.ref}`
+  game: `/games/${props.ref}/meta`
 }))({
   initialState,
-  // onUpdate,
   reducer,
   render
 })

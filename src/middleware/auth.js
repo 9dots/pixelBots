@@ -17,6 +17,7 @@ const providers = {
 
 export default ({getState, dispatch}) => {
   firebase.auth().onAuthStateChanged((user) => {
+    console.log(user)
     if (!user) {
       dispatch(setUserId(null))
       return firebase.auth().signInAnonymously()
@@ -116,9 +117,9 @@ function * checkUsers (uid) {
 }
 
 export {
-	signInWithProvider,
+  signInWithProvider,
   setUserProfile,
   setUsername,
-	setUserId,
-	signOut
+  setUserId,
+  signOut
 }

@@ -1,6 +1,6 @@
 import ChallengeLoader from '../pages/ChallengeLoader'
 import {setUrl} from 'redux-effects-location'
-import {createAssignmentLink} from '../utils'
+import {fbTask} from '../utils'
 import LinkModal from './LinkModal'
 import {refMethod} from 'vdux-fire'
 import element from 'vdux/element'
@@ -13,7 +13,9 @@ function render ({props, state, local}) {
     currentUser,
     creatorID,
     activeKey,
+    uid,
     mine,
+    myLists,
     listActions,
     dropTarget,
     dragTarget
@@ -43,7 +45,7 @@ function render ({props, state, local}) {
               remove={remove(activeKey, ref)}
               draggable={mine}
               playlistKey={activeKey}
-              playClick={play(i)}
+              playClick={() => play(i)}
               key={ref}
               noAssign
               uid={currentUser.uid}
@@ -93,14 +95,17 @@ function render ({props, state, local}) {
     }
   }
 
-  function play (current, anonymous = true) {
-    return function * () {
-      yield * createAssignmentLink(
-        'playlists',
-         {anonymous: true, ref: activeKey, current},
-        (code) => setUrl(`/${code}`)
-      )
-    }
+  function * play (current) {
+    const {key} = yield fbTask('create_playlist_instance', {
+      playlistKey: activeKey,
+      current,
+      uid
+    })
+    yield refMethod({
+      ref: `/queue/tasks/${key}`,
+      updates: {method: 'once', value: 'child_removed'}
+    })
+    yield setUrl(`/playSequence/${activeKey}`)
   }
 }
 

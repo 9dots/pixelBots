@@ -4,11 +4,11 @@ import VirtualList from '../components/VirtualList'
 import LinkModal from '../components/LinkModal'
 import SortHeader from '../components/SortHeader'
 import ChallengeLoader from './ChallengeLoader'
-import {setModal, clearModal} from '../actions'
 import createAction from '@f/create-action'
 import handleActions from '@f/handle-actions'
 import {Block, Flex, Menu} from 'vdux-ui'
 import Button from '../components/Button'
+import Empty from '../components/Empty'
 import flatten from 'lodash/flatten'
 import {refMethod} from 'vdux-fire'
 import objEqual from '@f/equal-obj'
@@ -18,6 +18,7 @@ import Window from 'vdux/window'
 import chunk from 'lodash/chunk'
 import map from '@f/map'
 
+const setModal = createAction('<ChallengeFeed/>: SET_MODAL')
 const setOrderType = createAction('<ChallengeFeed/>: SET_ORDER_TYPE')
 const setOrder = createAction('<ChallengeFeed/>: SET_ORDER')
 const setItems = createAction('<ChallengeFeed:> SET_ITEMS')
@@ -33,6 +34,7 @@ const initialState = ({local}) => ({
   items: [],
   actions: {
     setOrder: local(setOrder),
+    setModal: local(setModal),
     setOrderType: local(setOrderType),
     setItems: local(setItems)
   }
@@ -56,9 +58,13 @@ function render ({props, state}) {
 
   const modalFooter = (
     <Block>
-      <Button ml='m' onClick={clearModal}>Done</Button>
+      <Button ml='m' onClick={() => actions.setModal('')}>Done</Button>
     </Block>
   )
+
+  if (items.length < 1) {
+    return <Empty />
+  }
 
   const Challenges = ({
     props
@@ -68,14 +74,15 @@ function render ({props, state}) {
         <ChallengeLoader
           checkbox
           lastEdited={game.lastEdited}
-          setModal={setModal}
+          setModal={actions.setModal}
           userRef={game.key}
           h={props.itemHeight}
           remove={remove}
           key={game.key}
+          draggable={false}
           isSelected={selected.indexOf(game.ref) > -1}
-          handleClick={toggleSelected}
           selectMode={selected.length > 0}
+          handleClick={toggleSelected}
           uid={uid}
           mine={mine}
           ref={game.ref} />
@@ -83,7 +90,7 @@ function render ({props, state}) {
     </Block>
   )
 
-  // const CVL = VirtualList(Challenges, items, {height: 67, buffer: 30, container: document.getElementById('action-bar-holder')})
+  const CVL = VirtualList(Challenges, items, {height: 71, buffer: 20, container: document.getElementById('action-bar-holder')})
 
   return (
     <Flex flexWrap='wrap' wide margin='0 auto'>
@@ -121,13 +128,7 @@ function render ({props, state}) {
             label='LAST EDITED' />
         </Block>
         <Block>
-          <VirtualList
-            key='virual-list'
-            innerList={Challenges}
-            items={items}
-            height='67'
-            buffer='30'
-            container={document.getElementById('action-bar-holder')} />
+          <CVL />
         </Block>
       </Menu>
       {
@@ -158,6 +159,7 @@ function * remove (uid, ref) {
 }
 
 const reducer = handleActions({
+  [setModal.type]: (state, payload) => ({...state, modal: payload}),
   [setOrderType.type]: (state, payload) => ({...state, orderBy: payload}),
   [setOrder.type]: (state, payload) => ({...state, order: payload}),
   [setItems.type]: (state, payload) => ({...state, items: payload})

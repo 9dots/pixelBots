@@ -24,9 +24,13 @@ function render ({props, state, local}) {
   const {game, saved, link, shared, uid} = props
   const {hovering} = state
 
-  if (game.loading || saved.loading) return <Loading/>
+  if (game.loading || saved.loading) return <Loading />
 
   const value = {...game.value, ...saved.value}
+
+  const sequence = value.animals
+    ? value.animals[0].sequence
+    : ''
 
   return (
     <Block
@@ -38,7 +42,7 @@ function render ({props, state, local}) {
       align='start center'
       borderBottom='1px solid #e0e0e0'>
       <Block mr='14px'>
-        <Image sq='40px' src={value.imageUrl}/>
+        <Image sq='40px' src={value.imageUrl} />
       </Block>
       <Block color='#666' column flex>
         <Block mb='4px' align='start start'>
@@ -54,44 +58,42 @@ function render ({props, state, local}) {
         <Block wide align='start center'>
           <DetailInfo
             icon='view_headline'
-            label={`${getLoc(value.animals[0].sequence || '')} lines`}/>
+            label={`${getLoc(sequence || '')} lines`} />
           <DetailInfo
             icon='gamepad'
-            label={`${value.attempts || 0} runs`}/>
+            label={`${value.attempts || 0} runs`} />
           <DetailInfo
             icon='date_range'
-            label={moment(value.lastEdited).fromNow()}/>
+            label={moment(value.lastEdited).fromNow()} />
           {
             value.likes > 0 && <DetailInfo
               icon='favorite'
-              label={value.likes}/>
+              label={value.likes} />
           }
         </Block>
       </Block>
       {
         (shared && hovering) && <Block ml='1em'>
-        {
+          {
           value.shared
             ? <Button
-                onClick={removeFromShowcase(uid, props.saveRef, props.gameRef)}
-                color='#666'
-                fs='xs'
-                bgColor='white'
-                border='2px solid #E0E0E0'>Remove From Gallery</Button>
+              onClick={removeFromShowcase(uid, props.saveRef, props.gameRef)}
+              color='#666'
+              fs='xs'
+              bgColor='white'
+              border='2px solid #E0E0E0'>Remove From Gallery</Button>
             : <Button
-                onClick={addToShowcase(uid, props.saveRef, props.gameRef)}
-                color='#666'
-                fs='xs'
-                bgColor='white'
-                border='2px solid #E0E0E0'>Add To Gallery</Button>
+              onClick={addToShowcase(uid, props.saveRef, props.gameRef)}
+              color='#666'
+              fs='xs'
+              bgColor='white'
+              border='2px solid #E0E0E0'>Add To Gallery</Button>
         }
         </Block>
       }
     </Block>
   )
 }
-
-
 
 function addToShowcase (uid, saveRef, gameRef) {
   return function * () {
@@ -126,7 +128,7 @@ const reducer = handleActions({
 })
 
 export default fire((props) => ({
-  game: `/games/${props.gameRef}`,
+  game: `/games/${props.gameRef}/meta`,
   saved: `/saved/${props.saveRef}`
 }))({
   initialState,

@@ -20,11 +20,11 @@ function render ({props}) {
     <Block mr='2em' sq='50px' align='center center'>
       {
         (hovering || selectMode)
-          ? hoverItem || getCheckBox()
+          ? hoverItem
           : <Image
-              sq='50px'
-              display='block'
-              src={imageUrl}/>
+            sq='50px'
+            display='block'
+            src={imageUrl} />
       }
     </Block>
   )

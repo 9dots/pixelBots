@@ -11,7 +11,7 @@ import Button from './Button'
 import sleep from '@f/sleep'
 
 function render ({props}) {
-  const {hasRun, onRun = () => {}, speed, animal, running, canRun, steps = 0, completed} = props
+  const {hasRun, onRun = () => {}, speed, animal, running, canRun, steps = 0, completedRun} = props
   const current = getSymbols(canRun, running)
 
   return (
@@ -31,8 +31,8 @@ function render ({props}) {
           {current.text.toUpperCase()}
         </Button>
         {canRun && <Block mt='1em' wide align='space-around center'>
-          <SpeedDisplay speed={speed}/>
-          <StepperWidget sequence={animal.sequence} steps={steps}/>
+          <SpeedDisplay speed={speed} />
+          <StepperWidget sequence={animal.sequence} steps={steps} />
         </Block>}
       </Block>
     </Block>
@@ -47,7 +47,7 @@ function render ({props}) {
       yield onRun(animal.sequence)
     } else if (running) {
       yield pauseRun()
-    } else if (completed) {
+    } else if (completedRun) {
       yield reset()
       yield sleep(500)
       yield runCode()
@@ -58,24 +58,24 @@ function render ({props}) {
   }
 }
 
-  function getSymbols (canRun, running) {
-    if (!canRun) {
-      return {
-        icon: 'done',
-        text: 'check'
-      }
-    }
-    if (running) {
-      return {
-        icon: 'pause',
-        text: 'pause'
-      }
-    }
+function getSymbols (canRun, running) {
+  if (!canRun) {
     return {
-      icon: 'play_arrow',
-      text: 'run'
+      icon: 'done',
+      text: 'check'
     }
   }
+  if (running) {
+    return {
+      icon: 'pause',
+      text: 'pause'
+    }
+  }
+  return {
+    icon: 'play_arrow',
+    text: 'run'
+  }
+}
 
 export default {
   render

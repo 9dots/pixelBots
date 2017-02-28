@@ -81,9 +81,9 @@ export default ({getState, dispatch}) => (next) => (action) => {
 
   function handleCorrect (msg) {
     setTimeout(function () {
-      const {gameID, saveID, game, user} = getState()
+      const {gameID, saveID, game, user, playlistKey} = getState()
       dispatch(abortRun('STOP'))
-      dispatch(completeChallenge(gameID, saveID, user.uid, game))
+      dispatch(completeChallenge({gameID, saveID, uid: user.uid, game, playlistKey}))
       dispatch(fbTask('create_gif', {
         frames: game.frames.concat(game.painted),
         saveID: saveID,

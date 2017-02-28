@@ -17,7 +17,7 @@ const initialState = ({local}) => ({
 })
 
 function render ({props, state}) {
-  const {code, footer, ...restProps} = props
+  const {header = 'Save Code', code, footer, ...restProps} = props
   const {displayCode, actions} = state
 
   const body = <Block>
@@ -37,22 +37,22 @@ function render ({props, state}) {
       <Text fs='xs'>
         <strong>Note:</strong>
         {
-    			displayCode
-    				? " Use this code in the 'Code' section of the navigation bar."
-    				: ' Use the link in the url bar of your browser.'
-    		}
+          displayCode
+            ? " Use this code in the 'Code' section of the navigation bar."
+            : ' Use the link in the url bar of your browser.'
+        }
       </Text>
     </Block>
   </Block>
 
   return (
     <ModalMessage
-      header='Save Code'
+      header={header}
       body={body}
       footer={footer}
       w='40%'
       {...restProps}
-		/>
+    />
   )
 }
 

@@ -22,7 +22,7 @@ function render ({props}) {
           cardFooter={getCardFooter(body)}
           cardTitle={body.name}>
           <Block mt='-10px' fontWeight='800' fs='xxs'>
-            <a onClick={(e) => e.stopPropagation()} href={`/${body.creatorUsername}/playlists`}>
+            <a onClick={(e) => e.stopPropagation()} href={`/${body.creatorUsername}/authored/playlists`}>
               {body.creatorUsername.toUpperCase()}
             </a>
           </Block>
@@ -30,7 +30,7 @@ function render ({props}) {
             {body.description}
           </Block>
         </Card>
-			), [], playlists)}
+      ), [], playlists)}
     </Flex>
   )
 }

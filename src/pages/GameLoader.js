@@ -29,27 +29,18 @@ const initialState = ({local}) => ({
   }
 })
 
-function * onCreate ({props}) {
-  if (props.saveID) {
-    yield setGameId(props.gameCode)
-    yield setSaveId(props.saveID)
-    // yield props.actions.update({savedProgress: `/saved/${props.saveID}`})
-  }
-}
-
 function * onUpdate (prev, {props, state}) {
-  if (!props.inProgress.loading && !props.saveID) {
+  if (!props.inProgress.loading && !props.completed) {
     if (props.inProgress.value && props.inProgress.value[props.gameCode]) {
       yield setGameId(props.gameCode)
       yield setSaveId(props.inProgress.value[props.gameCode].saveRef)
     } else {
-      return yield createNewSave(props.gameCode, props.user, props.username)
+      yield createNewSave(props.gameCode, props.user, props.username)
     }
   }
-
-  if (prev.props.saveID !== props.saveID) {
-    yield setSaveId(props.saveID)
-    // yield props.actions.update({savedProgress: `/saved/${props.saveID}`})
+  if (props.completed) {
+    yield setGameId(props.gameCode)
+    yield setSaveId(props.completed)
   }
 }
 
@@ -143,13 +134,15 @@ function onRun (user, saveID, gameID) {
   }
 }
 
-function * createNewSave (gameCode, user, username) {
+function * createNewSave (gameCode, user, username, type) {
   const code = yield createCode()
   const saveRef = yield refMethod({
     ref: '/saved/',
     updates: {
       method: 'push',
-      value: {username}
+      value: {
+        username
+      }
     }
   })
   yield refMethod({
@@ -164,7 +157,7 @@ function * createNewSave (gameCode, user, username) {
       }
     }
   })
-  return yield code
+  yield setSaveId(saveRef.key)
 }
 
 const reducer = handleActions({
@@ -195,7 +188,6 @@ export default fire((props) => {
 })({
   initialState,
   getProps,
-  onCreate,
   onUpdate,
   onRemove,
   reducer,

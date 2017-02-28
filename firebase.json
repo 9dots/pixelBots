@@ -4,12 +4,6 @@
   },
   "hosting": {
     "public": "public",
-    "redirects": [
-      {
-        "source": "/:username/authored/",
-        "destination": "/:username/authored/challenges"
-      }
-    ],
     "rewrites": [
       {
         "source": "**",

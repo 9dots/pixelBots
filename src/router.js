@@ -1,10 +1,12 @@
 /** @jsx element */
 
-import {initializeApp, createNew, refresh, setToast, setModalMessage} from './actions'
+import {initializeApp, refresh, setToast, setModalMessage} from './actions'
 import HeaderElement from './components/HeaderElement'
 import PrintContainer from './pages/PrintContainer'
-import PlaylistView from './pages/PlaylistView'
+import PlaylistLoader from './pages/PlaylistLoader'
+import CreateModal from './components/CreateModal'
 import ProfileLoader from './pages/ProfileLoader'
+import PlaylistView from './pages/PlaylistView'
 import LinkDecipher from './pages/LinkDecipher'
 import CodeLink from './components/CodeLink'
 import {setUrl} from 'redux-effects-location'
@@ -68,8 +70,19 @@ const router = enroute({
   '/games/:gameID': ({gameID}, props) => (
     <ProjectPage gameRef={gameID} />
   ),
+  '/playSequence/:listID': ({listID}, props) => (
+    <PlaylistLoader {...props} playlistRef={listID} uid={props.user.uid} ref='nothing' />
+  ),
   '/play/:gameID': ({gameID}, props) => (
-    <GameLoader key={`gameLoader${gameID}`} gameCode={gameID} {...props} />
+    <GameLoader
+      {...props}
+      completed={
+        props.profile.completed &&
+        props.profile.completed[gameID] &&
+        props.profile.completed[gameID].saveRef
+      }
+      key={`gameLoader${gameID}`}
+      gameCode={gameID} />
   ),
   '/:username/:activity': ({username, activity}, props) => (
     <ProfileLoader mine={props.user.username === username} params={activity} currentUser={props.user} username={username} />
@@ -118,8 +131,12 @@ function render ({props, state, local}) {
           <HeaderElement active={activeRoute === 'search'} onClick={() => setUrl('/search/games')} text='Search' icon='search' />
           {(user && !user.isAnonymous) &&
             <Block>
-              <HeaderElement active={activeRoute === username} onClick={() => setUrl(`/${username}/studio`)} text='Profile' icon='dashboard' />
-              <HeaderElement active={activeRoute === 'create'} onClick={() => createNew(user.uid)} text='Create' icon='add' />
+              <HeaderElement
+                active={activeRoute === username}
+                onClick={() => activeRoute !== username && setUrl(`/${username}/studio`)}
+                text='Profile'
+                icon='dashboard' />
+              <HeaderElement active={activeRoute === 'create'} onClick={() => setModalMessage(<CreateModal />)} text='Create' icon='add' />
             </Block>
           }
         </Block>
@@ -148,8 +165,8 @@ function render ({props, state, local}) {
           textAlign='center'
           bgColor='#333'
           color='white'
-          top='none'
-          bottom='8px'
+          top='8px'
+          bottom='none'
           key='0'
           onDismiss={() => setToast('')}>
           <Text>{toast}</Text>

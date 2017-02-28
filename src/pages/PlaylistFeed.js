@@ -1,6 +1,7 @@
 /** @jsx element */
 
 import PlaylistItem from '../components/PlaylistItem'
+import Empty from '../components/Empty'
 import mapValues from '@f/map-values'
 import element from 'vdux/element'
 import sort from 'lodash/orderBy'
@@ -10,13 +11,16 @@ function render ({props}) {
   const {playlists, color} = props
   const items = mapValues((p) => ({ref: p.ref, lastEdited: p.lastEdited}), playlists)
   const sorted = sort(items, 'lastEdited', 'desc')
+  if (items.length < 1) {
+    return <Empty />
+  }
   return (
     <Block wide column align='center center'>
       {
         sorted.map((playlist) => <PlaylistItem
-        key={playlist.ref}
-        color={color}
-        playlistRef={playlist.ref}/>)
+          key={playlist.ref}
+          color={color}
+          playlistRef={playlist.ref} />)
       }
     </Block>
   )

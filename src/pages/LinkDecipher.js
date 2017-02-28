@@ -1,5 +1,7 @@
 import IndeterminateProgress from '../components/IndeterminateProgress'
 import PlaylistLoader from './PlaylistLoader'
+import Redirect from '../components/Redirect'
+import {setUrl} from 'redux-effects-location'
 import ProfileLoader from './ProfileLoader'
 import SharedProject from './SharedProject'
 import MyPlaylist from './MyPlaylist'
@@ -10,7 +12,7 @@ import fire from 'vdux-fire'
 
 const router = enroute({
   'game': (params, props) => (
-    <GameLoader {...props} left='60px' saveLink={props.link} gameCode={props.payload} />
+    <Redirect path={`/games/${props.payload}`} />
   ),
   'saved': (params, props) => (
     <GameLoader {...props} left='60px' saveLink={props.link} gameCode={props.payload.gameRef} saveID={props.payload.saveRef} />
@@ -18,11 +20,14 @@ const router = enroute({
   'playlists': (params, props) => (
     <MyPlaylist anonymous={props.payload.anonymous} current={props.payload.current} saveLink={props.link} ref={props.payload.ref} user={props.user} />
   ),
+  'playlist': (params, props) => (
+    <Redirect path={`/playlist/${props.payload}`} />
+  ),
   'list': (params, props) => (
     <PlaylistLoader {...props} ref={props.payload} saveLink={props.link} user={props.user} />
   ),
   'shared': (params, props) => (
-    <SharedProject {...props} saveRef={props.payload.saveRef} gameRef={props.payload.gameRef}/>
+    <SharedProject {...props} saveRef={props.payload.saveRef} gameRef={props.payload.gameRef} />
   ),
   ':username': ({username}, props) => <ProfileLoader mine={props.user.username === username} currentUser={props.user} username={username} />,
   '*': () => <div>Bad Link</div>
@@ -45,7 +50,7 @@ function render ({props}) {
 
   const {type, payload} = linkSnap.value
   return (
-		router(type, {...props, payload})
+    router(type, {...props, payload})
   )
 }
 

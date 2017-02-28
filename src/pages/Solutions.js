@@ -6,18 +6,19 @@ import {Block} from 'vdux-ui'
 import map from '@f/map'
 
 function render ({props}) {
-	const {solutions = {}} = props
-	if (solutions.loading) return <Loading/>
-	return solutions.value
+  const {solutions = {}} = props
+  if (solutions.loading) return <Loading />
+  console.log(solutions.value)
+  return solutions.value
 		?	<CardFeed
-				w='400px'
-				imageSize='400px'
-				items={map((s, key) => ({...s, gameRef: key}), solutions.value)}/>
+  w='400px'
+  imageSize='400px'
+  items={map((s, key) => ({...s, gameRef: key}), solutions.value)} />
 		: <Block mt='10px'> No Solutions Yet </Block>
 }
 
 export default fire((props) => ({
-	solutions: `/solutions/${props.gameRef}`
+  solutions: `/solutions/${props.gameRef}`
 }))({
-	render
+  render
 })

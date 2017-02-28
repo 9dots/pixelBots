@@ -24,8 +24,8 @@ function * onUpdate (prev, next) {
 
 function render ({props}) {
   const {active, activeLine, running, animals, startCode, hasRun, canCode = true, editorActions = {}} = props
-  
-  const sequence = animals[active].sequence.length > 0
+
+  const sequence = animals[active].sequence && animals[active].sequence.length > 0
     ? animals[active].sequence
     : ''
   const addCodeHandler = editorActions.aceUpdate || aceUpdate
@@ -42,8 +42,7 @@ function render ({props}) {
     ]
   }
 
-  console.log(animals[active].sequence)
-  if (typeof sequence === 'object') return <div/>
+  if (typeof sequence === 'object') return <div />
 
   return (
     <Box relative flex tall fontFamily='code' class='code-editor'>

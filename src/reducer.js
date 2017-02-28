@@ -16,6 +16,7 @@ import {
   incrementalPaint,
   setModalMessage,
   initializeGame,
+  setPlaylistKey,
   setActiveLine,
   incrementLine,
   clearMessage,
@@ -101,6 +102,7 @@ function reducer (state, action) {
       return {
         ...state,
         selectedLine: state.selectedLine + 1,
+        completedRun: true,
         game: arrayAt(setProp(
           `animals.${id}.sequence`,
           state.game,
@@ -117,6 +119,7 @@ function reducer (state, action) {
       return {
         ...state,
         selectedLine: sl,
+        completedRun: true,
         game: arrayAt(setProp(
           `animals.${id}.sequence`,
           state.game,
@@ -139,7 +142,7 @@ function reducer (state, action) {
       return {
         ...state,
         running: false,
-        completed: action.payload || false
+        completedRun: action.payload || false
       }
     case setActiveLine.type:
       return {
@@ -150,6 +153,7 @@ function reducer (state, action) {
       var {id, code} = action.payload
       return {
         ...state,
+        completedRun: true,
         game: arrayAt(setProp(
           `animals.${id}.sequence`,
           state.game,
@@ -160,6 +164,7 @@ function reducer (state, action) {
       var {id, lineNum, code} = action.payload
       return {
         ...state,
+        completedRun: true,
         game: arrayAt(setProp(
           `animals.${id}.sequence`,
           state.game,
@@ -191,7 +196,7 @@ function reducer (state, action) {
         ...state,
         running: false,
         hasRun: false,
-        completed: false,
+        completedRun: false,
         activeLine: -1,
         game: {
           ...state.game,
@@ -320,7 +325,6 @@ function reducer (state, action) {
         toast: action.payload
       }
     case setSaveId.type:
-      console.log(action.payload)
       return {
         ...state,
         saveID: action.payload
@@ -389,6 +393,11 @@ function reducer (state, action) {
       return {
         ...state,
         title: action.payload
+      }
+    case setPlaylistKey.type:
+      return {
+        ...state,
+        playlistKey: action.payload
       }
   }
   return state

@@ -34,7 +34,6 @@ const inputProps = {
 
 function * onUpdate (prev, {props, state}) {
   if (!state.loading && props.anonymous && props.playlist.value) {
-    console.log(props.playlist.value)
     yield state.actions.setLoading()
     yield submit(props.playlist.value, props.ref, props.current)
   }
@@ -92,21 +91,6 @@ function * submit (listProps, assignmentRef, current = 0, textVal = '') {
   yield setUrl(`/${code}`, true)
 }
 
-function * createSaveCodes (num) {
-  const saveCodes = []
-  for (var i = 0; i < num; i++) {
-    const saveRef = yield refMethod({
-      ref: '/saved/',
-      updates: {
-        method: 'push',
-        value: ''
-      }
-    })
-    saveCodes.push(saveRef.key)
-  }
-  return saveCodes
-}
-
 function reducer (state, action) {
   switch (action.type) {
     case setLoading.type:
@@ -115,10 +99,6 @@ function reducer (state, action) {
         loading: !state.loading
       }
   }
-}
-
-export {
-	createSaveCodes
 }
 
 export default fire((props) => ({

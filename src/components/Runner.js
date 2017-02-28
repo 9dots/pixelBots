@@ -57,7 +57,7 @@ function render ({props, state, local}) {
       {createButton('delete_forever', 'Start Over', '#666', () => setModalMessage(deleteModal))}
       {inputType === 'code' && createButton('print', 'Print', '#666', () => window.print())}
       {saveID && createButton('save', 'Save', '#2C4770', () => setModalMessage(saveModal))}
-      {!canAutoComplete && createButton('check', 'Completed', 'green', () => setModalMessage(completeModal))}
+      {(!canAutoComplete && saveID) && createButton('check', 'Completed', 'green', () => setModalMessage(completeModal))}
     </Block>
   )
   return (

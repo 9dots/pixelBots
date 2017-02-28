@@ -17,39 +17,39 @@ function render ({props, children}) {
   return (
     <Block id='top' column wide tall>
       <Box relative wide color='#767676' fontWeight='800' h='90px'>
-        <Block p='20px' align='start center' pb='0px' {...titleProps}>
-          {leftAction || <Block ml='1em'/>}
+        <Block p='20px' align='start center' {...titleProps}>
+          {leftAction || <Block ml='1em' />}
           {titleImg && <Avatar boxShadow='0 0 1px 2px rgba(0,0,0,0.2)' h='60px' w='60px' src={titleImg} />}
-            <Block align='start center' flex relative ml='1em'>
-              {navigation.map(({category, title, onClick}, i) => (
-                <Block align='start center'>
-                  <Block
-                    onClick={!!onClick && onClick}
-                    cursor={onClick ? 'pointer' : 'default'}
-                    column
-                    align='start start'>
-                    {
+          <Block align='start center' flex relative ml='1em'>
+            {navigation.map(({category, title, onClick}, i) => (
+              <Block align='start center'>
+                <Block
+                  onClick={!!onClick && onClick}
+                  cursor={onClick ? 'pointer' : 'default'}
+                  column
+                  align='start start'>
+                  {
                       category && <Text
                         display='block'
                         fontWeight='300'
                         fs='xs'>{category.toUpperCase()}
                       </Text>
                     }
-                    <Text
-                      display='block'
-                      fontWeight='500'
-                      fs='l'>
-                      {title}
-                    </Text>
-                  </Block>
-                  {i < navigation.length - 1 && <Icon fs='l' mx='1em' name='keyboard_arrow_right'/>}
+                  <Text
+                    display='block'
+                    fontWeight='500'
+                    fs='l'>
+                    {title}
+                  </Text>
+                </Block>
+                {i < navigation.length - 1 && <Icon fs='l' mx='1em' name='keyboard_arrow_right' />}
               </Block>
               ))}
-            </Block>
+          </Block>
           {titleActions}
         </Block>
       </Box>
-      <Box h='calc(100% - 90px)' flex wide py='1em' {...bodyProps}>
+      <Box flex wide py='1em' {...bodyProps}>
         {children}
       </Box>
     </Block>

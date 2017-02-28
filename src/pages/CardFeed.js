@@ -6,7 +6,8 @@ import {Block} from 'vdux-ui'
 
 function render ({props}) {
   const {items = {}, w = '500px', imageSize = '500px'} = props
-  const sortedItems = orderBy(items, ['lastEdited'], ['asc'])
+  console.log(items)
+  const sortedItems = orderBy(items, ['lastEdited', 'timestamp'], ['desc', 'desc'])
   return (
     <Block m='1em auto'>
       {sortedItems.map((game) => (

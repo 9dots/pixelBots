@@ -10,6 +10,10 @@ function render ({props}) {
   const isNext = props.current + 1 < props.sequence.length
   const isPrev = props.current - 1 >= 0
 
+  const completed = props.completed
+    ? props.completed[props.sequence[props.current]]
+    : false
+
   const titleActions = (
     <Block>
       <Text fs='m'>{props.current + 1} / {props.sequence.length}</Text>
@@ -41,16 +45,17 @@ function render ({props}) {
     </Button>
 
   return <GameLoader
+    {...omit(['saveID', 'playlist'], props)}
     playlist={{
       leftAction,
       title: props.name,
       img: props.imageUrl,
       actions: titleActions
     }}
+    completed={completed}
     key={props.sequence[props.current]}
-    saveID={props.saveID}
-    gameCode={props.sequence[props.current]}
-    {...omit('saveID', props)} />
+    saveID={props.saveIds ? props.saveIds[props.current] : props.saveID}
+    gameCode={props.sequence[props.current]} />
 }
 
 export default {

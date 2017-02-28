@@ -4,8 +4,10 @@ import IndeterminateProgress from '../components/IndeterminateProgress'
 import PlaylistGameLoader from '../components/PlaylistGameLoader'
 import PlaylistOptions from '../components/PlaylistOptions'
 import {Box, Block, Flex, Menu, Text} from 'vdux-ui'
+import Description from '../components/Description'
 import LinkModal from '../components/LinkModal'
 import handleActions from '@f/handle-actions'
+import Layout from '../layouts/HeaderAndBody'
 import createAction from '@f/create-action'
 import Button from '../components/Button'
 import findIndex from '@f/find-index'
@@ -39,23 +41,21 @@ const initialState = ({local}) => ({
 
 function render ({props, state}) {
   const {playlist, activeKey, currentUser, profile = {}, username, ...restProps} = props
+  const {modal, actions, target, dragTarget} = state
   const {uid} = currentUser
 
   if (playlist.loading) {
     return <IndeterminateProgress />
   }
 
-  const myPlaylistsValue = profile && profile.playlists || {}
-  const playlistMatch = Object.keys(
-    filter((list) => list.ref === activeKey, myPlaylistsValue)
-  )[0]
-  const {modal, actions, target, dragTarget} = state
   const {
     sequence,
     name,
     followedBy = [],
     creatorID,
+    imageUrl,
     creatorUsername,
+    shortLink,
     description
   } = playlist.value
 
@@ -69,35 +69,37 @@ function render ({props, state}) {
     </Block>
   )
 
+  const titleActions = (
+    <PlaylistOptions
+      follow={follow}
+      mine={mine}
+      followed={followed}
+      uid={uid}
+      myLists={profile.lists}
+      name={name}
+      shortLink={shortLink}
+      description={description}
+      activeKey={activeKey}
+      setModal={actions.setModal}
+      unfollow={unfollow} />
+  )
+
   return (
-    <Block wide bgColor='#FAFAFA' flex px='10px' tall overflowY='auto' overflowX='hidden' minWidth='680px' {...restProps}>
-      <Block align='space-between center' p='10px'>
-        <Block>
-          <Text
-            display='block'
-            fs='xs'
-            color='#777'
-            fontWeight='300'>CREATED BY: {creatorUsername}</Text>
-          <Text
-            display='block'
-            fs='xxl'
-            color='#555'
-            fontWeight='500'>{name}</Text>
-        </Block>
-        <Block>
-          <PlaylistOptions
-            follow={follow}
-            mine={mine}
-            followed={followed}
-            uid={uid}
-            name={name}
-            description={description}
-            activeKey={activeKey}
-            setModal={actions.setModal}
-            unfollow={unfollow} />
+    <Layout
+      navigation={[{category: 'playlist', title: name}]}
+      titleImg={imageUrl}
+      titleActions={titleActions}>
+      <Block mx='20px'>
+        <Block p='15px' wide bgColor='white' border='1px solid #e0e0e0'>
+          <Text color='#666' display='block' fs='m'>Description:</Text>
+          {
+            description
+              ? <Description wide mt='10px' content={description} />
+              : <Text display='block' mt='15px'>This playlist does not have a description yet.</Text>
+          }
         </Block>
       </Block>
-      <Menu w='calc(100% - 17px)' overflowY='auto' overflowX='visible' column>
+      <Menu mx='20px' column>
         <Block
           color='#999'
           mt='1em'
@@ -112,19 +114,22 @@ function render ({props, state}) {
           <Block minWidth='180px' w='180px' />
         </Block>
         <PlaylistGameLoader
+          myLists={profile.lists}
           dragTarget={dragTarget}
           dropTarget={target}
           listActions={{...actions, drop}}
           activeKey={activeKey}
           mine={mine}
+          uid={uid}
           creatorID={creatorID}
           sequence={sequence} />
       </Menu>
       {modal && <LinkModal
+        header='Share Code'
         code={modal}
         footer={modalFooter} />
       }
-    </Block>
+    </Layout>
   )
 
   function * drop (idx) {

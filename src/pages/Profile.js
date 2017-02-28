@@ -56,20 +56,20 @@ function render ({props, state, local}) {
       bodyProps={{py: 0, display: 'flex'}}
       titleImg={profile.photoURL}>
       <Block column wide h='calc(100% - 1px)'>
-        <Block mt='10px' px='20px'>
+        <Block px='20px'>
           {
             !selectMode
               ? <Tabs
-                  tabs={['gallery', mine && 'studio', 'authored']}
-                  active={props.params}
-                  onClick={(tab) => setUrl(`/${username}/${tab}`)}/>
+                tabs={['gallery', mine && 'studio', 'authored']}
+                active={props.params}
+                onClick={(tab) => props.params !== tab && setUrl(`/${username}/${tab}`)} />
               : <SelectToolbar
-                  selected={selected}
-                  playlists={filter((playlist) => playlist.creatorID === currentUser.uid, playlists)}
-                  uid={props.userKey}
-                  mine={mine}
-                  clearSelected={actions.clearSelected}
-                  num={selected.length} />
+                selected={selected}
+                playlists={filter((playlist) => playlist.creatorID === currentUser.uid, playlists)}
+                uid={props.userKey}
+                mine={mine}
+                clearSelected={actions.clearSelected}
+                num={selected.length} />
           }
         </Block>
         {router(props.params, {...props, ...state, profile})}

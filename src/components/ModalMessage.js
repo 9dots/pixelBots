@@ -13,6 +13,7 @@ function render ({props, state, children}) {
     headerColor = 'blue',
     noFooter,
     body,
+    bodyProps,
     fullscreen,
     footer,
     type,
@@ -54,7 +55,7 @@ function render ({props, state, children}) {
         }
         <Block>{header}</Block>
       </ModalHeader>
-      <ModalBody flex bgColor={props.bgColor || 'white'}>
+      <ModalBody {...bodyProps} flex bgColor={props.bgColor || 'white'}>
         <Text fontWeight='300' fs='m' fontFamily='ornate' color='#333'>{body}</Text>
       </ModalBody>
       {!noFooter && (

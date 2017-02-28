@@ -19,16 +19,16 @@ function run (it, animals, getSpeed, onValue, onError, onCompleted = () => {}) {
     const result = it.next()
     const interval = getTimeout(animals, result.value.payload.id) * 1 / getSpeed()
     step(result, interval)
-			.then((action) => {
-			  onValue(action)
-			  running && keepStepping(...arguments)
-			})
-			.catch((e) => {
-			  if (e === RUN_OVER) {
-			    return onCompleted()
-			  }
-		  	return onError(e)
-			})
+      .then((action) => {
+        onValue(action)
+        running && keepStepping(...arguments)
+      })
+      .catch((e) => {
+        if (e === RUN_OVER) {
+          return onCompleted()
+        }
+        return onError(e)
+      })
   }
 }
 
@@ -40,15 +40,12 @@ function step (nextStep, interval) {
   const {value, done} = nextStep
   return new Promise((resolve, reject) => {
     if (value.type === 'END_RUN' || done) {
-	  	return reject(RUN_OVER)
-	  }
-    if (interval < 5) {
-      if (value.type !== 'ANIMAL_PAINT') {
-        return resolve(value)
-      }
-      return raf(() => resolve(value))
+      return reject(RUN_OVER)
     }
-	  return setTimeout(() => resolve(value), interval)
+    if (interval < 5) {
+      return resolve(value)
+    }
+    return setTimeout(() => resolve(value), interval)
   })
 }
 
@@ -65,17 +62,17 @@ function createIterator (animal, id) {
 
 function createIterators (animals) {
   return new Promise((resolve, reject) => {
-	  Promise.all(animals.map((animal, id) => createIterator(animal, id)))
-	  	.then((iterators) => resolve(iterators))
-	  	.catch((e) => reject(e))
+    Promise.all(animals.map((animal, id) => createIterator(animal, id)))
+      .then((iterators) => resolve(iterators))
+      .catch((e) => reject(e))
   })
 }
 
 export {
-	createIterators,
-	getInterval,
-	step,
-	run
+  createIterators,
+  getInterval,
+  step,
+  run
 }
 
 const getTimeout = (animals, id) => {

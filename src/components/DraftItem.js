@@ -9,20 +9,22 @@ import fire, {refMethod} from 'vdux-fire'
 
 function render ({props}) {
   const {draft, draftRef, draftKey, uid} = props
-  if (draft.loading) return <IndeterminateProgress/>
+  if (draft.loading) return <IndeterminateProgress />
 
   const draftVal = draft.value
-  if (!draftVal) return <div/>
+  if (!draftVal) return <div />
   return (
     <MenuItem
       fs='m'
       py='m'
+      border='1px solid #e0e0e0'
+      borderTopWidth='0'
       fontWeight='300'
       align='space-between center'
       hoverProps={{bgColor: 'rgba(33, 150, 243, 0.2)'}}
       onClick={() => setUrl(`/create/${draftRef}`)}>
       {draftVal.title}
-      <Icon name='delete' onClick={removeDraft}/>
+      <Icon name='delete' onClick={removeDraft} />
     </MenuItem>
   )
 

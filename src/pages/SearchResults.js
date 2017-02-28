@@ -36,10 +36,10 @@ function * onUpdate (prev, {props, state}) {
 const router = enroute({
   'games': (params, {items, actions, selected}) => (
     <ChallengeFeed editable games={items} toggleSelected={actions.toggleSelected} selected={selected} />
-	),
+  ),
   'playlists': (params, {items}) => (
     <PlaylistSearchFeed playlists={items} />
-	)
+  )
 })
 
 const reduceType = (cur, next) => {
@@ -58,11 +58,10 @@ const reduceType = (cur, next) => {
 function render ({props, state}) {
   const {responses, tab, playlists, uid, searchQ = ''} = props
   const {actions, selected} = state
-  console.log(responses)
-  if (responses.loading) return <Loading/>
+  if (responses.loading) return <Loading />
   const hits = responses.value
-		? responses.value.hits
-		: {}
+    ? responses.value.hits
+    : {}
 
   const byType = reduce(reduceType, {games: {}, playlists: {}, users: {}}, hits)
 
@@ -73,7 +72,7 @@ function render ({props, state}) {
     clearSelected={actions.clearSelected}
     num={selected.length} />
 
-  const tabs = <Flex mx='20px' borderBottom='1px solid #999' wide relative bottom='0' color='lightBlue' h='42px'>
+  const tabs = <Flex borderBottom='1px solid #e0e0e0' wide relative bottom='0' color='lightBlue' h='42px'>
     <ProfileTab
       label={`${Object.keys(byType.games).length || 0} challenges`}
       underlineColor='red'
@@ -87,13 +86,13 @@ function render ({props, state}) {
   </Flex>
 
   return (
-    <Block>
+    <Block mx='20px'>
       {selected.length > 0
-				? toolbar
-				: tabs}
+        ? toolbar
+        : tabs}
       {responses.loading && props.searchKey
-				? <IndeterminateProgress />
-				: router(tab, {items: byType[tab], actions, selected})}
+        ? <IndeterminateProgress />
+        : router(tab, {items: byType[tab], actions, selected})}
     </Block>
   )
 }

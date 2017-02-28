@@ -9,7 +9,7 @@ function render ({props, state}) {
   return (
     <Block wide tall align='center center'>
       <Block>
-        <DisplayCard w='500px' imageSize='500px' link={link} gameRef={gameRef} saveRef={saveRef}/>
+        <DisplayCard w='500px' imageSize='500px' link={link} gameRef={gameRef} saveRef={saveRef} />
       </Block>
     </Block>
   )

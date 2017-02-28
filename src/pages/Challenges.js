@@ -6,9 +6,7 @@ import {Block} from 'vdux-ui'
 
 function render ({props}) {
   const {items = {}} = props
-  const sortedItems = orderBy(items, ['lastEdited'], ['asc'])
-
-  console.log(sortedItems)
+  const sortedItems = orderBy(items, ['lastEdited'], ['desc'])
 
   return (
     <Block border='1px solid #e0e0e0' borderWidth='0 1px'>
