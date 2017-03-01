@@ -56,7 +56,7 @@ function render ({props, state}) {
           inputType === 'icons'
             ? <Block wide tall align='center center'>
               {addButtons()}
-              <Code canCode={canCode} waitingForLoop={waitingForLoop} finishAddLoop={finishAddLoop} {...props} />
+              <Code startCode={props.initialData && props.initialData.startCode} canCode={canCode} waitingForLoop={waitingForLoop} finishAddLoop={finishAddLoop} {...props} />
             </Block>
             : <Block wide tall align='center center'>
               {addButtons()}

@@ -17,6 +17,7 @@ function * onUpdate (prev, next) {
     ? ''
     : animals[active].sequence
   const prevSequence = prev.props.animals[active].sequence
+  console.log(setValue)
   if (prevSequence !== sequence && sequence === startCode && setValue) {
     return setValue(startCode)
   }
@@ -43,7 +44,7 @@ function render ({props}) {
   }
 
   if (typeof sequence === 'object') return <div />
-
+  console.log(setValue)
   return (
     <Box relative flex tall fontFamily='code' class='code-editor'>
       <Ace

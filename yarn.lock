@@ -2075,9 +2075,9 @@ brace-expansion@^1.0.0:
     balanced-match "^0.4.1"
     concat-map "0.0.1"
 
-brace@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/brace/-/brace-0.8.0.tgz#e826c6d5054cae5f607ad7b1c81236dd2cf01978"
+brace@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/brace/-/brace-0.7.0.tgz#90651da5bd486edbb41888dec78afdcd07375b21"
   dependencies:
     w3c-blob "0.0.1"
 
@@ -7635,14 +7635,14 @@ vary@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.0.tgz#e1e5affbbd16ae768dd2674394b9ad3022653140"
 
-vdux-ace@^0.2.18:
-  version "0.2.18"
-  resolved "https://registry.yarnpkg.com/vdux-ace/-/vdux-ace-0.2.18.tgz#c919ab0d6494bf18cd3980e0bb0d73c35d1ee119"
+vdux-ace@0.3:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/vdux-ace/-/vdux-ace-0.3.0.tgz#656da19dad834efd6992819fe38850e8c36c4976"
   dependencies:
     "@f/combine-reducers" "^1.2.0"
     "@f/create-action" "^1.1.1"
     "@f/handle-actions" "^1.1.1"
-    brace "^0.8.0"
+    brace "^0.7.0"
     domready "^1.0.8"
     redux-effects "^0.4.0"
     redux-effects-events "^0.2.5"

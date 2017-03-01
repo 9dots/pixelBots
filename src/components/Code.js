@@ -38,11 +38,22 @@ function getIndent (line) {
 }
 
 function render ({props, state}) {
-  const {animals, active, activeLine, selectedLine, finishAddLoop, waitingForLoop, editorActions = {}, canCode = true} = props
+  const {
+    animals,
+    active,
+    activeLine,
+    selectedLine,
+    finishAddLoop,
+    waitingForLoop,
+    editorActions = {},
+    canCode = true,
+    startCode
+  } = props
+
   const handleSelectLine = editorActions.selectLine || selectLine
   const handleAddCode = editorActions.addCode || addCode
   const lineHeight = '36px'
-  const sequence = animals[active].sequence || []
+  const sequence = animals[active].sequence || startCode || []
   let indent = 0
 
   const code = sequence.map((line, i, arr) => {

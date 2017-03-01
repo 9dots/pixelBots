@@ -82,7 +82,6 @@ export default ({getState, dispatch}) => (next) => (action) => {
   function handleCorrect (msg) {
     setTimeout(function () {
       const {gameID, saveID, game, user, playlistKey} = getState()
-      console.log(user)
       dispatch(abortRun('STOP'))
       dispatch(completeChallenge({gameID, saveID, uid: user, game, playlistKey}))
       dispatch(fbTask('create_gif', {

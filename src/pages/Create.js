@@ -61,8 +61,7 @@ const router = enroute({
   </OptionsPage>,
   'preview': (params, props) => <Game
     initialData={props.newGame.value}
-    game={props.newGame.value}
-    {...omit('game', props)}>
+    {...props}>
     {props.btn}
   </Game>,
   'publish': (params, props) => publishPage(props.draftID, props.uid, props.username)
