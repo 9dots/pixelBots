@@ -62,7 +62,7 @@ function render ({props, state, local}) {
     <Layout
       active={category}
       onClick={(key) => setUrl(`/${username}/${props.params}/${key}`)}
-      navItems={['Playlists', 'Challenges', 'Drafts']}>
+      navItems={['Playlists', 'Challenges', mine && 'Drafts']}>
       <Block column wide>
         {router(props.category, {...props, ...state, profile})}
       </Block>

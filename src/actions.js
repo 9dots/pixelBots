@@ -82,9 +82,8 @@ function initializeApp () {
 }
 
 function * updateRoute (url) {
-  if (window.location.origin !== 'http://localhost:5000') {
-    yield ga('set', 'page', url)
-  }
+  ga('set', 'page', url)
+  ga('send', 'pageview')
   yield newRoute(url)
 }
 
@@ -112,7 +111,6 @@ function updatePlaylist (ref) {
 function * completeChallenge (data) {
   const {game, uid, gameID, playlistKey = '', saveID} = data
   const linkRef = yield createCode()
-  console.log(playlistKey)
   if (playlistKey) {
     yield set(`/users/${uid}/lists/${playlistKey}/completed/${gameID}`, saveID)
   }
