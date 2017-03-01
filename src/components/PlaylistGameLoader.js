@@ -10,7 +10,6 @@ import {Block} from 'vdux-ui'
 function render ({props, state, local}) {
   const {
     sequence = [],
-    currentUser,
     creatorID,
     activeKey,
     uid,
@@ -48,8 +47,8 @@ function render ({props, state, local}) {
               playClick={() => play(i)}
               key={ref}
               noAssign
-              uid={currentUser.uid}
-              mine={mine && currentUser.uid === creatorID}
+              uid={uid}
+              mine={mine && uid === creatorID}
               ref={ref} />
             )
           )
@@ -129,7 +128,7 @@ function remove (playlistKey, gameRef) {
 function getProps (props, context) {
   return {
     ...props,
-    currentUser: context.currentUser,
+    uid: context.uid,
     username: context.username
   }
 }

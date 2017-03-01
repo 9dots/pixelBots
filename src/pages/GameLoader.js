@@ -35,7 +35,7 @@ function * onUpdate (prev, {props, state}) {
       yield setGameId(props.gameCode)
       yield setSaveId(props.inProgress.value[props.gameCode].saveRef)
     } else {
-      yield createNewSave(props.gameCode, props.user, props.username)
+      yield createNewSave(props.gameCode, props.uid, props.username)
     }
   }
   if (props.completed) {
@@ -45,7 +45,7 @@ function * onUpdate (prev, {props, state}) {
 }
 
 function render ({props, state, local}) {
-  const {gameVal, savedProgress, playlist, username, user, saveID, gameCode} = props
+  const {gameVal, savedProgress, playlist, username, uid, saveID, gameCode} = props
   const {loading, description, show} = state
 
   if (gameVal.loading || !savedProgress || savedProgress.loading) {
@@ -57,7 +57,7 @@ function render ({props, state, local}) {
   const game = <Block wide tall>
     <Game
       mine={props.mine}
-      onRun={onRun(user, saveID, gameCode)}
+      onRun={onRun(uid, saveID, gameCode)}
       initialData={mergeGameData}
       gameData={gameVal.value}
       {...omit(['gameVal, savedProgress'], props)}
@@ -114,16 +114,16 @@ function render ({props, state, local}) {
   }
 }
 
-function onRun (user, saveID, gameID) {
+function onRun (uid, saveID, gameID) {
   return function * (code) {
-    if (user.uid && saveID) {
+    if (uid && saveID) {
       yield refMethod({
         ref: '/queue/tasks',
         updates: {
           method: 'push',
           value: {
             _state: 'on_run',
-            userID: user.uid,
+            userID: uid,
             saveID,
             gameID,
             code
@@ -134,7 +134,7 @@ function onRun (user, saveID, gameID) {
   }
 }
 
-function * createNewSave (gameCode, user, username, type) {
+function * createNewSave (gameCode, uid, username, type) {
   const code = yield createCode()
   const saveRef = yield refMethod({
     ref: '/saved/',
@@ -146,7 +146,7 @@ function * createNewSave (gameCode, user, username, type) {
     }
   })
   yield refMethod({
-    ref: `/users/${user.uid}/inProgress/${gameCode}`,
+    ref: `/users/${uid}/inProgress/${gameCode}`,
     updates: {
       method: 'set',
       value: {
@@ -171,7 +171,7 @@ function getProps (props, context) {
   return {
     ...props,
     username: context.username,
-    user: context.currentUser
+    uid: context.uid
   }
 }
 
@@ -181,7 +181,7 @@ function * onRemove () {
 
 export default fire((props) => {
   const refs = {
-    inProgress: `/users/${props.user.uid}/inProgress`,
+    inProgress: `/users/${props.user}/inProgress`,
     gameVal: `/games/${props.gameCode}`
   }
   return props.saveID ? {...refs, savedProgress: `/saved/${props.saveID}`} : refs

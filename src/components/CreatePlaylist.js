@@ -103,11 +103,11 @@ function reducer (state, action) {
   return state
 }
 
-function getProps (props, {username, currentUser}) {
+function getProps (props, {username, uid}) {
   return {
     ...props,
     username,
-    uid: currentUser.uid
+    uid: uid
   }
 }
 

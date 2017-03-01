@@ -68,7 +68,7 @@ domready(() => {
   subscribe((state) => {
     return render(app(state), {
       uiTheme: theme,
-      currentUser: state.user,
+      uid: state.user,
       username: state.username,
       profile: state.profile,
       title: state.title,

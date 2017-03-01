@@ -17,7 +17,6 @@ const providers = {
 
 export default ({getState, dispatch}) => {
   firebase.auth().onAuthStateChanged((user) => {
-    console.log(user)
     if (!user) {
       dispatch(setUserId(null))
       return firebase.auth().signInAnonymously()
@@ -27,7 +26,7 @@ export default ({getState, dispatch}) => {
     } else if (user.isAnonymous) {
       dispatch(setUsername(null))
     }
-    return dispatch(setUserId(user))
+    return dispatch(setUserId(user.uid))
   })
   return (next) => (action) => {
     if (action.type === signInWithProvider.type) {
@@ -46,7 +45,7 @@ export default ({getState, dispatch}) => {
       dispatch(refresh())
     }
     if (action.type === setUserId.type && action.payload) {
-      firebase.database().ref(`/users/${action.payload.uid}`)
+      firebase.database().ref(`/users/${action.payload}`)
         .on('value', (snap) => dispatch(setUserProfile(snap.val())))
     }
     return next(action)

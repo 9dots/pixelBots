@@ -85,13 +85,13 @@ const router = enroute({
       gameCode={gameID} />
   ),
   '/:username/:activity': ({username, activity}, props) => (
-    <ProfileLoader mine={props.user.username === username} params={activity} currentUser={props.user} username={username} />
+    <ProfileLoader mine={props.user.username === username} params={activity} uid={props.user} username={username} />
   ),
   '/:username/:activity/:category': ({username, activity, category}, props) => (
     <ProfileLoader
       params={activity}
       category={category}
-      currentUser={props.user}
+      uid={props.user}
       username={username} />
   ),
   '/:link': ({link}, props) => <LinkDecipher link={link} {...props} />,
@@ -114,12 +114,12 @@ function render ({props, state, local}) {
   const {message, url, toast, user, username} = props
   const activeRoute = url.split('/')[1]
 
-  if (!props.user || props.username === undefined) {
+  if (!props.user || props.username === undefined || !props.profile) {
     return <Loading />
   }
 
   return (
-    <Block tall>
+    <Block tall wide>
       <PrintContainer code={!!props.game && props.game.animals[0].sequence} />
       <Header w='80px' top='0' left='0'>
         <Block flex>

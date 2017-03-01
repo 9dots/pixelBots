@@ -118,7 +118,7 @@ function removeFromShowcase (uid, saveRef, gameRef) {
 function getProps (props, context) {
   return {
     ...props,
-    uid: context.currentUser.uid
+    uid: context.uid
   }
 }
 

@@ -29,7 +29,7 @@ const router = enroute({
   'shared': (params, props) => (
     <SharedProject {...props} saveRef={props.payload.saveRef} gameRef={props.payload.gameRef} />
   ),
-  ':username': ({username}, props) => <ProfileLoader mine={props.user.username === username} currentUser={props.user} username={username} />,
+  ':username': ({username}, props) => <ProfileLoader mine={props.user.username === username} uid={props.user} username={username} />,
   '*': () => <div>Bad Link</div>
 })
 

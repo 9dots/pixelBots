@@ -8,7 +8,6 @@ import map from '@f/map'
 function render ({props}) {
   const {solutions = {}} = props
   if (solutions.loading) return <Loading />
-  console.log(solutions.value)
   return solutions.value
 		?	<CardFeed
   w='400px'

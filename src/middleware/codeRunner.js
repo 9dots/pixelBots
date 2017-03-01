@@ -87,14 +87,15 @@ function codeRunner () {
 
       function * onComplete (payload) {
         const {game, saveID} = getState()
+        const {painted = {}} = game
         yield stopRun(true)
 
         if (typeof (payload) === 'function') {
           yield payload()
         }
-        if (saveID && Object.keys(game.painted).length > 0) {
+        if (saveID && Object.keys(painted).length > 0) {
           yield fbTask('update_saved_image', {
-            painted: game.painted,
+            painted: painted,
             levelSize: game.levelSize[0],
             url: saveID
           })

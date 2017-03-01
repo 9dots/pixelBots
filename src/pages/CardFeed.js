@@ -6,7 +6,6 @@ import {Block} from 'vdux-ui'
 
 function render ({props}) {
   const {items = {}, w = '500px', imageSize = '500px'} = props
-  console.log(items)
   const sortedItems = orderBy(items, ['lastEdited', 'timestamp'], ['desc', 'desc'])
   return (
     <Block m='1em auto'>

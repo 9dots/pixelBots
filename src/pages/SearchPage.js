@@ -93,9 +93,9 @@ function render ({props, state, local}) {
   return (
     <Block wide tall>
       {
-				searchValue
-					? searchResults
-					: searchInput
+        searchValue
+          ? searchResults
+          : searchInput
       }
     </Block>
   )
@@ -136,7 +136,7 @@ function reducer (state, action) {
 function getProps (props, context) {
   return {
     ...props,
-    uid: context.currentUser.uid
+    uid: context.uid
   }
 }
 

@@ -34,7 +34,7 @@ const router = enroute({
     drafts={props.profile.drafts}
     uid={props.userKey}
     mine={props.mine}
-    cat={props.tab}/>,
+    cat={props.tab} />,
   'assignments': (params, props) => <AssignmentFeed
     mine={props.mine}
     uid={props.userKey}
@@ -49,12 +49,12 @@ function onCreate ({props}) {
 }
 
 function render ({props, state, local}) {
-  const {mine, thisProfile, currentUser, myProfile, username, category, selected} = props
+  const {mine, thisProfile, uid, myProfile, username, category, selected} = props
   const selectMode = selected.length > 0
 
   const profile = mine ? myProfile : thisProfile.value
 
-  if (!profile || !currentUser || !category) return <IndeterminateProgress />
+  if (!profile || !uid || !category) return <IndeterminateProgress />
 
   const {playlists} = profile
 
@@ -72,7 +72,7 @@ function render ({props, state, local}) {
 
 function getProps (props, context) {
   return {
-    ...props, 
+    ...props,
     myProfile: context.profile
   }
 }

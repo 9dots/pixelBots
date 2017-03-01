@@ -134,7 +134,7 @@ function render ({props, state, local}) {
 function getProps (props, context) {
   return {
     ...props,
-    uid: context.currentUser.uid,
+    uid: context.uid,
     username: context.username
   }
 }

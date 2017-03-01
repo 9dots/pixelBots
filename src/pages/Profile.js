@@ -40,13 +40,13 @@ const router = enroute({
 })
 
 function render ({props, state, local}) {
-  const {mine, thisProfile, currentUser, myProfile, username} = props
+  const {mine, thisProfile, uid, myProfile, username} = props
   const {actions, selected} = state
   const selectMode = selected.length > 0
 
   const profile = mine ? myProfile : thisProfile.value
 
-  if (!profile || !currentUser) return <IndeterminateProgress />
+  if (!profile || !uid) return <IndeterminateProgress />
 
   const {playlists} = profile
 
@@ -65,7 +65,7 @@ function render ({props, state, local}) {
                 onClick={(tab) => props.params !== tab && setUrl(`/${username}/${tab}`)} />
               : <SelectToolbar
                 selected={selected}
-                playlists={filter((playlist) => playlist.creatorID === currentUser.uid, playlists)}
+                playlists={filter((playlist) => playlist.creatorID === uid, playlists)}
                 uid={props.userKey}
                 mine={mine}
                 clearSelected={actions.clearSelected}

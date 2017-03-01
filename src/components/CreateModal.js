@@ -69,7 +69,7 @@ function getProps (props, context) {
   return {
     ...props,
     username: context.username,
-    uid: context.currentUser.uid
+    uid: context.uid
   }
 }
 

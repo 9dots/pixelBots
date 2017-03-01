@@ -37,7 +37,7 @@ function render ({props}) {
 function getProps (props, context) {
   return {
     ...props,
-    uid: context.currentUser.uid,
+    uid: context.uid,
     playlists: context.profile.playlists
   }
 }

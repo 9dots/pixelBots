@@ -30,7 +30,7 @@ function save (getState, dispatch) {
   const {animals} = game
 
   if (saveID) {
-    dispatch(saveProgress(game, saveID, gameID, user.uid))
+    dispatch(saveProgress(game, saveID, gameID, user))
   }
 
   cancel = null

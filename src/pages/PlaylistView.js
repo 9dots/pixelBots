@@ -40,9 +40,8 @@ const initialState = ({local}) => ({
 })
 
 function render ({props, state}) {
-  const {playlist, activeKey, currentUser, profile = {}, username, ...restProps} = props
+  const {playlist, activeKey, uid, profile = {}, username, ...restProps} = props
   const {modal, actions, target, dragTarget} = state
-  const {uid} = currentUser
 
   if (playlist.loading) {
     return <IndeterminateProgress />
@@ -177,7 +176,7 @@ function render ({props, state}) {
 function getProps (props, context) {
   return {
     ...props,
-    currentUser: context.currentUser,
+    uid: context.uid,
     username: context.username,
     profile: context.profile
   }
