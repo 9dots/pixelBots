@@ -60,7 +60,7 @@ function render ({props, state, local}) {
   }
 
   const mergeGameData = {...gameVal.value, ...savedProgress.value}
-  console.log(mergeGameData)
+
   const game = <Block wide tall>
     <Game
       mine={props.mine}

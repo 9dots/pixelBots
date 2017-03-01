@@ -14,8 +14,6 @@ function render ({props}) {
     ? props.completed[props.sequence[props.current]]
     : false
 
-  console.log(completed)
-
   const titleActions = (
     <Block>
       <Text fs='m'>{props.current + 1} / {props.sequence.length}</Text>
