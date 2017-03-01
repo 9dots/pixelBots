@@ -129,7 +129,7 @@ function render ({props, state, local}) {
             active={activeRoute === 'featured'}
             handleClick={[() => setUrl('/'), refresh]} />
           <HeaderElement active={activeRoute === 'search'} onClick={() => setUrl('/search/games')} text='Search' icon='search' />
-          {(user && !user.isAnonymous) &&
+          {(user && username) &&
             <Block>
               <HeaderElement
                 active={activeRoute === username}
@@ -141,7 +141,7 @@ function render ({props, state, local}) {
           }
         </Block>
         <HeaderElement onClick={() => setModalMessage(<CodeLink />)} mb='0' text='Code' icon='link' />
-        {!user || user.isAnonymous
+        {!user || !username
           ? <HeaderElement handleClick={local(startLogin)} text='Sign In' icon='person_outline' />
           : <HeaderElement handleClick={signOutClick} text='Sign Out' icon='exit_to_app' />
         }
