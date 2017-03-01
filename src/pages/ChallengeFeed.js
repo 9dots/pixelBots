@@ -90,7 +90,7 @@ function render ({props, state}) {
     </Block>
   )
 
-  const CVL = VirtualList(Challenges, items, {height: 71, buffer: 20, container: document.getElementById('action-bar-holder')})
+  const CVL = VirtualList(Challenges, items, {height: 71, buffer: 25, container: document.getElementById('action-bar-holder')})
 
   return (
     <Flex flexWrap='wrap' wide margin='0 auto'>
