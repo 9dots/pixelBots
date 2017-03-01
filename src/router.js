@@ -99,7 +99,7 @@ const router = enroute({
 })
 
 function homePage (params, props) {
-  if (!props.user || (props.user && Object.keys(props.user).length === 0) || (!props.user.isAnonymous && !props.username)) {
+  if (!props.user || props.username === undefined || (!props.user && !props.profile)) {
     return <Loading />
   }
   return <HomePage {...props} />
@@ -114,7 +114,7 @@ function render ({props, state, local}) {
   const {message, url, toast, user, username} = props
   const activeRoute = url.split('/')[1]
 
-  if (!props.user || props.username === undefined || !props.profile) {
+  if (!props.user || props.username === undefined || (!props.user && !props.profile)) {
     return <Loading />
   }
 
