@@ -78,7 +78,14 @@ const endRun = createAction('END_RUN')
 const reset = createAction('RESET')
 
 function initializeApp () {
-  return bindUrl(newRoute)
+  return bindUrl(updateRoute)
+}
+
+function * updateRoute (url) {
+  if (window.location.origin !== 'http://localhost:5000') {
+    yield ga('set', 'page', url)
+  }
+  yield newRoute(url)
 }
 
 function * saveProgress (game, saveID, gameID, uid) {
