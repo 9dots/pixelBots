@@ -34,7 +34,6 @@ function render ({props, state, local}) {
     : `/savedList/${props.ref}`
 
   const {sequence, current = 0} = activeList
-
   window.getPlaylistRef = () => activeList.assignmentRef
   return (
     <Playlist current={current} {...props} listRef={props.ref} {...activeList} next={next} prev={prev} />

@@ -29,6 +29,13 @@ const initialState = ({local}) => ({
   }
 })
 
+function * onCreate ({props}) {
+  if (props.completed) {
+    yield setGameId(props.gameCode)
+    yield setSaveId(props.completed)
+  }
+}
+
 function * onUpdate (prev, {props, state}) {
   if (!props.inProgress.loading && !props.completed) {
     if (props.inProgress.value && props.inProgress.value[props.gameCode]) {
@@ -53,7 +60,7 @@ function render ({props, state, local}) {
   }
 
   const mergeGameData = {...gameVal.value, ...savedProgress.value}
-
+  console.log(mergeGameData)
   const game = <Block wide tall>
     <Game
       mine={props.mine}
@@ -189,6 +196,7 @@ export default fire((props) => {
   initialState,
   getProps,
   onUpdate,
+  onCreate,
   onRemove,
   reducer,
   render

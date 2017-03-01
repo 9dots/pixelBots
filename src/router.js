@@ -71,7 +71,7 @@ const router = enroute({
     <ProjectPage gameRef={gameID} />
   ),
   '/playSequence/:listID': ({listID}, props) => (
-    <PlaylistLoader {...props} playlistRef={listID} uid={props.user.uid} ref='nothing' />
+    <PlaylistLoader {...props} playlistRef={listID} uid={props.user} ref='nothing' />
   ),
   '/play/:gameID': ({gameID}, props) => (
     <GameLoader
