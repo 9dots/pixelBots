@@ -21,7 +21,7 @@ function render ({props, children}) {
           {leftAction || <Block ml='1em' />}
           {titleImg && <Avatar boxShadow='0 0 1px 2px rgba(0,0,0,0.2)' h='60px' w='60px' src={titleImg} />}
           <Block align='start center' flex relative ml='1em'>
-            {navigation.map(({category, title, onClick}, i) => (
+            {navigation.filter((item) => !!item).map(({category, title, onClick}, i) => (
               <Block align='start center'>
                 <Block
                   onClick={!!onClick && onClick}
