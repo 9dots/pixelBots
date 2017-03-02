@@ -77,6 +77,7 @@ const router = enroute({
     <GameLoader
       {...props}
       completed={
+        props.profile &&
         props.profile.completed &&
         props.profile.completed[gameID] &&
         props.profile.completed[gameID].saveRef
