@@ -60,7 +60,6 @@ function render ({props, local, state}) {
 
   const item = game.value
   const animalImg = `/animalImages/${item.animals[0]}.jpg`
-  console.log(item)
 
   return (
     <Block>
