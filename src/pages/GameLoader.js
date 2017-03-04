@@ -154,19 +154,20 @@ function * createNewSave (gameCode, uid, username, type, saveID) {
       }
     })
   }
+  const saveKey = saveID || saveRef.key
   yield refMethod({
     ref: `/users/${uid}/inProgress/${gameCode}`,
     updates: {
       method: 'set',
       value: {
-        saveRef: saveID || saveRef.key,
+        saveRef: saveKey,
         gameRef: gameCode,
         saveLink: code,
         lastEdited: Date.now()
       }
     }
   })
-  yield setSaveId(saveRef.key)
+  yield setSaveId(saveKey)
 }
 
 const reducer = handleActions({
