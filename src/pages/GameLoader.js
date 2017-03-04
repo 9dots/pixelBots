@@ -143,8 +143,9 @@ function onRun (uid, saveID, gameID) {
 
 function * createNewSave (gameCode, uid, username, type, saveID) {
   const code = yield createCode()
+  let saveRef
   if (!saveID) {
-    const saveRef = yield refMethod({
+    saveRef = yield refMethod({
       ref: '/saved/',
       updates: {
         method: 'push',
