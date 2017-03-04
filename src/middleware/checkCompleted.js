@@ -8,6 +8,7 @@ import {abortRun, incrementSteps} from './codeRunner'
 import {Block, Text} from 'vdux-ui'
 import objEqual from '@f/equal-obj'
 import element from 'vdux/element'
+import isEmpty from 'lodash/isEmpty'
 import filter from '@f/filter'
 
 const completeProject = createAction('<checkCompleted/>: COMPLETE_PROJECT')
@@ -84,11 +85,13 @@ export default ({getState, dispatch}) => (next) => (action) => {
       const {gameID, saveID, game, user, playlistKey} = getState()
       dispatch(abortRun('STOP'))
       dispatch(completeChallenge({gameID, saveID, uid: user, game, playlistKey}))
-      dispatch(fbTask('create_gif', {
-        frames: game.frames.concat(game.painted),
-        saveID: saveID,
-        gridSize: game.levelSize[0]
-      }))
+      if (!isEmpty(game.frames)) {
+        dispatch(fbTask('create_gif', {
+          frames: game.frames.concat(game.painted),
+          saveID: saveID,
+          gridSize: game.levelSize[0]
+        }))
+      }
       dispatch(setModalMessage(winMessage(msg)))
     }, 800)
   }

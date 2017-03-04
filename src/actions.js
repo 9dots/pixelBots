@@ -2,6 +2,7 @@ import createAction from '@f/create-action'
 import {bindUrl, setUrl} from 'redux-effects-location'
 import {refMethod, set} from 'vdux-fire'
 import {createCode, initGame, fbTask} from './utils'
+import filter from '@f/filter'
 import pick from 'lodash/pick'
 import omit from '@f/omit'
 
@@ -117,6 +118,7 @@ function * completeChallenge (data) {
 
   yield fbTask('on_complete', {
     ...omit('playlistKey', data),
+    game: filter((value) => !!value, game),
     linkRef,
     code: game.animals[0].sequence
   })

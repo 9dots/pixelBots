@@ -42,10 +42,10 @@ function * onUpdate (prev, {props, state}) {
       yield setGameId(props.gameCode)
       yield setSaveId(props.inProgress.value[props.gameCode].saveRef)
     } else {
-      yield createNewSave(props.gameCode, props.uid, props.username)
+      yield createNewSave(props.gameCode, props.uid, props.username, props.saveID)
     }
   }
-  if (props.completed) {
+  if (props.completed && !props.saveID) {
     yield setGameId(props.gameCode)
     yield setSaveId(props.completed)
   }
@@ -141,23 +141,25 @@ function onRun (uid, saveID, gameID) {
   }
 }
 
-function * createNewSave (gameCode, uid, username, type) {
+function * createNewSave (gameCode, uid, username, type, saveID) {
   const code = yield createCode()
-  const saveRef = yield refMethod({
-    ref: '/saved/',
-    updates: {
-      method: 'push',
-      value: {
-        username
+  if (!saveID) {
+    const saveRef = yield refMethod({
+      ref: '/saved/',
+      updates: {
+        method: 'push',
+        value: {
+          username
+        }
       }
-    }
-  })
+    })
+  }
   yield refMethod({
     ref: `/users/${uid}/inProgress/${gameCode}`,
     updates: {
       method: 'set',
       value: {
-        saveRef: saveRef.key,
+        saveRef: saveID || saveRef.key,
         gameRef: gameCode,
         saveLink: code,
         lastEdited: Date.now()

@@ -64,15 +64,15 @@ function render ({props, state}) {
             </Block>
         }
       </Block>
-      {<Runner
+      <Runner
         bgColor={inputType === 'icons' ? '#A7B4CB' : '#1D1F21'}
+        canAutoComplete={!!gameData.targetPainted || !canCode}
         initialData={props.initialData}
-        saveID={props.saveID}
         saved={props.saveID && saved}
-        canAutoComplete={!!gameData.targetPainted}
-        loc={loc}
+        inputType={inputType}
+        saveID={props.saveID}
         creatorMode
-        inputType={inputType} />}
+        loc={loc} />
     </Block>
   )
 
