@@ -36,6 +36,8 @@ function render ({props, state, local, children}) {
   const {game, saved, imageSize = '500px', username, uid, saveRef, ...restProps} = props
   const {likedByMe} = state
   if (game.loading || saved.loading) return <IndeterminateProgress />
+
+  console.log(saveRef, saved.value)
   const value = {...game.value, ...saved.value}
 
   const addLikeAction = [addLike(saveRef, uid, username), username && local(like)]
@@ -122,16 +124,6 @@ function removeLike (saveID, uid, username) {
   }
 }
 
-function checkVisible (query) {
-  const {top, bottom} = document.querySelector(query).getBoundingClientRect()
-  const visible = {top: window.scrollY, bottom: window.scrollY + window.innerHeight}
-  if (top < visible.top && top > visible.bottom || bottom < visible.top && bottom > visible.bottom) {
-    return true
-  } else {
-    return false
-  }
-}
-
 const reducer = handleActions({
   [like.type]: (state) => ({...state, likedByMe: true}),
   [unlike.type]: (state) => ({...state, likedByMe: false})
@@ -147,7 +139,7 @@ function getProps (props, context) {
 
 export default fire((props) => ({
   game: `/games/${props.gameRef}/meta`,
-  saved: `/saved/${props.saveRef}`
+  saved: `/saved/${props.saveRef}/meta`
 }))({
   initialState,
   onUpdate,

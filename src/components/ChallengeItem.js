@@ -32,6 +32,8 @@ function render ({props, state, local}) {
     ? value.animals[0].sequence
     : ''
 
+  console.log(saved.value)
+
   return (
     <Block
       onMouseOver={local(mouseOver)}
@@ -58,7 +60,7 @@ function render ({props, state, local}) {
         <Block wide align='start center'>
           <DetailInfo
             icon='view_headline'
-            label={`${getLoc(sequence || '')} lines`} />
+            label={`${value.loc} lines`} />
           <DetailInfo
             icon='gamepad'
             label={`${value.attempts || 0} runs`} />
@@ -129,7 +131,7 @@ const reducer = handleActions({
 
 export default fire((props) => ({
   game: `/games/${props.gameRef}/meta`,
-  saved: `/saved/${props.saveRef}`
+  saved: `/saved/${props.saveRef}/meta`
 }))({
   initialState,
   getProps,
