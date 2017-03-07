@@ -117,8 +117,7 @@ function * completeChallenge (data) {
   }
 
   yield fbTask('on_complete', {
-    ...omit('playlistKey', data),
-    game: filter((value) => !!value, game),
+    ...omit(['playlistKey', 'game'], data),
     linkRef,
     code: game.animals[0].sequence
   })

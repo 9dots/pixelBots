@@ -20,11 +20,11 @@ import splice from '@f/splice'
 import sleep from '@f/sleep'
 import fire from 'vdux-fire'
 
-const setModal = createAction('<PlaylistView/>: setModal')
 const handleDragEnter = createAction('<PlaylistItem/>: HANDLE_DRAG_ENTER')
 const handleDragStart = createAction('<PlaylistItem/>: HANLDE_DRAG_START')
 const handleDragEnd = createAction('<PlaylistItem/>: HANDLE_END')
 const handleDrop = createAction('<PlaylistItem/>: HANDLE_DROP')
+const setModal = createAction('<PlaylistView/>: setModal')
 
 const initialState = ({local}) => ({
   modal: '',
@@ -74,7 +74,7 @@ function render ({props, state}) {
       mine={mine}
       followed={followed}
       uid={uid}
-      myLists={profile.lists}
+      myLists={profile && profile.lists}
       name={name}
       shortLink={shortLink}
       description={description}
@@ -113,7 +113,7 @@ function render ({props, state}) {
           <Block minWidth='180px' w='180px' />
         </Block>
         <PlaylistGameLoader
-          myLists={profile.lists}
+          myLists={profile && profile.lists}
           dragTarget={dragTarget}
           dropTarget={target}
           listActions={{...actions, drop}}

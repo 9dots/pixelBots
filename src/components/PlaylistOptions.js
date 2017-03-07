@@ -117,7 +117,7 @@ function render ({props, state, local}) {
   )
 
   function * play (e, anonymous = true) {
-    if (!myLists[activeKey]) {
+    if (!myLists || myLists && !myLists[activeKey]) {
       const {key} = yield fbTask('create_playlist_instance', {
         playlistKey: activeKey,
         uid

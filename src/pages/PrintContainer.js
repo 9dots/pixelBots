@@ -13,8 +13,8 @@ function render ({props}) {
   const {code = ''} = props
 
   return (
-    <Block display='none' overflow='visible' id='print-container' visibility='hidden' absolute top='0' left='0' wide >
-      <Block innerHTML={marked(stringify(code))}/>
+    <Block display='none' overflow='visible' id='print-container' visibility='hidden' absolute top='0' left='0' w='100vw' >
+      <Block innerHTML={marked(stringify(code))} />
     </Block>
   )
 }
