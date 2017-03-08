@@ -2,6 +2,7 @@
 
 import {runCode, abortRun, pauseRun, resume} from '../middleware/codeRunner'
 import {checkDrawing} from '../middleware/checkCompleted'
+import {immediateSave} from '../middleware/saveCode'
 import {Card, Block, Icon} from 'vdux-ui'
 import StepperWidget from './StepperWidget'
 import SpeedDisplay from './Speed'
@@ -44,12 +45,14 @@ function render ({props}) {
     }
     if (!hasRun && animal.sequence.length > 0) {
       yield runCode()
+      yield immediateSave()
       yield onRun(animal.sequence)
     } else if (running) {
       yield pauseRun()
     } else if (completedRun) {
       yield reset()
       yield sleep(500)
+      yield immediateSave()
       yield runCode()
       yield onRun(animal.sequence)
     } else {

@@ -42,6 +42,7 @@ function * onUpdate (prev, {props, state}) {
       yield setGameId(props.gameCode)
       yield setSaveId(props.inProgress.value[props.gameCode].saveRef)
     } else {
+      console.log('create new save')
       yield createNewSave(props.gameCode, props.uid, props.username, props.saveID)
     }
   }
@@ -58,6 +59,8 @@ function render ({props, state, local}) {
   if (gameVal.loading || !savedProgress || savedProgress.loading) {
     return <Loading />
   }
+
+  console.log(savedProgress.value)
 
   const mergeGameData = {...gameVal.value, ...savedProgress.value}
 
@@ -192,10 +195,10 @@ function * onRemove () {
 
 export default fire((props) => {
   const refs = {
-    inProgress: `/users/${props.user}/inProgress`,
-    gameVal: `/games/${props.gameCode}`
+    inProgress: {ref: `/users/${props.user}/inProgress`, type: 'once'},
+    gameVal: {ref: `/games/${props.gameCode}`, type: 'once'}
   }
-  return props.saveID ? {...refs, savedProgress: `/saved/${props.saveID}`} : refs
+  return props.saveID ? {...refs, savedProgress: {ref: `/saved/${props.saveID}`, type: 'once'}} : refs
 })({
   initialState,
   getProps,

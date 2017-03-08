@@ -85,7 +85,7 @@ const reducer = handleActions({
 export default fire((props) => ({
   list: `/savedList/${props.ref}`,
   myList: `/users/${props.uid}/lists/${props.playlistRef}`,
-  playlist: `/playlists/${props.playlistRef}`
+  playlist: {ref: `/playlists/${props.playlistRef}`, type: 'once'}
 }))({
   initialState,
   onCreate,
