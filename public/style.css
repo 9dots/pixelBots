@@ -184,8 +184,7 @@ code.lang-js {
   #print-container, #print-container * {
     visibility: visible;
     overflow-y: visible;
-    display: block;
-    width: 100%;
+    display: inline-block;
   }
   #print-container {
     position: relative !important;
