@@ -178,6 +178,9 @@ code.lang-js {
 }
 
 @media print {
+  body {
+    margin: 10mm 10mm 10mm 10mm;
+  }
   body * {
     visibility: hidden;
   }
@@ -185,6 +188,7 @@ code.lang-js {
     visibility: visible;
     overflow-y: visible;
     display: inline-block;
+    page-break-inside: avoid;
   }
   #print-container {
     position: relative !important;
