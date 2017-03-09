@@ -31,7 +31,7 @@ function publishPage (draftID, uid, username) {
         borderColor='#CCC'
         onClick={
           () => setModalMessage(<AddToPlaylistModal
-            onSubmit={() => publish(draftID)}
+            onSubmit={[() => publish(draftID), () => setUrl(`/${username}/authored`)]}
             cancel='Skip'
             gameID={draftID}
             uid={uid} />)

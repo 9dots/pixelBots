@@ -44,20 +44,21 @@ function render ({props, state, local}) {
   const footer = (
     <Block>
       <Button
-        onClick={[() => setUrl(`/${username}/authored/challenges`), clearMessage, onSubmit]}
+        onClick={[clearMessage, onSubmit]}
         bgColor='#FAFAFA'
         color='#666'
         fs='s'
         border='none'>{cancel}</Button>
       <Button
-        bgColor='blue'
+        bgColor={selected.length > 0 ? 'blue' : 'disabled'}
         ml='1em'
         fs='s'
+        disabled={selected.length < 1}
         onClick={[
         	onSubmit,
         	clearMessage,
-        	() => addToPlaylists(gameID, selected),
-        	() => setUrl(`/${username}/authored/playlists`)]}>
+        	() => addToPlaylists(gameID, selected)
+        ]}>
       	Accept
       </Button>
     </Block>

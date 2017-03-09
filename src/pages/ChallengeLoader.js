@@ -34,6 +34,7 @@ function render ({props, local, state}) {
     selectMode,
     noAssign,
     lastEdited,
+    username,
     checkbox,
     draggable,
     handleDragStart = () => {},
@@ -106,13 +107,13 @@ function render ({props, local, state}) {
                     bgColor='transparent'
                     name='play_arrow'
                     onClick={[(e) => e.stopPropagation(), playClick]} />
-                  <IconButton
+                  {username && <IconButton
                     bgColor='transparent'
                     name='add'
                     onClick={[
                       (e) => e.stopPropagation(),
                       () => setModalMessage(<AddToPlaylistModal gameID={ref} uid={uid} />)
-                    ]} />
+                    ]} />}
                   {
                   mine && <Block align='center center'>
                     <IconButton
@@ -155,6 +156,13 @@ function render ({props, local, state}) {
   }
 }
 
+function getProps (props, context) {
+  return {
+    ...props,
+    username: context.username
+  }
+}
+
 const reducer = handleActions({
   [mouseOver.type]: (state) => ({...state, hovering: true}),
   [mouseOut.type]: (state) => ({...state, hovering: false})
@@ -164,6 +172,7 @@ export default fire((props) => ({
   game: `/games/${props.ref}/meta`
 }))({
   initialState,
+  getProps,
   reducer,
   render
 })

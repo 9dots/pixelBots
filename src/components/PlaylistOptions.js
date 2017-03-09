@@ -36,6 +36,7 @@ function render ({props, state, local}) {
     setModal,
     unfollow,
     myLists = {},
+    username,
     followed,
     follow,
     shortLink,
@@ -78,7 +79,7 @@ function render ({props, state, local}) {
         <Icon ml='-6px' mr='8px' name='link' />
         Share
       </Button>
-      {followButton}
+      {username && followButton}
       {mine && <Dropdown btn={btn} zIndex='999'>
         <Menu w='150px' column zIndex='999'>
           <MenuItem
@@ -131,6 +132,13 @@ function render ({props, state, local}) {
   }
 }
 
+function getProps (props, context) {
+  return {
+    ...props,
+    username: context.username
+  }
+}
+
 const reducer = handleActions({
   [openModal.type]: (state) => ({...state, open: true}),
   [closeModal.type]: (state) => ({...state, open: false}),
@@ -140,6 +148,7 @@ const reducer = handleActions({
 
 export default {
   initialState,
+  getProps,
   reducer,
   render
 }

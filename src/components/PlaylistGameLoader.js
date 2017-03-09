@@ -94,15 +94,17 @@ function render ({props, state, local}) {
     }
   }
 
-  function * play (current) {
-    const {key} = yield fbTask('create_playlist_instance', {
-      playlistKey: activeKey,
-      current,
-      uid
-    })
+  function * play (current = 0) {
     yield refMethod({
-      ref: `/queue/tasks/${key}`,
-      updates: {method: 'once', value: 'child_removed'}
+      ref: `/users/${uid}/lists/${activeKey}`,
+      updates: {
+        method: 'update',
+        value: {
+          playlistKey: activeKey,
+          current,
+          lastEdited: Date.now()
+        }
+      }
     })
     yield setUrl(`/playSequence/${activeKey}`)
   }

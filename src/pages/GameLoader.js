@@ -37,7 +37,7 @@ function * onCreate ({props}) {
 }
 
 function * onUpdate (prev, {props, state}) {
-  if (!props.inProgress.loading && !props.completed) {
+  if (!props.inProgress.loading && !props.completed && !props.saveID) {
     if (props.inProgress.value && props.inProgress.value[props.gameCode]) {
       yield setGameId(props.gameCode)
       yield setSaveId(props.inProgress.value[props.gameCode].saveRef)
@@ -162,7 +162,7 @@ function * createNewSave (gameCode, uid, username, type, saveID) {
   yield refMethod({
     ref: `/users/${uid}/inProgress/${gameCode}`,
     updates: {
-      method: 'set',
+      method: 'update',
       value: {
         saveRef: saveKey,
         gameRef: gameCode,
@@ -172,6 +172,7 @@ function * createNewSave (gameCode, uid, username, type, saveID) {
     }
   })
   yield setSaveId(saveKey)
+  yield setGameId(gameCode)
 }
 
 const reducer = handleActions({

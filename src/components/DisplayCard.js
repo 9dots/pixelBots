@@ -15,33 +15,16 @@ import moment from 'moment'
 const like = createAction('<DisplayCard/>: LIKE')
 const unlike = createAction('<DisplayCard/>: UNLIKE')
 
-const initialState = ({props, local}) => ({
-  likedByMe: false,
-  actions: {
-    like: local(like),
-    unlike: local(unlike)
-  }
-})
-
-function * onUpdate (prev, {props, state}) {
-  if (!props.game.loading && !props.saved.loading && !state.likedByMe) {
-  	const value = {...props.game.value, ...props.saved.value}
-    if (value.likedBy && value.likedBy[props.username]) {
-      yield state.actions.like()
-    }
-  }
-}
-
-function render ({props, state, local, children}) {
+function render ({props, children}) {
   const {game, saved, imageSize = '500px', username, uid, saveRef, ...restProps} = props
-  const {likedByMe} = state
   if (game.loading || saved.loading) return <IndeterminateProgress />
 
-  console.log(saveRef, saved.value)
   const value = {...game.value, ...saved.value}
 
-  const addLikeAction = [addLike(saveRef, uid, username), username && local(like)]
-  const removeLikeAction = [removeLike(saveRef, uid, username), local(unlike)]
+  const likedByMe = value.likedBy && !!value.likedBy[username]
+
+  const addLikeAction = addLike(saveRef, uid, username)
+  const removeLikeAction = removeLike(saveRef, uid, username)
 
   return (
     <Window>
@@ -89,7 +72,7 @@ function render ({props, state, local, children}) {
 }
 
 function buildRef (saveID, username) {
-  return `/saved/${saveID}/likedBy/${username}`
+  return `/saved/${saveID}/meta/likedBy/${username}`
 }
 
 function addLike (saveID, uid, username) {
@@ -97,7 +80,7 @@ function addLike (saveID, uid, username) {
   if (username) {
     return function * () {
       yield set(ref, true)
-      yield transaction(`/saved/${saveID}/likes`, (val = 0) => val + 1)
+      yield transaction(`/saved/${saveID}/meta/likes`, (val = 0) => val + 1)
       yield fbTask('like_project', {
         saveID,
         uid,
@@ -115,7 +98,7 @@ function removeLike (saveID, uid, username) {
   const ref = buildRef(saveID, username)
   return function * () {
     yield set(ref, null)
-    yield transaction(`/saved/${saveID}/likes`, (val = 0) => val - 1)
+    yield transaction(`/saved/${saveID}/meta/likes`, (val = 0) => val - 1)
     yield fbTask('unlike_project', {
       saveID,
       uid,
@@ -123,11 +106,6 @@ function removeLike (saveID, uid, username) {
     })
   }
 }
-
-const reducer = handleActions({
-  [like.type]: (state) => ({...state, likedByMe: true}),
-  [unlike.type]: (state) => ({...state, likedByMe: false})
-})
 
 function getProps (props, context) {
   return {
@@ -141,9 +119,6 @@ export default fire((props) => ({
   game: `/games/${props.gameRef}/meta`,
   saved: `/saved/${props.saveRef}/meta`
 }))({
-  initialState,
-  onUpdate,
-  reducer,
   getProps,
   render
 })

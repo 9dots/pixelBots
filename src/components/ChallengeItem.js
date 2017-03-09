@@ -32,8 +32,6 @@ function render ({props, state, local}) {
     ? value.animals[0].sequence
     : ''
 
-  console.log(saved.value)
-
   return (
     <Block
       onMouseOver={local(mouseOver)}
@@ -60,7 +58,7 @@ function render ({props, state, local}) {
         <Block wide align='start center'>
           <DetailInfo
             icon='view_headline'
-            label={`${value.loc} lines`} />
+            label={`${value.loc || 0} lines`} />
           <DetailInfo
             icon='gamepad'
             label={`${value.attempts || 0} runs`} />
