@@ -22,7 +22,7 @@ const initialState = () => ({
 
 function render ({props, state, local}) {
   const {myPlaylists, gameID, username, uid, cancel = 'Cancel', onSubmit = () => {}} = props
-  const {selected} = state
+  const {selected = []} = state
   const filteredPlaylists = orderBy(filter((playlist) => playlist.creatorID === uid, myPlaylists.value || {}), ['lastEdited'], ['desc'])
   const body = myPlaylists.loading
 		? <Loading />
@@ -54,7 +54,7 @@ function render ({props, state, local}) {
         ml='1em'
         fs='s'
         disabled={selected.length < 1}
-        onClick={[
+        onClick={selected.length > 0 && [
         	onSubmit,
         	clearMessage,
         	() => addToPlaylists(gameID, selected)

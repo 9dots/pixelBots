@@ -42,7 +42,6 @@ function * onUpdate (prev, {props, state}) {
       yield setGameId(props.gameCode)
       yield setSaveId(props.inProgress.value[props.gameCode].saveRef)
     } else {
-      console.log('create new save')
       yield createNewSave(props.gameCode, props.uid, props.username, props.saveID)
     }
   }
@@ -59,8 +58,6 @@ function render ({props, state, local}) {
   if (gameVal.loading || !savedProgress || savedProgress.loading) {
     return <Loading />
   }
-
-  console.log(savedProgress.value)
 
   const mergeGameData = {...gameVal.value, ...savedProgress.value}
 

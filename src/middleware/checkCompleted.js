@@ -85,7 +85,6 @@ export default ({getState, dispatch}) => (next) => (action) => {
       const {gameID, saveID, game, user, playlistKey, username} = getState()
       dispatch(abortRun('STOP'))
       dispatch(completeChallenge({gameID, saveID, uid: user, game, playlistKey, username}))
-      console.log('here')
       if (!isEmpty(game.frames)) {
         dispatch(fbTask('create_gif', {
           frames: game.frames.concat(game.painted),

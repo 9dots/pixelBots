@@ -110,14 +110,13 @@ function updatePlaylist (ref) {
 }
 
 function * completeChallenge (data) {
-  const {game, uid, gameID, playlistKey = '', saveID} = data
+  const {game, uid, gameID, playlistKey = '', saveID, username} = data
   const linkRef = yield createCode()
-  if (playlistKey) {
+  if (playlistKey && username) {
     yield set(`/users/${uid}/lists/${playlistKey}/completed/${gameID}`, saveID)
   }
-
   yield fbTask('on_complete', {
-    ...omit(['playlistKey', 'game'], data),
+    ...omit(['playlistKey', 'game', 'username'], data),
     linkRef,
     code: game.animals[0].sequence
   })

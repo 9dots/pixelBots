@@ -31,7 +31,7 @@ function render ({props, state, local}) {
     targetPainted,
     permissions,
     levelSize,
-    completed,
+    completedRun,
     animals,
     running,
     painted,
@@ -90,18 +90,18 @@ function render ({props, state, local}) {
               setPaintMode={actions.setPaintMode}
               setFillColor={actions.setFillColor}
               game={props}
-              onChange={actions.setOpacity}/>
+              onChange={actions.setOpacity} />
           </Block>
         </Block>
         <RunWidget
           steps={props.game.steps}
-          animal={animals[active]}
+          sequence={animals[active].sequence}
           running={running}
-          completed={completed}
+          completedRun={completedRun}
           hasRun={hasRun}
           canRun={permissions.indexOf(RUN_BUTTON) > -1}
           speed={speed}
-          onRun={onRun}/>
+          onRun={onRun} />
       </Block>
     </Block>
   )

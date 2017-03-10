@@ -12,7 +12,7 @@ import Button from './Button'
 import sleep from '@f/sleep'
 
 function render ({props}) {
-  const {hasRun, onRun = () => {}, speed, animal, running, canRun, steps = 0, completedRun} = props
+  const {hasRun, onRun = () => {}, speed, sequence, running, canRun, steps = 0, completedRun} = props
   const current = getSymbols(canRun, running)
 
   return (
@@ -33,7 +33,7 @@ function render ({props}) {
         </Button>
         {canRun && <Block mt='1em' wide align='space-around center'>
           <SpeedDisplay speed={speed} />
-          <StepperWidget sequence={animal.sequence} steps={steps} />
+          <StepperWidget sequence={sequence} steps={steps} />
         </Block>}
       </Block>
     </Block>
@@ -43,10 +43,10 @@ function render ({props}) {
     if (!canRun) {
       return yield checkDrawing()
     }
-    if (!hasRun && animal.sequence.length > 0) {
+    if (!hasRun && sequence.length > 0) {
       yield runCode()
       yield immediateSave()
-      yield onRun(animal.sequence)
+      yield onRun(sequence)
     } else if (running) {
       yield pauseRun()
     } else if (completedRun) {
@@ -54,7 +54,7 @@ function render ({props}) {
       yield sleep(500)
       yield immediateSave()
       yield runCode()
-      yield onRun(animal.sequence)
+      yield onRun(sequence)
     } else {
       yield resume()
     }
