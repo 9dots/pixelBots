@@ -64,6 +64,7 @@ const setSaveId = createAction('SET_SAVE_ID')
 const aceUpdate = createAction('ACE_UPDATE')
 const setAnimal = createAction('SET_ANIMAL')
 const codeAdded = createAction('CODE_ADDED')
+const addFrame = createAction('ADD_FRAME')
 const setPaint = createAction('SET_PAINT')
 const swapMode = createAction('SWAP_MODE')
 const setSaved = createAction('SET_SAVED')
@@ -189,6 +190,7 @@ export {
   createNew,
   moveError,
   aceUpdate,
+  addFrame,
   setSaved,
   setToast,
   setPaint,

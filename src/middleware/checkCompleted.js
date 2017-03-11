@@ -87,7 +87,7 @@ export default ({getState, dispatch}) => (next) => (action) => {
       dispatch(completeChallenge({gameID, saveID, uid: user, game, playlistKey, username}))
       if (!isEmpty(game.frames)) {
         dispatch(fbTask('create_gif', {
-          frames: game.frames.concat(game.painted),
+          frames: game.frames,
           saveID: saveID,
           gridSize: game.levelSize[0]
         }))

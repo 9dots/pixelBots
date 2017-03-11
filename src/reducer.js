@@ -73,14 +73,15 @@ function reducer (state, action) {
     case animalPaint.type:
       var {id, color} = action.payload
       var loc = state.game.animals[id].current.location
+      const frames = state.game.frames || []
 
       return {
         ...state,
-        game: arrayAt(setProp(
-          'painted',
-          state.game,
-          {...state.game.painted, [loc]: color}
-        ), 'animals')
+        game: {
+          ...state.game,
+          frames: frames.concat({[loc]: color, frame: state.game.steps}),
+          painted: {...state.game.painted, [loc]: color}
+        }
       }
     case setActive.type:
       var id = action.payload
@@ -172,12 +173,10 @@ function reducer (state, action) {
         ), 'animals')
       }
     case incrementSteps.type:
-      const frames = state.game.frames || []
       return {
         ...state,
         game: {
           ...state.game,
-          frames: state.game.painted ? frames.concat(state.game.painted) : frames,
           steps: (state.game.steps || 0) + 1
         }
       }

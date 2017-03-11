@@ -28,6 +28,8 @@ function render ({props, state, local}) {
 
   const value = {...game.value, ...saved.value}
 
+  console.log(value)
+
   const sequence = value.animals
     ? value.animals[0].sequence
     : ''
@@ -65,6 +67,14 @@ function render ({props, state, local}) {
           <DetailInfo
             icon='date_range'
             label={moment(value.lastEdited).fromNow()} />
+          {
+            shared && (
+              <DetailInfo
+                icon='search'
+                label='view code'
+                onClick={() => setUrl(`/play/${props.gameRef}`)} />
+            )
+          }
           {
             value.likes > 0 && <DetailInfo
               icon='favorite'

@@ -1,4 +1,4 @@
-import {animalPaint, paintSquare} from '../actions'
+import {addFrame, animalPaint, paintSquare} from '../actions'
 
 export default function () {
   return ({getState, dispatch}) => (next) => (action) => {
@@ -6,6 +6,9 @@ export default function () {
       const {id, getPaintColor} = action.payload
       const newColor = getPaintColor(getState(), id)
       dispatch(animalPaint(id, newColor))
+  		const result = next(action)
+  		console.log(result)
+      dispatch(addFrame())
     }
     return next(action)
   }
