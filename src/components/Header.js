@@ -8,10 +8,10 @@ function render ({props, children}) {
     <Block
       fixed
       h='100vh'
-      w='100px'
+      w='80px'
       left='0'
       zIndex='999'
-      boxShadow='0px 2px 4px -2px rgba(0,0,0,0.8)'
+      borderRight='1px solid #e0e0e0'
       bgColor='white'
       py='10px'
       px='10px'
