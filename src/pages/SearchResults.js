@@ -84,7 +84,7 @@ function render ({props, state}) {
   </Flex>
 
   return (
-    <Block>
+    <Block id='top'>
       {selected.length > 0
 				? toolbar
 				: tabs}

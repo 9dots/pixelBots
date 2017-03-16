@@ -1,0 +1,5 @@
+{
+  "name": "ChallengeItem",
+  "main": "ChallengeItem.js",
+  "browser": "ChallengeItem.js"
+}

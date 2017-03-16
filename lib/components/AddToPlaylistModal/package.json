@@ -1,0 +1,5 @@
+{
+  "name": "AddToPlaylistModal",
+  "main": "AddToPlaylistModal.js",
+  "browser": "AddToPlaylistModal.js"
+}

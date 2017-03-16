@@ -1,0 +1,5 @@
+{
+  "name": "CardFeed",
+  "main": "CardFeed.js",
+  "browser": "CardFeed.js"
+}

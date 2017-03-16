@@ -1,0 +1,5 @@
+{
+  "name": "PlaylistGameLoader",
+  "main": "PlaylistGameLoader.js",
+  "browser": "PlaylistGameLoader.js"
+}

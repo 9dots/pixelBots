@@ -1,0 +1,5 @@
+{
+  "name": "SearchPage",
+  "main": "SearchPage.js",
+  "browser": "SearchPage.js"
+}

@@ -1,0 +1,5 @@
+{
+  "name": "Tabs",
+  "main": "Tabs.js",
+  "browser": "Tabs.js"
+}

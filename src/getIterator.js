@@ -10,7 +10,7 @@ const wrap = (code, api, id) => {
   function * codeRunner () {
     try {
       ${code}
-      yield endRun({id: ${id}})
+      yield endRun({id: ${id}}) 
     } catch (e) {
       yield {
         type: 'THROW_ERROR',
@@ -39,7 +39,7 @@ function codeRunner (code, api, id) {
   sequence = sequence.map((line, i) => {
     let updatedLine = line
     matchApiString(api, line).forEach((match) => {
-      var re = new RegExp('(' + match + '\\()(.*)\\)', 'gi')
+      var re = new RegExp('(' + match + '\\s*\\()(.*)\\)', 'gi')
       var results = re.exec(line)
       if (results) {
         updatedLine = updatedLine.replace(re, `$1${i}${results[2] ? ', ' : ''}${results[2]})`)

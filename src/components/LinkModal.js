@@ -26,12 +26,12 @@ function render ({props, state}) {
       inputProps={{p: '12px', borderWidth: '2px', border: '#ccc'}}
       id='url-input'
       fs='18px'
-      onFocus={() => document.getElementById('url-input').children[0].select()}
+      onFocus={document.getElementById('url-input').children[0].select()}
       value={displayCode ? code : `http://${url}${code}`}>
       {`${url}${code}`}
     </Input>
     <Block mt='1em' mb='2px'>
-      <Toggle onClick={() => actions.toggleDisplayCode()} bgColor='blue' label='Link:' w='100px' />
+      <Toggle onClick={actions.toggleDisplayCode()} bgColor='blue' label='Link:' w='100px' />
     </Block>
     <Block>
       <Text fs='xs'>

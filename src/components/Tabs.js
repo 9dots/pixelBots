@@ -1,9 +1,9 @@
 /** @jsx element */
 
-import ProfileTab from '../components/ProfileTab'
 import handleActions from '@f/handle-actions'
 import createAction from '@f/create-action'
 import element from 'vdux/element'
+import Tab from 'components/Tab'
 import {Flex} from 'vdux-ui'
 
 const colors = [
@@ -33,7 +33,7 @@ function render ({props, state, local}) {
       color='lightBlue'
       h='42px'
       {...restProps}>
-      {tabs.map((tab, i) => <ProfileTab
+      {tabs.map((tab, i) => <Tab
         title={tab}
         h={tabHeight}
         active={tab === active}

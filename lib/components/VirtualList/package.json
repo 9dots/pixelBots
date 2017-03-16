@@ -1,0 +1,5 @@
+{
+  "name": "VirtualList",
+  "main": "VirtualList.js",
+  "browser": "VirtualList.js"
+}
