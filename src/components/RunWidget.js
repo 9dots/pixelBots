@@ -11,7 +11,10 @@ import Button from './Button'
 import sleep from '@f/sleep'
 
 function render ({props}) {
-  const {hasRun, onRun = () => {}, speed, animal, running, canRun, steps = 0, completed} = props
+  const {
+    hasRun, gameActions, onRun = () => {}, speed,
+    animal, running, canRun, steps = 0, completed
+  } = props
   const current = getSymbols(canRun, running)
 
   return (
@@ -31,7 +34,7 @@ function render ({props}) {
           {current.text.toUpperCase()}
         </Button>
         {canRun && <Block mt='1em' wide align='space-around center'>
-          <SpeedDisplay speed={speed}/>
+          <SpeedDisplay gameActions={gameActions} speed={speed}/>
           <StepperWidget sequence={animal.sequence} steps={steps}/>
         </Block>}
       </Block>

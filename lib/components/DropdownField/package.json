@@ -1,0 +1,5 @@
+{
+  "name": "DropdownField",
+  "main": "DropdownField.js",
+  "browser": "DropdownField.js"
+}

@@ -1,0 +1,5 @@
+{
+  "name": "ColorSwatch",
+  "main": "ColorSwatch.js",
+  "browser": "ColorSwatch.js"
+}

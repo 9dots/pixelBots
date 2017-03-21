@@ -1,0 +1,5 @@
+{
+  "name": "linesOfCode",
+  "main": "linesOfCode.js",
+  "browser": "linesOfCode.js"
+}

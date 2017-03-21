@@ -1,0 +1,5 @@
+{
+  "name": "TextApi",
+  "main": "TextApi.js",
+  "browser": "TextApi.js"
+}

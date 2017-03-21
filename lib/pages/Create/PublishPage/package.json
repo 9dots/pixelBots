@@ -1,0 +1,5 @@
+{
+  "name": "PublishPage",
+  "main": "PublishPage.js",
+  "browser": "PublishPage.js"
+}

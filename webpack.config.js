@@ -52,7 +52,7 @@ function config (env) {
 			new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.optimize.CommonsChunkPlugin({
-        names: ['vendor', 'manifest'] // Specify the common bundle's name.
+        names: ['vendor', 'manifest', 'brace', 'js-analyse', 'vdux', 'firebase'] // Specify the common bundle's name.
       }),
       new HtmlWebpackPlugin({
 		    title: 'pixelBots',
@@ -67,7 +67,7 @@ function config (env) {
       net: net,
       fs: fs
     },
-		devtool: 'sourcemap'
+		devtool: 'cheap-eval-source-map'
   }
 }
 

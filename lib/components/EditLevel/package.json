@@ -1,0 +1,5 @@
+{
+  "name": "EditLevel",
+  "main": "EditLevel.js",
+  "browser": "EditLevel.js"
+}

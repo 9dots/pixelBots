@@ -1,0 +1,5 @@
+{
+  "name": "EditableTextField",
+  "main": "EditableTextField.js",
+  "browser": "EditableTextField.js"
+}

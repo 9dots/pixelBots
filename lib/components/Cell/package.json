@@ -1,0 +1,5 @@
+{
+  "name": "Cell",
+  "main": "Cell.js",
+  "browser": "Cell.js"
+}

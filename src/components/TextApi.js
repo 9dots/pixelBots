@@ -7,10 +7,10 @@ import reduce from '@f/reduce'
 import animalApis from '../animalApis/index'
 
 function render ({props}) {
-  const {type} = props
+  const {type, ...restProps} = props
   const api = type ? animalApis[type].docs : {}
   return (
-    <Block color='white' wide tall px='10px'>
+    <Block color='white' tall px='10px' {...restProps}>
       <Block>
         <Text align='center' fw='800' fs='l'>API</Text>
       </Block>

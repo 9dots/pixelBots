@@ -1,0 +1,5 @@
+{
+  "name": "ColorPicker",
+  "main": "ColorPicker.js",
+  "browser": "ColorPicker.js"
+}
