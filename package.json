@@ -11,7 +11,8 @@
     "build": "browserify src/index.js -o public/bundle.js -t babelify",
     "deploy": "yarn run config-prod; yarn run build; npm run minify; firebase deploy;",
     "test": "devtool -r babel-register src/pages/MyPlaylist/test.js --break --no-source-maps",
-    "create": "khaos create component"
+    "create": "khaos create component",
+    "start": "yarn run config-dev; webpack-dev-server"
   },
   "repository": {
     "url": "git+https://github.com/danleavitt0/artbot.git",
