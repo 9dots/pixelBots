@@ -1,0 +1,5 @@
+{
+  "name": "EmptyState",
+  "main": "EmptyState.js",
+  "browser": "EmptyState.js"
+}
