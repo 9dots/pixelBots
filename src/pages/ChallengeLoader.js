@@ -30,7 +30,7 @@ const btn = (
   </MenuItem>
 )
 
-function render ({props, local, state}) {
+function render ({props, local, state, context}) {
   const {
     playClick = () => setUrl(`/games/${props.ref}`),
     assignmentClick = () => assign(props.ref),
@@ -63,7 +63,7 @@ function render ({props, local, state}) {
   if (game.value === null) {
     return <div />
   }
-
+  console.log(context)
   const item = game.value
   const animalImg = `/animalImages/${item.animals[0].type}.jpg`
 
@@ -105,9 +105,11 @@ function render ({props, local, state}) {
                 <IconButton
                   name='play_arrow'
                   onClick={playClick}/>
-                <IconButton
-                  name='assignment'
-                  onClick={assignmentClick}/>
+                {
+                  !context.isAnonymous && <IconButton
+                    name='assignment'
+                    onClick={assignmentClick}/>
+                }
                 {
                   mine && <Block align='center center'>
                     <IconButton

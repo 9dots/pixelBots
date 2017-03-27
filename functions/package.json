@@ -2,8 +2,29 @@
   "name": "functions",
   "description": "Firebase Functions",
   "dependencies": {
+    "@f/equal-obj": "^1.2.1",
+    "@f/filter": "^1.1.1",
+    "@f/foreach": "^1.2.2",
+    "@f/is-array": "^1.1.1",
+    "@f/map-values": "^1.0.0",
+    "@f/omit": "^2.2.3",
+    "@f/pick": "^1.1.4",
+    "@f/reduce": "^1.0.0",
+    "@f/union": "^1.0.0",
+    "@google-cloud/debug-agent": "^1.0.0",
+    "@google-cloud/storage": "^0.8.0",
+    "bluebird": "^3.5.0",
+    "co": "^4.6.0",
     "firebase-admin": "^4.0.5",
     "firebase-functions": "https://storage.googleapis.com/firebase-preview-drop/node/firebase-functions/firebase-functions-preview.latest.tar.gz",
-    "gm": "^1.23.0"
+    "gm": "^1.23.0",
+    "google-material-color-palette-json": "^2.0.1",
+    "js-analyse": "^0.2.0",
+    "lodash": "^4.17.4",
+    "node-fs-extra": "^0.8.1"
+  },
+  "devDependencies": {
+    "blue-tape": "^1.0.0",
+    "sinon": "^2.1.0"
   }
 }
