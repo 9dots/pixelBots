@@ -4,7 +4,7 @@ const functions = require('firebase-functions')
 const {upload} = require('../utils/storage')
 const fs = require('node-fs-extra')
 
-const removeTempFiles = (path) => fs.remove(path)
+const removeTempFiles = (path) => fs.removeSync(path)
 
 module.exports = functions.database.ref('/games/{gameRef}/targetPainted')
 	.onWrite(evt => {
