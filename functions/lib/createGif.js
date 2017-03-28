@@ -1,4 +1,4 @@
-const {gifFrame} = require('../utils/createImage')
+  const {gifFrame} = require('../utils/createImage')
 const functions = require('firebase-functions')
 const createGif = require('../utils/createGif')
 const {upload} = require('../utils/storage')
@@ -26,7 +26,7 @@ module.exports = functions.database.ref('/queue/tasks/createGif/{pushID}')
       const timing = (gridSize * gridSize) / RUN_TIME
       const delay = 100 / timing
       const size = Math.floor(300 / gridSize)
-      const imageSize = size * gridSize
+      const imageSize = Number(size * gridSize) + Number(gridSize - 1)
       fs.mkdirsSync(`/tmp/${saveID}`)
 
       const adjusted = frames.map((frame, i, arr) => {
@@ -35,10 +35,12 @@ module.exports = functions.database.ref('/queue/tasks/createGif/{pushID}')
           : frame.frame
         return {length: Math.abs(next - frame.frame), frame: omit('frame', frame)}
       })
-      frameChunks(chunk(adjusted, 50))
+      console.log('adjusted', adjusted)
+      frameChunks(chunk(adjusted, 20))
         .then((results) => createGif(saveID, results, delay, imageSize))
         .then(upload)
         .then(updateGame(saveID))
+        .then(clean)
         .then(success)
         .catch(failed)
 
@@ -61,6 +63,7 @@ module.exports = functions.database.ref('/queue/tasks/createGif/{pushID}')
               var result = yield frameChunk(chunks[i], i)
               completed.push(result)
             }
+            console.log('flattened', completed)
             return flatten(completed)
           }).then(resolve)
         })
@@ -82,7 +85,6 @@ module.exports = functions.database.ref('/queue/tasks/createGif/{pushID}')
       }
 
       function clearData (name) {
-        clean()
         fs.removeSync(`/tmp/${name}.gif`)
         return fs.removeSync(`/tmp/${name}`)
       }
