@@ -11,7 +11,6 @@ module.exports = functions.database.ref('/saved/{saveRef}/meta/shared')
   	return evt.data.ref.parent.once('value')
   		.then(snap => snap.val())
   		.then(({username, gameRef}) => {
-  			console.log('username', username, 'gameRef', gameRef, 'saveRef', saveRef)
   			usernameRef.child(username).once('value')
   				.then(snap => snap.val())
   				.then(uid => evt.data.val()
@@ -25,10 +24,7 @@ module.exports = functions.database.ref('/saved/{saveRef}/meta/shared')
 
 
 function addToShowcase (saveRef, gameRef, uid) {
-	return savedRef.child(saveRef).child('firstShared').transaction((val) => val ? val : Date.now())
-		.then(() => savedRef.child(saveRef).child('firstShared').once('value'))
-		.then((snap) => usersRef.child(uid).child('showcase').child(saveRef).set({
-			firstAdded: snap.val(),
+	return usersRef.child(uid).child('showcase').child(saveRef).set({
 			saveRef,
 			gameRef
 		}))
