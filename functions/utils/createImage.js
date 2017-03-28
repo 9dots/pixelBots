@@ -95,8 +95,8 @@ function drawFrame (size, targetPainted, writePath, file) {
       file.drawRectangle(
         (coords[1] * size) + coords[1],
         (coords[0] * size) + coords[0],
-        (coords[1] + 1) * size + (coords[1] + 1),
-        (coords[0] + 1) * size + (coords[0] + 1)
+        (coords[1] + 1) * size + coords[1],
+        (coords[0] + 1) * size + coords[0]
       )
     }, targetPainted)
     console.log('write path', writePath, file)
@@ -112,16 +112,15 @@ function drawFrame (size, targetPainted, writePath, file) {
 
 function levelThumb (name, gridSize, targetPainted, dir = '') {
   const size = Math.floor(300 / gridSize)
-  const imageSize = size * gridSize
-  let file = gm(imageSize, imageSize, '#ffffff')
-  console.log('file')
+  const imageSize = Number(size * gridSize) + Number(gridSize) - 1
+  let file = gm(imageSize, imageSize, '#ffffff').limit('memory', '1448MB')
   const writePath = `/tmp${dir ? `/${dir}` : ''}/${name}.png`
 
   return drawFrame(size, targetPainted, writePath, file)
 }
 
 function gifFrame (name, size, imageSize, targetPainted, dir = '') {
-  let file = gm(imageSize, imageSize, 'rgba(0, 0, 0, 255)')
+  let file = gm(imageSize, imageSize, 'none').limit('memory', '1448MB')
   const writePath = `/tmp${dir ? `/${dir}` : ''}/${name}.miff`
 
   return drawFrame(size, targetPainted, writePath, file)
