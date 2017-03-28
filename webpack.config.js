@@ -66,8 +66,8 @@ function config (env) {
     externals: {
       net: net,
       fs: fs
-    },
-		devtool: 'cheap-eval-source-map'
+    }
+		// devtool: 'cheap-eval-source-map'
   }
 }
 
