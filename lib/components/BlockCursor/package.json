@@ -1,0 +1,5 @@
+{
+  "name": "BlockCursor",
+  "main": "BlockCursor.js",
+  "browser": "BlockCursor.js"
+}
