@@ -1,0 +1,5 @@
+{
+  "name": "BlockArgument",
+  "main": "BlockArgument.js",
+  "browser": "BlockArgument.js"
+}

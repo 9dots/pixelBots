@@ -1,0 +1,5 @@
+{
+  "name": "nameToIcon",
+  "main": "nameToIcon.js",
+  "browser": "nameToIcon.js"
+}
