@@ -1,0 +1,5 @@
+{
+  "name": "ListItem",
+  "main": "ListItem.js",
+  "browser": "ListItem.js"
+}
