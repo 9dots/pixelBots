@@ -8317,7 +8317,11 @@ vary@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.0.tgz#e1e5affbbd16ae768dd2674394b9ad3022653140"
 
+<<<<<<< HEAD
 vdux-ace:
+=======
+vdux-ace@^1.0.1:
+>>>>>>> 66166f7a02b842c1a18449814def569bf98d4a63
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/vdux-ace/-/vdux-ace-1.0.1.tgz#281e0c548a660fbb15ed9d309d739c287a07f3eb"
   dependencies:
@@ -8368,7 +8372,11 @@ vdux-delay@^1.0.6:
     "@f/create-action" "^1.1.1"
     "@f/handle-actions" "^1.1.1"
 
+<<<<<<< HEAD
 vdux-fire:
+=======
+vdux-fire@^1.0.1:
+>>>>>>> 66166f7a02b842c1a18449814def569bf98d4a63
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-1.0.1.tgz#9fd1d018ff7c4ebc214ef20c12c3f958f426e40e"
   dependencies:
