@@ -8308,9 +8308,9 @@ vary@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.0.tgz#e1e5affbbd16ae768dd2674394b9ad3022653140"
 
-vdux-ace@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/vdux-ace/-/vdux-ace-1.0.0.tgz#67f594a873813c4576fc985edad95c5a0dde049a"
+vdux-ace@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vdux-ace/-/vdux-ace-1.0.1.tgz#281e0c548a660fbb15ed9d309d739c287a07f3eb"
   dependencies:
     "@f/combine-reducers" "^1.2.0"
     "@f/create-action" "^1.1.1"
@@ -8452,9 +8452,9 @@ vdux-ui@^1.3.4:
     color "^0.11.1"
     vdux-position "^1.0.5"
 
-vdux-virtual-list@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/vdux-virtual-list/-/vdux-virtual-list-1.0.0.tgz#d42e984446e25268148063b2195a66f1e9151e48"
+vdux-virtual-list@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/vdux-virtual-list/-/vdux-virtual-list-1.0.2.tgz#d9b6a38f41ee2fadc1963015ef265f704497aa0b"
   dependencies:
     "@f/create-action" "^1.1.1"
     "@f/event-handler" "1.0.2"

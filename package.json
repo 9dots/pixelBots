@@ -71,7 +71,7 @@
     "to-markdown": "^3.0.3",
     "type": "0.0.3",
     "vdux": "3.0.6",
-    "vdux-ace": "^1.0.0",
+    "vdux-ace": "^1.0.1",
     "vdux-containers": "^1.2.8",
     "vdux-css-transition": "^1.2.1",
     "vdux-delay": "^1.0.6",
@@ -82,7 +82,7 @@
     "vdux-toggle": "^2.0.0",
     "vdux-transition": "^1.1.1",
     "vdux-ui": "^1.3.4",
-    "vdux-virtual-list": "^1.0.0"
+    "vdux-virtual-list": "^1.0.2"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",
