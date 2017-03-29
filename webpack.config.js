@@ -72,7 +72,7 @@ function config (env) {
       net: net,
       fs: fs
     },
-		devtool: 'inline-source-map'
+		devtool: 'eval-source-map'
   }
 }
 

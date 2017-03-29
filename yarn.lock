@@ -808,6 +808,10 @@
   dependencies:
     "@f/map-obj" "^1.2.2"
 
+"@f/unique":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@f/unique/-/unique-1.0.1.tgz#e73cec32ee4e1dce3659d719427351bcf2cc6b9e"
+
 "@f/values@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@f/values/-/values-1.2.0.tgz#e49e7b3e4133e085ceb1c9d5a7b4cb1012ef4aa7"
@@ -1162,9 +1166,9 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
-auto-yield-delegate@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/auto-yield-delegate/-/auto-yield-delegate-0.6.0.tgz#96b54dac7f88f18d241802a463011a69dad68afc"
+auto-yield-delegate@0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/auto-yield-delegate/-/auto-yield-delegate-0.6.1.tgz#80ce41a5c0744fdd68d49e16bac2e30c624a7b48"
   dependencies:
     babel-core "^6.7.4"
     camel-case "^1.2.2"
@@ -5495,7 +5499,7 @@ lodash.isarguments@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/lodash.isarguments/-/lodash.isarguments-3.1.0.tgz#2f573d85c6a24289ff00663b491c1d338ff3458a"
 
-lodash.isarguments@~2.4.1, lodash.isarguments@2.4.x:
+lodash.isarguments@~2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/lodash.isarguments/-/lodash.isarguments-2.4.1.tgz#4931a9c08253adf091ae7ca192258a973876ecca"
 
@@ -5553,12 +5557,6 @@ lodash.support@~2.4.1:
   resolved "https://registry.yarnpkg.com/lodash.support/-/lodash.support-2.4.1.tgz#320e0b67031673c28d7a2bb5d9e0331a45240515"
   dependencies:
     lodash._isnative "~2.4.1"
-
-lodash.values@^2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/lodash.values/-/lodash.values-2.4.1.tgz#abf514436b3cb705001627978cbcf30b1280eea4"
-  dependencies:
-    lodash.keys "~2.4.1"
 
 lodash@^2.4.1, lodash@~2.4.1:
   version "2.4.2"
