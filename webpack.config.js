@@ -24,12 +24,17 @@ function config (env) {
         './lib/client/index.js'
       ],
       vendor: [
-        'lodash'
+        'lodash',
+        'brace',
+        'js-analyse',
+        'vdux',
+        'firebase'
       ]
     },
     output: {
       filename: '[hash].[name].js',
-      path: path.resolve(__dirname, 'public')
+      path: path.resolve(__dirname, 'public'),
+      publicPath: '/public/'
     },
     resolve: {
       alias: folders
@@ -52,7 +57,7 @@ function config (env) {
 			new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.optimize.CommonsChunkPlugin({
-        names: ['vendor', 'manifest', 'brace', 'js-analyse', 'vdux', 'firebase'] // Specify the common bundle's name.
+        names: ['vendor', 'manifest'] // Specify the common bundle's name.
       }),
       new HtmlWebpackPlugin({
 		    title: 'pixelBots',
@@ -66,12 +71,13 @@ function config (env) {
     externals: {
       net: net,
       fs: fs
-    }
-		// devtool: 'cheap-eval-source-map'
+    },
+		devtool: 'eval-source-map'
   }
 }
 
 var myServer = new WebpackDevServer(webpack(config()), {
+  host: 'localhost',
   hot: true,
   inline: true,
   contentBase: 'public',
@@ -85,8 +91,6 @@ var myServer = new WebpackDevServer(webpack(config()), {
     }],
     index: '/index.html'
   }
-})
-
-myServer.listen(8080)
+}).listen(8080)
 
 module.exports = config

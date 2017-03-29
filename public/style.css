@@ -18,6 +18,12 @@ body {
   font-family: "Roboto", Roboto, sans-serif;
 }
 
+[disabled] {
+  pointer-events: none;
+  user-select: none;
+  opacity: .6;
+}
+
 @keyframes fade-in {
   0% {opacity: 0;}
   100% {opacity: 1;}
