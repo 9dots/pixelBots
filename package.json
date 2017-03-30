@@ -44,6 +44,7 @@
     "@f/splice": "^1.0.0",
     "@f/switch": "^1.0.1",
     "@f/throttle": "^1.0.0",
+    "@f/unique": "^1.0.1",
     "@weo-edu/schema": "git+https://github.com/danleavitt0/schema.git",
     "@weo-edu/validate": "git+https://github.com/danleavitt0/validate.git",
     "auto-yield": "https://github.com/danleavitt0/auto-yield.git",
