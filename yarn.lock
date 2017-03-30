@@ -1177,7 +1177,7 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
-auto-yield-delegate@0.6.1:
+auto-yield-delegate@^0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/auto-yield-delegate/-/auto-yield-delegate-0.6.1.tgz#80ce41a5c0744fdd68d49e16bac2e30c624a7b48"
   dependencies:

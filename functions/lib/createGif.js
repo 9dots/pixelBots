@@ -35,7 +35,6 @@ module.exports = functions.database.ref('/queue/tasks/createGif/{pushID}')
           : frame.frame
         return {length: Math.abs(next - frame.frame), frame: omit('frame', frame)}
       })
-      console.log('adjusted', adjusted)
       frameChunks(chunk(adjusted, 20))
         .then((results) => createGif(saveID, results, delay, imageSize))
         .then(upload)
@@ -63,7 +62,6 @@ module.exports = functions.database.ref('/queue/tasks/createGif/{pushID}')
               var result = yield frameChunk(chunks[i], i)
               completed.push(result)
             }
-            console.log('flattened', completed)
             return flatten(completed)
           }).then(resolve)
         })
