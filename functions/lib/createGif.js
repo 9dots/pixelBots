@@ -39,7 +39,6 @@ module.exports = functions.database.ref('/queue/tasks/createGif/{pushID}')
         .then((results) => createGif(saveID, results, delay, imageSize))
         .then(upload)
         .then(updateGame(saveID))
-        .then(clean)
         .then(success)
         .catch(failed)
 

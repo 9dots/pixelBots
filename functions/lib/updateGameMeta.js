@@ -9,6 +9,9 @@ module.exports = functions.database.ref('/games/{gameRef}')
   .onWrite(evt => {
     return new Promise((resolve, reject) => {
       const data = evt.data.val()
+      if (!data) {
+        return resolve()
+      }
       const {gameRef} = evt.params
   		const meta = pick(metaAttrs, data)
       evt.data.ref.child('meta').update(meta)
