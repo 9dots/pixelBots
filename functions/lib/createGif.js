@@ -1,4 +1,4 @@
-  const {gifFrame} = require('../utils/createImage')
+const {gifFrame} = require('../utils/createImage')
 const functions = require('firebase-functions')
 const createGif = require('../utils/createGif')
 const {upload} = require('../utils/storage')
