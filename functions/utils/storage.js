@@ -20,8 +20,9 @@ function uploadToBucket (img) {
   return new Promise((resolve, reject) => {
     console.log(img)
     if (!img) return reject('no image')
-    bucket.upload(img, (err, file) => {
+    bucket.upload(img, {resumable: false}, (err, file) => {
       if (err) {
+        console.log('bucket upload fail', err)
         return reject(err)
       }
       file.getSignedUrl({

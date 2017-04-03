@@ -1,4 +1,4 @@
-  const {gifFrame} = require('../utils/createImage')
+const {gifFrame} = require('../utils/createImage')
 const functions = require('firebase-functions')
 const createGif = require('../utils/createGif')
 const {upload} = require('../utils/storage')
@@ -39,17 +39,17 @@ module.exports = functions.database.ref('/queue/tasks/createGif/{pushID}')
         .then((results) => createGif(saveID, results, delay, imageSize))
         .then(upload)
         .then(updateGame(saveID))
-        .then(clean)
         .then(success)
         .catch(failed)
 
       function success () {
-        clearData(saveID)
         console.log('success')
+        clearData(saveID)
         resolve()
       }
 
       function failed (e) {
+        console.log('failed', e)
         clearData(saveID)
         reject(e)
       }

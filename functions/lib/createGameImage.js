@@ -23,11 +23,13 @@ module.exports = functions.database.ref('/games/{gameRef}/targetPainted')
 		  function failed (e) {
 		  	console.warn(e)
 		    removeTempFiles(`/tmp/${gameRef}.png`)
+		    console.log('cleaned up')
 		    resolve()
 		  }
 
 		  function success () {
 		    removeTempFiles(`/tmp/${gameRef}.png`)
+		    console.log('cleaned up')
 		    reject()
 		  }
 		})

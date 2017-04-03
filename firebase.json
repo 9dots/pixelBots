@@ -12,7 +12,8 @@
     "redirects": [
       {
         "source": "/**/:file*.js",
-        "destination": "/:file.js"
+        "destination": "/:file.js",
+        "type": 301
       }
     ],
     "rewrites": [

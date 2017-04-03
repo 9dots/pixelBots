@@ -6,7 +6,9 @@ const maybeStringify = (seq) => isArray(seq) ? seq.join('\n') : seq
 
 module.exports = function (code = '') {
   try {
-    const analysis = new Analyse(maybeStringify(code))
+    if (isArray(code)) return code.length
+
+    const analysis = new Analyse(code)
     lastLoc = analysis.lloc()
     return lastLoc
   } catch (e) {
