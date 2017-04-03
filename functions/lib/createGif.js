@@ -43,12 +43,13 @@ module.exports = functions.database.ref('/queue/tasks/createGif/{pushID}')
         .catch(failed)
 
       function success () {
-        clearData(saveID)
         console.log('success')
+        clearData(saveID)
         resolve()
       }
 
       function failed (e) {
+        console.log('failed', e)
         clearData(saveID)
         reject(e)
       }

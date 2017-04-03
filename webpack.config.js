@@ -19,8 +19,8 @@ function config (env) {
   return {
     entry: {
       main: [
-        // 'webpack-dev-server/client?http://localhost:8080',
-        // 'webpack/hot/only-dev-server',
+        'webpack-dev-server/client?http://localhost:8080',
+        'webpack/hot/only-dev-server',
         './lib/client/index.js'
       ],
       vendor: [
@@ -72,7 +72,7 @@ function config (env) {
       net: net,
       fs: fs
     },
-		// devtool: 'eval-source-map'
+		devtool: 'eval-source-map'
   }
 }
 
