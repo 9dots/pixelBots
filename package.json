@@ -12,7 +12,7 @@
     "deploy": "yarn run config-prod; yarn run build; npm run minify; firebase deploy;",
     "test": "devtool -r babel-register src/pages/MyPlaylist/test.js --break --no-source-maps",
     "create": "khaos create component",
-    "start": "yarn run config-dev; webpack-dev-server"
+    "start": "yarn run config-dev; rm -rf public/index.html; rm -rf public/*.js; webpack-dev-server"
   },
   "repository": {
     "url": "git+https://github.com/danleavitt0/artbot.git",
@@ -74,7 +74,7 @@
     "to-markdown": "^3.0.3",
     "type": "0.0.3",
     "vdux": "3.0.6",
-    "vdux-ace": "^1.0.1",
+    "vdux-ace": "^1.0.3",
     "vdux-containers": "^1.2.8",
     "vdux-css-transition": "^1.2.1",
     "vdux-delay": "^1.0.6",
