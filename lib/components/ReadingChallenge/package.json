@@ -1,0 +1,5 @@
+{
+  "name": "ReadingChallenge",
+  "main": "ReadingChallenge.js",
+  "browser": "ReadingChallenge.js"
+}
