@@ -27,7 +27,6 @@ function config (env) {
         'lodash',
         'brace',
         'js-analyse',
-        'vdux',
         'firebase'
       ]
     },
