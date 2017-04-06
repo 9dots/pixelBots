@@ -1,0 +1,5 @@
+{
+  "name": "ReadWidget",
+  "main": "ReadWidget.js",
+  "browser": "ReadWidget.js"
+}
