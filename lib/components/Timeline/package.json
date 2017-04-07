@@ -1,0 +1,5 @@
+{
+  "name": "Timeline",
+  "main": "Timeline.js",
+  "browser": "Timeline.js"
+}
