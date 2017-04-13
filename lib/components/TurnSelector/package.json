@@ -1,0 +1,5 @@
+{
+  "name": "TurnSelector",
+  "main": "TurnSelector.js",
+  "browser": "TurnSelector.js"
+}
