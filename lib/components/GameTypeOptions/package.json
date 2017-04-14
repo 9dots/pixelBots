@@ -1,0 +1,5 @@
+{
+  "name": "GameTypeOptions",
+  "main": "GameTypeOptions.js",
+  "browser": "GameTypeOptions.js"
+}
