@@ -26,6 +26,7 @@
   "homepage": "https://github.com/danleavitt0/artbot#readme",
   "dependencies": {
     "@f/animate": "^1.0.1",
+    "@f/contains-element": "^1.0.0",
     "@f/debounce": "^1.0.5",
     "@f/deep-equal": "^1.0.2",
     "@f/diff-keys": "^1.0.0",
