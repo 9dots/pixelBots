@@ -6,10 +6,8 @@
   "scripts": {
     "config-dev": "firebase use artbot-dev; cross-env NODE_ENV='dev' node config.js",
     "config-prod": "firebase use artbot-26016; cross-env NODE_ENV='production' node config.js",
-    "dev": "yarn run config-dev; firebase serve & watchify src/index.js -o public/bundle.js -d -t babelify -p browserify-hmr",
-    "minify": "cat public/bundle.js | uglifyjs -o public/bundle.js",
-    "build": "browserify lib/client/index.js -o public/bundle.js -t babelify",
-    "deploy": "yarn run config-prod; yarn run build; npm run minify; firebase deploy;",
+    "build": "rm -rf public/index.html; rm -rf public/*.js; webpack -p",
+    "deploy": "yarn run config-prod; yarn run build; firebase deploy --except functions;",
     "test": "devtool -r babel-register src/pages/MyPlaylist/test.js --break --no-source-maps",
     "create": "khaos create component",
     "start": "yarn run config-dev; rm -rf public/index.html; rm -rf public/*.js; webpack-dev-server"
