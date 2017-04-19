@@ -1170,6 +1170,13 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
+auto-yield-delegate:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/auto-yield-delegate/-/auto-yield-delegate-0.6.1.tgz#80ce41a5c0744fdd68d49e16bac2e30c624a7b48"
+  dependencies:
+    babel-core "^6.7.4"
+    camel-case "^1.2.2"
+
 aws-sign2@~0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/aws-sign2/-/aws-sign2-0.6.0.tgz#14342dd38dbcc94d0e5b87d763cd63612c0e794f"
@@ -1237,7 +1244,7 @@ babel-core@^5.8.34:
     trim-right "^1.0.0"
     try-resolve "^1.0.0"
 
-babel-core@^6.0.14, babel-core@^6.22.1, babel-core@^6.24.1:
+babel-core@^6.0.14, babel-core@^6.22.1, babel-core@^6.24.1, babel-core@^6.7.4:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-6.24.1.tgz#8c428564dce1e1f41fb337ec34f4c3b022b5ad83"
   dependencies:
@@ -2322,6 +2329,13 @@ cached-path-relative@^1.0.0:
 callsite@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/callsite/-/callsite-1.0.0.tgz#280398e5d664bd74038b6f0905153e6e8af1bc20"
+
+camel-case@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/camel-case/-/camel-case-1.2.2.tgz#1aca7c4d195359a2ce9955793433c6e5542511f2"
+  dependencies:
+    sentence-case "^1.1.1"
+    upper-case "^1.1.1"
 
 camel-case@3.0.x:
   version "3.0.0"
@@ -5502,7 +5516,7 @@ lodash.isarguments@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/lodash.isarguments/-/lodash.isarguments-3.1.0.tgz#2f573d85c6a24289ff00663b491c1d338ff3458a"
 
-lodash.isarguments@~2.4.1, lodash.isarguments@2.4.x:
+lodash.isarguments@~2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/lodash.isarguments/-/lodash.isarguments-2.4.1.tgz#4931a9c08253adf091ae7ca192258a973876ecca"
 
@@ -5560,12 +5574,6 @@ lodash.support@~2.4.1:
   resolved "https://registry.yarnpkg.com/lodash.support/-/lodash.support-2.4.1.tgz#320e0b67031673c28d7a2bb5d9e0331a45240515"
   dependencies:
     lodash._isnative "~2.4.1"
-
-lodash.values@^2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/lodash.values/-/lodash.values-2.4.1.tgz#abf514436b3cb705001627978cbcf30b1280eea4"
-  dependencies:
-    lodash.keys "~2.4.1"
 
 lodash@^2.4.1, lodash@~2.4.1:
   version "2.4.2"
@@ -7287,6 +7295,12 @@ send@0.15.1:
     on-finished "~2.3.0"
     range-parser "~1.2.0"
     statuses "~1.3.1"
+
+sentence-case@^1.1.1:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/sentence-case/-/sentence-case-1.1.3.tgz#8034aafc2145772d3abe1509aa42c9e1042dc139"
+  dependencies:
+    lower-case "^1.1.1"
 
 serializerr@^1.0.1:
   version "1.0.3"
