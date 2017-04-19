@@ -48,7 +48,7 @@
     "@f/unique": "^1.0.1",
     "@weo-edu/schema": "git+https://github.com/danleavitt0/schema.git",
     "@weo-edu/validate": "git+https://github.com/danleavitt0/validate.git",
-    "auto-yield-delegate": "^0.6.1",
+    "auto-yield-delegate": "^0.7.0",
     "bluebird": "^3.5.0",
     "brace": "^0.10.0",
     "co": "^4.6.0",
