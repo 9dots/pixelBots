@@ -7,7 +7,7 @@ const pick = require('@f/pick')
 const usersRef = admin.database().ref('/users')
 const usernamesRef = admin.database().ref('/usernames')
 
-const profileProps = ['creatorID', 'creatorUsername', 'description', 'lastEdited', 'title']
+const profileProps = ['creatorID', 'creatorUsername', 'description', 'lastEdited', 'name']
 
 module.exports = functions.database.ref('/playlists/{playlistRef}')
   .onWrite(evt => {
