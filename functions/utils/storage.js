@@ -22,7 +22,9 @@ function uploadToBucket (img) {
     if (!img) return reject('no image')
     bucket.upload(img, {resumable: false}, (err, file) => {
       if (err) {
-        console.log('bucket upload fail', err)
+        if (err.code === 'ECONNRESET') {
+          return uploadToBucket(img)
+        }
         return reject(err)
       }
       file.getSignedUrl({
