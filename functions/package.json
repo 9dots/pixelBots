@@ -12,7 +12,7 @@
     "@f/reduce": "^1.0.0",
     "@f/union": "^1.0.0",
     "@google-cloud/debug-agent": "^1.0.0",
-    "@google-cloud/storage": "^0.8.0",
+    "@google-cloud/storage": "^1.1.0",
     "auto-yield-delegate": "^0.6.1",
     "bluebird": "^3.5.0",
     "co": "^4.6.0",
