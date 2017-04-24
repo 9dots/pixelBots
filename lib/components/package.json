@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "auto-yield-delegate": "^0.6.1"
+    "auto-yield-delegate": "^0.7.1",
+    "vdux-fire": "^1.1.0"
   }
 }
