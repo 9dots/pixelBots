@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P|Lato');
 
 * {
   box-sizing: border-box;
@@ -17,7 +17,7 @@ body {
   margin: 0;
   background-color: #fafafa;
   color: #555;
-  font-family: "Roboto", Roboto, sans-serif;
+  font-family: 'Lato', 'Roboto', sans-serif;
 }
 
 [disabled] {
@@ -31,9 +31,20 @@ body {
   100% {opacity: 1;}
 }
 
-@keyframe slide-in-from-bottom {
+@keyframes slide-in-from-bottom {
   0% {opacity: 0;}
   100% {opacity: 1;}
+}
+
+@keyframes shake {
+  0% {transform: translate(0, 3px) rotate(0deg);}
+  33% {transform: translate(3px, -2px) rotate(1deg);}
+  66% {transform: translate(-3px, 2px) rotate(-1deg);}
+  100% {transform: translate(0, 3px) rotate(0deg);}
+}
+
+.error-shake {
+  animation: shake 4 .15s ease-out;
 }
 
 .flash {

@@ -704,7 +704,7 @@
   dependencies:
     "@f/can-select-text" "^1.0.0"
 
-"@f/sleep@^1.0.0":
+"@f/sleep":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@f/sleep/-/sleep-1.0.0.tgz#1650644230e3254468d80596537de8714638bf0f"
 
