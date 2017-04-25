@@ -61,6 +61,7 @@ function filterGamePaint (attr) {
           return resolve()
         }
         evt.data.ref.parent.update({[attr]: filterPaint(evt.data.val())})
+          .then(() => updateProfileGame(evt.params.saveRef))
           .then(resolve)
           .catch(reject)
       })
