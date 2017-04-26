@@ -2,6 +2,7 @@
   "name": "functions",
   "description": "Firebase Functions",
   "dependencies": {
+    "@f/create-action": "^1.1.1",
     "@f/equal-obj": "^1.2.1",
     "@f/filter": "^1.1.1",
     "@f/foreach": "^1.2.2",
@@ -16,7 +17,8 @@
     "@f/union": "^1.0.0",
     "@google-cloud/debug-agent": "^1.0.0",
     "@google-cloud/storage": "^1.1.0",
-    "auto-yield-delegate": "^0.6.1",
+    "auto-yield-delegate": "^0.7.1",
+    "babel-runtime": "^6.23.0",
     "bluebird": "^3.5.0",
     "co": "^4.6.0",
     "cors": "^2.8.3",

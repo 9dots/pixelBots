@@ -101,7 +101,7 @@ function updateProfileGame (saveRef) {
     ]
     Promise.all(parentDataPromises)
       .then((snaps) => snaps.map((s) => s.val()))
-      .then(([creatorID, gameRef]) => usersRef.child(creatorID)
+      .then(([creatorID, gameRef]) => creatorID && usersRef.child(creatorID)
         .child('inProgress').child(gameRef).once('value')
       )
       .then(snap => snap.exists() && snap.ref.update({lastEdited: Date.now()}))

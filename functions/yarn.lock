@@ -16,6 +16,10 @@
     "@f/is-array" "^1.1.1"
     "@f/slice" "^1.1.2"
 
+"@f/create-action@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@f/create-action/-/create-action-1.1.1.tgz#69c61666c9ec31d69a4dd1a14a915339590f72f8"
+
 "@f/equal-obj@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@f/equal-obj/-/equal-obj-1.2.1.tgz#7f75ea17b5c7be2034bec1079e7efdef3c55aaf1"
@@ -366,11 +370,12 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
-auto-yield-delegate@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/auto-yield-delegate/-/auto-yield-delegate-0.6.1.tgz#80ce41a5c0744fdd68d49e16bac2e30c624a7b48"
+auto-yield-delegate@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/auto-yield-delegate/-/auto-yield-delegate-0.7.1.tgz#c85fb0efe7b5ccd3780633453b29d722731d3fe0"
   dependencies:
     babel-core "^6.7.4"
+    babel-plugin-transform-es2015-arrow-functions "^6.22.0"
     camel-case "^1.2.2"
 
 aws-sign2@~0.6.0:
@@ -439,6 +444,12 @@ babel-messages@^6.23.0:
   dependencies:
     babel-runtime "^6.22.0"
 
+babel-plugin-transform-es2015-arrow-functions@^6.22.0:
+  version "6.22.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-es2015-arrow-functions/-/babel-plugin-transform-es2015-arrow-functions-6.22.0.tgz#452692cb711d5f79dc7f85e440ce41b9f244d221"
+  dependencies:
+    babel-runtime "^6.22.0"
+
 babel-register@^6.24.1:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-register/-/babel-register-6.24.1.tgz#7e10e13a2f71065bdfad5a1787ba45bca6ded75f"
@@ -451,7 +462,7 @@ babel-register@^6.24.1:
     mkdirp "^0.5.1"
     source-map-support "^0.4.2"
 
-babel-runtime@^6.22.0:
+babel-runtime@^6.22.0, babel-runtime@^6.23.0:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.23.0.tgz#0a9489f144de70efb3ce4300accdb329e2fc543b"
   dependencies:
