@@ -1,0 +1,5 @@
+{
+  "name": "AdvancedEditor",
+  "main": "AdvancedEditor.js",
+  "browser": "AdvancedEditor.js"
+}
