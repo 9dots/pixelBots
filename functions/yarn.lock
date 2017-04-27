@@ -2,6 +2,24 @@
 # yarn lockfile v1
 
 
+"@f/clone-obj@^1.1.0":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@f/clone-obj/-/clone-obj-1.1.2.tgz#7fcb916e7c18065979c6730176f2d927e5c029df"
+  dependencies:
+    "@f/foreach" "^1.2.1"
+
+"@f/clone-shallow@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@f/clone-shallow/-/clone-shallow-1.1.4.tgz#8dc2faed6304125d3f5a8fbe559794ccdd45d6a4"
+  dependencies:
+    "@f/clone-obj" "^1.1.0"
+    "@f/is-array" "^1.1.1"
+    "@f/slice" "^1.1.2"
+
+"@f/create-action@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@f/create-action/-/create-action-1.1.1.tgz#69c61666c9ec31d69a4dd1a14a915339590f72f8"
+
 "@f/equal-obj@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@f/equal-obj/-/equal-obj-1.2.1.tgz#7f75ea17b5c7be2034bec1079e7efdef3c55aaf1"
@@ -31,7 +49,7 @@
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@f/foreach-obj/-/foreach-obj-1.1.1.tgz#5ad38a629c0298290a8d06a39f281d979a6804c4"
 
-"@f/foreach@^1.2.2":
+"@f/foreach@^1.2.1", "@f/foreach@^1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@f/foreach/-/foreach-1.2.2.tgz#2dd0aca6c5fe74fa965b0f46640f7623930434cd"
   dependencies:
@@ -55,9 +73,19 @@
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@f/is-array/-/is-array-1.1.1.tgz#cb3cd2f20016fc7b6d7049013c0318d75a222590"
 
-"@f/is-function@^1.1.1":
+"@f/is-function@^1.0.4", "@f/is-function@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@f/is-function/-/is-function-1.1.1.tgz#17d342a53ef7d2ff791371c2f4fa381245ce0231"
+
+"@f/is-iterator@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@f/is-iterator/-/is-iterator-1.0.1.tgz#6eae20714e6449301783f4c3c7b291dcd7cc3f2b"
+  dependencies:
+    "@f/is-function" "^1.1.1"
+
+"@f/is-number@^1.0.0":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@f/is-number/-/is-number-1.1.1.tgz#004db64af35b89406fa27e79a17cc1bc071d0616"
 
 "@f/is-object@^1.0.0", "@f/is-object@^1.1.1", "@f/is-object@^1.1.4":
   version "1.1.4"
@@ -65,9 +93,17 @@
   dependencies:
     "@f/is-function" "^1.1.1"
 
+"@f/is-string@^1.0.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@f/is-string/-/is-string-1.1.1.tgz#02a098ff44562e42ad795380909b46824b0f06db"
+
 "@f/map-values@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@f/map-values/-/map-values-1.0.0.tgz#ca5f4329047504f03a3dd08827bec87e0deaeabb"
+
+"@f/noop@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@f/noop/-/noop-1.2.0.tgz#4c48b94b4d24dcf66d329e5e25c61ff887d1abbe"
 
 "@f/omit@^2.2.3":
   version "2.2.3"
@@ -100,6 +136,26 @@
     "@f/is-object" "^1.1.1"
     "@f/reduce-array" "^0.2.1"
     "@f/reduce-obj" "^1.0.0"
+
+"@f/set-prop@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@f/set-prop/-/set-prop-1.0.1.tgz#7ca7bd7a5d3298c9acdb17a3c79777a09ea1ae53"
+  dependencies:
+    "@f/clone-shallow" "^1.1.4"
+    "@f/is-function" "^1.0.4"
+    "@f/is-number" "^1.0.0"
+    "@f/is-string" "^1.0.1"
+
+"@f/slice@^1.1.2", "@f/slice@^1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@f/slice/-/slice-1.1.3.tgz#f811c188d2591ffef254ed1631c244d8b4c34e70"
+
+"@f/switch@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@f/switch/-/switch-1.0.1.tgz#f7509590ec6679d2a94294e7ad26b9db3e73ab9c"
+  dependencies:
+    "@f/noop" "^1.2.0"
+    "@f/slice" "^1.1.3"
 
 "@f/union@^1.0.0":
   version "1.0.0"
@@ -314,11 +370,12 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
-auto-yield-delegate@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/auto-yield-delegate/-/auto-yield-delegate-0.6.1.tgz#80ce41a5c0744fdd68d49e16bac2e30c624a7b48"
+auto-yield-delegate@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/auto-yield-delegate/-/auto-yield-delegate-0.7.1.tgz#c85fb0efe7b5ccd3780633453b29d722731d3fe0"
   dependencies:
     babel-core "^6.7.4"
+    babel-plugin-transform-es2015-arrow-functions "^6.22.0"
     camel-case "^1.2.2"
 
 aws-sign2@~0.6.0:
@@ -387,6 +444,12 @@ babel-messages@^6.23.0:
   dependencies:
     babel-runtime "^6.22.0"
 
+babel-plugin-transform-es2015-arrow-functions@^6.22.0:
+  version "6.22.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-es2015-arrow-functions/-/babel-plugin-transform-es2015-arrow-functions-6.22.0.tgz#452692cb711d5f79dc7f85e440ce41b9f244d221"
+  dependencies:
+    babel-runtime "^6.22.0"
+
 babel-register@^6.24.1:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-register/-/babel-register-6.24.1.tgz#7e10e13a2f71065bdfad5a1787ba45bca6ded75f"
@@ -399,7 +462,7 @@ babel-register@^6.24.1:
     mkdirp "^0.5.1"
     source-map-support "^0.4.2"
 
-babel-runtime@^6.22.0:
+babel-runtime@^6.22.0, babel-runtime@^6.23.0:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.23.0.tgz#0a9489f144de70efb3ce4300accdb329e2fc543b"
   dependencies:
