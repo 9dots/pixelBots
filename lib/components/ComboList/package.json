@@ -1,0 +1,5 @@
+{
+  "name": "ComboList",
+  "main": "ComboList.js",
+  "browser": "ComboList.js"
+}

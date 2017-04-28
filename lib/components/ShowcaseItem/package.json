@@ -1,0 +1,5 @@
+{
+  "name": "ShowcaseItem",
+  "main": "ShowcaseItem.js",
+  "browser": "ShowcaseItem.js"
+}

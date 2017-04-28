@@ -1,0 +1,5 @@
+{
+  "name": "LinkDecipher",
+  "main": "LinkDecipher.js",
+  "browser": "LinkDecipher.js"
+}

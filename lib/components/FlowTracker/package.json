@@ -1,0 +1,5 @@
+{
+  "name": "FlowTracker",
+  "main": "FlowTracker.js",
+  "browser": "FlowTracker.js"
+}

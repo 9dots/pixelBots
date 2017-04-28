@@ -1,0 +1,5 @@
+{
+  "name": "Profile",
+  "main": "Profile.js",
+  "browser": "Profile.js"
+}

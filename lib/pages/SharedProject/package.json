@@ -1,0 +1,5 @@
+{
+  "name": "SharedProject",
+  "main": "SharedProject.js",
+  "browser": "SharedProject.js"
+}

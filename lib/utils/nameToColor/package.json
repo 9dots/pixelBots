@@ -1,0 +1,5 @@
+{
+  "name": "nameToColor",
+  "main": "nameToColor.js",
+  "browser": "nameToColor.js"
+}

@@ -1,0 +1,5 @@
+{
+  "name": "theme",
+  "main": "theme.js",
+  "browser": "theme.js"
+}

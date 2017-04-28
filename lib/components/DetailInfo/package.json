@@ -1,0 +1,5 @@
+{
+  "name": "DetailInfo",
+  "main": "DetailInfo.js",
+  "browser": "DetailInfo.js"
+}

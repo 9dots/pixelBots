@@ -1,0 +1,5 @@
+{
+  "name": "DragHandle",
+  "main": "DragHandle.js",
+  "browser": "DragHandle.js"
+}

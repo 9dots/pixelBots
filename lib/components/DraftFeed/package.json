@@ -1,0 +1,5 @@
+{
+  "name": "DraftFeed",
+  "main": "DraftFeed.js",
+  "browser": "DraftFeed.js"
+}

@@ -1,0 +1,5 @@
+{
+  "name": "Redirect",
+  "main": "Redirect.js",
+  "browser": "Redirect.js"
+}

@@ -1,0 +1,5 @@
+{
+  "name": "maybeAddToArray",
+  "main": "maybeAddToArray.js",
+  "browser": "maybeAddToArray.js"
+}

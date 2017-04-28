@@ -1,0 +1,5 @@
+{
+  "name": "DraftItem",
+  "main": "DraftItem.js",
+  "browser": "DraftItem.js"
+}

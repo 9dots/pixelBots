@@ -1,0 +1,5 @@
+{
+  "name": "ConfirmDelete",
+  "main": "ConfirmDelete.js",
+  "browser": "ConfirmDelete.js"
+}

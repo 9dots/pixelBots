@@ -1,0 +1,5 @@
+{
+  "name": "Gallery",
+  "main": "Gallery.js",
+  "browser": "Gallery.js"
+}

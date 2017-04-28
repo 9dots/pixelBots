@@ -1,0 +1,5 @@
+{
+  "name": "MainLayout",
+  "main": "MainLayout.js",
+  "browser": "MainLayout.js"
+}

@@ -1,0 +1,5 @@
+{
+  "name": "BlockButtons",
+  "main": "BlockButtons.js",
+  "browser": "BlockButtons.js"
+}

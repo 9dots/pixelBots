@@ -17,4 +17,4 @@ const setups = {
 	}
 }
 
-fs.writeFileSync('src/firebaseConfig.js', 'module.exports = ' + JSON.stringify(setups[process.env.NODE_ENV]))
+fs.writeFileSync('lib/client/firebaseConfig.js', 'module.exports = ' + JSON.stringify(setups[process.env.NODE_ENV]))

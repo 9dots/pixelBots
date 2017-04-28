@@ -14,7 +14,14 @@ body {
   width: 100vw;
   margin: 0;
   background-color: #fafafa;
+  color: #555;
   font-family: "Roboto", Roboto, sans-serif;
+}
+
+[disabled] {
+  pointer-events: none;
+  user-select: none;
+  opacity: .6;
 }
 
 @keyframes fade-in {
@@ -178,20 +185,26 @@ code.lang-js {
 }
 
 @media print {
+  body {
+    margin: 10mm 0;
+  }
   body * {
     visibility: hidden;
   }
   #print-container, #print-container * {
     visibility: visible;
     overflow-y: visible;
-    display: block;
+    display: inline-block;
+    page-break-inside: avoid;
   }
   #print-container {
-    position: static !important;
+    position: relative !important;
     overflow-y: visible !important;
     display: inline !important;
+    width: 100vw;
   }
   pre code {
     border: 0;
+    width: 100%;
   }
 }

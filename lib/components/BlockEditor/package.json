@@ -1,0 +1,5 @@
+{
+  "name": "BlockEditor",
+  "main": "BlockEditor.js",
+  "browser": "BlockEditor.js"
+}

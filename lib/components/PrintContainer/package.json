@@ -1,0 +1,5 @@
+{
+  "name": "PrintContainer",
+  "main": "PrintContainer.js",
+  "browser": "PrintContainer.js"
+}

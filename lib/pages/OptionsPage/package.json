@@ -1,0 +1,5 @@
+{
+  "name": "OptionsPage",
+  "main": "OptionsPage.js",
+  "browser": "OptionsPage.js"
+}

@@ -1,0 +1,5 @@
+{
+  "name": "NewGameModal",
+  "main": "NewGameModal.js",
+  "browser": "NewGameModal.js"
+}
