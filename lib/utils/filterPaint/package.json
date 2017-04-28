@@ -1,0 +1,5 @@
+{
+  "name": "filterPaint",
+  "main": "filterPaint.js",
+  "browser": "filterPaint.js"
+}

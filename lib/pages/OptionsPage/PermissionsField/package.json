@@ -1,0 +1,5 @@
+{
+  "name": "PermissionsField",
+  "main": "PermissionsField.js",
+  "browser": "PermissionsField.js"
+}

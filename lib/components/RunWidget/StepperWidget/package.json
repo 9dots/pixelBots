@@ -1,0 +1,5 @@
+{
+  "name": "StepperWidget",
+  "main": "StepperWidget.js",
+  "browser": "StepperWidget.js"
+}

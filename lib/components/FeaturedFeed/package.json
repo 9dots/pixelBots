@@ -1,0 +1,5 @@
+{
+  "name": "FeaturedFeed",
+  "main": "FeaturedFeed.js",
+  "browser": "FeaturedFeed.js"
+}

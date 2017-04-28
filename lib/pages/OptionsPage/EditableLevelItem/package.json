@@ -1,0 +1,5 @@
+{
+  "name": "EditableLevelItem",
+  "main": "EditableLevelItem.js",
+  "browser": "EditableLevelItem.js"
+}

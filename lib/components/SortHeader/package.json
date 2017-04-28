@@ -1,0 +1,5 @@
+{
+  "name": "SortHeader",
+  "main": "SortHeader.js",
+  "browser": "SortHeader.js"
+}

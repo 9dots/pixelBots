@@ -1,4 +1,4 @@
-public/bundle.js
+public/*.js
 
 .tags
 
@@ -47,3 +47,6 @@ jspm_packages
 .DS_Store
 
 src/.DS_Store
+
+functions/serviceAccount.json
+functions/service.json

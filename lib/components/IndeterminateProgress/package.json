@@ -1,0 +1,5 @@
+{
+  "name": "IndeterminateProgress",
+  "main": "IndeterminateProgress.js",
+  "browser": "IndeterminateProgress.js"
+}

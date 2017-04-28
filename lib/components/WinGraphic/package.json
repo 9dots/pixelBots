@@ -1,0 +1,5 @@
+{
+  "name": "WinGraphic",
+  "main": "WinGraphic.js",
+  "browser": "WinGraphic.js"
+}

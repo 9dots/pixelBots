@@ -1,0 +1,5 @@
+{
+  "name": "initialGameState",
+  "main": "initialGameState.js",
+  "browser": "initialGameState.js"
+}

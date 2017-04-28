@@ -1,0 +1,5 @@
+{
+  "name": "RunWidget",
+  "main": "RunWidget.js",
+  "browser": "RunWidget.js"
+}

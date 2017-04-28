@@ -1,0 +1,5 @@
+{
+  "name": "GridSizeSelector",
+  "main": "GridSizeSelector.js",
+  "browser": "GridSizeSelector.js"
+}

@@ -1,0 +1,5 @@
+{
+  "name": "DisplayCard",
+  "main": "DisplayCard.js",
+  "browser": "DisplayCard.js"
+}

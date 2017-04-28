@@ -1,0 +1,5 @@
+{
+  "name": "CodeTool",
+  "main": "CodeTool.js",
+  "browser": "CodeTool.js"
+}

@@ -1,0 +1,5 @@
+{
+  "name": "CodeEditor",
+  "main": "CodeEditor.js",
+  "browser": "CodeEditor.js"
+}

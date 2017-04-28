@@ -1,0 +1,5 @@
+{
+  "name": "colors",
+  "main": "colors.js",
+  "browser": "colors.js"
+}

@@ -1,0 +1,5 @@
+{
+  "name": "toCamelCase",
+  "main": "toCamelCase.js",
+  "browser": "toCamelCase.js"
+}
