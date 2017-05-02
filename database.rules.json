@@ -14,6 +14,11 @@
         },
         "games": {
           ".indexOn": "lastEdited"
+        },
+        "inProgress": {
+          "$gameID": {
+             ".validate": "newData.hasChildren(['saveRef', 'gameRef'])" 
+          }
         }
       }
     },
@@ -28,6 +33,11 @@
     "playlists": {
       ".read": "auth !== null",
       ".write": "auth !== null"
+    },
+    "savedHistory": {
+      "$gameID": {
+        ".indexOn": "timestamp"
+      }
     },
     "games": {
       ".read": "true",
