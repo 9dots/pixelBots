@@ -142,6 +142,15 @@ svg {
   }
 }
 
+@keyframes pixel-bg {
+  from {
+    background-position-y: 0px, 0;
+  }
+  to {
+    background-position-y: -384px, 0;
+  }
+}
+
 /* --------------------------
   SVG Styles
 --------------------------- */
