@@ -1,5 +1,0 @@
-{
-  "name": "synchronousRunner",
-  "main": "synchronousRunner.js",
-  "browser": "synchronousRunner.js"
-}

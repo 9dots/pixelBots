@@ -1,0 +1,5 @@
+{
+  "name": "frameReducer",
+  "main": "frameReducer.js",
+  "browser": "frameReducer.js"
+}

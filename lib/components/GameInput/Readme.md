@@ -1,6 +1,0 @@
-# <Game Input/>
-
-
-
-## Usage
-
