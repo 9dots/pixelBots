@@ -1,8 +1,8 @@
 const {getActions, getFrames} = require('../utils/synchronousRunner')
 const initialGameState = require('../utils/initialGameState')
+const {getAndRunIterator} = require('../utils/getIterator')
 const sequenceToCode = require('../utils/sequenceToCode')
 const animalApis = require('../utils/animalApis/index')
-const getIterator = require('../utils/getIterator')
 const {gifFrame} = require('../utils/createImage')
 const functions = require('firebase-functions')
 const createGif = require('../utils/createGif')
@@ -46,7 +46,7 @@ module.exports = functions.database.ref('/saved/{saveID}/completed')
           const initState = Object.assign({}, gameState, {
             animals: animals.map(a => Object.assign({}, a, {current: a.initial}))
           })
-          const it = getIterator(code, animalApis[animals[0].type].default(0))
+          const it = getAndRunIterator(code, animalApis[animals[0].type].default(0))
           const actions = getActions(it)
           const frames = getFrames(actions, initState)
           const adjusted = frames.map((frame, i, arr) => {
