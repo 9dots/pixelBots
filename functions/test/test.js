@@ -1,6 +1,6 @@
 const {getActions, getFrames} = require('../utils/synchronousRunner')
 const initialGameState = require('../utils/initialGameState')
-const getIterator = require('../utils/getIterator')
+const {getAndRunIterator} = require('../utils/getIterator')
 const animalApis = require('../utils/animalApis/index')
 const test = require('blue-tape')
 const sinon = require('sinon')
@@ -38,7 +38,7 @@ test.only('create frames from code', (t) => {
     animals: animals.map(a => Object.assign({}, initialGameState.animals[0], a))
   })
 
-  const it = getIterator(sequence, animalApis[animals[0].type].default(0))
+  const it = getAndRunIterator(sequence, animalApis[animals[0].type].default(0))
   const actions = getActions(it)
   const frames = getFrames(actions, initState)
   console.log(frames)
