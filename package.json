@@ -109,6 +109,7 @@
     "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-webpack-loader": "^1.0.0",
+    "standard": "^10.0.2",
     "tape": "^4.6.3",
     "tape-run": "^2.1.4",
     "uglifyjs": "^2.4.10",

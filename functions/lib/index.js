@@ -8,5 +8,5 @@ module.exports = {
 	// autoYield: require('./autoYield'),
 	// toggleShowcase: require('./toggleShowcase'),
 	// fanGameToUser: require('./fanGameToUser'),
-	// createGif: require('./createGif')
+	createGif: require('./createGif')
 }

@@ -3,10 +3,9 @@ const animalApis = require('../utils/animalApis/index').default
 const getIterator = require('../utils/getIterator').default
 const {createPaintFrames} = require('../utils/frameReducer')
 const {gifFrame} = require('../utils/createImage')
-const functions = require('firebase-functions') 
+const functions = require('firebase-functions')
 const createGif = require('../utils/createGif')
 const {upload} = require('../utils/storage')
-const cleanUp = require('../utils/cleanUp')
 const flatten = require('lodash/flatten')
 const admin = require('firebase-admin')
 const chunk = require('lodash/chunk')
@@ -33,7 +32,7 @@ module.exports = functions.database.ref('/saved/{saveID}/completed')
           Promise.resolve(snap.val()),
           snap.val().gameRef
             ? gamesRef.child(snap.val().gameRef).once('value').then(snap => snap.val())
-            : Promise.reject()
+            : Promise.reject(new Error('no game'))
         ]))
         .then(([{gridSize = 5, animals}, gameState]) => {
           const timing = (gridSize * gridSize) / RUN_TIME
@@ -59,7 +58,6 @@ module.exports = functions.database.ref('/saved/{saveID}/completed')
             .then(updateGame(saveID))
             .then(success)
             .catch(failed)
-
 
           function frameChunks (chunks) {
             return new Promise((resolve, reject) => {
@@ -127,9 +125,4 @@ function updateGame (saveID) {
       'meta/animatedGif': url
     })
   }
-}
-
-function promiseState (p) {
-  return p.then((val) => ({state: 'resolved', val}))
-          .catch((e) => ({state: 'rejected', val: e}))
 }

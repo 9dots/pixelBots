@@ -190,6 +190,10 @@
     "@f/is-number" "^1.0.0"
     "@f/is-string" "^1.0.1"
 
+"@f/sleep@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@f/sleep/-/sleep-1.0.0.tgz#1650644230e3254468d80596537de8714638bf0f"
+
 "@f/slice@^1.1.2":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@f/slice/-/slice-1.1.3.tgz#f811c188d2591ffef254ed1631c244d8b4c34e70"

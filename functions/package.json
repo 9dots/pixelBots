@@ -15,6 +15,7 @@
     "@f/range": "^2.0.0",
     "@f/reduce": "^1.0.0",
     "@f/set-prop": "^1.0.1",
+    "@f/sleep": "^1.0.0",
     "@f/union": "^1.0.0",
     "@google-cloud/debug-agent": "^1.0.0",
     "@google-cloud/storage": "^1.1.0",
