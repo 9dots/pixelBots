@@ -1,11 +1,10 @@
 var storage = require('@google-cloud/storage')({
-  projectId: 'artbot-dev',
-  keyFilename: './serviceAccount.json'
+  projectId: 'artbot-26016',
+  keyFilename: './service.json'
 })
 const Promise = require('bluebird')
-var fs = require('fs')
 
-const bucket = storage.bucket('artbot-dev.appspot.com')
+const bucket = storage.bucket('artbot-26016.appspot.com')
 
 function downloadFromBucket (dir, name) {
   const newPath = `/tmp/${dir}/${name}`
@@ -18,7 +17,7 @@ function downloadFromBucket (dir, name) {
 
 function uploadToBucket (img) {
   return new Promise((resolve, reject) => {
-    if (!img) return reject('no image')
+    if (!img) return reject(new Error('no image'))
     bucket.upload(img, {resumable: false}, (err, file) => {
       if (err) {
         if (err.code === 'ECONNRESET') {

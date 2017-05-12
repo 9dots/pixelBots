@@ -13,8 +13,12 @@ module.exports = functions.database.ref('/games/{gameRef}')
         return resolve()
       }
       const {gameRef} = evt.params
-  		const meta = pick(metaAttrs, data)
-      evt.data.ref.child('meta').update(meta)
+      const {creatorID} = data
+      const meta = pick(metaAttrs, data)
+      Promise.all([
+        evt.data.ref.child('meta').update(meta),
+        usersRef.child(creatorID).child('games').child(gameRef).update(meta)
+      ])
         .then(resolve)
         .catch(reject)
     })

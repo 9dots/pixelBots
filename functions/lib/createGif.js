@@ -1,7 +1,7 @@
 
 const animalApis = require('../utils/animalApis/index').default
-const getIterator = require('../utils/getIterator').default
 const {createPaintFrames} = require('../utils/frameReducer')
+const getIterator = require('../utils/getIterator')
 const {gifFrame} = require('../utils/createImage')
 const functions = require('firebase-functions')
 const createGif = require('../utils/createGif')
@@ -34,11 +34,12 @@ module.exports = functions.database.ref('/saved/{saveID}/completed')
             ? gamesRef.child(snap.val().gameRef).once('value').then(snap => snap.val())
             : Promise.reject(new Error('no game'))
         ]))
-        .then(([{gridSize = 5, animals}, gameState]) => {
-          const timing = (gridSize * gridSize) / RUN_TIME
+        .then(([{animals}, gameState]) => {
+          const levelSize = gameState.levelSize[0]
+          const timing = (levelSize * levelSize) / RUN_TIME
           const delay = 100 / timing
-          const size = Math.floor(GIF_SIZE / gridSize)
-          const imageSize = Number(size * gridSize) + Number(gridSize - 1)
+          const size = Math.floor(GIF_SIZE / levelSize)
+          const imageSize = Number(size * levelSize) + Number(levelSize - 1)
           const {sequence} = animals[0]
           fs.mkdirsSync(`/tmp/${saveID}`)
           const initState = Object.assign({}, gameState, {

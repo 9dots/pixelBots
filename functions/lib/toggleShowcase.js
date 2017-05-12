@@ -22,11 +22,10 @@ module.exports = functions.database.ref('/saved/{saveRef}/meta/shared')
   		.catch(e => console.warn(e))
   })
 
-
 function addToShowcase (saveRef, gameRef, uid) {
-	return usersRef.child(uid).child('showcase').child(saveRef).set({
-			saveRef,
-			gameRef
-		}))
-		.catch((e) => console.warn(e))
+  return usersRef.child(uid).child('showcase').child(saveRef).set({
+    saveRef,
+    gameRef
+  })
+	.catch((e) => console.warn(e))
 }

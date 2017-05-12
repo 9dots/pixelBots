@@ -10,7 +10,7 @@
     "deploy": "yarn run config-prod; yarn run build; firebase deploy --except functions;",
     "test": "devtool -r babel-register src/pages/MyPlaylist/test.js --break --no-source-maps",
     "create": "khaos create component",
-    "start": "yarn run config-dev; rm -rf public/index.html; rm -rf public/*.js; webpack-dev-server"
+    "start": "yarn install; yarn run config-dev; rm -rf public/index.html; rm -rf public/*.js; webpack-dev-server"
   },
   "repository": {
     "url": "git+https://github.com/danleavitt0/artbot.git",

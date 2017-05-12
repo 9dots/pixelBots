@@ -1,8 +1,8 @@
 require('babel-polyfill')
 
 const animalApis = require('../utils/animalApis/index').default
-const getIterator = require('../utils/getIterator').default
 const {createPaintFrames} = require('../utils/frameReducer')
+const getIterator = require('../utils/getIterator')
 const {gifFrame} = require('../utils/createImage')
 const createGif = require('../utils/createGif')
 const {upload} = require('../utils/storage')
