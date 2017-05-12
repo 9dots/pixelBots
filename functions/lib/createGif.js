@@ -1,5 +1,4 @@
 const {getActions, getFrames} = require('../utils/synchronousRunner')
-const initialGameState = require('../utils/initialGameState')
 const {getAndRunIterator} = require('../utils/getIterator')
 const sequenceToCode = require('../utils/sequenceToCode')
 const animalApis = require('../utils/animalApis/index')
@@ -7,7 +6,6 @@ const {gifFrame} = require('../utils/createImage')
 const functions = require('firebase-functions')
 const createGif = require('../utils/createGif')
 const {upload} = require('../utils/storage')
-const cleanUp = require('../utils/cleanUp')
 const flatten = require('lodash/flatten')
 const admin = require('firebase-admin')
 const chunk = require('lodash/chunk')
@@ -61,7 +59,6 @@ module.exports = functions.database.ref('/saved/{saveID}/completed')
             .then(updateGame(saveID))
             .then(success)
             .catch(failed)
-
 
           function frameChunks (chunks) {
             return new Promise((resolve, reject) => {
@@ -130,9 +127,3 @@ function updateGame (saveID) {
     })
   }
 }
-
-function promiseState (p) {
-  return p.then((val) => ({state: 'resolved', val}))
-          .catch((e) => ({state: 'rejected', val: e}))
-}
-

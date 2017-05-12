@@ -2,7 +2,6 @@ const gPalette = require('google-material-color-palette-json')
 const gm = require('gm').subClass({imageMagick: true})
 const forEach = require('@f/foreach')
 const reduce = require('@f/reduce')
-const fs = require('node-fs-extra')
 const Promise = require('bluebird')
 const _ = require('lodash')
 
@@ -26,7 +25,6 @@ const baseColors = _.merge(pal, {
   white: '#fff',
   grey: '#ddd',
   grey_medium: '#888',
-  white: '#fff',
   offblack: '#333'
 })
 
