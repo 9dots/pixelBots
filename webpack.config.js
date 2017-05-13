@@ -19,8 +19,8 @@ function config (env) {
   return {
     entry: {
       main: [
-        'webpack-dev-server/client?http://localhost:8080',
-        'webpack/hot/only-dev-server',
+        // 'webpack-dev-server/client?http://localhost:8080',
+        // 'webpack/hot/only-dev-server',
         './lib/client/index.js'
       ],
       vendor: [
@@ -72,25 +72,25 @@ function config (env) {
       net: net,
       fs: fs
     },
-		devtool: 'eval-source-map'
+		// devtool: 'eval-source-map'
   }
 }
 
-var myServer = new WebpackDevServer(webpack(config()), {
-  host: 'localhost',
-  hot: true,
-  inline: true,
-  contentBase: 'public',
-  historyApiFallback: {
-    rewrites: [{
-      from: /([\d\w\-\.]*)(\.js$|\.json$)/,
-      to: context => '/' + context.match[0]
-    }, {
-      from: /([\d\w]*\.)([\d\w]*\.)([\d\w\-]*)(\.js$|\.json$)/,
-      to: context => '/' + console.log('here\n\n\n', context)
-    }],
-    index: '/index.html'
-  }
-}).listen(8080)
+// var myServer = new WebpackDevServer(webpack(config()), {
+//   host: 'localhost',
+//   hot: true,
+//   inline: true,
+//   contentBase: 'public',
+//   historyApiFallback: {
+//     rewrites: [{
+//       from: /([\d\w\-\.]*)(\.js$|\.json$)/,
+//       to: context => '/' + context.match[0]
+//     }, {
+//       from: /([\d\w]*\.)([\d\w]*\.)([\d\w\-]*)(\.js$|\.json$)/,
+//       to: context => '/' + console.log('here\n\n\n', context)
+//     }],
+//     index: '/index.html'
+//   }
+// }).listen(8080)
 
 module.exports = config
