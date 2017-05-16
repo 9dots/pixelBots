@@ -28,6 +28,7 @@
     "co": "^4.6.0",
     "cors": "^2.8.3",
     "eval": "^0.1.2",
+    "express": "^4.15.2",
     "firebase-admin": "^4.2.1",
     "firebase-functions": "^0.5.7",
     "gm": "^1.23.0",
