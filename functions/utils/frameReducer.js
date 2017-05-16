@@ -53,6 +53,8 @@ var _setProp = require('@f/set-prop');
 
 var _setProp2 = _interopRequireDefault(_setProp);
 
+var srand = require('@f/srand')
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
@@ -76,7 +78,7 @@ function frameReducer(frame, action) {
     case 'getCurrentColor':
       return [frame, getCurrentColor(frame)];
     case 'createRand':
-      return [frame, createRand.apply(undefined, (0, _toConsumableArray3.default)(action.payload))];
+      return [frame, createRand.apply(undefined, [frame.randSeed, (0, _toConsumableArray3.default)(action.payload)])];
     default:
       return [frame];
   }
@@ -109,13 +111,13 @@ function animalTurn(state, id, turn) {
   });
 }
 
-function createRand(lineNum, min, max) {
+function createRand (seed, args) {
+  const [lineNum, min, max] = args
   if (max === undefined) {
-    max = min;
-    min = 0;
+    max = min
+    min = 0
   }
-
-  return Math.floor(Math.random() * (max - min)) + min;
+  return Math.floor(srand(seed)(min, max))
 }
 
 function getCurrentColor(state) {

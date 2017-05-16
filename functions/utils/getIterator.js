@@ -25,15 +25,10 @@ function wrap (code, api) {
 
 module.exports = function (code, api) {
   const newCode = sequenceToCode(code)
-  console.log('newcode', newCode)
   const autoYielded = autoYield(newCode, api)
-  console.log('autoyielded', autoYielded)
   const wrapped = wrap(autoYielded, api)
-  console.log('wrapped', wrapped)
 
   const evaled = nodeEval(wrapped, 'file.js', {api})
-
-  console.log('evaled', evaled)
 
   return () => {
     try {
