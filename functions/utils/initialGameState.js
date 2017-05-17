@@ -1,3 +1,4 @@
+console.log('initial game state')
 module.exports = ({
   type: 'write',
   runners: null,
