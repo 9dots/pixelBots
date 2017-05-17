@@ -4,6 +4,8 @@ const checkCorrect = require('../utils/checkCorrect')
 const getIterator = require('../utils/getIterator')
 const functions = require('firebase-functions')
 const cors = require('cors')()
+const objEqual = require('@f/equal-obj')
+const {Map} = require('immutable')
 
   let incorrect = false
 
@@ -15,23 +17,32 @@ const cors = require('cors')()
   const userCode = getIterator(animals[active].sequence, animalApis[animals[active].type].default(active))
   const solutionIterator = getIterator(solution[0].sequence, animalApis[solution[0].type].default(0))
   const failedSeeds = []
+  const uniquePaints = []
+  const correctSeeds = []
 
-  for (let i = 0; i < 100; i++) {
-    const painted = createPainted(Object.assign({}, base, {
-      startGrid: {},
-      animals: animals.map(a => Object.assign({}, a, {current: a.initial})),
-      randSeed: i
-    }), startCode)
+console.time('check')
+for (let i = 0; i < 100; i++) {
+  const painted = createPainted(Object.assign({}, base, {
+    startGrid: {},
+    animals: animals.map(a => Object.assign({}, a, {current: a.initial})),
+    randSeed: i
+  }), startCode)
+  if (uniquePaints.every((paint) => !objEqual(paint, painted))) {
+    uniquePaints.push(painted)
     const answer = getLastFrame(Object.assign({}, base, {painted}), userCode)
     const solutionState = Object.assign({}, props, {startGrid: painted})
     if (!checkCorrect(answer, generateSolution(solutionState, solutionIterator))) {
-      failedSeeds.push(i)
+      failedSeeds.push({painted, seed: i})
+    } else {
+      correctSeeds.push({painted, seed: i})
     }
   }
+}
+  console.timeEnd('check')
   if (failedSeeds.length > 0) {
-    console.log({status: 'failed', failedSeeds})
+    console.log({status: 'failed', failedSeeds, correctSeeds})
   } else {
-    console.log({status: 'success'})
+    console.log({status: 'success', correctSeeds})
   }
 
 function createPainted (state, code) {
@@ -97,7 +108,7 @@ repeat(n, () => {
         },
         'sequence': `up()
 right()
-repeat(3, () => {
+repeat(2, () => {
   ifColor('black', () => {
     up()
     paint()
