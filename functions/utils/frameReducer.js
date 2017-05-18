@@ -78,7 +78,7 @@ function frameReducer(frame, action) {
     case 'getCurrentColor':
       return [frame, getCurrentColor(frame)];
     case 'createRand':
-      return [frame, createRand.apply(undefined, [frame.randSeed, (0, _toConsumableArray3.default)(action.payload)])];
+      return [frame, createRand.apply(undefined, [frame.rand, (0, _toConsumableArray3.default)(action.payload)])];
     default:
       return [frame];
   }
@@ -111,13 +111,12 @@ function animalTurn(state, id, turn) {
   });
 }
 
-function createRand (seed, args) {
-  const [lineNum, min, max] = args
+function createRand (rand, [lineNum, min, max]) {
   if (max === undefined) {
     max = min
     min = 0
   }
-  return Math.floor(srand(seed)(min, max))
+  return Math.floor(rand(max, min))
 }
 
 function getCurrentColor(state) {
@@ -272,17 +271,23 @@ function isEqualSequence(a, b) {
   return (0, _deepEqual2.default)(getSequences(a), getSequences(b));
 }
 
-function getLastFrame(state, code) {
-  var frames = createFrames((0, _extends4.default)({}, state, {
+function getLastFrame (state, code) {
+  const frames = createFrames(Object.assign({}, state, {
+    animals: state.animals.map(a => Object.assign({}, a, {current: a.initial}))
+  }), code)
+  return frames ? frames[frames.length - 1].painted : {}
+}
+
+function getLastTeacherFrame(state, code) {
+  return geLastFrame((0, _extends4.default)({}, state, {
     animals: [{
-      current: {
+      initial: {
         rot: 0,
         location: [state.levelSize[0] - 1, 0]
       },
       type: 'teacherBot'
     }]
   }), code);
-  return frames ? frames[frames.length - 1].painted : {};
 }
 
 function generatePainted(state, code) {
