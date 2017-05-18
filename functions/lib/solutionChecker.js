@@ -16,11 +16,20 @@ router.get('*', (req, res) => {
 router.post('/', (req, res) => {
   res.set({'Cache-Control': 'no-cache'})
   const props = req.body.props
-  const {active, animals, solution, initialData} = props
-
-  const base = Object.assign({}, props, {painted: {}})
-  const startCode = getIterator(initialData.initialPainted, animalApis.teacherBot.default(1))
+  const {active, animals, solution, initialData, targetPainted} = props
   const userCode = getIterator(animals[active].sequence, animalApis[animals[active].type].default(active))
+  const base = Object.assign({}, props, {painted: {}})
+
+  if (targetPainted && Object.keys(targetPainted).length > 0) {
+    const painted = initialData.initialPainted || {}
+    const answer = getLastFrame(Object.assign({}, base, {painted}), userCode)
+    if (checkCorrect(answer, targetPainted)) {
+      return res.status(200).send({status: 'success', correctSeeds: [{painted}]})
+    }
+    return res.status(200).send({status: 'failed', failedSeeds: [{painted}]})
+  }
+
+  const startCode = getIterator(initialData.initialPainted, animalApis.teacherBot.default(1))
   const solutionIterator = getIterator(solution[0].sequence, animalApis[solution[0].type].default(0))
   const uniquePaints = []
   const failedSeeds = []

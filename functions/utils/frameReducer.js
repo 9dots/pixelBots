@@ -272,17 +272,23 @@ function isEqualSequence(a, b) {
   return (0, _deepEqual2.default)(getSequences(a), getSequences(b));
 }
 
-function getLastFrame(state, code) {
-  var frames = createFrames((0, _extends4.default)({}, state, {
+function getLastFrame (state, code) {
+  const frames = createFrames(Object.assign({}, state, {
+    animals: state.animals.map(a => Object.assign({}, a, {current: a.initial}))
+  }), code)
+  return frames ? frames[frames.length - 1].painted : {}
+}
+
+function getLastTeacherFrame(state, code) {
+  return geLastFrame((0, _extends4.default)({}, state, {
     animals: [{
-      current: {
+      initial: {
         rot: 0,
         location: [state.levelSize[0] - 1, 0]
       },
       type: 'teacherBot'
     }]
   }), code);
-  return frames ? frames[frames.length - 1].painted : {};
 }
 
 function generatePainted(state, code) {

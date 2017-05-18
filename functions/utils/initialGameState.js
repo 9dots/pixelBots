@@ -1,4 +1,3 @@
-console.log('initial game state')
 module.exports = ({
   type: 'write',
   runners: null,
@@ -8,6 +7,8 @@ module.exports = ({
   levelSize: [5, 5],
   painted: {},
   selected: [],
+  initialData: undefined,
+  solution: undefined,
   targetPainted: {},
   initialPainted: {},
   editorState: [],
