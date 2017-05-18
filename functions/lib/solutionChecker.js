@@ -6,6 +6,7 @@ const functions = require('firebase-functions')
 const cors = require('cors')({origin: true})
 const objEqual = require('@f/equal-obj')
 const express = require('express')
+const srand = require('@f/srand')
 
 const router = new express.Router()
 
@@ -19,14 +20,14 @@ router.post('/', (req, res) => {
   const {active, animals, solution, initialData, targetPainted} = props
   const userCode = getIterator(animals[active].sequence, animalApis[animals[active].type].default(active))
   const base = Object.assign({}, props, {painted: {}})
-
   if (targetPainted && Object.keys(targetPainted).length > 0) {
     const painted = initialData.initialPainted || {}
     const answer = getLastFrame(Object.assign({}, base, {painted}), userCode)
+    const seed = [{painted, userSolution: answer}]
     if (checkCorrect(answer, targetPainted)) {
-      return res.status(200).send({status: 'success', correctSeeds: [{painted}]})
+      return res.status(200).send({status: 'success', correctSeeds: seed})
     }
-    return res.status(200).send({status: 'failed', failedSeeds: [{painted}]})
+    return res.status(200).send({status: 'failed', failedSeeds: seed})
   }
 
   const startCode = getIterator(initialData.initialPainted, animalApis.teacherBot.default(1))
@@ -34,21 +35,20 @@ router.post('/', (req, res) => {
   const uniquePaints = []
   const failedSeeds = []
   const correctSeeds = []
-
   for (let i = 0; i < 100; i++) {
     const painted = createPainted(Object.assign({}, base, {
       startGrid: {},
       animals: animals.map(a => Object.assign({}, a, {current: a.initial})),
-      randSeed: i
+      rand: srand(i)
     }), startCode)
     if (uniquePaints.every((paint) => !objEqual(paint, painted))) {
       uniquePaints.push(painted)
       const answer = getLastFrame(Object.assign({}, base, {painted}), userCode)
       const solutionState = Object.assign({}, props, {startGrid: painted})
       if (!checkCorrect(answer, generateSolution(solutionState, solutionIterator))) {
-        failedSeeds.push({painted, seed: i})
+        failedSeeds.push({painted, userSolution: answer, seed: i})
       } else {
-        correctSeeds.push({painted, seed: i})
+        correctSeeds.push({painted, userSolution: answer, seed: i})
       }
     }
   }

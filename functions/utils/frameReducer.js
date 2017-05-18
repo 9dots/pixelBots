@@ -78,7 +78,7 @@ function frameReducer(frame, action) {
     case 'getCurrentColor':
       return [frame, getCurrentColor(frame)];
     case 'createRand':
-      return [frame, createRand.apply(undefined, [frame.randSeed, (0, _toConsumableArray3.default)(action.payload)])];
+      return [frame, createRand.apply(undefined, [frame.rand, (0, _toConsumableArray3.default)(action.payload)])];
     default:
       return [frame];
   }
@@ -111,13 +111,12 @@ function animalTurn(state, id, turn) {
   });
 }
 
-function createRand (seed, args) {
-  const [lineNum, min, max] = args
+function createRand (rand, [lineNum, min, max]) {
   if (max === undefined) {
     max = min
     min = 0
   }
-  return Math.floor(srand(seed)(min, max))
+  return Math.floor(rand(max, min))
 }
 
 function getCurrentColor(state) {

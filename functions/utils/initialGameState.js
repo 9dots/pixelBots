@@ -1,18 +1,18 @@
-module.exports = ({
-  type: 'write',
-  runners: null,
-  title: 'Untitled',
+module.exports = {
   description: 'Use code to draw the image.',
   inputType: 'icons',
-  levelSize: [5, 5],
-  painted: {},
-  selected: [],
-  initialData: undefined,
-  solution: undefined,
-  targetPainted: {},
   initialPainted: {},
+  title: 'Untitled',
+  levelSize: [5, 5],
+  initialData: null,
+  targetPainted: {},
   editorState: [],
   activeLine: 0,
+  type: 'write',
+  runners: null,
+  selected: [],
+  solution: '',
+  painted: {},
   cursor: 0,
   active: 0,
   steps: 0,
@@ -32,4 +32,4 @@ module.exports = ({
       rot: 0
     }
   }]
-})
+}
