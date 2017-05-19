@@ -2,7 +2,6 @@ const gPalette = require('google-material-color-palette-json')
 const gm = require('gm').subClass({imageMagick: true})
 const forEach = require('@f/foreach')
 const reduce = require('@f/reduce')
-const fs = require('node-fs-extra')
 const Promise = require('bluebird')
 const _ = require('lodash')
 
@@ -26,7 +25,6 @@ const baseColors = _.merge(pal, {
   white: '#fff',
   grey: '#ddd',
   grey_medium: '#888',
-  white: '#fff',
   offblack: '#333'
 })
 
@@ -69,7 +67,6 @@ function append (imgs, file, ltr = false) {
 function playlistImage (name, imgs) {
   return new Promise((resolve, reject) => {
     const path = `/tmp/${name}`
-    console.log('playlist image', imgs)
     if (imgs.length < 4) {
       return resolve(imgs[0])
     }
@@ -88,7 +85,6 @@ function playlistImage (name, imgs) {
 
 function drawFrame (size, targetPainted, writePath, file) {
   return new Promise((resolve, reject) => {
-    console.log('target painted', targetPainted, 'size', size)
     forEach((color, key) => {
       const coords = key.split(',').map((coord) => parseInt(coord))
       file.fill(baseColors[color])
@@ -99,7 +95,6 @@ function drawFrame (size, targetPainted, writePath, file) {
         (coords[0] + 1) * size + coords[0]
       )
     }, targetPainted)
-    console.log('write path', writePath, file)
     file.write(writePath, function (err) {
       if (err) {
         console.warn(err)

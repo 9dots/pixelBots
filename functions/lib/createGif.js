@@ -1,13 +1,11 @@
-const {getActions, getFrames} = require('../utils/synchronousRunner')
-const initialGameState = require('../utils/initialGameState')
-const {getAndRunIterator} = require('../utils/getIterator')
-const sequenceToCode = require('../utils/sequenceToCode')
-const animalApis = require('../utils/animalApis/index')
+
+const animalApis = require('../utils/animalApis/index').default
+const {createPaintFrames} = require('../utils/frameReducer')
+const getIterator = require('../utils/getIterator')
 const {gifFrame} = require('../utils/createImage')
 const functions = require('firebase-functions')
 const createGif = require('../utils/createGif')
 const {upload} = require('../utils/storage')
-const cleanUp = require('../utils/cleanUp')
 const flatten = require('lodash/flatten')
 const admin = require('firebase-admin')
 const chunk = require('lodash/chunk')
@@ -17,6 +15,7 @@ const omit = require('@f/omit')
 const co = require('co')
 
 const RUN_TIME = 3
+const GIF_SIZE = 500
 const db = admin.database()
 const savedRef = db.ref('/saved')
 const gamesRef = db.ref('/games')
@@ -33,22 +32,21 @@ module.exports = functions.database.ref('/saved/{saveID}/completed')
           Promise.resolve(snap.val()),
           snap.val().gameRef
             ? gamesRef.child(snap.val().gameRef).once('value').then(snap => snap.val())
-            : Promise.reject()
+            : Promise.reject(new Error('no game'))
         ]))
-        .then(([{gridSize = 5, animals}, gameState]) => {
-          const timing = (gridSize * gridSize) / RUN_TIME
+        .then(([{animals}, gameState]) => {
+          const levelSize = gameState.levelSize[0]
+          const timing = (levelSize * levelSize) / RUN_TIME
           const delay = 100 / timing
-          const size = Math.floor(300 / gridSize)
-          const imageSize = Number(size * gridSize) + Number(gridSize - 1)
+          const size = Math.floor(GIF_SIZE / levelSize)
+          const imageSize = Number(size * levelSize) + Number(levelSize - 1)
           const {sequence} = animals[0]
           fs.mkdirsSync(`/tmp/${saveID}`)
-          const code = sequenceToCode(sequence)
           const initState = Object.assign({}, gameState, {
             animals: animals.map(a => Object.assign({}, a, {current: a.initial}))
           })
-          const it = getAndRunIterator(code, animalApis[animals[0].type].default(0))
-          const actions = getActions(it)
-          const frames = getFrames(actions, initState)
+          const it = getIterator(sequence, animalApis[animals[0].type].default(0))
+          const frames = createPaintFrames(initState, it)
           const adjusted = frames.map((frame, i, arr) => {
             const next = arr[i + 1]
               ? arr[i + 1].frame
@@ -61,7 +59,6 @@ module.exports = functions.database.ref('/saved/{saveID}/completed')
             .then(updateGame(saveID))
             .then(success)
             .catch(failed)
-
 
           function frameChunks (chunks) {
             return new Promise((resolve, reject) => {
@@ -130,9 +127,3 @@ function updateGame (saveID) {
     })
   }
 }
-
-function promiseState (p) {
-  return p.then((val) => ({state: 'resolved', val}))
-          .catch((e) => ({state: 'rejected', val: e}))
-}
-

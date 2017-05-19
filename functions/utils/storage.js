@@ -3,7 +3,6 @@ var storage = require('@google-cloud/storage')({
   keyFilename: './serviceAccount.json'
 })
 const Promise = require('bluebird')
-var fs = require('fs')
 
 const bucket = storage.bucket('artbot-dev.appspot.com')
 
@@ -18,8 +17,7 @@ function downloadFromBucket (dir, name) {
 
 function uploadToBucket (img) {
   return new Promise((resolve, reject) => {
-    console.log(img)
-    if (!img) return reject('no image')
+    if (!img) return reject(new Error('no image'))
     bucket.upload(img, {resumable: false}, (err, file) => {
       if (err) {
         if (err.code === 'ECONNRESET') {

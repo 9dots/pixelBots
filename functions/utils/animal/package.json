@@ -1,0 +1,5 @@
+{
+  "name": "animal",
+  "main": "animal.js",
+  "browser": "animal.js"
+}
