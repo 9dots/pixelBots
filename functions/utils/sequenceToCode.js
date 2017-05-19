@@ -53,7 +53,7 @@ function blocksToCode(blocks) {
         return tabs(level++) + 'repeat(' + payload[0] + ', function * () {';
       case 'block_end':
         return tabs(--level) + '})';
-      case 'if_color':
+      case 'ifColor':
         return tabs(level++) + 'ifColor(\'' + payload[0] + '\', function * () {';
       default:
         throw new Error('blocksToCode: encountered unknown block type (' + type + ')');

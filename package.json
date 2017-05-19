@@ -34,6 +34,7 @@
     "@f/find": "^1.0.0",
     "@f/find-index": "^1.0.0",
     "@f/flatten-gen": "^2.0.0",
+    "@f/identity": "^1.1.1",
     "@f/is-generator-object": "^1.3.0",
     "@f/is-promise": "^1.1.1",
     "@f/map-values": "^1.0.0",
