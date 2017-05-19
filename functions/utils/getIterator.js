@@ -27,7 +27,6 @@ module.exports = function (code, api) {
   const newCode = sequenceToCode(code)
   const autoYielded = autoYield(newCode, api)
   const wrapped = wrap(autoYielded, api)
-
   const evaled = nodeEval(wrapped, 'file.js', {api})
 
   return () => {

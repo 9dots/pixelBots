@@ -3,11 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.speed = exports.imageURL = exports.docs = undefined;
+exports.speed = exports.gameImage = exports.imageURL = exports.docs = undefined;
 
 var _actions = require('../actions');
 
-var _getDirection = require('../../animal').getDirection;
+var _getDirection = require('../../getDirection');
+
+var _getDirection2 = _interopRequireDefault(_getDirection);
 
 var _docs = require('./docs');
 
@@ -15,7 +17,8 @@ var _docs2 = _interopRequireDefault(_docs);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var imageURL = '/animalImages/crocodile.jpg';
+var imageURL = '/animalImages/crocodile.png';
+var gameImage = '/animalImages/crocodiletop.png';
 var speed = 750;
 
 function wrap(id) {
@@ -71,4 +74,5 @@ function getNewLocation(steps) {
 exports.default = wrap;
 exports.docs = _docs2.default;
 exports.imageURL = imageURL;
+exports.gameImage = gameImage;
 exports.speed = speed;
