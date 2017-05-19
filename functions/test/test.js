@@ -6,38 +6,47 @@ const functions = require('firebase-functions')
 const cors = require('cors')()
 const objEqual = require('@f/equal-obj')
 const {Map} = require('immutable')
+const srand = require('@f/srand')
 
   let incorrect = false
 
   const props = getProps()
-  const {active, animals, solution, initialData} = props
-
-  const base = Object.assign({}, props, {painted: {}})
-  const startCode = getIterator(initialData.initialPainted, animalApis.teacherBot.default(1))
+  const {active, animals, solution, initialData, targetPainted} = props
   const userCode = getIterator(animals[active].sequence, animalApis[animals[active].type].default(active))
-  const solutionIterator = getIterator(solution[0].sequence, animalApis[solution[0].type].default(0))
-  const failedSeeds = []
-  const uniquePaints = []
-  const correctSeeds = []
-
-console.time('check')
-for (let i = 0; i < 100; i++) {
-  const painted = createPainted(Object.assign({}, base, {
-    startGrid: {},
-    animals: animals.map(a => Object.assign({}, a, {current: a.initial})),
-    randSeed: i
-  }), startCode)
-  if (uniquePaints.every((paint) => !objEqual(paint, painted))) {
-    uniquePaints.push(painted)
+  const base = Object.assign({}, props, {painted: {}})
+  console.log(targetPainted, Object.keys(targetPainted).length > 0)
+  if (targetPainted && Object.keys(targetPainted).length > 0) {
+    const painted = initialData.initialPainted || {}
     const answer = getLastFrame(Object.assign({}, base, {painted}), userCode)
-    const solutionState = Object.assign({}, props, {startGrid: painted})
-    if (!checkCorrect(answer, generateSolution(solutionState, solutionIterator))) {
-      failedSeeds.push({painted, seed: i})
-    } else {
-      correctSeeds.push({painted, seed: i})
+    const seed = [{painted, userSolution: answer}]
+    if (checkCorrect(answer, targetPainted)) {
+      // return res.status(200).send({status: 'success', correctSeeds: seed})
+    }
+    // return res.status(200).send({status: 'failed', failedSeeds: seed})
+  }
+
+  const startCode = getIterator(initialData.initialPainted, animalApis.teacherBot.default(1))
+  const solutionIterator = getIterator(solution[0].sequence, animalApis[solution[0].type].default(0))
+  const uniquePaints = []
+  const failedSeeds = []
+  const correctSeeds = []
+  for (let i = 0; i < 100; i++) {
+    const painted = createPainted(Object.assign({}, base, {
+      startGrid: {},
+      animals: animals.map(a => Object.assign({}, a, {current: a.initial})),
+      rand: srand(i)
+    }), startCode)
+    if (uniquePaints.every((paint) => !objEqual(paint, painted))) {
+      uniquePaints.push(painted)
+      const answer = getLastFrame(Object.assign({}, base, {painted}), userCode)
+      const solutionState = Object.assign({}, props, {startGrid: painted})
+      if (!checkCorrect(answer, generateSolution(solutionState, solutionIterator))) {
+        failedSeeds.push({painted, userSolution: answer, seed: i})
+      } else {
+        correctSeeds.push({painted, userSolution: answer, seed: i})
+      }
     }
   }
-}
   console.timeEnd('check')
   if (failedSeeds.length > 0) {
     console.log({status: 'failed', failedSeeds, correctSeeds})
