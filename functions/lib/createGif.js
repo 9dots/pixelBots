@@ -1,6 +1,6 @@
 
+const {createPaintFrames, createFrames} = require('../utils/frameReducer')
 const animalApis = require('../utils/animalApis/index').default
-const {createPaintFrames} = require('../utils/frameReducer')
 const getIterator = require('../utils/getIterator')
 const {gifFrame} = require('../utils/createImage')
 const functions = require('firebase-functions')
@@ -11,6 +11,7 @@ const admin = require('firebase-admin')
 const chunk = require('lodash/chunk')
 const fs = require('node-fs-extra')
 const Promise = require('bluebird')
+const srand = require('@f/srand')
 const omit = require('@f/omit')
 const co = require('co')
 
@@ -34,19 +35,35 @@ module.exports = functions.database.ref('/saved/{saveID}/completed')
             ? gamesRef.child(snap.val().gameRef).once('value').then(snap => snap.val())
             : Promise.reject(new Error('no game'))
         ]))
-        .then(([{animals}, gameState]) => {
+        .then(([savedGame, gameState]) => {
           const levelSize = gameState.levelSize[0]
           const timing = (levelSize * levelSize) / RUN_TIME
           const delay = 100 / timing
+          const {animals} = gameState.type === 'read' ? gameState : savedGame
           const size = Math.floor(GIF_SIZE / levelSize)
           const imageSize = Number(size * levelSize) + Number(levelSize - 1)
-          const {sequence} = animals[0]
+          const teacherApi = animalApis.teacherBot.default(0)
+          const startCode = getIterator(gameState.initialPainted, teacherApi)
+          const initialPainted = gameState.advanced
+            ? createPainted(Object.assign({}, gameState, {
+                painted: {},
+                startGrid: {},
+                animals: animals.filter(a => a.type === 'teacherBot').map(a => Object.assign({}, a, {current: a.initial})),
+                rand: srand(1)
+              }), startCode)
+            : startCode
+          const {sequence} = gameState.type === 'read'
+            ? gameState.animals[0]
+            : animals[0]
           fs.mkdirsSync(`/tmp/${saveID}`)
           const initState = Object.assign({}, gameState, {
-            animals: animals.map(a => Object.assign({}, a, {current: a.initial}))
+            painted: initialPainted,
+            animals: animals.map(a => Object.assign({}, a, {
+              current: a.initial
+            }))
           })
           const it = getIterator(sequence, animalApis[animals[0].type].default(0))
-          const frames = createPaintFrames(initState, it)
+          const frames = [Object.assign({}, initialPainted, {frame: 0})].concat(createPaintFrames(initState, it))
           const adjusted = frames.map((frame, i, arr) => {
             const next = arr[i + 1]
               ? arr[i + 1].frame
@@ -126,4 +143,8 @@ function updateGame (saveID) {
       'meta/animatedGif': url
     })
   }
+}
+
+function createPainted (state, code) {
+  return createFrames(state, code).pop().painted
 }
