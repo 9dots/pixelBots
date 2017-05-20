@@ -1,4 +1,4 @@
-const {generatePainted, createFrames, getLastFrame} = require('../utils/frameReducer')
+const {generatePainted, createFrames, getLastFrame, createPaintFrames} = require('../utils/frameReducer')
 const animalApis = require('../utils/animalApis/index').default
 const checkCorrect = require('../utils/checkCorrect')
 const getIterator = require('../utils/getIterator')
@@ -11,48 +11,53 @@ const srand = require('@f/srand')
   let incorrect = false
 
   const props = getProps()
+  // const {active, animals, solution, initialData, targetPainted} = props
+  // const userCode = getIterator(animals[active].sequence, animalApis[animals[active].type].default(active))
+
+  // createPaintFrames(props, userCode)
   const {active, animals, solution, initialData, targetPainted} = props
   const userCode = getIterator(animals[active].sequence, animalApis[animals[active].type].default(active))
   const base = Object.assign({}, props, {painted: {}})
-  console.log(targetPainted, Object.keys(targetPainted).length > 0)
   if (targetPainted && Object.keys(targetPainted).length > 0) {
     const painted = initialData.initialPainted || {}
     const answer = getLastFrame(Object.assign({}, base, {painted}), userCode)
+    console.log('painted', painted, 'answer', answer)
+    // console.log(answer)
     const seed = [{painted, userSolution: answer}]
     if (checkCorrect(answer, targetPainted)) {
-      // return res.status(200).send({status: 'success', correctSeeds: seed})
+      console.log({status: 'success', correctSeeds: seed})
     }
-    // return res.status(200).send({status: 'failed', failedSeeds: seed})
-  }
-
-  const startCode = getIterator(initialData.initialPainted, animalApis.teacherBot.default(1))
-  const solutionIterator = getIterator(solution[0].sequence, animalApis[solution[0].type].default(0))
-  const uniquePaints = []
-  const failedSeeds = []
-  const correctSeeds = []
-  for (let i = 0; i < 100; i++) {
-    const painted = createPainted(Object.assign({}, base, {
-      startGrid: {},
-      animals: animals.map(a => Object.assign({}, a, {current: a.initial})),
-      rand: srand(i)
-    }), startCode)
-    if (uniquePaints.every((paint) => !objEqual(paint, painted))) {
-      uniquePaints.push(painted)
-      const answer = getLastFrame(Object.assign({}, base, {painted}), userCode)
-      const solutionState = Object.assign({}, props, {startGrid: painted})
-      if (!checkCorrect(answer, generateSolution(solutionState, solutionIterator))) {
-        failedSeeds.push({painted, userSolution: answer, seed: i})
-      } else {
-        correctSeeds.push({painted, userSolution: answer, seed: i})
+    console.log({status: 'failed', failedSeeds: seed})
+  } else {
+    const startCode = getIterator(initialData.initialPainted, animalApis.teacherBot.default(1))
+    const solutionIterator = getIterator(solution[0].sequence, animalApis[solution[0].type].default(0))
+    const uniquePaints = []
+    const failedSeeds = []
+    const correctSeeds = []
+    for (let i = 0; i < 100; i++) {
+      const painted = createPainted(Object.assign({}, base, {
+        startGrid: {},
+        animals: animals.filter(a => a.type === 'teacherBot').map(a => Object.assign({}, a, {current: a.initial})),
+        rand: srand(i)
+      }), startCode)
+      if (uniquePaints.every((paint) => !objEqual(paint, painted))) {
+        uniquePaints.push(painted)
+        const answer = getLastFrame(Object.assign({}, base, {painted}), userCode)
+        const solutionState = Object.assign({}, props, {startGrid: painted})
+        if (!checkCorrect(answer, generateSolution(solutionState, solutionIterator))) {
+          failedSeeds.push({painted, userSolution: answer, seed: i})
+        } else {
+          correctSeeds.push({painted, userSolution: answer, seed: i})
+        }
       }
     }
   }
   console.timeEnd('check')
-  if (failedSeeds.length > 0) {
-    console.log({status: 'failed', failedSeeds, correctSeeds})
-  } else {
-    console.log({status: 'success', correctSeeds})
-  }
+  // if (failedSeeds.length > 0) {
+  //   console.log({status: 'failed', failedSeeds, correctSeeds})
+  // } else {
+  //   console.log({status: 'success', correctSeeds})
+  // }
 
 function createPainted (state, code) {
   return createFrames(state, code).pop().painted
@@ -68,360 +73,254 @@ function generateSolution ({initialPainted, solution, levelSize, active, startGr
 
 function getProps () {
   return {
-    'type': 'write',
-    'runners': {},
-    'title': 'Untitled',
-    'description': 'Use code to draw the image.',
-    'inputType': 'code',
-    'levelSize': [
+  type: 'write',
+  runners: null,
+  title: 'Writing Review 1.4',
+  description: 'Use code to draw the image.',
+  inputType: 'icons',
+  levelSize: [
+    5,
+    5
+  ],
+  painted: {},
+  selected: [],
+  targetPainted: {
+    '2,1': 'black',
+    '2,2': 'black',
+    '3,1': 'black',
+    '3,2': 'black'
+  },
+  initialPainted: {},
+  initialData: {
+    type: 'write',
+    runners: null,
+    title: 'Writing Review 1.4',
+    description: 'Use code to draw the image.',
+    inputType: 'icons',
+    levelSize: [
       5,
       5
     ],
-    'painted': {
-      '3,1': 'black'
+    painted: {},
+    selected: [],
+    targetPainted: {
+      '2,1': 'black',
+      '2,2': 'black',
+      '3,1': 'black',
+      '3,2': 'black'
     },
-    'selected': [],
-    'targetPainted': {},
-    'initialPainted': `const n = rand(1, 4)
-
-repeat(n, () => {
-  up()
-  right()
-  paint()
-})`,
-    'editorState': [],
-    'activeLine': 6,
-    'cursor': 0,
-    'active': 0,
-    'steps': 0,
-    'speed': 1,
-    'frames': [],
-    'animals': [
+    initialPainted: {},
+    initialData: {},
+    solution: null,
+    editorState: [],
+    activeLine: 0,
+    cursor: 0,
+    active: 0,
+    steps: 0,
+    speed: 1,
+    frames: [],
+    animals: [
       {
-        'current': {
-          'dir': 0,
-          'location': [
-            4,
-            0
+        current: {
+          dir: 0,
+          location: [
+            2,
+            2
           ],
-          'rot': 0
+          rot: 0
         },
-        'hidden': false,
-        'initial': {
-          'dir': 0,
-          'location': [
-            4,
-            0
+        hidden: false,
+        initial: {
+          dir: 0,
+          location: [
+            2,
+            2
           ],
-          'rot': 0
+          rot: 0
         },
-        'sequence': `up()
-right()
-repeat(2, () => {
-  ifColor('black', () => {
-    up()
-    paint()
-    down()
-  })
-  right()
-  up()
-})`,
-        'type': 'penguin'
-      },
-      {
-        'current': {
-          'location': [
-            4,
-            0
-          ],
-          'rot': 0
-        },
-        'hidden': true,
-        'initial': {
-          'location': [
-            4,
-            0
-          ],
-          'rot': 0
-        },
-        'type': 'teacherBot'
-      }
-    ],
-    'advanced': true,
-    'creatorID': 'OomwNVi8vScVtr3h5dD7CHFkEj62',
-    'lastEdited': 1494700239712,
-    'meta': {
-      'attempts': 18,
-      'creatorID': 'OomwNVi8vScVtr3h5dD7CHFkEj62',
-      'lastEdited': 1494700243423,
-      'loc': 10,
-      'username': 'danleavitt0'
-    },
-    'shortLink': 'VZW2E',
-    'solution': [
-      {
-        'current': {
-          'dir': 0,
-          'location': [
-            4,
-            0
-          ],
-          'rot': 0
-        },
-        'hidden': true,
-        'initial': {
-          'dir': 0,
-          'location': [
-            4,
-            0
-          ],
-          'rot': 0
-        },
-        'sequence': "up()\nright()\nrepeat(3, () => {\n  ifColor('black', () => {\n    up()\n    paint()\n    down()\n  })\n  right()\n  up()\n})",
-        'type': 'penguin'
-      }
-    ],
-    'gameRef': '-Kjj74wHNVlVzGfB3vdf',
-    'uid': 'OomwNVi8vScVtr3h5dD7CHFkEj62',
-    'username': 'danleavitt0',
-    'initialData': {
-      'type': 'write',
-      'runners': null,
-      'title': 'Untitled',
-      'description': 'Use code to draw the image.',
-      'inputType': 'code',
-      'levelSize': [
-        5,
-        5
-      ],
-      'painted': false,
-      'selected': [],
-      'targetPainted': {},
-      'initialPainted': 'const n = rand(1, 4)\n\nrepeat(n, () => {\n  up()\n  right()\n  paint()\n})',
-      'editorState': [],
-      'activeLine': 0,
-      'cursor': 0,
-      'active': 0,
-      'steps': 0,
-      'speed': 1,
-      'frames': [],
-      'animals': [
-        {
-          'current': {
-            'dir': 0,
-            'location': [
-              2,
-              3
-            ],
-            'rot': 0
+        sequence: [
+          {
+            description: 'Paint the square the zebra is currently on black.',
+            type: 'paint',
+            usage: 'paint()'
           },
-          'hidden': true,
-          'initial': {
-            'dir': 0,
-            'location': [
-              4,
-              0
+          {
+            description: 'Move the zebra left one space.',
+            payload: [
+              1
             ],
-            'rot': 0
+            type: 'left',
+            usage: 'left()'
           },
-          'sequence': 'right()\nup()\nright()\npaint()\nright()\nup()\npaint()\nright()\nup()\npaint()\n',
-          'type': 'penguin'
-        },
-        {
-          'current': {
-            'location': [
-              4,
-              0
+          {
+            description: 'Paint the square the zebra is currently on black.',
+            type: 'paint',
+            usage: 'paint()'
+          },
+          {
+            description: 'Move the zebra down one space.',
+            payload: [
+              1
             ],
-            'rot': 0
+            type: 'down',
+            usage: 'down()'
           },
-          'hidden': true,
-          'initial': {
-            'location': [
-              4,
-              0
+          {
+            description: 'Paint the square the zebra is currently on black.',
+            type: 'paint',
+            usage: 'paint()'
+          },
+          {
+            description: 'Move the zebra right one space.',
+            payload: [
+              1
             ],
-            'rot': 0
-          },
-          'type': 'teacherBot'
-        }
-      ],
-      'advanced': true,
-      'creatorID': 'OomwNVi8vScVtr3h5dD7CHFkEj62',
-      'lastEdited': 1494700239712,
-      'meta': {
-        'attempts': 18,
-        'creatorID': 'OomwNVi8vScVtr3h5dD7CHFkEj62',
-        'lastEdited': 1494700243423,
-        'loc': 10,
-        'username': 'danleavitt0'
-      },
-      'shortLink': 'VZW2E',
-      'solution': [
-        {
-          'current': {
-            'dir': 0,
-            'location': [
-              4,
-              0
-            ],
-            'rot': 0
-          },
-          'hidden': true,
-          'initial': {
-            'dir': 0,
-            'location': [
-              4,
-              0
-            ],
-            'rot': 0
-          },
-          'sequence': "up()\nright()\nrepeat(1, () => {\n  ifColor('black', () => {\n    up()\n    paint()\n    down()\n  })\n  right()\n  up()\n})",
-          'type': 'penguin'
-        }
-      ],
-      'gameRef': '-Kjj74wHNVlVzGfB3vdf',
-      'uid': 'OomwNVi8vScVtr3h5dD7CHFkEj62',
-      'username': 'danleavitt0'
-    },
-    'pauseState': null,
-    'startGrid': {
-      '3,1': 'black'
-    },
-    'completed': false,
-    'running': false,
-    'hasRun': false,
-    'paints': 1,
-    'isDraft': false,
-    'game': {
-      'active': 0,
-      'activeLine': 0,
-      'advanced': true,
-      'animals': [
-        {
-          'current': {
-            'dir': 0,
-            'location': [
-              4,
-              0
-            ],
-            'rot': 0
-          },
-          'initial': {
-            'dir': 0,
-            'location': [
-              4,
-              0
-            ],
-            'rot': 0
-          },
-          'type': 'penguin'
-        }
-      ],
-      'creatorID': 'OomwNVi8vScVtr3h5dD7CHFkEj62',
-      'cursor': 0,
-      'description': 'Use code to draw the image.',
-      'initialPainted': 'const n = rand(1, 4)\n\nrepeat(n, () => {\n  up()\n  right()\n  paint()\n})',
-      'inputType': 'code',
-      'lastEdited': 1494633764753,
-      'levelSize': [
-        5,
-        5
-      ],
-      'meta': {
-        'animals': [
-          'penguin'
+            type: 'right',
+            usage: 'right()'
+          }
         ],
-        'creatorID': 'OomwNVi8vScVtr3h5dD7CHFkEj62',
-        'inputType': 'code',
-        'lastEdited': 1494633764753,
-        'title': 'Untitled'
+        type: 'zebra'
       },
-      'shortLink': 'VZW2E',
-      'solution': [
-        {
-          'current': {
-            'dir': 0,
-            'location': [
-              4,
-              0
-            ],
-            'rot': 0
-          },
-          'hidden': true,
-          'initial': {
-            'dir': 0,
-            'location': [
-              4,
-              0
-            ],
-            'rot': 0
-          },
-          'sequence': "up()\nright()\nrepeat(3, () => {\n  ifColor('black', () => {\n    up()\n    paint()\n    down()\n  })\n  right()\n  up()\n})",
-          'type': 'penguin'
-        }
-      ],
-      'speed': 1,
-      'steps': 0,
-      'title': 'Untitled',
-      'type': 'write'
+      {
+        current: {
+          location: [
+            4,
+            0
+          ],
+          rot: 0
+        },
+        hidden: true,
+        initial: {
+          location: [
+            4,
+            0
+          ],
+          rot: 0
+        },
+        type: 'teacherBot'
+      }
+    ],
+    completedBy: {
+      OomwNVi8vScVtr3h5dD7CHFkEj62: true,
+      yeIt9wAD5HOvDLATduyaA7ddSlF2: true
     },
-    'gameActions': {},
-    'savedGame': {
-      'animals': [
+    completions: 4,
+    creatorID: 'OomwNVi8vScVtr3h5dD7CHFkEj62',
+    lastEdited: 1495153702737,
+    meta: {
+      creatorID: 'OomwNVi8vScVtr3h5dD7CHFkEj62',
+      lastEdited: 1495153703567,
+      loc: 6,
+      username: 'danleavitt0'
+    },
+    name: '',
+    permissions: [
+      'Run Button',
+      'Edit Code'
+    ],
+    shortLink: 'JD22Y',
+    gameRef: '-KczEJM1qsXIMQWC4U-y',
+    uid: 'OomwNVi8vScVtr3h5dD7CHFkEj62',
+    username: 'danleavitt0',
+    solutionIterator: null,
+    ready: true
+  },
+  solution: null,
+  editorState: [],
+  activeLine: 0,
+  cursor: 0,
+  active: 0,
+  steps: 0,
+  speed: 1,
+  frames: [],
+  animals: [
+    {
+      current: {
+        dir: 0,
+        location: [
+          2,
+          2
+        ],
+        rot: 0
+      },
+      hidden: false,
+      initial: {
+        dir: 0,
+        location: [
+          2,
+          2
+        ],
+        rot: 0
+      },
+      sequence: [
         {
-          'current': {
-            'dir': 0,
-            'location': [
-              2,
-              3
-            ],
-            'rot': 0
-          },
-          'hidden': false,
-          'initial': {
-            'dir': 0,
-            'location': [
-              4,
-              0
-            ],
-            'rot': 0
-          },
-          'sequence': 'right()\nup()\nright()\npaint()\nright()\nup()\npaint()\nright()\nup()\npaint()\n',
-          'type': 'penguin'
+          usage: 'left()',
+          description: 'Move the zebra left one space.',
+          type: 'left',
+          payload: [
+            1
+          ]
         },
         {
-          'current': {
-            'location': [
-              4,
-              0
-            ],
-            'rot': 0
-          },
-          'hidden': true,
-          'initial': {
-            'location': [
-              4,
-              0
-            ],
-            'rot': 0
-          },
-          'type': 'teacherBot'
+          description: 'Paint the square the zebra is currently on black.',
+          type: 'paint',
+          usage: 'paint()'
+        },
+        {
+          description: 'Move the zebra left one space.',
+          payload: [
+            1
+          ],
+          type: 'left',
+          usage: 'left()'
+        },
+        {
+          description: 'Paint the square the zebra is currently on black.',
+          type: 'paint',
+          usage: 'paint()'
+        },
+        {
+          description: 'Move the zebra down one space.',
+          payload: [
+            1
+          ],
+          type: 'down',
+          usage: 'down()'
+        },
+        {
+          description: 'Paint the square the zebra is currently on black.',
+          type: 'paint',
+          usage: 'paint()'
+        },
+        {
+          description: 'Move the zebra right one space.',
+          payload: [
+            1
+          ],
+          type: 'right',
+          usage: 'right()'
         }
       ],
-      'creatorID': 'OomwNVi8vScVtr3h5dD7CHFkEj62',
-      'gameRef': '-Kjj74wHNVlVzGfB3vdf',
-      'lastEdited': 1494700239712,
-      'meta': {
-        'attempts': 18,
-        'creatorID': 'OomwNVi8vScVtr3h5dD7CHFkEj62',
-        'lastEdited': 1494700243423,
-        'loc': 10,
-        'username': 'danleavitt0'
-      },
-      'uid': 'OomwNVi8vScVtr3h5dD7CHFkEj62',
-      'username': 'danleavitt0'
+      type: 'zebra'
     },
-    'saveRef': '-Kjyntze8CwFN8cclsRt'
-  }
+    {
+      current: {
+        location: [
+          4,
+          0
+        ],
+        rot: 0
+      },
+      hidden: true,
+      initial: {
+        location: [
+          4,
+          0
+        ],
+        rot: 0
+      },
+      type: 'teacherBot'
+    }
+  ]
+}
 }

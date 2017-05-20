@@ -20,8 +20,10 @@ router.post('/', (req, res) => {
   const {active, animals, solution, initialData, targetPainted} = props
   const userCode = getIterator(animals[active].sequence, animalApis[animals[active].type].default(active))
   const base = Object.assign({}, props, {painted: {}})
+  console.log(targetPainted)
   if (targetPainted && Object.keys(targetPainted).length > 0) {
     const painted = initialData.initialPainted || {}
+    console.log('painted & sequence', painted, animals[active].sequence)
     const answer = getLastFrame(Object.assign({}, base, {painted}), userCode)
     const seed = [{painted, userSolution: answer}]
     if (checkCorrect(answer, targetPainted)) {
@@ -30,7 +32,7 @@ router.post('/', (req, res) => {
     return res.status(200).send({status: 'failed', failedSeeds: seed})
   }
 
-  const startCode = getIterator(initialData.initialPainted, animalApis.teacherBot.default(1))
+  const startCode = getIterator(initialData.initialPainted, animalApis.teacherBot.default(0))
   const solutionIterator = getIterator(solution[0].sequence, animalApis[solution[0].type].default(0))
   const uniquePaints = []
   const failedSeeds = []
@@ -38,7 +40,7 @@ router.post('/', (req, res) => {
   for (let i = 0; i < 100; i++) {
     const painted = createPainted(Object.assign({}, base, {
       startGrid: {},
-      animals: animals.map(a => Object.assign({}, a, {current: a.initial})),
+      animals: animals.filter(a => a.type === 'teacherBot').map(a => Object.assign({}, a, {current: a.initial})),
       rand: srand(i)
     }), startCode)
     if (uniquePaints.every((paint) => !objEqual(paint, painted))) {
