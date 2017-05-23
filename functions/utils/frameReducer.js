@@ -70,7 +70,6 @@ function frameReducer(frame, action) {
         var _action$payload = (0, _slicedToArray3.default)(action.payload, 2),
             id = _action$payload[0],
             getLocation = _action$payload[1];
-        console.log(id, getLocation)
         return [setAnimalPos(frame, id, computeLocation(frame, id, getLocation))];
       }
     case 'animalTurn':

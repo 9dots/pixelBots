@@ -43,9 +43,11 @@ router.post('/', (req, res) => {
       animals: animals.filter(a => a.type === 'teacherBot').map(a => Object.assign({}, a, {current: a.initial})),
       rand: srand(i)
     }), startCode)
+    console.log(`paint-${i}`, painted)
     if (uniquePaints.every((paint) => !objEqual(paint, painted))) {
       uniquePaints.push(painted)
       const answer = getLastFrame(Object.assign({}, base, {painted}), userCode)
+      console.log(`answer-${i}`, answer)
       const solutionState = Object.assign({}, props, {startGrid: painted})
       if (!checkCorrect(answer, generateSolution(solutionState, solutionIterator))) {
         failedSeeds.push({painted, userSolution: answer, seed: i})
