@@ -15,6 +15,7 @@ const srand = require('@f/srand')
   // const userCode = getIterator(animals[active].sequence, animalApis[animals[active].type].default(active))
 
   // createPaintFrames(props, userCode)
+  console.time('check')
   const {active, animals, solution, initialData, targetPainted} = props
   const userCode = getIterator(animals[active].sequence, animalApis[animals[active].type].default(active))
   const base = Object.assign({}, props, {painted: {}})
@@ -29,7 +30,7 @@ const srand = require('@f/srand')
     }
     console.log({status: 'failed', failedSeeds: seed})
   } else {
-    const startCode = getIterator(initialData.initialPainted, animalApis.teacherBot.default(1))
+    const startCode = getIterator(initialData.initialPainted, animalApis.teacherBot.default(0))
     const solutionIterator = getIterator(solution[0].sequence, animalApis[solution[0].type].default(0))
     const uniquePaints = []
     const failedSeeds = []
@@ -51,7 +52,9 @@ const srand = require('@f/srand')
         }
       }
     }
+    console.log('failed', failedSeeds, 'correct', correctSeeds)
   }
+
   console.timeEnd('check')
   // if (failedSeeds.length > 0) {
   //   console.log({status: 'failed', failedSeeds, correctSeeds})
@@ -73,254 +76,685 @@ function generateSolution ({initialPainted, solution, levelSize, active, startGr
 
 function getProps () {
   return {
-  type: 'write',
-  runners: null,
-  title: 'Writing Review 1.4',
-  description: 'Use code to draw the image.',
-  inputType: 'icons',
-  levelSize: [
+    "type":"write",
+    "runners":{
+    },
+    "title":"Untitled",
+    "description":"Use code to draw the image.",
+    "inputType":"icons",
+    "levelSize":[
     5,
     5
-  ],
-  painted: {},
-  selected: [],
-  targetPainted: {
-    '2,1': 'black',
-    '2,2': 'black',
-    '3,1': 'black',
-    '3,2': 'black'
-  },
-  initialPainted: {},
-  initialData: {
-    type: 'write',
-    runners: null,
-    title: 'Writing Review 1.4',
-    description: 'Use code to draw the image.',
-    inputType: 'icons',
-    levelSize: [
-      5,
-      5
     ],
-    painted: {},
-    selected: [],
-    targetPainted: {
-      '2,1': 'black',
-      '2,2': 'black',
-      '3,1': 'black',
-      '3,2': 'black'
+    "painted":{
+    "4,0":"black",
+    "3,1":"black"
     },
-    initialPainted: {},
-    initialData: {},
-    solution: null,
-    editorState: [],
-    activeLine: 0,
-    cursor: 0,
-    active: 0,
-    steps: 0,
-    speed: 1,
-    frames: [],
-    animals: [
-      {
-        current: {
-          dir: 0,
-          location: [
-            2,
-            2
-          ],
-          rot: 0
-        },
-        hidden: false,
-        initial: {
-          dir: 0,
-          location: [
-            2,
-            2
-          ],
-          rot: 0
-        },
-        sequence: [
-          {
-            description: 'Paint the square the zebra is currently on black.',
-            type: 'paint',
-            usage: 'paint()'
-          },
-          {
-            description: 'Move the zebra left one space.',
-            payload: [
-              1
-            ],
-            type: 'left',
-            usage: 'left()'
-          },
-          {
-            description: 'Paint the square the zebra is currently on black.',
-            type: 'paint',
-            usage: 'paint()'
-          },
-          {
-            description: 'Move the zebra down one space.',
-            payload: [
-              1
-            ],
-            type: 'down',
-            usage: 'down()'
-          },
-          {
-            description: 'Paint the square the zebra is currently on black.',
-            type: 'paint',
-            usage: 'paint()'
-          },
-          {
-            description: 'Move the zebra right one space.',
-            payload: [
-              1
-            ],
-            type: 'right',
-            usage: 'right()'
-          }
-        ],
-        type: 'zebra'
-      },
-      {
-        current: {
-          location: [
-            4,
-            0
-          ],
-          rot: 0
-        },
-        hidden: true,
-        initial: {
-          location: [
-            4,
-            0
-          ],
-          rot: 0
-        },
-        type: 'teacherBot'
-      }
+    "selected":{
+    },
+    "targetPainted":{
+    },
+    "initialPainted":{
+    "4,0":"black",
+    "3,1":"black"
+    },
+    "initialData":{
+    "type":"write",
+    "runners":null,
+    "title":"Untitled",
+    "description":"Use code to draw the image.",
+    "inputType":"icons",
+    "levelSize":[
+    5,
+    5
     ],
-    completedBy: {
-      OomwNVi8vScVtr3h5dD7CHFkEj62: true,
-      yeIt9wAD5HOvDLATduyaA7ddSlF2: true
+    "painted":false,
+    "selected":{
     },
-    completions: 4,
-    creatorID: 'OomwNVi8vScVtr3h5dD7CHFkEj62',
-    lastEdited: 1495153702737,
-    meta: {
-      creatorID: 'OomwNVi8vScVtr3h5dD7CHFkEj62',
-      lastEdited: 1495153703567,
-      loc: 6,
-      username: 'danleavitt0'
+    "targetPainted":{
     },
-    name: '',
-    permissions: [
-      'Run Button',
-      'Edit Code'
-    ],
-    shortLink: 'JD22Y',
-    gameRef: '-KczEJM1qsXIMQWC4U-y',
-    uid: 'OomwNVi8vScVtr3h5dD7CHFkEj62',
-    username: 'danleavitt0',
-    solutionIterator: null,
-    ready: true
-  },
-  solution: null,
-  editorState: [],
-  activeLine: 0,
-  cursor: 0,
-  active: 0,
-  steps: 0,
-  speed: 1,
-  frames: [],
-  animals: [
+    "initialPainted":"repeat(rand(1, 3), () => {\n  paint('black')\n  up()\n  right()\n})",
+    "initialData":{
+    },
+    "solution":[
     {
-      current: {
-        dir: 0,
-        location: [
-          2,
-          2
-        ],
-        rot: 0
-      },
-      hidden: false,
-      initial: {
-        dir: 0,
-        location: [
-          2,
-          2
-        ],
-        rot: 0
-      },
-      sequence: [
-        {
-          usage: 'left()',
-          description: 'Move the zebra left one space.',
-          type: 'left',
-          payload: [
-            1
-          ]
-        },
-        {
-          description: 'Paint the square the zebra is currently on black.',
-          type: 'paint',
-          usage: 'paint()'
-        },
-        {
-          description: 'Move the zebra left one space.',
-          payload: [
-            1
-          ],
-          type: 'left',
-          usage: 'left()'
-        },
-        {
-          description: 'Paint the square the zebra is currently on black.',
-          type: 'paint',
-          usage: 'paint()'
-        },
-        {
-          description: 'Move the zebra down one space.',
-          payload: [
-            1
-          ],
-          type: 'down',
-          usage: 'down()'
-        },
-        {
-          description: 'Paint the square the zebra is currently on black.',
-          type: 'paint',
-          usage: 'paint()'
-        },
-        {
-          description: 'Move the zebra right one space.',
-          payload: [
-            1
-          ],
-          type: 'right',
-          usage: 'right()'
-        }
-      ],
-      type: 'zebra'
+    "current":{
+    "dir":0,
+    "location":[
+    3,
+    1
+    ],
+    "rot":0
+    },
+    "hidden":false,
+    "initial":{
+    "dir":0,
+    "location":[
+    4,
+    0
+    ],
+    "rot":0
+    },
+    "sequence":[
+    {
+    "args":[
+    {
+    "default":"white",
+    "description":"The color to match",
+    "name":"color",
+    "type":"string",
+    "values":[
+    {
+    "name":"pink",
+    "value":"#e91e63"
     },
     {
-      current: {
-        location: [
-          4,
-          0
-        ],
-        rot: 0
-      },
-      hidden: true,
-      initial: {
-        location: [
-          4,
-          0
-        ],
-        rot: 0
-      },
-      type: 'teacherBot'
+    "name":"purple",
+    "value":"#9c27b0"
+    },
+    {
+    "name":"deepPurple",
+    "value":"#673ab7"
+    },
+    {
+    "name":"indigo",
+    "value":"#3f51b5"
+    },
+    {
+    "name":"blue",
+    "value":"#2196f3"
+    },
+    {
+    "name":"lightBlue",
+    "value":"#03a9f4"
+    },
+    {
+    "name":"cyan",
+    "value":"#00bcd4"
+    },
+    {
+    "name":"teal",
+    "value":"#009688"
+    },
+    {
+    "name":"green",
+    "value":"#4caf50"
+    },
+    {
+    "name":"lightGreen",
+    "value":"#8bc34a"
+    },
+    {
+    "name":"lime",
+    "value":"#cddc39"
+    },
+    {
+    "name":"yellow",
+    "value":"#ffeb3b"
+    },
+    {
+    "name":"amber",
+    "value":"#ffc107"
+    },
+    {
+    "name":"orange",
+    "value":"#ff9800"
+    },
+    {
+    "name":"deepOrange",
+    "value":"#ff5722"
+    },
+    {
+    "name":"brown",
+    "value":"#795548"
+    },
+    {
+    "name":"grey",
+    "value":"#9e9e9e"
+    },
+    {
+    "name":"blueGrey",
+    "value":"#607d8b"
+    },
+    {
+    "name":"black",
+    "value":"#000000"
+    },
+    {
+    "name":"white",
+    "value":"#FFFFFF"
     }
-  ]
+    ]
+    }
+    ],
+    "block":true,
+    "description":"conditional block",
+    "payload":[
+    "white"
+    ],
+    "type":"ifColor",
+    "usage":"ifColor(color, function(){ // code to execute // if the color matches })"
+    },
+    {
+    "description":"Move the pixelbot right `steps` space.",
+    "payload":[
+    1
+    ],
+    "type":"right",
+    "usage":"right(steps)"
+    },
+    {
+    "args":[
+    {
+    "default":"black",
+    "description":"The color to paint.",
+    "name":"color",
+    "type":"string",
+    "values":[
+    {
+    "name":"black",
+    "value":"#000000"
+    },
+    {
+    "name":"white",
+    "value":"#FFFFFF"
+    }
+    ]
+    }
+    ],
+    "description":"Paint the square the toucan is currently on `color`.",
+    "payload":[
+    "black"
+    ],
+    "type":"paint",
+    "usage":"paint(color)"
+    },
+    {
+    "type":"block_end"
+    },
+    {
+    "description":"Move the pixelbot right `steps` space.",
+    "payload":[
+    1
+    ],
+    "type":"right",
+    "usage":"right(steps)"
+    },
+    {
+    "args":[
+    {
+    "default":"black",
+    "description":"The color to paint.",
+    "name":"color",
+    "type":"string",
+    "values":[
+    {
+    "name":"black",
+    "value":"#000000"
+    },
+    {
+    "name":"white",
+    "value":"#FFFFFF"
+    }
+    ]
+    }
+    ],
+    "description":"Paint the square the toucan is currently on `color`.",
+    "payload":[
+    "black"
+    ],
+    "type":"paint",
+    "usage":"paint(color)"
+    }
+    ],
+    "type":"chameleon"
+    }
+    ],
+    "editorState":{
+    },
+    "activeLine":0,
+    "cursor":0,
+    "active":0,
+    "steps":0,
+    "speed":1,
+    "frames":{
+    },
+    "capabilities":{
+    "block_end":true,
+    "down":true,
+    "ifColor":[
+    true
+    ],
+    "left":true,
+    "paint":[
+    [
+    {
+    "name":"black",
+    "value":"#000000"
+    },
+    {
+    "name":"white",
+    "value":"#FFFFFF"
+    }
+    ]
+    ],
+    "repeat":[
+    true
+    ],
+    "right":true,
+    "up":true
+    },
+    "animals":[
+    {
+    "current":{
+    "dir":0,
+    "location":[
+    4,
+    0
+    ],
+    "rot":0
+    },
+    "hidden":true,
+    "initial":{
+    "dir":0,
+    "location":[
+    4,
+    0
+    ],
+    "rot":0
+    },
+    "sequence":[
+    {
+    "description":"Move the pixelbot up `steps` space.",
+    "payload":[
+    1
+    ],
+    "type":"up",
+    "usage":"up(steps)"
+    },
+    {
+    "description":"Move the pixelbot right `steps` space.",
+    "payload":[
+    1
+    ],
+    "type":"right",
+    "usage":"right(steps)"
+    },
+    {
+    "args":[
+    {
+    "default":"black",
+    "description":"The color to paint.",
+    "name":"color",
+    "type":"string",
+    "values":[
+    {
+    "name":"black",
+    "value":"#000000"
+    },
+    {
+    "name":"white",
+    "value":"#FFFFFF"
+    }
+    ]
+    }
+    ],
+    "description":"Paint the square the toucan is currently on `color`.",
+    "payload":[
+    "black"
+    ],
+    "type":"paint",
+    "usage":"paint(color)"
+    }
+    ],
+    "type":"chameleon"
+    },
+    {
+    "current":{
+    "location":[
+    4,
+    0
+    ],
+    "rot":0
+    },
+    "hidden":false,
+    "initial":{
+    "location":[
+    4,
+    0
+    ],
+    "rot":0
+    },
+    "type":"teacherBot"
+    }
+    ],
+    "advanced":true,
+    "creatorID":"OomwNVi8vScVtr3h5dD7CHFkEj62",
+    "lastEdited":1495574847454,
+    "meta":{
+    "creatorID":"OomwNVi8vScVtr3h5dD7CHFkEj62",
+    "lastEdited":1495574856204,
+    "loc":3,
+    "username":"danleavitt0"
+    },
+    "shortLink":"JNDOG",
+    "gameRef":"-Kkmytxo26tYFWa1feZJ",
+    "uid":"OomwNVi8vScVtr3h5dD7CHFkEj62",
+    "username":"danleavitt0",
+    "ready":true
+    },
+    "solution":[
+    {
+    "current":{
+    "dir":0,
+    "location":[
+    3,
+    1
+    ],
+    "rot":0
+    },
+    "hidden":false,
+    "initial":{
+    "dir":0,
+    "location":[
+    4,
+    0
+    ],
+    "rot":0
+    },
+    "sequence":[
+    {
+    "args":[
+    {
+    "default":"white",
+    "description":"The color to match",
+    "name":"color",
+    "type":"string",
+    "values":[
+    {
+    "name":"pink",
+    "value":"#e91e63"
+    },
+    {
+    "name":"purple",
+    "value":"#9c27b0"
+    },
+    {
+    "name":"deepPurple",
+    "value":"#673ab7"
+    },
+    {
+    "name":"indigo",
+    "value":"#3f51b5"
+    },
+    {
+    "name":"blue",
+    "value":"#2196f3"
+    },
+    {
+    "name":"lightBlue",
+    "value":"#03a9f4"
+    },
+    {
+    "name":"cyan",
+    "value":"#00bcd4"
+    },
+    {
+    "name":"teal",
+    "value":"#009688"
+    },
+    {
+    "name":"green",
+    "value":"#4caf50"
+    },
+    {
+    "name":"lightGreen",
+    "value":"#8bc34a"
+    },
+    {
+    "name":"lime",
+    "value":"#cddc39"
+    },
+    {
+    "name":"yellow",
+    "value":"#ffeb3b"
+    },
+    {
+    "name":"amber",
+    "value":"#ffc107"
+    },
+    {
+    "name":"orange",
+    "value":"#ff9800"
+    },
+    {
+    "name":"deepOrange",
+    "value":"#ff5722"
+    },
+    {
+    "name":"brown",
+    "value":"#795548"
+    },
+    {
+    "name":"grey",
+    "value":"#9e9e9e"
+    },
+    {
+    "name":"blueGrey",
+    "value":"#607d8b"
+    },
+    {
+    "name":"black",
+    "value":"#000000"
+    },
+    {
+    "name":"white",
+    "value":"#FFFFFF"
+    }
+    ]
+    }
+    ],
+    "block":true,
+    "description":"conditional block",
+    "payload":[
+    "white"
+    ],
+    "type":"ifColor",
+    "usage":"ifColor(color, function(){ // code to execute // if the color matches })"
+    },
+    {
+    "description":"Move the pixelbot right `steps` space.",
+    "payload":[
+    1
+    ],
+    "type":"right",
+    "usage":"right(steps)"
+    },
+    {
+    "args":[
+    {
+    "default":"black",
+    "description":"The color to paint.",
+    "name":"color",
+    "type":"string",
+    "values":[
+    {
+    "name":"black",
+    "value":"#000000"
+    },
+    {
+    "name":"white",
+    "value":"#FFFFFF"
+    }
+    ]
+    }
+    ],
+    "description":"Paint the square the toucan is currently on `color`.",
+    "payload":[
+    "black"
+    ],
+    "type":"paint",
+    "usage":"paint(color)"
+    },
+    {
+    "type":"block_end"
+    },
+    {
+    "description":"Move the pixelbot right `steps` space.",
+    "payload":[
+    1
+    ],
+    "type":"right",
+    "usage":"right(steps)"
+    },
+    {
+    "args":[
+    {
+    "default":"black",
+    "description":"The color to paint.",
+    "name":"color",
+    "type":"string",
+    "values":[
+    {
+    "name":"black",
+    "value":"#000000"
+    },
+    {
+    "name":"white",
+    "value":"#FFFFFF"
+    }
+    ]
+    }
+    ],
+    "description":"Paint the square the toucan is currently on `color`.",
+    "payload":[
+    "black"
+    ],
+    "type":"paint",
+    "usage":"paint(color)"
+    }
+    ],
+    "type":"chameleon"
+    }
+    ],
+    "editorState":{
+    },
+    "activeLine":4,
+    "cursor":0,
+    "active":0,
+    "steps":0,
+    "speed":1,
+    "frames":{
+    },
+    "capabilities":{
+    "block_end":true,
+    "down":true,
+    "ifColor":[
+    true
+    ],
+    "left":true,
+    "paint":[
+    [
+    {
+    "name":"black",
+    "value":"#000000"
+    },
+    {
+    "name":"white",
+    "value":"#FFFFFF"
+    }
+    ]
+    ],
+    "repeat":[
+    true
+    ],
+    "right":true,
+    "up":true
+    },
+    "animals":[
+    {
+    "current":{
+    "dir":0,
+    "location":[
+    4,
+    0
+    ],
+    "rot":0
+    },
+    "hidden":false,
+    "initial":{
+    "dir":0,
+    "location":[
+    4,
+    0
+    ],
+    "rot":0
+    },
+    "sequence":[
+    {
+    "description":"Move the pixelbot up `steps` space.",
+    "payload":[
+    1
+    ],
+    "type":"up",
+    "usage":"up(steps)"
+    },
+    {
+    "description":"Move the pixelbot right `steps` space.",
+    "payload":[
+    1
+    ],
+    "type":"right",
+    "usage":"right(steps)"
+    },
+    {
+    "args":[
+    {
+    "default":"black",
+    "description":"The color to paint.",
+    "name":"color",
+    "type":"string",
+    "values":[
+    {
+    "name":"black",
+    "value":"#000000"
+    },
+    {
+    "name":"white",
+    "value":"#FFFFFF"
+    }
+    ]
+    }
+    ],
+    "description":"Paint the square the toucan is currently on `color`.",
+    "payload":[
+    "black"
+    ],
+    "type":"paint",
+    "usage":"paint(color)"
+    }
+    ],
+    "type":"chameleon"
+    },
+    {
+    "current":{
+    "location":[
+    4,
+    0
+    ],
+    "rot":0
+    },
+    "hidden":true,
+    "initial":{
+    "location":[
+    4,
+    0
+    ],
+    "rot":0
+    },
+    "type":"teacherBot"
+    }
+    ]
 }
+
 }
