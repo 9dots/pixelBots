@@ -1,0 +1,5 @@
+{
+  "name": "ImagePicker",
+  "main": "ImagePicker.js",
+  "browser": "ImagePicker.js"
+}
