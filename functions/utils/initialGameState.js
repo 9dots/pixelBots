@@ -19,7 +19,7 @@ module.exports = {
   speed: 1,
   frames: [],
   animals: [{
-    type: 'zebra',
+    type: 'penguin',
     sequence: [],
     initial: {
       location: [4, 0],
