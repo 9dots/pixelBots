@@ -37,7 +37,7 @@
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@f/filter-array/-/filter-array-1.1.1.tgz#d675be2b8997f7dd009aff5531342d1c2156b825"
 
-"@f/filter-obj@^1.0.0":
+"@f/filter-obj@^1.0.0", "@f/filter-obj@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@f/filter-obj/-/filter-obj-1.1.1.tgz#58d72b178c7050a33cc46b7071c3014366debeac"
 
@@ -140,6 +140,10 @@
 "@f/iterator-symbol@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@f/iterator-symbol/-/iterator-symbol-1.0.0.tgz#227390d577a4314165ca3c2a2a9d383c2dc29e74"
+
+"@f/map-obj@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@f/map-obj/-/map-obj-1.2.2.tgz#d9a9f8bd76caa2ae11b633dda24d9c6cccc1e60d"
 
 "@f/map-values@^1.0.0":
   version "1.0.0"
@@ -1541,11 +1545,11 @@ ms@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.1.tgz#9cd13c03adbff25b65effde7ce864ee952017098"
 
-ms@0.7.2:
+ms@0.7.2, ms@^0.7.1:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.2.tgz#ae25cf2512b3885a1d95d7f037868d8431124765"
 
-ms@0.7.3, ms@^0.7.1:
+ms@0.7.3:
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.3.tgz#708155a5e44e33f5fd0fc53e81d0d40a91be1fff"
 
