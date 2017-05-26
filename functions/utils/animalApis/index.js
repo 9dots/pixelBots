@@ -1,6 +1,6 @@
 'use strict';
 
-require('babel-polyfill')
+require('regenerator-runtime/runtime').default
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -25,6 +25,7 @@ exports.default = function (spec, id) {
       for (var _len7 = arguments.length, args = Array(_len7 > 1 ? _len7 - 1 : 0), _key7 = 1; _key7 < _len7; _key7++) {
         args[_key7 - 1] = arguments[_key7];
       }
+
       return [lineNum, id].concat(args);
     });
   }, spec);
@@ -185,7 +186,7 @@ function loopFn(lineNum, max, fn) {
           return setLine(lineNum);
 
         case 4:
-          return _context3.delegateYield(fn(), 't0', 5);
+          return _context3.delegateYield(fn(i), 't0', 5);
 
         case 5:
           i++;
