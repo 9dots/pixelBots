@@ -3,11 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.speed = exports.imageURL = exports.docs = undefined;
+exports.speed = exports.gameImage = exports.imageURL = exports.docs = undefined;
 
 var _actions = require('../actions');
 
-var _animal = require('../../animal');
+var _animal = require('utils/animal');
 
 var _docs = require('./docs');
 
@@ -15,7 +15,8 @@ var _docs2 = _interopRequireDefault(_docs);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var imageURL = '/animalImages/penguin.jpg';
+var imageURL = '/animalImages/chaos.png';
+var gameImage = '/animalImages/chaostop.png';
 var speed = 750;
 
 function wrap(id) {
@@ -96,4 +97,5 @@ function getCrocLocation(steps) {
 exports.default = wrap;
 exports.docs = _docs2.default;
 exports.imageURL = imageURL;
+exports.gameImage = gameImage;
 exports.speed = speed;

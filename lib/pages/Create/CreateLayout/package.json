@@ -1,0 +1,5 @@
+{
+  "name": "CreateLayout",
+  "main": "CreateLayout.js",
+  "browser": "CreateLayout.js"
+}

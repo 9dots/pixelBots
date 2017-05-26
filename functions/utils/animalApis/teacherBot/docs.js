@@ -12,7 +12,7 @@ var _comment = require('../comment');
 
 var _comment2 = _interopRequireDefault(_comment);
 
-var _palette = require('../../palette');
+var _palette = require('utils/palette');
 
 var _palette2 = _interopRequireDefault(_palette);
 
