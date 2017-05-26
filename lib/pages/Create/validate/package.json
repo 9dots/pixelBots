@@ -1,0 +1,5 @@
+{
+  "name": "validate",
+  "main": "validate.js",
+  "browser": "validate.js"
+}
