@@ -1,3 +1,5 @@
+'use strict';
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -44,7 +46,9 @@ function blocksToCode(blocks) {
       case 'comment':
         return indent + '// ' + args;
       case 'move':
-        return indent + 'move(' + (args || 1) + ')';
+        return indent + 'forward(' + (args || 1) + ')';
+      case 'forward':
+        return indent + 'forward(' + (args || 1) + ')';
       case 'turnRight':
         return indent + 'turnRight()';
       case 'turnLeft':

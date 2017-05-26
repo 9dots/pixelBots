@@ -7,7 +7,7 @@ exports.speed = exports.gameImage = exports.imageURL = exports.docs = undefined;
 
 var _actions = require('../actions');
 
-var _getDirection = require('../../getDirection');
+var _getDirection = require('pages/Game/utils/getDirection');
 
 var _getDirection2 = _interopRequireDefault(_getDirection);
 
