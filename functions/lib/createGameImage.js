@@ -22,13 +22,13 @@ function createGameImage (baseRef) {
 		    const {gameRef} = evt.params
 		    const targetPainted = evt.data.val()
 		    evt.data.ref.parent.once('value')
-							.then(snap => snap.val())
-							.then(({levelSize}) => levelThumb(gameRef, levelSize[0], targetPainted))
-							.then(res => upload(res, gameRef))
-							.then((res) => injectToGame(`/games/${gameRef}/imageUrl`, res))
-							.then((res) => injectToGame(`/games/${gameRef}/meta/imageUrl`, res))
-							.then(success)
-							.catch(failed)
+					.then(snap => snap.val())
+					.then(({levelSize}) => levelThumb(gameRef, levelSize[0], targetPainted))
+					.then(res => upload(res, gameRef))
+					.then((res) => injectToGame(`/${baseRef}/${gameRef}/imageUrl`, res))
+					.then((res) => injectToGame(`/${baseRef}/${gameRef}/meta/imageUrl`, res))
+					.then(success)
+					.catch(failed)
 
 		    function failed (e) {
 		      console.warn(e)

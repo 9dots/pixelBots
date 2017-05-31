@@ -10,6 +10,7 @@ module.exports = {
   activeLine: 0,
   type: 'write',
   runners: null,
+  imageUrl: '/animalImages/teacherBot.png',
   selected: [],
   solution: '',
   painted: {},
