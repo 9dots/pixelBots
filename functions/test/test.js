@@ -18,8 +18,8 @@ const teacherBot = animalApis.capabilities
 
   // createPaintFrames(props, userCode)
   console.time('check')
-  const {active, animals, solution, initialData, targetPainted, capabilities} = props
-  const userApi = createApi(capabilities, active)
+  const {active, animals, solution, initialData, targetPainted, capabilities, palette} = props
+  const userApi = createApi(capabilities, active, palette)
   const userCode = getIterator(animals[active].sequence, userApi)
   const base = Object.assign({}, props, {painted: {}})
   if (targetPainted && Object.keys(targetPainted).length > 0) {

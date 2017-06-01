@@ -42,7 +42,7 @@ module.exports = functions.database.ref('/saved/{saveID}/completed')
           const {animals} = gameState.type === 'read' ? gameState : savedGame
           const size = Math.floor(GIF_SIZE / levelSize)
           const imageSize = Number(size * levelSize) + Number(levelSize - 1)
-          const teacherApi = createApi(teacherBot, 0)
+          const teacherApi = createApi(teacherBot, 0, savedGame.palette)
           const startCode = getIterator(gameState.initialPainted, teacherApi)
           const initialPainted = gameState.advanced
             ? createPainted(Object.assign({}, gameState, {
@@ -62,7 +62,7 @@ module.exports = functions.database.ref('/saved/{saveID}/completed')
               current: a.initial
             }))
           })
-          const it = getIterator(sequence, createApi(gameState.capabilities, 0))
+          const it = getIterator(sequence, createApi(gameState.capabilities, 0, savedGame.palette))
           const frames = [Object.assign({}, initialPainted, {frame: 0})].concat(createPaintFrames(initState, it))
           const timing = frames.length / RUN_TIME
           const delay = 100 / timing

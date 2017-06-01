@@ -8,7 +8,7 @@ const express = require('express')
 const srand = require('@f/srand')
 
 const createApi = animalApis.default
-const teacherBot = animalApis.capabilities
+const teacherBot = animalApis.teacherBot
 const router = new express.Router()
 
 router.use(cors)
