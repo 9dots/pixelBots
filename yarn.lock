@@ -219,7 +219,7 @@
     "@f/map" "^1.5.3"
     "@f/maybe-over" "^1.0.0"
 
-"@f/extend@^1.0.0":
+"@f/extend", "@f/extend@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@f/extend/-/extend-1.0.0.tgz#0560d9b26dda8160c655f60ef31c61bc6ee94adc"
   dependencies:
