@@ -1,12 +1,14 @@
 module.exports = {
 	updatePlaylistImage: require('./updatePlaylistImage'),
 	fanPlaylistToUser: require('./fanPlaylistToUser'),
-	// updateSavedImage: require('./updateSavedImage'),
 	createGameImage: require('./createGameImage'),
 	updateSavedMeta: require('./updateSavedMeta'),
+	solutionChecker: require('./solutionChecker'),
 	updateGameMeta: require('./updateGameMeta'),
-	// autoYield: require('./autoYield'),
+	fanDraftToUser: require('./fanDraftToUser'),
+	createGif: require('./createGif')
+	// updateSavedImage: require('./updateSavedImage'),
 	// toggleShowcase: require('./toggleShowcase'),
 	// fanGameToUser: require('./fanGameToUser'),
-	createGif: require('./createGif')
+	// autoYield: require('./autoYield')
 }

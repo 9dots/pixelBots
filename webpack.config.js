@@ -37,7 +37,8 @@ function config (env) {
       publicPath: '/public/'
     },
     resolve: {
-      alias: folders
+      alias: folders,
+      modules: [path.resolve(__dirname, 'lib'), 'node_modules']
     },
     module: {
       loaders: [
@@ -47,22 +48,22 @@ function config (env) {
           loader: 'babel-loader'
         },
         {
-	        test: /\.css$/,
-	        loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
-	      }
+          test: /\.css$/,
+          loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+        }
       ]
     },
     target: 'web',
     plugins: [
-			new webpack.HotModuleReplacementPlugin(),
+      new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.optimize.CommonsChunkPlugin({
         names: ['vendor', 'manifest'] // Specify the common bundle's name.
       }),
       new HtmlWebpackPlugin({
-		    title: 'pixelBots',
-		    template: 'my-index.html' // Load a custom template (ejs by default see the FAQ for details)
-		  })
+      title: 'pixelBots',
+      template: 'my-index.html' // Load a custom template (ejs by default see the FAQ for details)
+    })
     ],
     node: {
       module: 'empty',
@@ -72,11 +73,11 @@ function config (env) {
       net: net,
       fs: fs
     },
-		// devtool: 'eval-source-map'
+    // devtool: 'eval-source-map'
   }
 }
 
-// var myServer = new WebpackDevServer(webpack(config()), {
+// new WebpackDevServer(webpack(config()), {
 //   host: 'localhost',
 //   hot: true,
 //   inline: true,

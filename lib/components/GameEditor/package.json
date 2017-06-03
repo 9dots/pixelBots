@@ -1,0 +1,5 @@
+{
+  "name": "GameEditor",
+  "main": "GameEditor.js",
+  "browser": "GameEditor.js"
+}

@@ -3,13 +3,11 @@ const getLoc = require('../utils/getLoc')
 const objEqual = require('@f/equal-obj')
 const admin = require('firebase-admin')
 const filter = require('@f/filter')
-const pick = require('@f/pick')
 
-const usersRef = admin.database().ref('/users')
 const paintAttrs = [
   'initialPainted',
   'targetPainted',
-  'painted',
+  'painted'
 ]
 const metaAttrs = [
   'firstShared',
@@ -56,11 +54,11 @@ function filterGamePaint (attr) {
   return functions.database.ref(`/saved/{saveRef}/${attr}`)
     .onWrite(evt => {
       return new Promise((resolve, reject) => {
-        const {saveRef} = evt.params
         if (!evt.data.exists() || objEqual(evt.data.val() || {}, evt.data.previous.val() || {})) {
           return resolve()
         }
         evt.data.ref.parent.update({[attr]: filterPaint(evt.data.val())})
+          .then(() => updateProfileGame(evt.params.saveRef))
           .then(resolve)
           .catch(reject)
       })
@@ -100,37 +98,13 @@ function updateProfileGame (saveRef) {
     ]
     Promise.all(parentDataPromises)
       .then((snaps) => snaps.map((s) => s.val()))
-      .then(([creatorID, gameRef]) => usersRef.child(creatorID)
+      .then(([creatorID, gameRef]) => creatorID && usersRef.child(creatorID)
         .child('inProgress').child(gameRef).once('value')
       )
       .then(snap => snap.exists() && snap.ref.update({lastEdited: Date.now()}))
       .then(resolve)
       .catch(reject)
   })
-}
-
-function spreadMeta (obj) {
-  const newObj = {}
-  for (let key in obj) {
-    newObj['meta/' + key] = obj[key]
-  }
-  return newObj
-}
-
-function getAnimals (save) {
-  if (typeof (save.animals) === 'object') {
-    return save.animals.map((animal) => animal.type)
-  }
-  return null
-}
-
-function getMeta (save) {
-  return Object.assign({}, pick(metaAttrs, save), {animals: getAnimals(save), loc: getLocs(save.code, save.animals)})
-}
-
-function getLocs (code, animals = []) {
-  if (!animals || animals.length < 1) return 0
-  return animals.reduce((total, animal) => animal.sequence ? total + getLoc(animal.sequence) : 0, 0)
 }
 
 function filterPaint (obj) {
