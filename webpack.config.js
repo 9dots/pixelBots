@@ -76,7 +76,7 @@ function config (env) {
     // devtool: 'eval-source-map'
   }
 }
-//
+
 // new WebpackDevServer(webpack(config()), {
 //   host: 'localhost',
 //   hot: true,
