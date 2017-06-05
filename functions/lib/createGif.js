@@ -39,8 +39,6 @@ module.exports = functions.database.ref('/saved/{saveID}/completed')
         ]))
         .then(([savedGame, gameState]) => {
           const levelSize = gameState.levelSize[0]
-          const timing = (levelSize * levelSize) / RUN_TIME
-          const delay = 100 / timing
           const {animals} = gameState.type === 'read' ? gameState : savedGame
           const size = Math.floor(GIF_SIZE / levelSize)
           const imageSize = Number(size * levelSize) + Number(levelSize - 1)
@@ -66,6 +64,8 @@ module.exports = functions.database.ref('/saved/{saveID}/completed')
           })
           const it = getIterator(sequence, createApi(gameState.capabilities, 0, savedGame.palette))
           const frames = [Object.assign({}, initialPainted, {frame: 0})].concat(createPaintFrames(initState, it))
+          const timing = frames.length / RUN_TIME
+          const delay = 100 / timing
           const adjusted = frames.map((frame, i, arr) => {
             const next = arr[i + 1]
               ? arr[i + 1].frame

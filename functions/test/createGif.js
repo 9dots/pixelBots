@@ -1,7 +1,6 @@
 
-const {createPaintFrames, createFrames} = require('../utils/frameReducer')
-const animalApis = require('../utils/animalApis/index').default
-const getIterator = require('../utils/getIterator')
+const {createPaintFrames, createFrames, getIterator} = require('../utils/frameReducer/frameReducer')
+const animalApis = require('../utils/animalApis/index')
 const {gifFrame} = require('../utils/createImage')
 const functions = require('firebase-functions')
 const createGif = require('../utils/createGif')
@@ -16,6 +15,8 @@ const omit = require('@f/omit')
 const co = require('co')
 
 const serviceAccount = require('../serviceAccount.json')
+const createApi = animalApis.default
+const teacherBot = animalApis.capabilities
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -38,12 +39,10 @@ savedRef.child(saveID).once('value')
   ]))
   .then(([savedGame, gameState]) => {
     const levelSize = gameState.levelSize[0]
-    const timing = (levelSize * levelSize) / RUN_TIME
-    const delay = 100 / timing
     const {animals} = gameState.type === 'read' ? gameState : savedGame
     const size = Math.floor(GIF_SIZE / levelSize)
     const imageSize = Number(size * levelSize) + Number(levelSize - 1)
-    const teacherApi = animalApis.teacherBot.default(0)
+    const teacherApi = createApi(teacherBot, 0)
     const startCode = getIterator(gameState.initialPainted, teacherApi)
     const initialPainted = gameState.advanced
       ? createPainted(Object.assign({}, gameState, {
@@ -63,15 +62,19 @@ savedRef.child(saveID).once('value')
         current: a.initial
       }))
     })
-    const it = getIterator(sequence, animalApis[animals[0].type].default(0))
-    const frames = [Object.assign({}, initialPainted, {frame: 0})].concat(createPaintFrames(initState, it))
+    const it = getIterator(sequence, createApi(gameState.capabilities, 0))
+    const frames = createPaintFrames(initState, it)
+    const timing = frames / RUN_TIME
+    const delay = 100 / timing
     const adjusted = frames.map((frame, i, arr) => {
       const next = arr[i + 1]
-        ? arr[i + 1].frame
-        : frame.frame
-      return {length: Math.abs(next - frame.frame), frame: omit('frame', frame)}
+        ? arr[i + 1].step
+        : frame.step
+      return {length: Math.abs(next - frame.step), frame: omit('step', frame)}
     })
+    return adjusted
   })
+  .then(console.log)
   .catch(console.warn)
 
   function createPainted (state, code) {
