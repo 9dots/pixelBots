@@ -1,0 +1,5 @@
+{
+  "name": "Studio",
+  "main": "Studio.js",
+  "browser": "Studio.js"
+}
