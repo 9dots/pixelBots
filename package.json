@@ -30,6 +30,7 @@
     "@f/diff-keys": "^1.0.0",
     "@f/equal-obj": "^1.2.1",
     "@f/event-handler": "1.0.2",
+    "@f/extend": "^1.0.0",
     "@f/filter": "^1.1.1",
     "@f/find": "^1.0.0",
     "@f/find-index": "^1.0.0",
