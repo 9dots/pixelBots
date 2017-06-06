@@ -1,0 +1,5 @@
+{
+  "name": "ProfileNav",
+  "main": "ProfileNav.js",
+  "browser": "ProfileNav.js"
+}
