@@ -26,7 +26,6 @@ function config (env) {
       vendor: [
         'lodash',
         'brace',
-        'js-analyse',
         'firebase',
         'auto-yield-delegate'
       ]
