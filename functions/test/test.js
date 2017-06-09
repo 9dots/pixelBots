@@ -78,1386 +78,719 @@ function generateSolution ({initialPainted, solution, levelSize, active, startGr
 
 function getProps () {
   return {
-    "type":"write",
-    "runners":{
-    },
-    "title":"Untitled",
-    "description":"Use code to draw the image.",
-    "inputType":"icons",
-    "levelSize":[
-    2,
-    2
-    ],
-    "painted":{
-    "0,0":"blue"
-    },
-    "selected":{
-    },
-    "targetPainted":{
-    },
-    "initialPainted":{
-    "0,0":"blue"
-    },
-    "initialData":{
-    "type":"write",
-    "runners":null,
-    "title":"Untitled",
-    "description":"Use code to draw the image.",
-    "inputType":"icons",
-    "levelSize":[
-    2,
-    2
-    ],
-    "painted":false,
-    "selected":{
-    },
-    "targetPainted":{
-    },
-    "initialPainted":"repeat(4, function() {\n  if(rand(0,2)) { paint('blue') }\n  forward()\n  turnRight()\n})\n",
-    "initialData":{
-    },
-    "solution":[
-    {
-    "current":{
-    "dir":0,
-    "location":[
-    1,
-    0
-    ],
-    "rot":360
-    },
-    "hidden":false,
-    "initial":{
-    "dir":0,
-    "location":[
-    1,
-    0
-    ],
-    "rot":0
-    },
-    "sequence":[
-    {
-    "args":[
-    {
-    "default":2,
-    "description":"The number of times to repeat the loop.",
-    "name":"num",
-    "type":"number",
-    "values":[
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9
-    ]
-    },
-    {
-    "description":"The function to be repeated",
-    "name":"fn",
-    "type":"function"
-    }
-    ],
-    "block":true,
-    "description":"Repeat the actions inside of the loop.",
-    "payload":[
-    4
-    ],
-    "type":"repeat",
-    "usage":"repeat(n, function(){ // code to repeat })"
-    },
-    {
-    "args":[
-    {
-    "default":"white",
-    "description":"The color to match",
-    "name":"color",
-    "type":"string",
-    "values":[
-    {
-    "name":"pink",
-    "value":"#e91e63"
-    },
-    {
-    "name":"purple",
-    "value":"#9c27b0"
-    },
-    {
-    "name":"deepPurple",
-    "value":"#673ab7"
-    },
-    {
-    "name":"indigo",
-    "value":"#3f51b5"
-    },
-    {
-    "name":"blue",
-    "value":"#2196f3"
-    },
-    {
-    "name":"lightBlue",
-    "value":"#03a9f4"
-    },
-    {
-    "name":"cyan",
-    "value":"#00bcd4"
-    },
-    {
-    "name":"teal",
-    "value":"#009688"
-    },
-    {
-    "name":"green",
-    "value":"#4caf50"
-    },
-    {
-    "name":"lightGreen",
-    "value":"#8bc34a"
-    },
-    {
-    "name":"lime",
-    "value":"#cddc39"
-    },
-    {
-    "name":"yellow",
-    "value":"#ffeb3b"
-    },
-    {
-    "name":"amber",
-    "value":"#ffc107"
-    },
-    {
-    "name":"orange",
-    "value":"#ff9800"
-    },
-    {
-    "name":"deepOrange",
-    "value":"#ff5722"
-    },
-    {
-    "name":"brown",
-    "value":"#795548"
-    },
-    {
-    "name":"grey",
-    "value":"#9e9e9e"
-    },
-    {
-    "name":"blueGrey",
-    "value":"#607d8b"
-    },
-    {
-    "name":"black",
-    "value":"#000000"
-    },
-    {
-    "name":"white",
-    "value":"#FFFFFF"
-    }
-    ]
-    }
-    ],
-    "block":true,
-    "description":"conditional block",
-    "payload":[
-    "blue"
-    ],
-    "type":"ifColor",
-    "usage":"ifColor(color, function(){ // code to execute // if the color matches })"
-    },
-    {
-    "args":[
-    {
-    "default":"black",
-    "description":"The color to paint.",
-    "name":"color",
-    "type":"string",
-    "values":[
-    {
-    "name":"pink",
-    "value":"#e91e63"
-    },
-    {
-    "name":"purple",
-    "value":"#9c27b0"
-    },
-    {
-    "name":"deepPurple",
-    "value":"#673ab7"
-    },
-    {
-    "name":"indigo",
-    "value":"#3f51b5"
-    },
-    {
-    "name":"blue",
-    "value":"#2196f3"
-    },
-    {
-    "name":"lightBlue",
-    "value":"#03a9f4"
-    },
-    {
-    "name":"cyan",
-    "value":"#00bcd4"
-    },
-    {
-    "name":"teal",
-    "value":"#009688"
-    },
-    {
-    "name":"green",
-    "value":"#4caf50"
-    },
-    {
-    "name":"lightGreen",
-    "value":"#8bc34a"
-    },
-    {
-    "name":"lime",
-    "value":"#cddc39"
-    },
-    {
-    "name":"yellow",
-    "value":"#ffeb3b"
-    },
-    {
-    "name":"amber",
-    "value":"#ffc107"
-    },
-    {
-    "name":"orange",
-    "value":"#ff9800"
-    },
-    {
-    "name":"deepOrange",
-    "value":"#ff5722"
-    },
-    {
-    "name":"brown",
-    "value":"#795548"
-    },
-    {
-    "name":"grey",
-    "value":"#9e9e9e"
-    },
-    {
-    "name":"blueGrey",
-    "value":"#607d8b"
-    },
-    {
-    "name":"black",
-    "value":"#000000"
-    },
-    {
-    "name":"white",
-    "value":"#FFFFFF"
-    }
-    ]
-    }
-    ],
-    "description":"Paint the square the toucan is currently on `color`.",
-    "payload":[
-    "amber"
-    ],
-    "type":"paint",
-    "usage":"paint(color)"
-    },
-    {
-    "type":"block_end"
-    },
-    {
-    "description":"Move the pixelbot one space in whichever direction it is facing.",
-    "type":"forward",
-    "usage":"forward()"
-    },
-    {
-    "description":"Turn the pixelbot 90 degrees to the right.",
-    "type":"turnRight",
-    "usage":"turnRight()"
-    },
-    {
-    "type":"block_end"
-    }
-    ],
-    "type":"penguin"
-    }
-    ],
-    "editorState":{
-    },
-    "activeLine":0,
-    "cursor":0,
-    "active":0,
-    "steps":0,
-    "speed":1,
-    "frames":{
-    },
-    "capabilities":{
-    "block_end":true,
-    "forward":true,
-    "ifColor":[
-    true
-    ],
-    "paint":[
-    [
-    {
-    "name":"pink",
-    "value":"#e91e63"
-    },
-    {
-    "name":"purple",
-    "value":"#9c27b0"
-    },
-    {
-    "name":"deepPurple",
-    "value":"#673ab7"
-    },
-    {
-    "name":"indigo",
-    "value":"#3f51b5"
-    },
-    {
-    "name":"blue",
-    "value":"#2196f3"
-    },
-    {
-    "name":"lightBlue",
-    "value":"#03a9f4"
-    },
-    {
-    "name":"cyan",
-    "value":"#00bcd4"
-    },
-    {
-    "name":"teal",
-    "value":"#009688"
-    },
-    {
-    "name":"green",
-    "value":"#4caf50"
-    },
-    {
-    "name":"lightGreen",
-    "value":"#8bc34a"
-    },
-    {
-    "name":"lime",
-    "value":"#cddc39"
-    },
-    {
-    "name":"yellow",
-    "value":"#ffeb3b"
-    },
-    {
-    "name":"amber",
-    "value":"#ffc107"
-    },
-    {
-    "name":"orange",
-    "value":"#ff9800"
-    },
-    {
-    "name":"deepOrange",
-    "value":"#ff5722"
-    },
-    {
-    "name":"brown",
-    "value":"#795548"
-    },
-    {
-    "name":"grey",
-    "value":"#9e9e9e"
-    },
-    {
-    "name":"blueGrey",
-    "value":"#607d8b"
-    },
-    {
-    "name":"black",
-    "value":"#000000"
-    },
-    {
-    "name":"white",
-    "value":"#FFFFFF"
-    }
-    ]
-    ],
-    "repeat":[
-    true
-    ],
-    "turnLeft":true,
-    "turnRight":true
-    },
-    "animals":[
-    {
-    "current":{
-    "dir":0,
-    "location":[
-    1,
-    0
-    ],
-    "rot":360
-    },
-    "hidden":true,
-    "initial":{
-    "dir":0,
-    "location":[
-    1,
-    0
-    ],
-    "rot":0
-    },
-    "sequence":[
-    {
-    "args":[
-    {
-    "default":2,
-    "description":"The number of times to repeat the loop.",
-    "name":"num",
-    "type":"number",
-    "values":[
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9
-    ]
-    },
-    {
-    "description":"The function to be repeated",
-    "name":"fn",
-    "type":"function"
-    }
-    ],
-    "block":true,
-    "description":"Repeat the actions inside of the loop.",
-    "payload":[
-    4
-    ],
-    "type":"repeat",
-    "usage":"repeat(n, function(){ // code to repeat })"
-    },
-    {
-    "args":[
-    {
-    "default":"white",
-    "description":"The color to match",
-    "name":"color",
-    "type":"string",
-    "values":[
-    {
-    "name":"pink",
-    "value":"#e91e63"
-    },
-    {
-    "name":"purple",
-    "value":"#9c27b0"
-    },
-    {
-    "name":"deepPurple",
-    "value":"#673ab7"
-    },
-    {
-    "name":"indigo",
-    "value":"#3f51b5"
-    },
-    {
-    "name":"blue",
-    "value":"#2196f3"
-    },
-    {
-    "name":"lightBlue",
-    "value":"#03a9f4"
-    },
-    {
-    "name":"cyan",
-    "value":"#00bcd4"
-    },
-    {
-    "name":"teal",
-    "value":"#009688"
-    },
-    {
-    "name":"green",
-    "value":"#4caf50"
-    },
-    {
-    "name":"lightGreen",
-    "value":"#8bc34a"
-    },
-    {
-    "name":"lime",
-    "value":"#cddc39"
-    },
-    {
-    "name":"yellow",
-    "value":"#ffeb3b"
-    },
-    {
-    "name":"amber",
-    "value":"#ffc107"
-    },
-    {
-    "name":"orange",
-    "value":"#ff9800"
-    },
-    {
-    "name":"deepOrange",
-    "value":"#ff5722"
-    },
-    {
-    "name":"brown",
-    "value":"#795548"
-    },
-    {
-    "name":"grey",
-    "value":"#9e9e9e"
-    },
-    {
-    "name":"blueGrey",
-    "value":"#607d8b"
-    },
-    {
-    "name":"black",
-    "value":"#000000"
-    },
-    {
-    "name":"white",
-    "value":"#FFFFFF"
-    }
-    ]
-    }
-    ],
-    "block":true,
-    "description":"conditional block",
-    "payload":[
-    "white"
-    ],
-    "type":"ifColor",
-    "usage":"ifColor(color, function(){ // code to execute // if the color matches })"
-    },
-    {
-    "args":[
-    {
-    "default":"black",
-    "description":"The color to paint.",
-    "name":"color",
-    "type":"string",
-    "values":[
-    {
-    "name":"pink",
-    "value":"#e91e63"
-    },
-    {
-    "name":"purple",
-    "value":"#9c27b0"
-    },
-    {
-    "name":"deepPurple",
-    "value":"#673ab7"
-    },
-    {
-    "name":"indigo",
-    "value":"#3f51b5"
-    },
-    {
-    "name":"blue",
-    "value":"#2196f3"
-    },
-    {
-    "name":"lightBlue",
-    "value":"#03a9f4"
-    },
-    {
-    "name":"cyan",
-    "value":"#00bcd4"
-    },
-    {
-    "name":"teal",
-    "value":"#009688"
-    },
-    {
-    "name":"green",
-    "value":"#4caf50"
-    },
-    {
-    "name":"lightGreen",
-    "value":"#8bc34a"
-    },
-    {
-    "name":"lime",
-    "value":"#cddc39"
-    },
-    {
-    "name":"yellow",
-    "value":"#ffeb3b"
-    },
-    {
-    "name":"amber",
-    "value":"#ffc107"
-    },
-    {
-    "name":"orange",
-    "value":"#ff9800"
-    },
-    {
-    "name":"deepOrange",
-    "value":"#ff5722"
-    },
-    {
-    "name":"brown",
-    "value":"#795548"
-    },
-    {
-    "name":"grey",
-    "value":"#9e9e9e"
-    },
-    {
-    "name":"blueGrey",
-    "value":"#607d8b"
-    },
-    {
-    "name":"black",
-    "value":"#000000"
-    },
-    {
-    "name":"white",
-    "value":"#FFFFFF"
-    }
-    ]
-    }
-    ],
-    "description":"Paint the square the toucan is currently on `color`.",
-    "payload":[
-    "blue"
-    ],
-    "type":"paint",
-    "usage":"paint(color)"
-    },
-    {
-    "type":"block_end"
-    },
-    {
-    "description":"Move the pixelbot one space in whichever direction it is facing.",
-    "type":"forward",
-    "usage":"forward()"
-    },
-    {
-    "description":"Turn the pixelbot 90 degrees to the right.",
-    "type":"turnRight",
-    "usage":"turnRight()"
-    },
-    {
-    "type":"block_end"
-    }
-    ],
-    "type":"penguin"
-    },
-    {
-    "current":{
-    "location":[
-    1,
-    0
-    ],
-    "rot":0
-    },
-    "hidden":false,
-    "initial":{
-    "location":[
-    1,
-    0
-    ],
-    "rot":0
-    },
-    "type":"teacherBot"
-    }
-    ],
-    "advanced":true,
-    "creatorID":"OomwNVi8vScVtr3h5dD7CHFkEj62",
-    "lastEdited":1495751871099,
-    "meta":{
-    "attempts":4,
-    "creatorID":"OomwNVi8vScVtr3h5dD7CHFkEj62",
-    "lastEdited":1495751872462,
-    "loc":7,
-    "username":"danleavitt0"
-    },
-    "shortLink":"XE9K8",
-    "gameRef":"-Kl06lFN3dLCkMFw4vjp",
-    "uid":"OomwNVi8vScVtr3h5dD7CHFkEj62",
-    "username":"danleavitt0",
-    "ready":true
-    },
-    "solution":[
-    {
-    "current":{
-    "dir":0,
-    "location":[
-    1,
-    0
-    ],
-    "rot":360
-    },
-    "hidden":false,
-    "initial":{
-    "dir":0,
-    "location":[
-    1,
-    0
-    ],
-    "rot":0
-    },
-    "sequence":[
-    {
-    "args":[
-    {
-    "default":2,
-    "description":"The number of times to repeat the loop.",
-    "name":"num",
-    "type":"number",
-    "values":[
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9
-    ]
-    },
-    {
-    "description":"The function to be repeated",
-    "name":"fn",
-    "type":"function"
-    }
-    ],
-    "block":true,
-    "description":"Repeat the actions inside of the loop.",
-    "payload":[
-    4
-    ],
-    "type":"repeat",
-    "usage":"repeat(n, function(){ // code to repeat })"
-    },
-    {
-    "args":[
-    {
-    "default":"white",
-    "description":"The color to match",
-    "name":"color",
-    "type":"string",
-    "values":[
-    {
-    "name":"pink",
-    "value":"#e91e63"
-    },
-    {
-    "name":"purple",
-    "value":"#9c27b0"
-    },
-    {
-    "name":"deepPurple",
-    "value":"#673ab7"
-    },
-    {
-    "name":"indigo",
-    "value":"#3f51b5"
-    },
-    {
-    "name":"blue",
-    "value":"#2196f3"
-    },
-    {
-    "name":"lightBlue",
-    "value":"#03a9f4"
-    },
-    {
-    "name":"cyan",
-    "value":"#00bcd4"
-    },
-    {
-    "name":"teal",
-    "value":"#009688"
-    },
-    {
-    "name":"green",
-    "value":"#4caf50"
-    },
-    {
-    "name":"lightGreen",
-    "value":"#8bc34a"
-    },
-    {
-    "name":"lime",
-    "value":"#cddc39"
-    },
-    {
-    "name":"yellow",
-    "value":"#ffeb3b"
-    },
-    {
-    "name":"amber",
-    "value":"#ffc107"
-    },
-    {
-    "name":"orange",
-    "value":"#ff9800"
-    },
-    {
-    "name":"deepOrange",
-    "value":"#ff5722"
-    },
-    {
-    "name":"brown",
-    "value":"#795548"
-    },
-    {
-    "name":"grey",
-    "value":"#9e9e9e"
-    },
-    {
-    "name":"blueGrey",
-    "value":"#607d8b"
-    },
-    {
-    "name":"black",
-    "value":"#000000"
-    },
-    {
-    "name":"white",
-    "value":"#FFFFFF"
-    }
-    ]
-    }
-    ],
-    "block":true,
-    "description":"conditional block",
-    "payload":[
-    "blue"
-    ],
-    "type":"ifColor",
-    "usage":"ifColor(color, function(){ // code to execute // if the color matches })"
-    },
-    {
-    "args":[
-    {
-    "default":"black",
-    "description":"The color to paint.",
-    "name":"color",
-    "type":"string",
-    "values":[
-    {
-    "name":"pink",
-    "value":"#e91e63"
-    },
-    {
-    "name":"purple",
-    "value":"#9c27b0"
-    },
-    {
-    "name":"deepPurple",
-    "value":"#673ab7"
-    },
-    {
-    "name":"indigo",
-    "value":"#3f51b5"
-    },
-    {
-    "name":"blue",
-    "value":"#2196f3"
-    },
-    {
-    "name":"lightBlue",
-    "value":"#03a9f4"
-    },
-    {
-    "name":"cyan",
-    "value":"#00bcd4"
-    },
-    {
-    "name":"teal",
-    "value":"#009688"
-    },
-    {
-    "name":"green",
-    "value":"#4caf50"
-    },
-    {
-    "name":"lightGreen",
-    "value":"#8bc34a"
-    },
-    {
-    "name":"lime",
-    "value":"#cddc39"
-    },
-    {
-    "name":"yellow",
-    "value":"#ffeb3b"
-    },
-    {
-    "name":"amber",
-    "value":"#ffc107"
-    },
-    {
-    "name":"orange",
-    "value":"#ff9800"
-    },
-    {
-    "name":"deepOrange",
-    "value":"#ff5722"
-    },
-    {
-    "name":"brown",
-    "value":"#795548"
-    },
-    {
-    "name":"grey",
-    "value":"#9e9e9e"
-    },
-    {
-    "name":"blueGrey",
-    "value":"#607d8b"
-    },
-    {
-    "name":"black",
-    "value":"#000000"
-    },
-    {
-    "name":"white",
-    "value":"#FFFFFF"
-    }
-    ]
-    }
-    ],
-    "description":"Paint the square the toucan is currently on `color`.",
-    "payload":[
-    "amber"
-    ],
-    "type":"paint",
-    "usage":"paint(color)"
-    },
-    {
-    "type":"block_end"
-    },
-    {
-    "description":"Move the pixelbot one space in whichever direction it is facing.",
-    "type":"forward",
-    "usage":"forward()"
-    },
-    {
-    "description":"Turn the pixelbot 90 degrees to the right.",
-    "type":"turnRight",
-    "usage":"turnRight()"
-    },
-    {
-    "type":"block_end"
-    }
-    ],
-    "type":"penguin"
-    }
-    ],
-    "editorState":{
-    },
-    "activeLine":-1,
-    "cursor":0,
-    "active":0,
-    "steps":0,
-    "speed":9.189393939393938,
-    "frames":{
-    },
-    "capabilities":{
-    "block_end":true,
-    "forward":true,
-    "ifColor":[
-    true
-    ],
-    "paint":[
-    [
-    {
-    "name":"pink",
-    "value":"#e91e63"
-    },
-    {
-    "name":"purple",
-    "value":"#9c27b0"
-    },
-    {
-    "name":"deepPurple",
-    "value":"#673ab7"
-    },
-    {
-    "name":"indigo",
-    "value":"#3f51b5"
-    },
-    {
-    "name":"blue",
-    "value":"#2196f3"
-    },
-    {
-    "name":"lightBlue",
-    "value":"#03a9f4"
-    },
-    {
-    "name":"cyan",
-    "value":"#00bcd4"
-    },
-    {
-    "name":"teal",
-    "value":"#009688"
-    },
-    {
-    "name":"green",
-    "value":"#4caf50"
-    },
-    {
-    "name":"lightGreen",
-    "value":"#8bc34a"
-    },
-    {
-    "name":"lime",
-    "value":"#cddc39"
-    },
-    {
-    "name":"yellow",
-    "value":"#ffeb3b"
-    },
-    {
-    "name":"amber",
-    "value":"#ffc107"
-    },
-    {
-    "name":"orange",
-    "value":"#ff9800"
-    },
-    {
-    "name":"deepOrange",
-    "value":"#ff5722"
-    },
-    {
-    "name":"brown",
-    "value":"#795548"
-    },
-    {
-    "name":"grey",
-    "value":"#9e9e9e"
-    },
-    {
-    "name":"blueGrey",
-    "value":"#607d8b"
-    },
-    {
-    "name":"black",
-    "value":"#000000"
-    },
-    {
-    "name":"white",
-    "value":"#FFFFFF"
-    }
-    ]
-    ],
-    "repeat":[
-    true
-    ],
-    "turnLeft":true,
-    "turnRight":true
-    },
-    "animals":[
-    {
-    "current":{
-    "dir":0,
-    "location":[
-    1,
-    0
-    ],
-    "rot":0
-    },
-    "hidden":false,
-    "initial":{
-    "dir":0,
-    "location":[
-    1,
-    0
-    ],
-    "rot":0
-    },
-    "sequence":[
-    {
-    "args":[
-    {
-    "default":2,
-    "description":"The number of times to repeat the loop.",
-    "name":"num",
-    "type":"number",
-    "values":[
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9
-    ]
-    },
-    {
-    "description":"The function to be repeated",
-    "name":"fn",
-    "type":"function"
-    }
-    ],
-    "block":true,
-    "description":"Repeat the actions inside of the loop.",
-    "payload":[
-    4
-    ],
-    "type":"repeat",
-    "usage":"repeat(n, function(){ // code to repeat })"
-    },
-    {
-    "args":[
-    {
-    "default":"white",
-    "description":"The color to match",
-    "name":"color",
-    "type":"string",
-    "values":[
-    {
-    "name":"pink",
-    "value":"#e91e63"
-    },
-    {
-    "name":"purple",
-    "value":"#9c27b0"
-    },
-    {
-    "name":"deepPurple",
-    "value":"#673ab7"
-    },
-    {
-    "name":"indigo",
-    "value":"#3f51b5"
-    },
-    {
-    "name":"blue",
-    "value":"#2196f3"
-    },
-    {
-    "name":"lightBlue",
-    "value":"#03a9f4"
-    },
-    {
-    "name":"cyan",
-    "value":"#00bcd4"
-    },
-    {
-    "name":"teal",
-    "value":"#009688"
-    },
-    {
-    "name":"green",
-    "value":"#4caf50"
-    },
-    {
-    "name":"lightGreen",
-    "value":"#8bc34a"
-    },
-    {
-    "name":"lime",
-    "value":"#cddc39"
-    },
-    {
-    "name":"yellow",
-    "value":"#ffeb3b"
-    },
-    {
-    "name":"amber",
-    "value":"#ffc107"
-    },
-    {
-    "name":"orange",
-    "value":"#ff9800"
-    },
-    {
-    "name":"deepOrange",
-    "value":"#ff5722"
-    },
-    {
-    "name":"brown",
-    "value":"#795548"
-    },
-    {
-    "name":"grey",
-    "value":"#9e9e9e"
-    },
-    {
-    "name":"blueGrey",
-    "value":"#607d8b"
-    },
-    {
-    "name":"black",
-    "value":"#000000"
-    },
-    {
-    "name":"white",
-    "value":"#FFFFFF"
-    }
-    ]
-    }
-    ],
-    "block":true,
-    "description":"conditional block",
-    "payload":[
-    "white"
-    ],
-    "type":"ifColor",
-    "usage":"ifColor(color, function(){ // code to execute // if the color matches })"
-    },
-    {
-    "args":[
-    {
-    "default":"black",
-    "description":"The color to paint.",
-    "name":"color",
-    "type":"string",
-    "values":[
-    {
-    "name":"pink",
-    "value":"#e91e63"
-    },
-    {
-    "name":"purple",
-    "value":"#9c27b0"
-    },
-    {
-    "name":"deepPurple",
-    "value":"#673ab7"
-    },
-    {
-    "name":"indigo",
-    "value":"#3f51b5"
-    },
-    {
-    "name":"blue",
-    "value":"#2196f3"
-    },
-    {
-    "name":"lightBlue",
-    "value":"#03a9f4"
-    },
-    {
-    "name":"cyan",
-    "value":"#00bcd4"
-    },
-    {
-    "name":"teal",
-    "value":"#009688"
-    },
-    {
-    "name":"green",
-    "value":"#4caf50"
-    },
-    {
-    "name":"lightGreen",
-    "value":"#8bc34a"
-    },
-    {
-    "name":"lime",
-    "value":"#cddc39"
-    },
-    {
-    "name":"yellow",
-    "value":"#ffeb3b"
-    },
-    {
-    "name":"amber",
-    "value":"#ffc107"
-    },
-    {
-    "name":"orange",
-    "value":"#ff9800"
-    },
-    {
-    "name":"deepOrange",
-    "value":"#ff5722"
-    },
-    {
-    "name":"brown",
-    "value":"#795548"
-    },
-    {
-    "name":"grey",
-    "value":"#9e9e9e"
-    },
-    {
-    "name":"blueGrey",
-    "value":"#607d8b"
-    },
-    {
-    "name":"black",
-    "value":"#000000"
-    },
-    {
-    "name":"white",
-    "value":"#FFFFFF"
-    }
-    ]
-    }
-    ],
-    "description":"Paint the square the toucan is currently on `color`.",
-    "payload":[
-    "blue"
-    ],
-    "type":"paint",
-    "usage":"paint(color)"
-    },
-    {
-    "type":"block_end"
-    },
-    {
-    "description":"Move the pixelbot one space in whichever direction it is facing.",
-    "type":"forward",
-    "usage":"forward()"
-    },
-    {
-    "description":"Turn the pixelbot 90 degrees to the right.",
-    "type":"turnRight",
-    "usage":"turnRight()"
-    },
-    {
-    "type":"block_end"
-    }
-    ],
-    "type":"penguin"
-    },
-    {
-    "current":{
-    "location":[
-    1,
-    0
-    ],
-    "rot":360
-    },
-    "hidden":true,
-    "initial":{
-    "location":[
-    1,
-    0
-    ],
-    "rot":0
-    },
-    "type":"teacherBot"
-    }
-    ]
+"type":"write",
+"runners":{
+},
+"title":"test",
+"description":"Use code to draw the image. asdf",
+"inputType":"icons",
+"levelSize":[
+8,
+8
+],
+"painted":{
+},
+"selected":{
+},
+"targetPainted":{
+"2,3":"lightGreen",
+"3,2":"lightGreen",
+"3,3":"lightGreen",
+"3,4":"black",
+"4,3":"lightGreen",
+"4,4":"black",
+"5,4":"black"
+},
+"initialPainted":{
+},
+"initialData":{
+"type":"write",
+"runners":null,
+"title":"test",
+"description":"Use code to draw the image. asdf",
+"inputType":"icons",
+"levelSize":[
+8,
+8
+],
+"painted":{
+},
+"selected":{
+},
+"targetPainted":{
+"2,3":"lightGreen",
+"3,2":"lightGreen",
+"3,3":"lightGreen",
+"3,4":"black",
+"4,3":"lightGreen",
+"4,4":"black",
+"5,4":"black"
+},
+"initialPainted":{
+},
+"initialData":{
+},
+"solution":null,
+"imageUrl":"https://storage.googleapis.com/artbot-26016.appspot.com/-Km2p8PCjpM7lYLQ4dei.png?GoogleAccessId=firebase-adminsdk-syfaa@artbot-26016.iam.gserviceaccount.com&Expires=1742169600&Signature=GU%2BF1ELMbGPu8fCyUtd62y2SaZrbOp%2BBDWi2z8vvs%2FRQpD739nqk3Te%2F1Lj54HgF9hvs0T1AnWyBmfxRsHmOqVsAn86BLGmdVg2Kk8gpxuvQwuDIftPhZTcbE0NTD93qCrsHI%2BPgtH1Y7%2BZarNSgQKrSFZh0d8qqRK4UvBAE2C0qIrH8m%2FGQg%2FRvnyEjnB5wknhE42MJuzcEgHut5C%2Byd2GMe%2BKtMUlerqRN5RRYgKyBAw1Mrhda90Z%2FF633CsnWFTLRsrewi8VaUiyawrhG1lMYkxOzQsDeSuf4z09tQWOmmQ3cSkdJeOUnaaFFPTf%2BxNzr4zKBb%2Btvvxqi6VVH1g%3D%3D",
+"editorState":{
+},
+"activeLine":0,
+"cursor":0,
+"active":0,
+"steps":0,
+"speed":1,
+"frames":{
+},
+"palette":[
+{
+"name":"red",
+"value":"#f44336"
+},
+{
+"name":"pink",
+"value":"#e91e63"
+},
+{
+"name":"purple",
+"value":"#9c27b0"
+},
+{
+"name":"deepPurple",
+"value":"#673ab7"
+},
+{
+"name":"indigo",
+"value":"#3f51b5"
+},
+{
+"name":"blue",
+"value":"#2196f3"
+},
+{
+"name":"lightBlue",
+"value":"#03a9f4"
+},
+{
+"name":"cyan",
+"value":"#00bcd4"
+},
+{
+"name":"teal",
+"value":"#009688"
+},
+{
+"name":"green",
+"value":"#4caf50"
+},
+{
+"name":"lightGreen",
+"value":"#8bc34a"
+},
+{
+"name":"lime",
+"value":"#cddc39"
+},
+{
+"name":"yellow",
+"value":"#ffeb3b"
+},
+{
+"name":"amber",
+"value":"#ffc107"
+},
+{
+"name":"orange",
+"value":"#ff9800"
+},
+{
+"name":"deepOrange",
+"value":"#ff5722"
+},
+{
+"name":"brown",
+"value":"#795548"
+},
+{
+"name":"grey",
+"value":"#9e9e9e"
+},
+{
+"name":"blueGrey",
+"value":"#607d8b"
+},
+{
+"name":"black",
+"value":"#000000"
+},
+{
+"name":"white",
+"value":"#FFFFFF"
 }
-
+],
+"capabilities":{
+"block_end":true,
+"forward":[
+true
+],
+"paintT":[
+true
+],
+"paintZ":[
+true
+],
+"repeat":[
+true
+],
+"turnLeft":true,
+"turnRight":true
+},
+"animals":[
+{
+"current":{
+"dir":0,
+"location":[
+6,
+0
+],
+"rot":90
+},
+"hidden":false,
+"initial":{
+"dir":0,
+"location":[
+7,
+0
+],
+"rot":0
+},
+"sequence":[
+{
+"args":[
+{
+"default":2,
+"description":"The number of times to repeat the loop.",
+"name":"num",
+"type":"number",
+"values":[
+1,
+2,
+3,
+4,
+5,
+6,
+7,
+8,
+9
+]
+},
+{
+"description":"The function to be repeated",
+"name":"() => { // code to repeat }",
+"type":"function"
+}
+],
+"block":true,
+"description":"Repeat the actions inside of the loop.",
+"payload":[
+1
+],
+"type":"repeat"
+},
+{
+"type":"block_end"
+},
+{
+"args":[
+{
+"default":1,
+"description":"The number of steps forward to move the pixelbot.",
+"name":"steps",
+"type":"number",
+"values":[
+1,
+2,
+3,
+4,
+5,
+6,
+7,
+8,
+9
+]
+}
+],
+"description":"Move the pixelbot one space in whichever direction it is facing.",
+"payload":[
+1
+],
+"type":"forward"
+},
+{
+"description":"Turn the pixelbot 90 degrees to the right.",
+"type":"turnRight"
+},
+{
+"args":[
+{
+"default":"black",
+"description":"The color to paint",
+"name":"color",
+"type":"string",
+"values":[
+{
+"name":"red",
+"value":"#f44336"
+},
+{
+"name":"pink",
+"value":"#e91e63"
+},
+{
+"name":"purple",
+"value":"#9c27b0"
+},
+{
+"name":"deepPurple",
+"value":"#673ab7"
+},
+{
+"name":"indigo",
+"value":"#3f51b5"
+},
+{
+"name":"blue",
+"value":"#2196f3"
+},
+{
+"name":"lightBlue",
+"value":"#03a9f4"
+},
+{
+"name":"cyan",
+"value":"#00bcd4"
+},
+{
+"name":"teal",
+"value":"#009688"
+},
+{
+"name":"green",
+"value":"#4caf50"
+},
+{
+"name":"lightGreen",
+"value":"#8bc34a"
+},
+{
+"name":"lime",
+"value":"#cddc39"
+},
+{
+"name":"yellow",
+"value":"#ffeb3b"
+},
+{
+"name":"amber",
+"value":"#ffc107"
+},
+{
+"name":"orange",
+"value":"#ff9800"
+},
+{
+"name":"deepOrange",
+"value":"#ff5722"
+},
+{
+"name":"brown",
+"value":"#795548"
+},
+{
+"name":"grey",
+"value":"#9e9e9e"
+},
+{
+"name":"blueGrey",
+"value":"#607d8b"
+},
+{
+"name":"black",
+"value":"#000000"
+},
+{
+"name":"white",
+"value":"#FFFFFF"
+}
+]
+}
+],
+"description":"Paint an Z shape.",
+"payload":[
+"blue"
+],
+"type":"paintZ"
+}
+],
+"type":"penguin"
+},
+{
+"current":{
+"location":[
+7,
+0
+],
+"rot":0
+},
+"hidden":true,
+"initial":{
+"location":[
+7,
+0
+],
+"rot":0
+},
+"type":"teacherBot"
+}
+],
+"advanced":false,
+"creatorID":"b1V2uAmlCieLOdP749PkdhGxfUw2",
+"lastEdited":1497034926425,
+"lineLimit":10,
+"meta":{
+"attempts":3,
+"creatorID":"b1V2uAmlCieLOdP749PkdhGxfUw2",
+"lastEdited":1497034929490,
+"loc":5,
+"username":"danleavitt0"
+},
+"shortLink":"Y7MEM",
+"gameRef":"-Km2p8PCjpM7lYLQ4dei",
+"uid":"b1V2uAmlCieLOdP749PkdhGxfUw2",
+"username":"danleavitt0",
+"solutionIterator":null,
+"ready":true
+},
+"solution":null,
+"imageUrl":"https://storage.googleapis.com/artbot-26016.appspot.com/-Km2p8PCjpM7lYLQ4dei.png?GoogleAccessId=firebase-adminsdk-syfaa@artbot-26016.iam.gserviceaccount.com&Expires=1742169600&Signature=GU%2BF1ELMbGPu8fCyUtd62y2SaZrbOp%2BBDWi2z8vvs%2FRQpD739nqk3Te%2F1Lj54HgF9hvs0T1AnWyBmfxRsHmOqVsAn86BLGmdVg2Kk8gpxuvQwuDIftPhZTcbE0NTD93qCrsHI%2BPgtH1Y7%2BZarNSgQKrSFZh0d8qqRK4UvBAE2C0qIrH8m%2FGQg%2FRvnyEjnB5wknhE42MJuzcEgHut5C%2Byd2GMe%2BKtMUlerqRN5RRYgKyBAw1Mrhda90Z%2FF633CsnWFTLRsrewi8VaUiyawrhG1lMYkxOzQsDeSuf4z09tQWOmmQ3cSkdJeOUnaaFFPTf%2BxNzr4zKBb%2Btvvxqi6VVH1g%3D%3D",
+"editorState":{
+},
+"activeLine":-1,
+"cursor":0,
+"active":0,
+"steps":0,
+"speed":1,
+"frames":{
+},
+"palette":[
+{
+"name":"red",
+"value":"#f44336"
+},
+{
+"name":"pink",
+"value":"#e91e63"
+},
+{
+"name":"purple",
+"value":"#9c27b0"
+},
+{
+"name":"deepPurple",
+"value":"#673ab7"
+},
+{
+"name":"indigo",
+"value":"#3f51b5"
+},
+{
+"name":"blue",
+"value":"#2196f3"
+},
+{
+"name":"lightBlue",
+"value":"#03a9f4"
+},
+{
+"name":"cyan",
+"value":"#00bcd4"
+},
+{
+"name":"teal",
+"value":"#009688"
+},
+{
+"name":"green",
+"value":"#4caf50"
+},
+{
+"name":"lightGreen",
+"value":"#8bc34a"
+},
+{
+"name":"lime",
+"value":"#cddc39"
+},
+{
+"name":"yellow",
+"value":"#ffeb3b"
+},
+{
+"name":"amber",
+"value":"#ffc107"
+},
+{
+"name":"orange",
+"value":"#ff9800"
+},
+{
+"name":"deepOrange",
+"value":"#ff5722"
+},
+{
+"name":"brown",
+"value":"#795548"
+},
+{
+"name":"grey",
+"value":"#9e9e9e"
+},
+{
+"name":"blueGrey",
+"value":"#607d8b"
+},
+{
+"name":"black",
+"value":"#000000"
+},
+{
+"name":"white",
+"value":"#FFFFFF"
+}
+],
+"capabilities":{
+"block_end":true,
+"forward":[
+true
+],
+"paintT":[
+true
+],
+"paintZ":[
+true
+],
+"repeat":[
+true
+],
+"turnLeft":true,
+"turnRight":true
+},
+"animals":[
+{
+"current":{
+"dir":0,
+"location":[
+7,
+0
+],
+"rot":0
+},
+"hidden":false,
+"initial":{
+"dir":0,
+"location":[
+7,
+0
+],
+"rot":0
+},
+"sequence":[
+{
+"args":[
+{
+"default":2,
+"description":"The number of times to repeat the loop.",
+"name":"num",
+"type":"number",
+"values":[
+1,
+2,
+3,
+4,
+5,
+6,
+7,
+8,
+9
+]
+},
+{
+"description":"The function to be repeated",
+"name":"() => { // code to repeat }",
+"type":"function"
+}
+],
+"block":true,
+"description":"Repeat the actions inside of the loop.",
+"payload":[
+1
+],
+"type":"repeat"
+},
+{
+"type":"block_end"
+},
+{
+"args":[
+{
+"default":1,
+"description":"The number of steps forward to move the pixelbot.",
+"name":"steps",
+"type":"number",
+"values":[
+1,
+2,
+3,
+4,
+5,
+6,
+7,
+8,
+9
+]
+}
+],
+"description":"Move the pixelbot one space in whichever direction it is facing.",
+"payload":[
+1
+],
+"type":"forward"
+},
+{
+"description":"Turn the pixelbot 90 degrees to the right.",
+"type":"turnRight"
+},
+{
+"args":[
+{
+"default":"black",
+"description":"The color to paint",
+"name":"color",
+"type":"string",
+"values":[
+{
+"name":"red",
+"value":"#f44336"
+},
+{
+"name":"pink",
+"value":"#e91e63"
+},
+{
+"name":"purple",
+"value":"#9c27b0"
+},
+{
+"name":"deepPurple",
+"value":"#673ab7"
+},
+{
+"name":"indigo",
+"value":"#3f51b5"
+},
+{
+"name":"blue",
+"value":"#2196f3"
+},
+{
+"name":"lightBlue",
+"value":"#03a9f4"
+},
+{
+"name":"cyan",
+"value":"#00bcd4"
+},
+{
+"name":"teal",
+"value":"#009688"
+},
+{
+"name":"green",
+"value":"#4caf50"
+},
+{
+"name":"lightGreen",
+"value":"#8bc34a"
+},
+{
+"name":"lime",
+"value":"#cddc39"
+},
+{
+"name":"yellow",
+"value":"#ffeb3b"
+},
+{
+"name":"amber",
+"value":"#ffc107"
+},
+{
+"name":"orange",
+"value":"#ff9800"
+},
+{
+"name":"deepOrange",
+"value":"#ff5722"
+},
+{
+"name":"brown",
+"value":"#795548"
+},
+{
+"name":"grey",
+"value":"#9e9e9e"
+},
+{
+"name":"blueGrey",
+"value":"#607d8b"
+},
+{
+"name":"black",
+"value":"#000000"
+},
+{
+"name":"white",
+"value":"#FFFFFF"
+}
+]
+}
+],
+"description":"Paint an Z shape.",
+"payload":[
+"blue"
+],
+"type":"paintZ"
+}
+],
+"type":"penguin"
+},
+{
+"current":{
+"location":[
+7,
+0
+],
+"rot":0
+},
+"hidden":true,
+"initial":{
+"location":[
+7,
+0
+],
+"rot":0
+},
+"type":"teacherBot"
+}
+]
+}
 }
