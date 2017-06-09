@@ -6,6 +6,7 @@ module.exports = {
 	solutionChecker: require('./solutionChecker'),
 	updateGameMeta: require('./updateGameMeta'),
 	fanDraftToUser: require('./fanDraftToUser'),
+	returnPlaylist: require('./returnPlaylist'),
 	createGif: require('./createGif')
 	// updateSavedImage: require('./updateSavedImage'),
 	// toggleShowcase: require('./toggleShowcase'),
