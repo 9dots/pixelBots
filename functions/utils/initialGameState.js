@@ -14,6 +14,7 @@ module.exports = {
   selected: [],
   solution: '',
   painted: {},
+  lineLimit: null,
   cursor: 0,
   active: 0,
   steps: 0,

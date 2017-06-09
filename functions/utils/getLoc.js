@@ -12,7 +12,7 @@ module.exports = function (code = '') {
     lastLoc = analysis.lloc()
     return lastLoc
   } catch (e) {
+    console.error(e)
     return lastLoc
   }
 }
-

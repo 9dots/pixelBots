@@ -1,0 +1,5 @@
+{
+  "name": "ResetBoardButton",
+  "main": "ResetBoardButton.js",
+  "browser": "ResetBoardButton.js"
+}

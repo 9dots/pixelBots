@@ -8,7 +8,7 @@
     "config-prod": "firebase use artbot-26016; cross-env NODE_ENV='production' node config.js",
     "build": "rm -rf public/index.html; rm -rf public/*.js; webpack -p",
     "deploy": "yarn run config-prod; yarn run build; firebase deploy --except functions;",
-    "test": "devtool -r babel-register src/pages/MyPlaylist/test.js --break --no-source-maps",
+    "test": "webpack --config webpack.config.test.js",
     "create": "khaos create component",
     "start": "yarn install; yarn run config-dev; rm -rf public/index.html; rm -rf public/*.js; webpack-dev-server"
   },
@@ -79,7 +79,7 @@
     "to-markdown": "^3.0.3",
     "type": "0.0.3",
     "vdux": "^3.0.9",
-    "vdux-ace": "^1.0.5",
+    "vdux-ace": "^1.0.6",
     "vdux-containers": "^1.2.8",
     "vdux-css-transition": "^1.2.1",
     "vdux-delay": "^1.0.6",
