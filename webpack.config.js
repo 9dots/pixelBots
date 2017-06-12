@@ -19,15 +19,16 @@ function config (env) {
   return {
     entry: {
       main: [
-        'webpack-dev-server/client?http://localhost:8080',
-        'webpack/hot/only-dev-server',
+        // 'webpack-dev-server/client?http://localhost:8080',
+        // 'webpack/hot/only-dev-server',
         './lib/client/index.js'
       ],
       vendor: [
         'lodash',
         'brace',
         'firebase',
-        'auto-yield-delegate'
+        'auto-yield-delegate',
+        'js-analyse'
       ]
     },
     output: {
@@ -72,25 +73,25 @@ function config (env) {
       net: net,
       fs: fs
     },
-    devtool: 'eval-source-map'
+    // devtool: 'eval-source-map'
   }
 }
 
-new WebpackDevServer(webpack(config()), {
-  host: 'localhost',
-  hot: true,
-  inline: true,
-  contentBase: 'public',
-  historyApiFallback: {
-    rewrites: [{
-      from: /([\d\w\-\.]*)(\.js$|\.json$)/,
-      to: context => '/' + context.match[0]
-    }, {
-      from: /([\d\w]*\.)([\d\w]*\.)([\d\w\-]*)(\.js$|\.json$)/,
-      to: context => '/' + console.log('here\n\n\n', context)
-    }],
-    index: '/index.html'
-  }
-}).listen(8080)
+// new WebpackDevServer(webpack(config()), {
+//   host: 'localhost',
+//   hot: true,
+//   inline: true,
+//   contentBase: 'public',
+//   historyApiFallback: {
+//     rewrites: [{
+//       from: /([\d\w\-\.]*)(\.js$|\.json$)/,
+//       to: context => '/' + context.match[0]
+//     }, {
+//       from: /([\d\w]*\.)([\d\w]*\.)([\d\w\-]*)(\.js$|\.json$)/,
+//       to: context => '/' + console.log('here\n\n\n', context)
+//     }],
+//     index: '/index.html'
+//   }
+// }).listen(8080)
 
 module.exports = config

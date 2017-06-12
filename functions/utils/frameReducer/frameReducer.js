@@ -120,6 +120,7 @@ var actions = {
   paintI: paintI,
   paintS: paintS,
   paintZ: paintZ,
+  moveTo: moveTo,
   rand: createRand,
   getCurrentColor: getCurrentColor
 };
@@ -127,6 +128,16 @@ var actions = {
 /**
  * Actions
  */
+
+ function moveTo (state, id, x, y) {
+   if (x === undefined || y === undefined) {
+     throw {
+       message: 'Unexpected number of parameters moveTo',
+     }
+     return state
+   }
+   return setAnimalPos(state, id, [state.levelSize[0] - y - 1, x])
+ }
 
 function forward(state, id) {
   var steps = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;

@@ -67,6 +67,8 @@ function blocksToCode(blocks) {
         return indent + 'turnRight()';
       case 'turnLeft':
         return indent + 'turnLeft()';
+      case 'moveTo':
+        return `${indent}moveTo(${args})`
       case 'repeat':
         return tabs(level++) + 'repeat(' + payload[0] + ', function * () {';
       case 'block_end':

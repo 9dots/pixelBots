@@ -1,5 +1,6 @@
 module.exports = {
 	updatePlaylistImage: require('./updatePlaylistImage'),
+	fanPlaylistProgress: require('./fanPlaylistProgress'),
 	fanPlaylistToUser: require('./fanPlaylistToUser'),
 	createGameImage: require('./createGameImage'),
 	updateSavedMeta: require('./updateSavedMeta'),
