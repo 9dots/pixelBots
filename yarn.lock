@@ -8224,13 +8224,13 @@ rx@^2.4.3:
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/rx/-/rx-2.5.3.tgz#21adc7d80f02002af50dae97fd9dbf248755f566"
 
-safe-buffer@^5.0.1, safe-buffer@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.0.tgz#fe4c8460397f9eaaaa58e73be46273408a45e223"
-
-safe-buffer@~5.0.1:
+safe-buffer@^5.0.1, safe-buffer@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.0.1.tgz#d263ca54696cd8a306b5ca6551e92de57918fbe7"
+
+safe-buffer@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.0.tgz#fe4c8460397f9eaaaa58e73be46273408a45e223"
 
 sax@0.1.x:
   version "0.1.5"
@@ -9685,9 +9685,9 @@ vdux-delay@^1.0.6:
     "@f/create-action" "^1.1.1"
     "@f/handle-actions" "^1.1.1"
 
-vdux-fire@^1.2.6:
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-1.2.6.tgz#c831c340ad33d6b2462757c1ec73df5179201bf1"
+vdux-fire@^1.2.7:
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-1.2.7.tgz#a6b44786ad466555a809732a2fad7be3e27da4b4"
   dependencies:
     "@f/create-action" "^1.1.1"
     "@f/deep-equal" "^1.0.2"
@@ -10285,16 +10285,14 @@ yargs@8.0.1:
     y18n "^3.2.1"
     yargs-parser "^7.0.0"
 
-yargs@^3.10.0, yargs@~3.27.0:
-  version "3.27.0"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-3.27.0.tgz#21205469316e939131d59f2da0c6d7f98221ea40"
+yargs@^3.10.0, yargs@~3.10.0:
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-3.10.0.tgz#f7ee7bd857dd7c1d2d38c0e74efbd681d1431fd1"
   dependencies:
-    camelcase "^1.2.1"
+    camelcase "^1.0.2"
     cliui "^2.1.0"
     decamelize "^1.0.0"
-    os-locale "^1.4.0"
-    window-size "^0.1.2"
-    y18n "^3.2.0"
+    window-size "0.1.0"
 
 yargs@^6.0.0:
   version "6.6.0"
@@ -10314,14 +10312,16 @@ yargs@^6.0.0:
     y18n "^3.2.1"
     yargs-parser "^4.2.0"
 
-yargs@~3.10.0:
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-3.10.0.tgz#f7ee7bd857dd7c1d2d38c0e74efbd681d1431fd1"
+yargs@~3.27.0:
+  version "3.27.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-3.27.0.tgz#21205469316e939131d59f2da0c6d7f98221ea40"
   dependencies:
-    camelcase "^1.0.2"
+    camelcase "^1.2.1"
     cliui "^2.1.0"
     decamelize "^1.0.0"
-    window-size "0.1.0"
+    os-locale "^1.4.0"
+    window-size "^0.1.2"
+    y18n "^3.2.0"
 
 yauzl@2.4.1:
   version "2.4.1"
