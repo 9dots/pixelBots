@@ -451,6 +451,24 @@ var capabilities = {
       description: 'The number of steps forward to move the pixelbot.'
     }]
   },
+  moveTo: {
+    description: 'Move the pixelbot to a specific coordinate (x, y).',
+    defaultArgs: [0, 0],
+    args: [{
+      name: 'x',
+      type: 'number',
+      default: 0,
+      values: (0, _range2.default)(0, 19),
+      description: 'The x coordinate to move to.'
+    },
+    {
+      name: 'y',
+      type: 'number',
+      default: 0,
+      values: (0, _range2.default)(0, 19),
+      description: 'The y coordinate to move to.'
+    }]
+  },
   rand: {
     description: 'Generate a random number',
     args: [{
