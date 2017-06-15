@@ -445,7 +445,7 @@ function getLastFrame(state, code) {
     })
   }), code);
   var lastFrame = frames[frames.length - 1];
-  return frames && lastFrame ? lastFrame.painted : {};
+  return frames && lastFrame ? [lastFrame.painted, frames.length] : {};
 }
 
 function getLastTeacherFrame(state, code) {

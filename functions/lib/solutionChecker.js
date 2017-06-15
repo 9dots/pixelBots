@@ -24,10 +24,15 @@ router.post('/', (req, res) => {
   const base = Object.assign({}, props, {painted: {}})
   if (targetPainted && Object.keys(targetPainted).length > 0) {
     const painted = initialData.initialPainted || {}
-    const answer = getLastFrame(Object.assign({}, base, {painted}), userCode)
+    const [answer, steps] = getLastFrame(Object.assign({}, base, {painted}), userCode)
     const seed = [{painted, userSolution: answer}]
     if (checkCorrect(answer, targetPainted)) {
-      return res.status(200).send({status: 'success', correctSeeds: seed})
+      return res.status(200).send({
+        solutionSteps: props.solutionSteps,
+        correctSeeds: seed,
+        status: 'success',
+        steps
+      })
     }
     return res.status(200).send({status: 'failed', failedSeeds: seed})
   }
@@ -45,20 +50,34 @@ router.post('/', (req, res) => {
     }), startCode)
     if (uniquePaints.every((paint) => !objEqual(paint, painted))) {
       uniquePaints.push(painted)
-      const answer = getLastFrame(Object.assign({}, base, {painted}), userCode)
+      const [answer, steps] = getLastFrame(Object.assign({}, base, {painted}), userCode)
       const solutionState = Object.assign({}, props, {startGrid: painted})
-      if (!checkCorrect(answer, generateSolution(solutionState, solutionIterator))) {
+      const [solution, solutionsSteps] = generateSolution(solutionState, solutionIterator)
+      if (!checkCorrect(answer, solution)) {
         failedSeeds.push({painted, userSolution: answer, seed: i})
       } else {
-        correctSeeds.push({painted, userSolution: answer, seed: i})
+        correctSeeds.push({painted, userSolution: answer, seed: i, steps, solutionSteps})
       }
     }
   }
   if (failedSeeds.length > 0) {
     return res.status(200).send({status: 'failed', failedSeeds, correctSeeds})
   }
-  return res.status(200).send({status: 'success', correctSeeds})
+  return res.status(200).send({
+    status: 'success',
+    correctSeeds,
+    steps: average(getSteps(correctSeeds, 'steps')),
+    solutionSteps: average(getSteps(correctSeeds, 'solutionSteps'))
+  })
 })
+
+function getSteps (arr, key) {
+  return arr.map(val => val[key])
+}
+
+function average (arr) {
+  return arr.reduce((acc, next) => acc + next, 0) / arr.length
+}
 
 module.exports = functions.https.onRequest((req, res) => {
   req.url = req.path ? req.url : `/${req.url}`
@@ -70,9 +89,10 @@ function createPainted (state, code) {
 }
 
 function generateSolution ({initialPainted, solution, levelSize, active, startGrid}, code) {
-  return createFrames({
+  const frames = createFrames({
     active,
     painted: startGrid,
     animals: solution.map(animal => Object.assign({}, animal, {current: animal.initial}))
-  }, code).pop().painted
+  }, code)
+  return [frames.pop().painted, frames.length]
 }

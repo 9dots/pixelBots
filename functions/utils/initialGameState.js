@@ -17,6 +17,7 @@ module.exports = {
   lineLimit: null,
   cursor: 0,
   active: 0,
+  solutionSteps: undefined,
   steps: 0,
   speed: 1,
   frames: [],
