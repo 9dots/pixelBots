@@ -822,6 +822,12 @@
   dependencies:
     "@f/map-obj" "^1.2.2"
 
+"@f/union@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@f/union/-/union-1.0.0.tgz#8b8cc7e84feebe3b6bfd01415637861a4654de7b"
+  dependencies:
+    "@f/unique" "^1.0.1"
+
 "@f/unique@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@f/unique/-/unique-1.0.1.tgz#e73cec32ee4e1dce3659d719427351bcf2cc6b9e"
@@ -9685,9 +9691,9 @@ vdux-delay@^1.0.6:
     "@f/create-action" "^1.1.1"
     "@f/handle-actions" "^1.1.1"
 
-vdux-fire@^1.2.7:
-  version "1.2.7"
-  resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-1.2.7.tgz#a6b44786ad466555a809732a2fad7be3e27da4b4"
+vdux-fire@^1.2.8:
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-1.2.8.tgz#e9adcef53a440c8ef5db920e5f115506b834b81b"
   dependencies:
     "@f/create-action" "^1.1.1"
     "@f/deep-equal" "^1.0.2"

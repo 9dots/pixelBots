@@ -8,6 +8,7 @@ module.exports = functions.database.ref('/playlistInstances/{instanceRef}')
     return new Promise((resolve, reject) => {
       const {completed, uid, playlist} = evt.data.val()
       const {instanceRef} = evt.params
+      console.log(completed, instanceRef)
       const childRef = completed ? 'completed' : 'inProgress'
       playlistRef.child(uid).child(childRef).update({
         [instanceRef]: {
