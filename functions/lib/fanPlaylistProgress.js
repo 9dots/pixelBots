@@ -1,6 +1,7 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 
+const usersRef = admin.database().ref('/users')
 const playlistRef = admin.database().ref('/playlistsByUser')
 
 module.exports = functions.database.ref('/playlistInstances/{instanceRef}')
@@ -29,9 +30,10 @@ module.exports = functions.database.ref('/playlistInstances/{instanceRef}')
               playlistRef.child(uid).child('inProgress').update({
                 [instanceRef]: null
               }),
-              playlistRef
+              usersRef
                 .child(uid)
-                .child('completedCount')
+                .child('stats')
+                .child('completedPlaylists')
                 .transaction(val => (val || 0) + 1)
             ]
           } else return Promise.resolve()
