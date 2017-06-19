@@ -23,7 +23,7 @@ const db = admin.database()
 const savedRef = db.ref('/saved')
 const gamesRef = db.ref('/games')
 
-module.exports = functions.database.ref('/saved/{saveID}/completed')
+module.exports = functions.database.ref('/saved/{saveID}/completions')
   .onWrite(evt => {
     if (!evt.data.val()) {
       return
