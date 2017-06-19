@@ -14,6 +14,7 @@ module.exports = {
   selected: [],
   solution: '',
   painted: {},
+  saveRef: null,
   lineLimit: null,
   cursor: 0,
   active: 0,
