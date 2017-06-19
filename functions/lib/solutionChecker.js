@@ -4,12 +4,15 @@ const checkCorrect = require('../utils/checkCorrect')
 const functions = require('firebase-functions')
 const cors = require('cors')({origin: true})
 const objEqual = require('@f/equal-obj')
+const admin = require('firebase-admin')
 const express = require('express')
 const srand = require('@f/srand')
 
 const createApi = animalApis.default
 const teacherBot = animalApis.teacherBot
 const router = new express.Router()
+
+const savedRef = admin.database().ref('/saved')
 
 router.use(cors)
 router.get('*', (req, res) => {
@@ -19,6 +22,7 @@ router.post('/', (req, res) => {
   res.set({'Cache-Control': 'no-cache'})
   const props = req.body.props
   const {active, animals, solution, initialData, targetPainted, capabilities} = props
+  const saveRef = savedRef.child(props.saveRef)
   const userApi = createApi(capabilities, active)
   const userCode = getIterator(animals[active].sequence, userApi)
   const base = Object.assign({}, props, {painted: {}})
@@ -27,12 +31,11 @@ router.post('/', (req, res) => {
     const [answer, steps] = getLastFrame(Object.assign({}, base, {painted}), userCode)
     const seed = [{painted, userSolution: answer}]
     if (checkCorrect(answer, targetPainted)) {
-      return res.status(200).send({
-        solutionSteps: props.solutionSteps,
-        correctSeeds: seed,
-        status: 'success',
-        steps
-      })
+      return saveRef.update({steps, solutionSteps: props.solutionSteps, test: 'test'})
+        .then(() => res.status(200).send({
+          correctSeeds: seed,
+          status: 'success'
+        }))
     }
     return res.status(200).send({status: 'failed', failedSeeds: seed})
   }
@@ -63,12 +66,14 @@ router.post('/', (req, res) => {
   if (failedSeeds.length > 0) {
     return res.status(200).send({status: 'failed', failedSeeds, correctSeeds})
   }
-  return res.status(200).send({
-    status: 'success',
-    correctSeeds,
+  return saveRef.update({
     steps: average(getSteps(correctSeeds, 'steps')),
     solutionSteps: average(getSteps(correctSeeds, 'solutionSteps'))
   })
+    .then(() => res.status(200).send({
+      status: 'success',
+      correctSeeds,
+    }))
 })
 
 function getSteps (arr, key) {
