@@ -23,7 +23,7 @@ admin.initializeApp({
   databaseURL: 'https://artbot-dev.firebaseio.com'
 })
 
-const saveID = '-Kjyntze8CwFN8cclsRt'
+const saveID = '-KmhME6m-_0huayp14UQ10'
 const RUN_TIME = 3
 const GIF_SIZE = 500
 const db = admin.database()
@@ -64,7 +64,7 @@ savedRef.child(saveID).once('value')
     })
     const it = getIterator(sequence, createApi(gameState.capabilities, 0))
     const frames = createPaintFrames(initState, it)
-    const timing = frames / RUN_TIME
+    const timing = frames.length / RUN_TIME
     const delay = 100 / timing
     const adjusted = frames.map((frame, i, arr) => {
       const next = arr[i + 1]
@@ -72,11 +72,69 @@ savedRef.child(saveID).once('value')
         : frame.step
       return {length: Math.abs(next - frame.step), frame: omit('step', frame)}
     })
-    return adjusted
+    return frameChunks(chunk(adjusted, 20), size, imageSize, saveID)
+              .then((results) => createGif(saveID, results, delay, imageSize))
   })
-  .then(console.log)
+  .then(() => console.log('done'))
   .catch(console.warn)
 
-  function createPainted (state, code) {
-    return createFrames(state, code).pop().painted
+  function frameChunks (chunks, size, imageSize, saveID) {
+    return new Promise((resolve, reject) => {
+      co(function * () {
+        let completed = []
+        for (var i = 0; i < chunks.length; i++) {
+          var result = yield frameChunk(chunks[i], i, size, imageSize, saveID)
+          completed.push(result)
+        }
+        return flatten(completed)
+      }).then(resolve)
+    })
   }
+
+  function frameChunk (frames, batch, size, imageSize, saveID) {
+    return new Promise((resolve, reject) => {
+      const promises = frames.map((frame, i) => {
+        return Promise.join(
+          gifFrame(`${padLeft('' + batch, 2, '0')}-${padLeft('' + i, 4, '0')}`, size, imageSize, frame.frame, saveID),
+          Promise.resolve(frame.length),
+          (img, length) => ({img, length})
+        )
+      })
+      Promise.all(promises)
+        .then(resolve)
+        .catch(reject)
+    })
+  }
+
+
+function success () {
+  console.log('success')
+  clearData(saveID)
+  resolve()
+}
+
+function failed (e) {
+  console.log('failed', e)
+  clearData(saveID)
+  reject(e)
+}
+
+function clearData (name) {
+  fs.removeSync(`/tmp/${name}.gif`)
+  return fs.removeSync(`/tmp/${name}`)
+}
+
+function padLeft (str, num, char) {
+  const add = num - str.length
+  let newStr = ''
+  for (let i = 0; i < add; i++) {
+    newStr += char
+  }
+  return newStr + str
+}
+
+
+
+function createPainted (state, code) {
+  return createFrames(state, code).pop().painted
+}
