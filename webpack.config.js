@@ -55,7 +55,7 @@ function config (env) {
     },
     target: 'web',
     plugins: [
-      new webpack.HotModuleReplacementPlugin(),
+      // new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.optimize.CommonsChunkPlugin({
         names: ['vendor', 'manifest'] // Specify the common bundle's name.
