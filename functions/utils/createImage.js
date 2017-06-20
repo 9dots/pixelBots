@@ -108,15 +108,15 @@ function drawFrame (size, targetPainted, writePath, file) {
 function levelThumb (name, gridSize, targetPainted, dir = '') {
   const size = Math.floor(300 / gridSize)
   const imageSize = Number(size * gridSize) + Number(gridSize) - 1
-  let file = gm(imageSize, imageSize, '#ffffff').limit('memory', '1448MB')
+  let file = gm(imageSize, imageSize, '#ffffff').limit('memory', '256MB')
   const writePath = `/tmp${dir ? `/${dir}` : ''}/${name}.png`
 
   return drawFrame(size, targetPainted, writePath, file)
 }
 
 function gifFrame (name, size, imageSize, targetPainted, dir = '') {
-  let file = gm(imageSize, imageSize, 'none').limit('memory', '1448MB')
-  const writePath = `/tmp${dir ? `/${dir}` : ''}/${name}.miff`
+  let file = gm(imageSize, imageSize, 'none').limit('memory', '512KB')
+  const writePath = `/tmp${dir ? `/${dir}` : ''}/${name}.png`
 
   return drawFrame(size, targetPainted, writePath, file)
 }

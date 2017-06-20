@@ -1,6 +1,7 @@
 
 const {createPaintFrames, createFrames, getIterator} = require('../utils/frameReducer/frameReducer')
 const animalApis = require('../utils/animalApis/index')
+const createVideo = require('../utils/createVideo')
 const {gifFrame} = require('../utils/createImage')
 const functions = require('firebase-functions')
 const createGif = require('../utils/createGif')
@@ -40,10 +41,12 @@ savedRef.child(saveID).once('value')
   .then(([savedGame, gameState]) => {
     const levelSize = gameState.levelSize[0]
     const {animals} = gameState.type === 'read' ? gameState : savedGame
-    const size = Math.floor(GIF_SIZE / levelSize)
-    const imageSize = Number(size * levelSize) + Number(levelSize - 1)
+    const size = getSize(levelSize)
+    const imageSize = size * levelSize + Number(levelSize - 1)
     const teacherApi = createApi(teacherBot, 0)
-    const startCode = getIterator(gameState.initialPainted, teacherApi)
+    const startCode = gameState.advanced
+      ? getIterator(gameState.initialPainted, teacherApi)
+      : gameState.initialPainted || {}
     const initialPainted = gameState.advanced
       ? createPainted(Object.assign({}, gameState, {
           painted: {},
@@ -66,14 +69,12 @@ savedRef.child(saveID).once('value')
     const frames = createPaintFrames(initState, it)
     const timing = frames.length / RUN_TIME
     const delay = 100 / timing
+    console.log(Array.isArray(frames))
     const adjusted = frames.map((frame, i, arr) => {
-      const next = arr[i + 1]
-        ? arr[i + 1].step
-        : frame.step
-      return {length: Math.abs(next - frame.step), frame: omit('step', frame)}
+      return {frame: frame}
     })
     return frameChunks(chunk(adjusted, 20), size, imageSize, saveID)
-              .then((results) => createGif(saveID, results, delay, imageSize))
+      .then((gifs) => createVideo(saveID, gifs, delay, imageSize))
   })
   .then(() => console.log('done'))
   .catch(console.warn)
@@ -95,8 +96,8 @@ savedRef.child(saveID).once('value')
     return new Promise((resolve, reject) => {
       const promises = frames.map((frame, i) => {
         return Promise.join(
-          gifFrame(`${padLeft('' + batch, 2, '0')}-${padLeft('' + i, 4, '0')}`, size, imageSize, frame.frame, saveID),
-          Promise.resolve(frame.length),
+          gifFrame(`${padLeft('' + batch)}-${padLeft('' + i, 4)}`, size, imageSize, frame.frame, saveID),
+          Promise.resolve(1),
           (img, length) => ({img, length})
         )
       })
@@ -133,7 +134,12 @@ function padLeft (str, num, char) {
   return newStr + str
 }
 
-
+function getSize (size) {
+  const floorSize = Math.floor(GIF_SIZE / size)
+  return floorSize % 2 === 0
+    ? floorSize
+    : floorSize - 1
+}
 
 function createPainted (state, code) {
   return createFrames(state, code).pop().painted

@@ -1,11 +1,13 @@
 
 const {createPaintFrames, createFrames, getIterator} = require('../utils/frameReducer/frameReducer')
 const animalApis = require('../utils/animalApis/index')
+const createVideo = require('../utils/createVideo')
 const {gifFrame} = require('../utils/createImage')
 const functions = require('firebase-functions')
 const createGif = require('../utils/createGif')
 const {upload} = require('../utils/storage')
 const flatten = require('lodash/flatten')
+const ffmpeg = require('fluent-ffmpeg')
 const admin = require('firebase-admin')
 const chunk = require('lodash/chunk')
 const fs = require('node-fs-extra')
@@ -40,10 +42,12 @@ module.exports = functions.database.ref('/saved/{saveID}/completions')
         .then(([savedGame, gameState]) => {
           const levelSize = gameState.levelSize[0]
           const {animals} = gameState.type === 'read' ? gameState : savedGame
-          const size = Math.floor(GIF_SIZE / levelSize)
-          const imageSize = Number(size * levelSize) + Number(levelSize - 1)
+          const size = getSize(levelSize)
+          const imageSize = size * levelSize + Number(levelSize - 1)
           const teacherApi = createApi(teacherBot, 0, savedGame.palette)
-          const startCode = getIterator(gameState.initialPainted, teacherApi)
+          const startCode = gameState.advanced
+            ? getIterator(gameState.initialPainted, teacherApi)
+            : gameState.initialPainted
           const initialPainted = gameState.advanced
             ? createPainted(Object.assign({}, gameState, {
                 painted: {},
@@ -57,23 +61,22 @@ module.exports = functions.database.ref('/saved/{saveID}/completions')
             : animals[0]
           fs.mkdirsSync(`/tmp/${saveID}`)
           const initState = Object.assign({}, gameState, {
-            painted: initialPainted,
+            painted: initialPainted || {},
             animals: animals.map(a => Object.assign({}, a, {
               current: a.initial
             }))
           })
           const it = getIterator(sequence, createApi(gameState.capabilities, 0, savedGame.palette))
-          const frames = [Object.assign({}, initialPainted, {frame: 0})].concat(createPaintFrames(initState, it))
+          console.log(initState.painted)
+          const frames = createPaintFrames(initState, it)
+          console.log('createGif', frames)
           const timing = frames.length / RUN_TIME
           const delay = 100 / timing
           const adjusted = frames.map((frame, i, arr) => {
-            const next = arr[i + 1]
-              ? arr[i + 1].frame
-              : frame.frame
-            return {length: Math.abs(next - frame.frame), frame: omit('frame', frame)}
+            return {frame: frame}
           })
-          frameChunks(chunk(adjusted, 20))
-            .then((results) => createGif(saveID, results, delay, imageSize))
+          frameChunks(chunk(adjusted, 80))
+            .then((results) => createVideo(saveID, results, delay, imageSize))
             .then(upload)
             .then(updateGame(saveID))
             .then(success)
@@ -93,11 +96,12 @@ module.exports = functions.database.ref('/saved/{saveID}/completions')
           }
 
           function frameChunk (frames, batch) {
+            console.log('chunk', batch)
             return new Promise((resolve, reject) => {
               const promises = frames.map((frame, i) => {
                 return Promise.join(
                   gifFrame(`${padLeft('' + batch, 2, '0')}-${padLeft('' + i, 4, '0')}`, size, imageSize, frame.frame, saveID),
-                  Promise.resolve(frame.length),
+                  Promise.resolve(1),
                   (img, length) => ({img, length})
                 )
               })
@@ -128,7 +132,7 @@ function clearData (name) {
   return fs.removeSync(`/tmp/${name}`)
 }
 
-function padLeft (str, num, char) {
+function padLeft (str, num = 2, char = '0') {
   const add = num - str.length
   let newStr = ''
   for (let i = 0; i < add; i++) {
@@ -145,6 +149,13 @@ function updateGame (saveID) {
       'meta/animatedGif': url
     })
   }
+}
+
+function getSize (size) {
+  const floorSize = Math.floor(GIF_SIZE / size)
+  return floorSize % 2 === 0
+    ? floorSize
+    : floorSize - 1
 }
 
 function createPainted (state, code) {
