@@ -22,6 +22,7 @@ router.post('/', (req, res) => {
   res.set({'Cache-Control': 'no-cache'})
   const props = req.body.props
   const {active, animals, solution, initialData, targetPainted, capabilities} = props
+  console.log(props.saveRef)
   const saveRef = savedRef.child(props.saveRef)
   const userApi = createApi(capabilities, active)
   const userCode = getIterator(animals[active].sequence, userApi)

@@ -125,7 +125,7 @@ function clearData (name) {
   return fs.removeSync(`/tmp/${name}`)
 }
 
-function padLeft (str, num, char) {
+function padLeft (str, num = 2, char = '0') {
   const add = num - str.length
   let newStr = ''
   for (let i = 0; i < add; i++) {
