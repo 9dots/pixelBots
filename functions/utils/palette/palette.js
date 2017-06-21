@@ -17,7 +17,7 @@ const colors = drop(reduce(
   }],
   [],
   palette
-))
+)).slice(1)
 
 const blackAndWhite = colors.filter(c => c.name === 'black' || c.name === 'white')
 
