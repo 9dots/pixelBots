@@ -4,23 +4,21 @@ const animalApis = require('../utils/animalApis/index')
 const createVideo = require('../utils/createVideo')
 const {gifFrame} = require('../utils/createImage')
 const functions = require('firebase-functions')
-const createGif = require('../utils/createGif')
 const {upload} = require('../utils/storage')
 const flatten = require('lodash/flatten')
-const ffmpeg = require('fluent-ffmpeg')
 const admin = require('firebase-admin')
 const chunk = require('lodash/chunk')
 const fs = require('node-fs-extra')
 const Promise = require('bluebird')
 const srand = require('@f/srand')
-const omit = require('@f/omit')
 const co = require('co')
 
 const createApi = animalApis.default
 const teacherBot = animalApis.capabilities
 
-const RUN_TIME = 3
-const GIF_SIZE = 500
+const MAX_RUN_TIME = 5
+const SECONDS_PER_FRAME = 0.3
+const GIF_SIZE = 420
 const db = admin.database()
 const savedRef = db.ref('/saved')
 const gamesRef = db.ref('/games')
@@ -43,7 +41,7 @@ module.exports = functions.database.ref('/saved/{saveID}/completions')
           const levelSize = gameState.levelSize[0]
           const {animals} = gameState.type === 'read' ? gameState : savedGame
           const size = getSize(levelSize)
-          const imageSize = size * levelSize + Number(levelSize - 1)
+          const imageSize = size * levelSize
           const teacherApi = createApi(teacherBot, 0, savedGame.palette)
           const startCode = gameState.advanced
             ? getIterator(gameState.initialPainted, teacherApi)
@@ -67,16 +65,19 @@ module.exports = functions.database.ref('/saved/{saveID}/completions')
             }))
           })
           const it = getIterator(sequence, createApi(gameState.capabilities, 0, savedGame.palette))
-          console.log(initState.painted)
           const frames = createPaintFrames(initState, it)
-          console.log('createGif', frames)
-          const timing = frames.length / RUN_TIME
-          const delay = 100 / timing
           const adjusted = frames.map((frame, i, arr) => {
-            return {frame: frame}
+            const next = arr[i + 1]
+              ? arr[i + 1].step
+              : frame.step
+            return {length: Math.abs(next - frame.step), frame: frame.painted}
           })
-          frameChunks(chunk(adjusted, 80))
-            .then((results) => createVideo(saveID, results, delay, imageSize))
+          const totalLength = adjusted.reduce((total, {length}) => total + length, 0)
+          const timing = totalLength * SECONDS_PER_FRAME > MAX_RUN_TIME
+            ? MAX_RUN_TIME / totalLength
+            : SECONDS_PER_FRAME
+          frameChunks(chunk(adjusted, 20))
+            .then((results) => createVideo(saveID, results, timing, imageSize))
             .then(upload)
             .then(updateGame(saveID))
             .then(success)
@@ -96,11 +97,11 @@ module.exports = functions.database.ref('/saved/{saveID}/completions')
           }
 
           function frameChunk (frames, batch) {
-            console.log('chunk', batch)
             return new Promise((resolve, reject) => {
               const promises = frames.map((frame, i) => {
+                console.log(process.memoryUsage())
                 return Promise.join(
-                  gifFrame(`${padLeft('' + batch, 2, '0')}-${padLeft('' + i, 4, '0')}`, size, imageSize, frame.frame, saveID),
+                  gifFrame(`${padLeft('' + batch)}-${padLeft('' + i, 4, '0')}`, size, imageSize, frame.frame, saveID),
                   Promise.resolve(1),
                   (img, length) => ({img, length})
                 )
@@ -128,7 +129,7 @@ module.exports = functions.database.ref('/saved/{saveID}/completions')
   })
 
 function clearData (name) {
-  fs.removeSync(`/tmp/${name}.gif`)
+  fs.removeSync(`/tmp/${name}.mp4`)
   return fs.removeSync(`/tmp/${name}`)
 }
 
