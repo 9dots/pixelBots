@@ -25,8 +25,8 @@ admin.initializeApp({
 })
 
 const saveID = '-KmhME6m-_0huayp14UQ10'
-const RUN_TIME = 3
-const GIF_SIZE = 500
+const RUN_TIME = 5
+const GIF_SIZE = 420
 const db = admin.database()
 const savedRef = db.ref('/saved')
 const gamesRef = db.ref('/games')
@@ -42,7 +42,7 @@ savedRef.child(saveID).once('value')
     const levelSize = gameState.levelSize[0]
     const {animals} = gameState.type === 'read' ? gameState : savedGame
     const size = getSize(levelSize)
-    const imageSize = size * levelSize + Number(levelSize - 1)
+    const imageSize = size * levelSize
     const teacherApi = createApi(teacherBot, 0)
     const startCode = gameState.advanced
       ? getIterator(gameState.initialPainted, teacherApi)
@@ -67,26 +67,28 @@ savedRef.child(saveID).once('value')
     })
     const it = getIterator(sequence, createApi(gameState.capabilities, 0))
     const frames = createPaintFrames(initState, it)
-    const timing = frames.length / RUN_TIME
-    const delay = 100 / timing
+    const timing = RUN_TIME / frames.length
+    // const delay = 100 / timing
     console.log(Array.isArray(frames))
     const adjusted = frames.map((frame, i, arr) => {
       return {frame: frame}
     })
     return frameChunks(chunk(adjusted, 20), size, imageSize, saveID)
-      .then((gifs) => createVideo(saveID, gifs, delay, imageSize))
+      .then((gifs) => createVideo(saveID, gifs, timing, imageSize))
   })
   .then(() => console.log('done'))
   .catch(console.warn)
 
   function frameChunks (chunks, size, imageSize, saveID) {
     return new Promise((resolve, reject) => {
+      console.time('createFrames')
       co(function * () {
         let completed = []
         for (var i = 0; i < chunks.length; i++) {
           var result = yield frameChunk(chunks[i], i, size, imageSize, saveID)
           completed.push(result)
         }
+        console.timeEnd('createFrames')
         return flatten(completed)
       }).then(resolve)
     })
