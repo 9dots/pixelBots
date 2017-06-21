@@ -297,6 +297,13 @@ function getCurrentColor(state) {
  function createPaintFrames(frame, code, seed) {
    return createFrames(frame, code, seed)
      .map((f, i) => f.painted)
+     .reduce((acc, painted, i, arr) => {
+       const prev = acc[acc.length - 1] || {painted: {}}
+       if (Object.keys(painted).some(key => prev.painted[key] !== painted[key])) {
+         acc.push({painted, step: i})
+       }
+       return acc
+     }, [])
  }
 
 function createFrames(frame, code, seed) {

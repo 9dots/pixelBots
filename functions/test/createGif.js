@@ -3,16 +3,12 @@ const {createPaintFrames, createFrames, getIterator} = require('../utils/frameRe
 const animalApis = require('../utils/animalApis/index')
 const createVideo = require('../utils/createVideo')
 const {gifFrame} = require('../utils/createImage')
-const functions = require('firebase-functions')
-const createGif = require('../utils/createGif')
-const {upload} = require('../utils/storage')
 const flatten = require('lodash/flatten')
 const admin = require('firebase-admin')
 const chunk = require('lodash/chunk')
 const fs = require('node-fs-extra')
 const Promise = require('bluebird')
 const srand = require('@f/srand')
-const omit = require('@f/omit')
 const co = require('co')
 
 const serviceAccount = require('../serviceAccount.json')
@@ -24,8 +20,9 @@ admin.initializeApp({
   databaseURL: 'https://artbot-dev.firebaseio.com'
 })
 
-const saveID = '-KmhME6m-_0huayp14UQ10'
-const RUN_TIME = 5
+const saveID = '-Kmn79osSnFYfSBJR-KL2'
+const MAX_RUN_TIME = 5
+const SECONDS_PER_FRAME = 0.3
 const GIF_SIZE = 420
 const db = admin.database()
 const savedRef = db.ref('/saved')
@@ -49,11 +46,11 @@ savedRef.child(saveID).once('value')
       : gameState.initialPainted || {}
     const initialPainted = gameState.advanced
       ? createPainted(Object.assign({}, gameState, {
-          painted: {},
-          startGrid: {},
-          animals: animals.filter(a => a.type === 'teacherBot').map(a => Object.assign({}, a, {current: a.initial})),
-          rand: srand(1)
-        }), startCode)
+        painted: {},
+        startGrid: {},
+        animals: animals.filter(a => a.type === 'teacherBot').map(a => Object.assign({}, a, {current: a.initial})),
+        rand: srand(1)
+      }), startCode)
       : startCode
     const {sequence} = gameState.type === 'read'
       ? gameState.animals[0]
@@ -67,64 +64,51 @@ savedRef.child(saveID).once('value')
     })
     const it = getIterator(sequence, createApi(gameState.capabilities, 0))
     const frames = createPaintFrames(initState, it)
-    const timing = RUN_TIME / frames.length
     // const delay = 100 / timing
-    console.log(Array.isArray(frames))
     const adjusted = frames.map((frame, i, arr) => {
-      return {frame: frame}
+      const next = arr[i + 1]
+        ? arr[i + 1].step
+        : frame.step
+      return {length: Math.abs(next - frame.step), frame: frame.painted}
     })
+    const totalLength = adjusted.reduce((total, {length}) => total + length, 0)
+    const timing = totalLength * SECONDS_PER_FRAME > MAX_RUN_TIME
+      ? MAX_RUN_TIME / totalLength
+      : SECONDS_PER_FRAME
     return frameChunks(chunk(adjusted, 20), size, imageSize, saveID)
       .then((gifs) => createVideo(saveID, gifs, timing, imageSize))
   })
   .then(() => console.log('done'))
   .catch(console.warn)
 
-  function frameChunks (chunks, size, imageSize, saveID) {
-    return new Promise((resolve, reject) => {
-      console.time('createFrames')
-      co(function * () {
-        let completed = []
-        for (var i = 0; i < chunks.length; i++) {
-          var result = yield frameChunk(chunks[i], i, size, imageSize, saveID)
-          completed.push(result)
-        }
-        console.timeEnd('createFrames')
-        return flatten(completed)
-      }).then(resolve)
-    })
-  }
-
-  function frameChunk (frames, batch, size, imageSize, saveID) {
-    return new Promise((resolve, reject) => {
-      const promises = frames.map((frame, i) => {
-        return Promise.join(
-          gifFrame(`${padLeft('' + batch)}-${padLeft('' + i, 4)}`, size, imageSize, frame.frame, saveID),
-          Promise.resolve(1),
-          (img, length) => ({img, length})
-        )
-      })
-      Promise.all(promises)
-        .then(resolve)
-        .catch(reject)
-    })
-  }
-
-
-function success () {
-  console.log('success')
-  clearData(saveID)
-  resolve()
+function frameChunks (chunks, size, imageSize, saveID) {
+  return new Promise((resolve, reject) => {
+    console.time('createFrames')
+    co(function * () {
+      let completed = []
+      for (var i = 0; i < chunks.length; i++) {
+        var result = yield frameChunk(chunks[i], i, size, imageSize, saveID)
+        completed.push(result)
+      }
+      console.timeEnd('createFrames')
+      return flatten(completed)
+    }).then(resolve)
+  })
 }
 
-function failed (e) {
-  console.log('failed', e)
-  clearData(saveID)
-  reject(e)
-}
-
-function clearData (name) {
-  fs.removeSync(`/tmp/${name}.gif`)
-  return fs.removeSync(`/tmp/${name}`)
+function frameChunk (frames, batch, size, imageSize, saveID) {
+  return new Promise((resolve, reject) => {
+    const promises = frames.map((frame, i) => {
+      return Promise.join(
+        gifFrame(`${padLeft('' + batch)}-${padLeft('' + i, 4)}`, size, imageSize, frame.frame, saveID),
+        Promise.resolve(frame.length),
+        (img, length) => ({img, length})
+      )
+    })
+    Promise.all(promises)
+      .then(resolve)
+      .catch(reject)
+  })
 }
 
 function padLeft (str, num = 2, char = '0') {
