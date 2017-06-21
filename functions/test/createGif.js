@@ -20,7 +20,7 @@ admin.initializeApp({
   databaseURL: 'https://artbot-dev.firebaseio.com'
 })
 
-const saveID = '-Kmn79osSnFYfSBJR-KL2'
+const saveID = '-KmhME6m-_0huayp14UQ10'
 const MAX_RUN_TIME = 5
 const SECONDS_PER_FRAME = 0.3
 const GIF_SIZE = 420

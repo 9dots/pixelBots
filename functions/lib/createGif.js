@@ -30,7 +30,8 @@ module.exports = functions.database.ref('/saved/{saveID}/completions')
     }
     return new Promise((resolve, reject) => {
       const {saveID} = evt.params
-      evt.data.ref.parent.once('value')
+      updateGame(saveID)(null)
+        .then(() => evt.data.ref.parent.once('value'))
         .then(snap => Promise.all([
           Promise.resolve(snap.val()),
           snap.val().gameRef
@@ -79,7 +80,7 @@ module.exports = functions.database.ref('/saved/{saveID}/completions')
           frameChunks(chunk(adjusted, 20))
             .then((results) => createVideo(saveID, results, timing, imageSize))
             .then(upload)
-            .then(updateGame(saveID))
+            .then((url) => updateGame(saveID)(`${url}&${savedGame.animations || 0}`))
             .then(success)
             .catch(failed)
 
@@ -99,10 +100,9 @@ module.exports = functions.database.ref('/saved/{saveID}/completions')
           function frameChunk (frames, batch) {
             return new Promise((resolve, reject) => {
               const promises = frames.map((frame, i) => {
-                console.log(process.memoryUsage())
                 return Promise.join(
                   gifFrame(`${padLeft('' + batch)}-${padLeft('' + i, 4, '0')}`, size, imageSize, frame.frame, saveID),
-                  Promise.resolve(1),
+                  Promise.resolve(frame.length),
                   (img, length) => ({img, length})
                 )
               })
@@ -144,11 +144,16 @@ function padLeft (str, num = 2, char = '0') {
 
 function updateGame (saveID) {
   return function (url) {
-    return savedRef.child(saveID).update({
-      lastEdited: Date.now(),
-      animatedGif: url,
-      'meta/animatedGif': url
-    })
+    return Promise.all([
+      savedRef.child(saveID).update({
+        lastEdited: Date.now(),
+        animatedGif: url,
+        'meta/animatedGif': url
+      }),
+      url
+        ? savedRef.child(saveID).child('animations').transaction(val => val + 1)
+        : Promise.resolve()
+    ])
   }
 }
 

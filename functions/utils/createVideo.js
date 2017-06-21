@@ -16,7 +16,6 @@ module.exports = function (fileName, images, delay, imageSize, batch) {
     fs.writeFileSync(`/tmp/${fileName}.txt`, files)
 
     new Ffmpeg()
-      .size(`${imageSize}x${imageSize}`)
       .addInput(`/tmp/${fileName}.txt`)
       .inputOptions(['-safe 0', '-f concat'])
       .on('error', reject)
@@ -24,7 +23,10 @@ module.exports = function (fileName, images, delay, imageSize, batch) {
         console.timeEnd('create video')
         resolve(`/tmp/${fileName}.mp4`)
       })
+      .videoCodec('libx264')
+      .size(`${imageSize}x${imageSize}`)
       .output(`/tmp/${fileName}.mp4`)
+      .outputOptions(['-vf fps=30', '-pix_fmt yuv420p'])
       .run()
   })
 }
