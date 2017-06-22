@@ -6,11 +6,16 @@ Ffmpeg.setFfmpegPath(ffmpegPath)
 module.exports = function (fileName, images, delay, imageSize, batch) {
   console.time('create video')
   return new Promise((resolve, reject) => {
+    console.log(images)
     const files = images
-      .map(({img, length}, i) => i === images.length - 1
-        ? `file ${img}\nduration 3\nfile ${img}`
-        : `file ${img}\nduration ${delay * length}\n`
-      )
+      .map(({img, length}, i) => {
+        if (i === images.length - 1) {
+          return `file ${img}\nduration 3\nfile ${img}`
+        } else if (i === 0) {
+          return `file ${img}\nduration ${(delay * length) + 1}\n`
+        }
+        return `file ${img}\nduration ${delay * length}\n`
+      })
       .join('')
       .replace(/,/g, '')
     fs.writeFileSync(`/tmp/${fileName}.txt`, files)

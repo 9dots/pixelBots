@@ -260,6 +260,10 @@ function loopFn(lineNum, max, fn) {
  */
 
 var capabilities = {
+  faceNorth: {
+    type: 'move',
+    description: 'Turn the pixelbot to face north.'
+  },
   up: {
     description: 'Move the pixelbot up `steps` space.',
     args: [{
