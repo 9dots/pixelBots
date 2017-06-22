@@ -579,6 +579,10 @@
   dependencies:
     "@f/hex-to-rgba" "^1.0.0"
 
+"@f/parse-qs@latest":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@f/parse-qs/-/parse-qs-1.0.4.tgz#b11777f9cac10148e138c7f66f9682eba636a8d1"
+
 "@f/pick@^1.1.4":
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/@f/pick/-/pick-1.1.4.tgz#2a7cbe55616f8dfb2f864aad7583aaa662f0cd2a"
@@ -6214,7 +6218,7 @@ lodash.isarguments@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/lodash.isarguments/-/lodash.isarguments-3.1.0.tgz#2f573d85c6a24289ff00663b491c1d338ff3458a"
 
-lodash.isarguments@~2.4.1, lodash.isarguments@2.4.x:
+lodash.isarguments@~2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/lodash.isarguments/-/lodash.isarguments-2.4.1.tgz#4931a9c08253adf091ae7ca192258a973876ecca"
 
@@ -6276,12 +6280,6 @@ lodash.support@~2.4.1:
   resolved "https://registry.yarnpkg.com/lodash.support/-/lodash.support-2.4.1.tgz#320e0b67031673c28d7a2bb5d9e0331a45240515"
   dependencies:
     lodash._isnative "~2.4.1"
-
-lodash.values@^2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/lodash.values/-/lodash.values-2.4.1.tgz#abf514436b3cb705001627978cbcf30b1280eea4"
-  dependencies:
-    lodash.keys "~2.4.1"
 
 lodash@^2.4.1, lodash@~2.4.1:
   version "2.4.2"

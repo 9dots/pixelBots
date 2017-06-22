@@ -5,6 +5,7 @@
 const functions = require('firebase-functions')
 const toRegexp = require('path-to-regexp')
 const admin = require('firebase-admin')
+const extend = require('@f/extend')
 const fetch = require('node-fetch')
 
 /**
@@ -48,9 +49,39 @@ module.exports = functions.https.onRequest((req, res) => {
  */
 
 function populatePlaylist (playlist) {
-  return playlist
+  return Promise.all(
+    playlist
+      .sequence
+      .map(id => admin.database().ref(`/games/${id}/meta`).once('value').then(snap => snap.val()))
+  ).then(sequence => {
+    return extend(playlist, {
+      sequence: sequence.map((challenge, i) => extend(challenge, {
+        id: playlist.sequence[i]
+      }))
+    })
+  })
 }
 
 function transformPlaylist (playlist) {
-  return playlist
+  return {
+    objectType: 'assignment',
+    author: playlist.creatorUsername,
+    image: {
+      url: playlist.imageUrl
+    },
+    description: playlist.description,
+    displayName: playlist.name,
+    attachments: playlist.sequence.map(transformChallenge)
+  }
+}
+
+function transformChallenge (challenge) {
+  return {
+    objectType: 'assignment_item',
+    guid: challenge.id,
+    image: {
+      url: challenge.imageUrl
+    },
+    displayName: challenge.title
+  }
 }
