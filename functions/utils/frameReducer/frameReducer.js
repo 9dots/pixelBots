@@ -122,6 +122,9 @@ var actions = {
   paintZ: paintZ,
   moveTo: moveTo,
   rand: createRand,
+  faceNorth: function (frame, id) {
+    return setAnimalRot(frame, id, 0)
+  },
   getCurrentColor: getCurrentColor
 };
 
@@ -153,6 +156,12 @@ function paint(state, id) {
     paints: (state.paints || 0) + 1,
     painted: (0, _extends5.default)({}, state.painted, (0, _defineProperty3.default)({}, state.animals[id].current.location, color))
   });
+}
+
+function setAnimalRot (state, id, rot) {
+  return Object.assign({}, state, {
+    animals: updateAnimal(state.animals, 'current.rot', id, rot)
+  })
 }
 
 function paintZ(state, id) {
