@@ -1,5 +1,6 @@
 'use strict';
 
+require('babel-polyfill')
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -29,9 +30,9 @@ var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
 
 var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 
-var _extends3 = require('babel-runtime/helpers/extends');
+var _extends4 = require('babel-runtime/helpers/extends');
 
-var _extends4 = _interopRequireDefault(_extends3);
+var _extends5 = _interopRequireDefault(_extends4);
 
 var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
 
@@ -40,6 +41,10 @@ var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 var _sequenceToCode = require('../sequenceToCode');
 
 var _sequenceToCode2 = _interopRequireDefault(_sequenceToCode);
+
+var _getDirection = require('../getDirection');
+
+var _getDirection2 = _interopRequireDefault(_getDirection);
 
 var _autoYieldDelegate = require('auto-yield-delegate');
 
@@ -65,20 +70,22 @@ var _setProp = require('@f/set-prop');
 
 var _setProp2 = _interopRequireDefault(_setProp);
 
+var _range = require('@f/range');
+
+var _range2 = _interopRequireDefault(_range);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Frame reducer
  */
 
-/**
- * Imports
- */
-
 function frameReducer(frame, type, args) {
   var fn = actions[type] || _identity2.default;
   return [].concat(fn.apply(undefined, [frame].concat((0, _toConsumableArray3.default)(args))));
-}
+} /**
+   * Imports
+   */
 
 var actions = {
   right: function right(frame, id) {
@@ -105,16 +112,35 @@ var actions = {
   turnLeft: function turnLeft(frame, id) {
     return turn(frame, id, -90);
   },
-  paint: function paint() {
-    return _paint.apply(undefined, arguments);
-  },
+  paint: paint,
+  paintL: paintL,
+  paintJ: paintJ,
+  paintT: paintT,
+  paintO: paintO,
+  paintI: paintI,
+  paintS: paintS,
+  paintZ: paintZ,
+  moveTo: moveTo,
   rand: createRand,
+  faceNorth: function (frame, id) {
+    return setAnimalRot(frame, id, 0)
+  },
   getCurrentColor: getCurrentColor
 };
 
 /**
  * Actions
  */
+
+ function moveTo (state, id, x, y) {
+   if (x === undefined || y === undefined) {
+     throw {
+       message: 'Unexpected number of parameters moveTo',
+     }
+     return state
+   }
+   return setAnimalPos(state, id, [state.levelSize[0] - y - 1, x])
+ }
 
 function forward(state, id) {
   var steps = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
@@ -123,12 +149,122 @@ function forward(state, id) {
   return addAnimalPos(state, id, vmul(steps, getHeading(rot)));
 }
 
-function _paint(state, id) {
+function paint(state, id) {
   var color = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'black';
 
-  return (0, _extends4.default)({}, state, {
+  return (0, _extends5.default)({}, state, {
     paints: (state.paints || 0) + 1,
-    painted: (0, _extends4.default)({}, state.painted, (0, _defineProperty3.default)({}, state.animals[id].current.location, color))
+    painted: (0, _extends5.default)({}, state.painted, (0, _defineProperty3.default)({}, state.animals[id].current.location, color))
+  });
+}
+
+function setAnimalRot (state, id, rot) {
+  return Object.assign({}, state, {
+    animals: updateAnimal(state.animals, 'current.rot', id, rot)
+  })
+}
+
+function paintZ(state, id) {
+  var color = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'black';
+  var _state$animals$id$cur = state.animals[id].current,
+      location = _state$animals$id$cur.location,
+      rot = _state$animals$id$cur.rot;
+
+  var heading = getHeading(rot);
+  var startPoint2 = [rot, rot + 90].reduce(function (loc, rot) {
+    var heading = getHeading(rot);
+    return vadd(loc, heading);
+  }, location);
+  var paintLocations = [].concat((0, _toConsumableArray3.default)(paintLine(location, heading, 2)), (0, _toConsumableArray3.default)(paintLine(startPoint2, heading, 2)));
+  return paintMultipleLocations(state, id, color, paintLocations);
+}
+
+function paintS(state, id) {
+  var color = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'black';
+  var _state$animals$id$cur2 = state.animals[id].current,
+      location = _state$animals$id$cur2.location,
+      rot = _state$animals$id$cur2.rot;
+
+  var heading = getHeading(rot);
+  var startPoint2 = [rot, rot - 90].reduce(function (loc, rot) {
+    var heading = getHeading(rot);
+    return vadd(loc, heading);
+  }, location);
+  var paintLocations = [].concat((0, _toConsumableArray3.default)(paintLine(location, heading, 2)), (0, _toConsumableArray3.default)(paintLine(startPoint2, heading, 2)));
+  return paintMultipleLocations(state, id, color, paintLocations);
+}
+
+function paintO(state, id) {
+  var color = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'black';
+  var _state$animals$id$cur3 = state.animals[id].current,
+      location = _state$animals$id$cur3.location,
+      rot = _state$animals$id$cur3.rot;
+
+  var heading = getHeading(rot);
+  var paintLocations = [].concat((0, _toConsumableArray3.default)(paintLine(location, heading, 2)), (0, _toConsumableArray3.default)(paintLine(vadd(location, getHeading(rot + 90)), heading, 2)));
+  return paintMultipleLocations(state, id, color, paintLocations);
+}
+
+function paintI(state, id) {
+  var color = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'black';
+  var _state$animals$id$cur4 = state.animals[id].current,
+      location = _state$animals$id$cur4.location,
+      rot = _state$animals$id$cur4.rot;
+
+  var heading = getHeading(rot);
+
+  return paintMultipleLocations(state, id, color, paintLine(location, heading, 4));
+}
+
+function paintL(state, id) {
+  var color = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'black';
+  var _state$animals$id$cur5 = state.animals[id].current,
+      location = _state$animals$id$cur5.location,
+      rot = _state$animals$id$cur5.rot;
+
+  var heading = getHeading(rot);
+  var paintLocations = [].concat((0, _toConsumableArray3.default)(paintLine(location, heading, 2)), (0, _toConsumableArray3.default)(paintLine(vadd(location, heading), getHeading(rot + 90), 3)));
+  return paintMultipleLocations(state, id, color, paintLocations);
+}
+
+function paintJ(state, id) {
+  var color = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'black';
+  var _state$animals$id$cur6 = state.animals[id].current,
+      location = _state$animals$id$cur6.location,
+      rot = _state$animals$id$cur6.rot;
+
+  var heading = getHeading(rot);
+  var paintLocations = [].concat((0, _toConsumableArray3.default)(paintLine(location, heading, 2)), (0, _toConsumableArray3.default)(paintLine(vadd(location, heading), getHeading(rot - 90), 3)));
+  return paintMultipleLocations(state, id, color, paintLocations);
+}
+
+function paintT(state, id) {
+  var color = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'black';
+  var _state$animals$id$cur7 = state.animals[id].current,
+      location = _state$animals$id$cur7.location,
+      rot = _state$animals$id$cur7.rot;
+
+  var heading = getHeading(rot);
+  var paintLocations = [location, vadd(location, heading), vadd(location, heading.map(function (val) {
+    return val === 0 ? val + 1 : val;
+  })), vadd(location, heading.map(function (val) {
+    return val === 0 ? val - 1 : val;
+  }))];
+  return paintMultipleLocations(state, id, color, paintLocations);
+}
+
+function paintLine(location, heading, length) {
+  return (0, _range2.default)(length).map(function (i) {
+    return vadd(location, vmul(i, heading));
+  });
+}
+
+function paintMultipleLocations(state, id, color, locations) {
+  return (0, _extends5.default)({}, state, {
+    paints: (state.paints || 0) + 1,
+    painted: (0, _extends5.default)({}, state.painted, locations.reduce(function (acc, loc) {
+      return (0, _extends5.default)({}, acc, (0, _defineProperty3.default)({}, loc, color));
+    }, {}))
   });
 }
 
@@ -139,13 +275,13 @@ function addAnimalPos(state, id, vector) {
 }
 
 function setAnimalPos(state, id, location) {
-  return (0, _extends4.default)({}, state, {
+  return (0, _extends5.default)({}, state, {
     animals: updateAnimal(state.animals, 'current.location', id, location)
   });
 }
 
 function turn(state, id, turn) {
-  return (0, _extends4.default)({}, state, {
+  return (0, _extends5.default)({}, state, {
     animals: updateAnimal(state.animals, 'current.rot', id, state.animals[id].current.rot + turn)
   });
 }
@@ -167,21 +303,17 @@ function getCurrentColor(state) {
  * Helpers
  */
 
-function createPaintFrames(frame, code, seed) {
-  return createFrames(frame, code, seed)
-    .map((f, i) => Object.assign({}, f.painted, {step: i}))
-    .reduce((acc, paint, key, painted) => {
-      var prev = acc[acc.length - 1] ? painted[acc[acc.length - 1].step] : {};
-      const newPaints = ((0, _keys2.default)(paint).filter(function (key) {
-        return key !== 'step' && prev[key] !== paint[key];
-      })).reduce((acc, next, i) => {
-        return Object.assign({}, acc, {[next]: paint[next], step: key})
-      }, {})
-      return newPaints && Object.keys(newPaints).length > 0
-        ? acc.concat(newPaints)
-        : acc
-    }, [])
-}
+ function createPaintFrames(frame, code, seed) {
+   return createFrames(frame, code, seed)
+     .map((f, i) => f.painted)
+     .reduce((acc, painted, i, arr) => {
+       const prev = acc[acc.length - 1] || {painted: {}}
+       if (Object.keys(painted).some(key => prev.painted[key] !== painted[key])) {
+         acc.push({painted, step: i})
+       }
+       return acc
+     }, [])
+ }
 
 function createFrames(frame, code, seed) {
   var it = createIterator(code);
@@ -212,7 +344,12 @@ function createFrames(frame, code, seed) {
   return frames;
 }
 
-function updateAnimal(animals, path, id, val) {
+function updateAnimal() {
+  var animals = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var path = arguments[1];
+  var id = arguments[2];
+  var val = arguments[3];
+
   return animals.map(function (animal, i) {
     return i === id ? (0, _setProp2.default)(path, animal, val) : animal;
   });
@@ -255,7 +392,7 @@ function createIterator(code) {
 }
 
 function validate(frames, idx, location, color) {
-  var next = frames[idx];
+  var next = frames[idx] || {};
   var prev = frames[idx - 1] || {};
   var changedLoc = (0, _keys2.default)(next).filter(function (key) {
     return prev[key] !== next[key];
@@ -282,7 +419,7 @@ function filterPaints(frames) {
 
 function filterWhite(frame) {
   if (!frame) return {};
-  return (0, _extends4.default)({}, frame, {
+  return (0, _extends5.default)({}, frame, {
     painted: filter(function (square) {
       return square !== 'white';
     }, frame.painted || {})
@@ -313,11 +450,11 @@ function getLastFrame(state, code) {
     })
   }), code);
   var lastFrame = frames[frames.length - 1];
-  return frames && lastFrame ? lastFrame.painted : {};
+  return frames && lastFrame ? [lastFrame.painted, frames.length] : {};
 }
 
 function getLastTeacherFrame(state, code) {
-  return getLastFrame((0, _extends4.default)({}, state, {
+  return getLastFrame((0, _extends5.default)({}, state, {
     animals: [{
       initial: {
         rot: 0,
@@ -342,12 +479,12 @@ function wrap(code, api) {
 
 function getIterator(code, api) {
   var newCode = (0, _sequenceToCode2.default)(code);
-  const autoYielded = (0, _autoYieldDelegate2.default)(newCode, api)
-  const wrapped = wrap(autoYielded, api)
-  const evaled = eval(wrapped)
+  // const autoYielded = autoYield(newCode, api)
+  // const wrapped = wrap(autoYielded, api)
+  // const evaled = eval(wrapped)
 
   return function () {
-    return evaled();
+    return eval(wrap((0, _autoYieldDelegate2.default)(newCode, api), api))();
   };
 }
 

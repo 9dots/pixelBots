@@ -18,6 +18,10 @@
     ],
     "rewrites": [
       {
+        "source": "/playlist/*",
+        "function": "returnPlaylist"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

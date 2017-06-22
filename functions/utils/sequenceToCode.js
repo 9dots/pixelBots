@@ -33,6 +33,8 @@ function blocksToCode(blocks) {
     var indent = tabs(level);
 
     switch (type) {
+      case 'faceNorth':
+        return indent + 'faceNorth()'
       case 'up':
         return indent + 'up(' + (args || 1) + ')';
       case 'left':
@@ -47,12 +49,28 @@ function blocksToCode(blocks) {
         return indent + '// ' + args;
       case 'move':
         return indent + 'forward(' + (args || 1) + ')';
+      case 'paintO':
+        return indent + 'paintO("' + (args || 'black') + '")';
+      case 'paintI':
+        return indent + 'paintI("' + (args || 'black') + '")';
+      case 'paintS':
+        return indent + 'paintS("' + (args || 'black') + '")';
+      case 'paintZ':
+        return indent + 'paintZ("' + (args || 'black') + '")';
+      case 'paintJ':
+        return indent + 'paintJ("' + (args || 'black') + '")';
+      case 'paintT':
+        return indent + 'paintT("' + (args || 'black') + '")';
+      case 'paintL':
+        return indent + 'paintL("' + (args || 'black') + '")';
       case 'forward':
         return indent + 'forward(' + (args || 1) + ')';
       case 'turnRight':
         return indent + 'turnRight()';
       case 'turnLeft':
         return indent + 'turnLeft()';
+      case 'moveTo':
+        return `${indent}moveTo(${args})`
       case 'repeat':
         return tabs(level++) + 'repeat(' + payload[0] + ', function * () {';
       case 'block_end':

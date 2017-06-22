@@ -26,9 +26,9 @@ function config (env) {
       vendor: [
         'lodash',
         'brace',
-        'js-analyse',
         'firebase',
-        'auto-yield-delegate'
+        'auto-yield-delegate',
+        'js-analyse'
       ]
     },
     output: {
@@ -42,6 +42,10 @@ function config (env) {
     },
     module: {
       loaders: [
+        {
+          test: /\.worker.js$/,
+          loaders: ['worker-loader', 'babel-loader']
+        },
         {
           test: /.js$/,
           exclude: /node_modules/,

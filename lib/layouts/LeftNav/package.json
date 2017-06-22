@@ -1,0 +1,5 @@
+{
+  "name": "LeftNav",
+  "main": "LeftNav.js",
+  "browser": "LeftNav.js"
+}
