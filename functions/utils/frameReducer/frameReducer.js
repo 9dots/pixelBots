@@ -122,6 +122,9 @@ var actions = {
   paintZ: paintZ,
   moveTo: moveTo,
   rand: createRand,
+  faceNorth: function (frame, id) {
+    return setAnimalRot(frame, id, 0)
+  },
   getCurrentColor: getCurrentColor
 };
 
@@ -153,6 +156,12 @@ function paint(state, id) {
     paints: (state.paints || 0) + 1,
     painted: (0, _extends5.default)({}, state.painted, (0, _defineProperty3.default)({}, state.animals[id].current.location, color))
   });
+}
+
+function setAnimalRot (state, id, rot) {
+  return Object.assign({}, state, {
+    animals: updateAnimal(state.animals, 'current.rot', id, rot)
+  })
 }
 
 function paintZ(state, id) {
@@ -296,17 +305,13 @@ function getCurrentColor(state) {
 
  function createPaintFrames(frame, code, seed) {
    return createFrames(frame, code, seed)
-     .map((f, i) => Object.assign({}, f.painted, {step: i}))
-     .reduce((acc, paint, key, painted) => {
-       var prev = acc[acc.length - 1] ? painted[acc[acc.length - 1].step] : {};
-       const newPaints = ((0, _keys2.default)(paint).filter(function (key) {
-         return key !== 'step' && prev[key] !== paint[key];
-       })).reduce((acc, next, i) => {
-         return Object.assign({}, acc, {[next]: paint[next], step: key})
-       }, {})
-       return newPaints && Object.keys(newPaints).length > 0
-         ? acc.concat(newPaints)
-         : acc
+     .map((f, i) => f.painted)
+     .reduce((acc, painted, i, arr) => {
+       const prev = acc[acc.length - 1] || {painted: {}}
+       if (Object.keys(painted).some(key => prev.painted[key] !== painted[key])) {
+         acc.push({painted, step: i})
+       }
+       return acc
      }, [])
  }
 
@@ -445,7 +450,7 @@ function getLastFrame(state, code) {
     })
   }), code);
   var lastFrame = frames[frames.length - 1];
-  return frames && lastFrame ? lastFrame.painted : {};
+  return frames && lastFrame ? [lastFrame.painted, frames.length] : {};
 }
 
 function getLastTeacherFrame(state, code) {

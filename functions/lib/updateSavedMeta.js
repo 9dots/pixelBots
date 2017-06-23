@@ -78,33 +78,13 @@ function updateSaveMeta (attr) {
           evt.data.ref.parent.child('meta').update({
             [attr]: evt.data.val(),
             lastEdited: Date.now()
-          }),
-          updateProfileGame(saveRef)
+          })
         ]
         Promise.all(promises)
           .then(resolve)
           .catch(reject)
       })
     })
-}
-
-function updateProfileGame (saveRef) {
-  return new Promise((resolve, reject) => {
-    const saveR = admin.database().ref('/saved').child(saveRef)
-    const usersRef = admin.database().ref('/users')
-    const parentDataPromises = [
-      saveR.child('creatorID').once('value'),
-      saveR.child('gameRef').once('value')
-    ]
-    Promise.all(parentDataPromises)
-      .then((snaps) => snaps.map((s) => s.val()))
-      .then(([creatorID, gameRef]) => creatorID && usersRef.child(creatorID)
-        .child('inProgress').child(gameRef).once('value')
-      )
-      .then(snap => snap.exists() && snap.ref.update({lastEdited: Date.now()}))
-      .then(resolve)
-      .catch(reject)
-  })
 }
 
 function filterPaint (obj) {

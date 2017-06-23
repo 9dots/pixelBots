@@ -1,0 +1,5 @@
+{
+  "name": "Progress",
+  "main": "Progress.js",
+  "browser": "Progress.js"
+}

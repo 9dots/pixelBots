@@ -12,7 +12,8 @@ const fetch = require('node-fetch')
  * Path regex
  */
 
-const pathRe = toRegexp('/playlist/:id')
+const path1Re = toRegexp('/playlist/:id')
+const path2Re = toRegexp('/playlist/:id/view')
 const domain = functions.config().firebase.authDomain
 
 /**
@@ -23,7 +24,9 @@ module.exports = functions.https.onRequest((req, res) => {
   const type = req.get('accept')
 
   if (type === 'application/json') {
-    const [, id] = pathRe.exec(req.url)
+    const [, id] = path1Re.test(req.url)
+      ? path1Re.exec(req.url)
+      : path2Re.exec(req.url)
 
     return admin
       .database()
