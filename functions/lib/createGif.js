@@ -66,7 +66,7 @@ module.exports = functions.database.ref('/saved/{saveID}/completions')
             }))
           })
           const it = getIterator(sequence, createApi(gameState.capabilities, 0, savedGame.palette))
-          const frames = createPaintFrames(initState, it)
+          const frames = flatten([{painted: initialPainted, step: 0}].concat(createPaintFrames(initState, it)))
           const adjusted = frames.map((frame, i, arr) => {
             const next = arr[i + 1]
               ? arr[i + 1].step
