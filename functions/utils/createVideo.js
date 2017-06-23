@@ -1,47 +1,37 @@
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
-const ffmpeg = require('fluent-ffmpeg')
-const Promise = require('bluebird')
-ffmpeg.setFfmpegPath(ffmpegPath)
+const Ffmpeg = require('fluent-ffmpeg')
 const fs = require('fs')
+Ffmpeg.setFfmpegPath(ffmpegPath)
 
-const FPS = 60
-
-module.exports = function (fileName, images, delay = 0, imageSize) {
-  console.log(images)
+module.exports = function (fileName, images, delay, imageSize, batch) {
+  console.time('create video')
   return new Promise((resolve, reject) => {
+    console.log(images)
     const files = images
-      .map(({img}) => `file '${img}'\nduration 0.02\n`)
-      .join()
-      .replace(/\,/g, '')
-    console.log('files', files)
+      .map(({img, length}, i) => {
+        if (i === images.length - 1) {
+          return `file ${img}\nduration 3\nfile ${img}`
+        } else if (i === 0) {
+          return `file ${img}\nduration ${(delay * length) + 1}\n`
+        }
+        return `file ${img}\nduration ${delay * length}\n`
+      })
+      .join('')
+      .replace(/,/g, '')
     fs.writeFileSync(`/tmp/${fileName}.txt`, files)
 
-    const movie = new ffmpeg()
-    movie
-      .size(`${imageSize}x${imageSize}`)
+    new Ffmpeg()
       .addInput(`/tmp/${fileName}.txt`)
-      .inputOptions(['-safe 0','-f concat'])
-      .on('start', function(ffmpegCommand) {
-        console.log(`started creating bg video`);
+      .inputOptions(['-safe 0', '-f concat'])
+      .on('error', reject)
+      .on('end', () => {
+        console.timeEnd('create video')
+        resolve(`/tmp/${fileName}.mp4`)
       })
-      .on('progress', function(data) {
-          console.log('progressing');
-      })
-      .on('end', function() {
-          console.log(`ended creating bg video`);
-          resolve(`/tmp/${fileName}.mp4`)
-      })
-      .on('error', function(err, stdout, stderr) {
-          /// error handling
-          console.log('error: ' + err.message);
-          console.log('stderr:' + stderr);
-          console.log('stdout:' + stdout);
-          reject(err)
-      })
-      .outputOptions(['-pix_fmt yuv420p'])
+      .videoCodec('libx264')
+      .size(`${imageSize}x${imageSize}`)
       .output(`/tmp/${fileName}.mp4`)
+      .outputOptions(['-vf fps=30', '-pix_fmt yuv420p'])
       .run()
   })
-
-
 }

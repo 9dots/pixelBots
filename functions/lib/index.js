@@ -8,6 +8,7 @@ module.exports = {
 	updateGameMeta: require('./updateGameMeta'),
 	fanDraftToUser: require('./fanDraftToUser'),
 	returnPlaylist: require('./returnPlaylist'),
+	fanCompleted: require('./fanCompleted'),
 	createGif: require('./createGif')
 	// updateSavedImage: require('./updateSavedImage'),
 	// toggleShowcase: require('./toggleShowcase'),

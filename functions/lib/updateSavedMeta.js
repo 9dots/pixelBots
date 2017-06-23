@@ -38,7 +38,6 @@ exports.savedLinesOfCode = functions.database
       }
       const sequence = evt.data.val()
       const promises = [
-        updateProfileGame(evt.params.saveRef),
         evt.data.ref.parent.parent.parent.child('meta').update({
           loc: getLoc(sequence),
           lastEdited: Date.now()
@@ -58,7 +57,6 @@ function filterGamePaint (attr) {
           return resolve()
         }
         evt.data.ref.parent.update({[attr]: filterPaint(evt.data.val())})
-          .then(() => updateProfileGame(evt.params.saveRef))
           .then(resolve)
           .catch(reject)
       })
@@ -78,33 +76,13 @@ function updateSaveMeta (attr) {
           evt.data.ref.parent.child('meta').update({
             [attr]: evt.data.val(),
             lastEdited: Date.now()
-          }),
-          updateProfileGame(saveRef)
+          })
         ]
         Promise.all(promises)
           .then(resolve)
           .catch(reject)
       })
     })
-}
-
-function updateProfileGame (saveRef) {
-  return new Promise((resolve, reject) => {
-    const saveR = admin.database().ref('/saved').child(saveRef)
-    const usersRef = admin.database().ref('/users')
-    const parentDataPromises = [
-      saveR.child('creatorID').once('value'),
-      saveR.child('gameRef').once('value')
-    ]
-    Promise.all(parentDataPromises)
-      .then((snaps) => snaps.map((s) => s.val()))
-      .then(([creatorID, gameRef]) => creatorID && usersRef.child(creatorID)
-        .child('inProgress').child(gameRef).once('value')
-      )
-      .then(snap => snap.exists() && snap.ref.update({lastEdited: Date.now()}))
-      .then(resolve)
-      .catch(reject)
-  })
 }
 
 function filterPaint (obj) {

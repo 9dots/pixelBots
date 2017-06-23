@@ -33,6 +33,8 @@ function blocksToCode(blocks) {
     var indent = tabs(level);
 
     switch (type) {
+      case 'faceNorth':
+        return indent + 'faceNorth()'
       case 'up':
         return indent + 'up(' + (args || 1) + ')';
       case 'left':

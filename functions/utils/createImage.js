@@ -3,7 +3,9 @@ const gm = require('gm').subClass({imageMagick: true})
 const forEach = require('@f/foreach')
 const reduce = require('@f/reduce')
 const Promise = require('bluebird')
+const Canvas = require('canvas-prebuilt')
 const _ = require('lodash')
+const fs = require('fs')
 
 const palette = _.drop(reduce(
   (arr, value, key) => [...arr, {
@@ -83,42 +85,48 @@ function playlistImage (name, imgs) {
   })
 }
 
-function drawFrame (size, targetPainted, writePath, file) {
+let totalSize = 0
+
+function drawFrame (size, targetPainted, writePath, file, canvas) {
   return new Promise((resolve, reject) => {
     forEach((color, key) => {
       const coords = key.split(',').map((coord) => parseInt(coord))
-      file.fill(baseColors[color])
-      file.drawRectangle(
-        (coords[1] * size) + coords[1],
-        (coords[0] * size) + coords[0],
-        (coords[1] + 1) * size + coords[1],
-        (coords[0] + 1) * size + coords[0]
+      file.beginPath()
+      file.rect(
+        (coords[1] * size),
+        (coords[0] * size),
+        size,
+        size
       )
+      file.fillStyle = baseColors[color]
+      file.fill()
     }, targetPainted)
-    file.write(writePath, function (err) {
-      if (err) {
-        console.warn(err)
-        return reject(err)
-      }
-      return resolve(writePath)
-    })
+    const writeStream = fs.createWriteStream(writePath)
+    canvas
+      .pngStream()
+      .on('data', (data) => writeStream.write(data))
+      .on('end', () => resolve(writePath))
   })
 }
 
 function levelThumb (name, gridSize, targetPainted, dir = '') {
   const size = Math.floor(300 / gridSize)
   const imageSize = Number(size * gridSize) + Number(gridSize) - 1
-  let file = gm(imageSize, imageSize, '#ffffff').limit('memory', '1448MB')
+  let file = gm(imageSize, imageSize, '#ffffff').limit('memory', '256MB')
   const writePath = `/tmp${dir ? `/${dir}` : ''}/${name}.png`
 
   return drawFrame(size, targetPainted, writePath, file)
 }
 
 function gifFrame (name, size, imageSize, targetPainted, dir = '') {
-  let file = gm(imageSize, imageSize, 'none').limit('memory', '1448MB')
-  const writePath = `/tmp${dir ? `/${dir}` : ''}/${name}.miff`
+  let canvas = new Canvas(imageSize, imageSize)
+  const ctx = canvas.getContext('2d')
+  ctx.rect(0, 0, imageSize, imageSize)
+  ctx.fillStyle = 'white'
+  ctx.fill()
+  const writePath = `/tmp${dir ? `/${dir}` : ''}/${name}.png`
 
-  return drawFrame(size, targetPainted, writePath, file)
+  return drawFrame(size, targetPainted, writePath, ctx, canvas)
 }
 
 exports.shrinkImages = shrinkImages

@@ -1,0 +1,5 @@
+{
+  "name": "CoursePage",
+  "main": "CoursePage.js",
+  "browser": "CoursePage.js"
+}

@@ -43,6 +43,10 @@ function config (env) {
     module: {
       loaders: [
         {
+          test: /\.worker.js$/,
+          loaders: ['worker-loader', 'babel-loader']
+        },
+        {
           test: /.js$/,
           exclude: /node_modules/,
           loader: 'babel-loader'
