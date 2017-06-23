@@ -18,7 +18,7 @@
     ],
     "rewrites": [
       {
-        "source": "/playlist/*",
+        "source": "/playlist/**",
         "function": "returnPlaylist"
       },
       {

@@ -6,7 +6,6 @@ Ffmpeg.setFfmpegPath(ffmpegPath)
 module.exports = function (fileName, images, delay, imageSize, batch) {
   console.time('create video')
   return new Promise((resolve, reject) => {
-    console.log(images)
     const files = images
       .map(({img, length}, i) => {
         if (i === images.length - 1) {
