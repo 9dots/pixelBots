@@ -22,7 +22,6 @@ router.post('/', (req, res) => {
   res.set({'Cache-Control': 'no-cache'})
   const props = req.body.props
   const {active, animals, solution, initialData, targetPainted, capabilities} = props
-  console.log(props.saveRef)
   const saveRef = savedRef.child(props.saveRef)
   const userApi = createApi(capabilities, active)
   const userCode = getIterator(animals[active].sequence, userApi)
@@ -32,7 +31,7 @@ router.post('/', (req, res) => {
     const [answer, steps] = getLastFrame(Object.assign({}, base, {painted}), userCode)
     const seed = [{painted, userSolution: answer}]
     if (checkCorrect(answer, targetPainted)) {
-      return saveRef.update({steps, solutionSteps: props.solutionSteps, test: 'test'})
+      return saveRef.update({steps, solutionSteps: props.solutionSteps})
         .then(() => res.status(200).send({
           correctSeeds: seed,
           status: 'success'
@@ -56,8 +55,8 @@ router.post('/', (req, res) => {
       uniquePaints.push(painted)
       const [answer, steps] = getLastFrame(Object.assign({}, base, {painted}), userCode)
       const solutionState = Object.assign({}, props, {startGrid: painted})
-      const [solution, solutionsSteps] = generateSolution(solutionState, solutionIterator)
-      if (!checkCorrect(answer, solution)) {
+      var [solutionPainted, solutionSteps] = generateSolution(solutionState, solutionIterator)
+      if (!checkCorrect(answer, solutionPainted)) {
         failedSeeds.push({painted, userSolution: answer, seed: i})
       } else {
         correctSeeds.push({painted, userSolution: answer, seed: i, steps, solutionSteps})
