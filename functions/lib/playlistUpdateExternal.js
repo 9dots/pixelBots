@@ -20,15 +20,17 @@ module.exports = functions.database
       .then(snap => snap.val())
       .then(playlist => {
         const {update} = playlist
-        console.log('playlistUpdateExternal', playlist, update)
+        const body = completed.reduce((acc, id) => {
+          acc[id] = true
+          return acc
+        }, {})
+
+        console.log('playlistUpdateExternal', completed, playlist, update, body)
 
         if (update) {
           return fetch(update, {
             method: 'POST',
-            body: completed.reduce((acc, id) => {
-              acc[id] = true
-              return acc
-            }, {})
+            body
           })
         }
       })
