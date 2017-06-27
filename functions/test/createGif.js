@@ -62,7 +62,6 @@ savedRef.child(saveID).once('value')
         current: a.initial
       }))
     })
-    console.log(initialPainted)
     const it = getIterator(sequence, createApi(gameState.capabilities, 0))
     const frames = flatten([{painted: initialPainted, step: 0}].concat(createPaintFrames(initState, it)))
     // const delay = 100 / timing

@@ -8,7 +8,7 @@ module.exports = functions.database.ref('/playlistInstances/{instanceRef}')
   .onWrite(evt => {
     return new Promise((resolve, reject) => {
       const {completed, uid, playlist} = evt.data.val()
-      const {completed: prevCompleted} = evt.data.previous.val()
+      const {completed: prevCompleted} = evt.data.previous.val() || {}
       const {instanceRef} = evt.params
       console.log(completed, prevCompleted)
       const childRef = completed ? 'completed' : 'inProgress'
