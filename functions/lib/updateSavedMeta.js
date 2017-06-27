@@ -38,7 +38,6 @@ exports.savedLinesOfCode = functions.database
       }
       const sequence = evt.data.val()
       const promises = [
-        updateProfileGame(evt.params.saveRef),
         evt.data.ref.parent.parent.parent.child('meta').update({
           loc: getLoc(sequence),
           lastEdited: Date.now()
@@ -58,7 +57,6 @@ function filterGamePaint (attr) {
           return resolve()
         }
         evt.data.ref.parent.update({[attr]: filterPaint(evt.data.val())})
-          .then(() => updateProfileGame(evt.params.saveRef))
           .then(resolve)
           .catch(reject)
       })
