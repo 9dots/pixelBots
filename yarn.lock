@@ -4206,13 +4206,13 @@ esprima@^3.1.1, esprima@~3.1.0:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-3.1.3.tgz#fdca51cee6133895e3c88d535ce49dbff62a4633"
 
+esprima@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.0.tgz#4499eddcd1110e0b218bacf2fa7f7f59f55ca804"
+
 esprima@~1.0:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-1.0.4.tgz#9f557e08fc3b4d26ece9dd34f8fbf476b62585ad"
-
-esprima@~1.2.3:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/esprima/-/esprima-1.2.5.tgz#0993502feaf668138325756f30f9a51feeec11e9"
 
 esquery@^1.0.0:
   version "1.0.0"
@@ -5743,11 +5743,11 @@ jpeg-js@^0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/jpeg-js/-/jpeg-js-0.1.2.tgz#135b992c0575c985cfa0f494a3227ed238583ece"
 
-js-analyse@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/js-analyse/-/js-analyse-0.2.0.tgz#997829356988a0009326e235e978587a78b1a286"
+js-analyse@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/js-analyse/-/js-analyse-0.2.2.tgz#7f79a84ea87a1679db7462e24519fe2bbf575713"
   dependencies:
-    esprima "~1.2.3"
+    esprima "^4.0.0"
     lodash "^3.2.0"
 
 js-beautify@^1.5.10:

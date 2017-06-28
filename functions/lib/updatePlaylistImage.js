@@ -24,7 +24,7 @@ module.exports = functions.database.ref('/playlists/{playlist}/sequence')
   	return admin.database().ref(`/playlists/${playlist}/sequence`)
 	    .limitToLast(4)
 	    .once('value')
-	    .then((res) => mapValues((val) => val, res.val()).filter((el) => !!el))
+	    .then((res) => mapValues((val) => val, res.val() || {}).filter((el) => !!el))
 	    .then((challenges) => {
 	    	if (!challenges) {
 	    		return failed('no sequence')

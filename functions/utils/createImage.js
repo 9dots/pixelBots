@@ -85,8 +85,6 @@ function playlistImage (name, imgs) {
   })
 }
 
-let totalSize = 0
-
 function drawFrame (size, targetPainted, writePath, file, canvas) {
   return new Promise((resolve, reject) => {
     forEach((color, key) => {
@@ -111,11 +109,15 @@ function drawFrame (size, targetPainted, writePath, file, canvas) {
 
 function levelThumb (name, gridSize, targetPainted, dir = '') {
   const size = Math.floor(300 / gridSize)
-  const imageSize = Number(size * gridSize) + Number(gridSize) - 1
-  let file = gm(imageSize, imageSize, '#ffffff').limit('memory', '256MB')
+  const imageSize = Number(size * gridSize)
+  let canvas = new Canvas(imageSize, imageSize)
+  const ctx = canvas.getContext('2d')
+  ctx.rect(0, 0, imageSize, imageSize)
+  ctx.fillStyle = 'white'
+  ctx.fill()
   const writePath = `/tmp${dir ? `/${dir}` : ''}/${name}.png`
 
-  return drawFrame(size, targetPainted, writePath, file)
+  return drawFrame(size, targetPainted, writePath, ctx, canvas)
 }
 
 function gifFrame (name, size, imageSize, targetPainted, dir = '') {
