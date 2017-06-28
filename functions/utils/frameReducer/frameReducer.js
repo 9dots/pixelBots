@@ -334,6 +334,8 @@ function createFrames(frame, code, seed) {
         frame = _frameReducer2[0],
         ret = _frameReducer2[1];
 
+    console.log(value, ret)
+
     frames.push(frame);
 
     var _it$next2 = it.next(ret),

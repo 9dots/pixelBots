@@ -512,7 +512,7 @@ function createArgumentsFromSpec(id, spec, name) {
     }
 
     return [lineNum, id].concat((0, _toConsumableArray3.default)(spec.args.map(function (aspec, i) {
-      if (aspec.name === 'color' && aspec.values && aspec.values.filter(function (arg) {
+      if (aspec.name === 'color' && Array.isArray(aspec.values) && aspec.values.filter(function (arg) {
         return arg === args[i] || arg.name === args[i];
       }).length === 0) {
         return aspec.default;

@@ -27,8 +27,7 @@ function config (env) {
         'lodash',
         'brace',
         'firebase',
-        'auto-yield-delegate',
-        'js-analyse'
+        'auto-yield-delegate'
       ]
     },
     output: {

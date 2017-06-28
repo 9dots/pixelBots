@@ -21,14 +21,18 @@ router.get('*', (req, res) => {
 router.post('/', (req, res) => {
   res.set({'Cache-Control': 'no-cache'})
   const props = req.body.props
-  const {active, animals, solution, initialData, targetPainted, capabilities} = props
-  const saveRef = savedRef.child(props.saveRef)
+  const {active, advanced, animals, solution, initialData, targetPainted, capabilities} = props
+  const saveRef = props.saveRef
+    ? savedRef.child(props.saveRef)
+    : {update: () => Promise.resolve()}
   const userApi = createApi(capabilities, active)
   const userCode = getIterator(animals[active].sequence, userApi)
   const base = Object.assign({}, props, {painted: {}})
-  if (targetPainted && Object.keys(targetPainted).length > 0) {
+  if (!advanced) {
     const painted = initialData.initialPainted || {}
+    console.log(painted)
     const [answer, steps] = getLastFrame(Object.assign({}, base, {painted}), userCode)
+    console.log('answer', answer)
     const seed = [{painted, userSolution: answer}]
     if (checkCorrect(answer, targetPainted)) {
       return saveRef.update({steps, solutionSteps: props.solutionSteps})
@@ -47,7 +51,6 @@ router.post('/', (req, res) => {
   const correctSeeds = []
   for (let i = 0; i < 100; i++) {
     const painted = createPainted(Object.assign({}, base, {
-      startGrid: {},
       animals: animals.filter(a => a.type === 'teacherBot').map(a => Object.assign({}, a, {current: a.initial})),
       rand: srand(i)
     }), startCode)
@@ -66,13 +69,14 @@ router.post('/', (req, res) => {
   if (failedSeeds.length > 0) {
     return res.status(200).send({status: 'failed', failedSeeds, correctSeeds})
   }
-  return saveRef.update({
-    steps: average(getSteps(correctSeeds, 'steps')),
-    solutionSteps: average(getSteps(correctSeeds, 'solutionSteps'))
-  })
+  return saveRef
+    .update({
+      steps: average(getSteps(correctSeeds, 'steps')),
+      solutionSteps: average(getSteps(correctSeeds, 'solutionSteps'))
+    })
     .then(() => res.status(200).send({
       status: 'success',
-      correctSeeds,
+      correctSeeds
     }))
 })
 

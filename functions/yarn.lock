@@ -976,9 +976,9 @@ escape-string-regexp@^1.0.2:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
-esprima@^3.1.3:
-  version "3.1.3"
-  resolved "https://registry.yarnpkg.com/esprima/-/esprima-3.1.3.tgz#fdca51cee6133895e3c88d535ce49dbff62a4633"
+esprima@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.0.tgz#4499eddcd1110e0b218bacf2fa7f7f59f55ca804"
 
 esutils@^2.0.2:
   version "2.0.2"
@@ -1491,11 +1491,11 @@ joi@^6.10.1:
     moment "2.x.x"
     topo "1.x.x"
 
-js-analyse@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/js-analyse/-/js-analyse-0.2.1.tgz#9122d57cc8aa81447d31c9f4ad3257b4c3a5f8a8"
+js-analyse@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/js-analyse/-/js-analyse-0.2.3.tgz#0e1ac2720e73cf50f04cb17b353d60c95ae992f5"
   dependencies:
-    esprima "^3.1.3"
+    esprima "^4.0.0"
     lodash "^3.2.0"
 
 js-tokens@^3.0.0:
