@@ -42,7 +42,7 @@
     "gm": "^1.23.0",
     "google-material-color-palette-json": "^2.0.1",
     "immutable": "^3.8.1",
-    "js-analyse": "^0.2.1",
+    "js-analyse": "^0.2.3",
     "lodash": "^4.17.4",
     "node-eval": "^1.1.0",
     "node-fetch": "^1.7.1",

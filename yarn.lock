@@ -5743,9 +5743,9 @@ jpeg-js@^0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/jpeg-js/-/jpeg-js-0.1.2.tgz#135b992c0575c985cfa0f494a3227ed238583ece"
 
-js-analyse@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/js-analyse/-/js-analyse-0.2.2.tgz#7f79a84ea87a1679db7462e24519fe2bbf575713"
+js-analyse@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/js-analyse/-/js-analyse-0.2.3.tgz#0e1ac2720e73cf50f04cb17b353d60c95ae992f5"
   dependencies:
     esprima "^4.0.0"
     lodash "^3.2.0"
