@@ -1,0 +1,5 @@
+{
+  "name": "DebugStatsModal",
+  "main": "DebugStatsModal.js",
+  "browser": "DebugStatsModal.js"
+}
