@@ -27,6 +27,11 @@ router.post('/', (req, res) => {
     : {update: () => Promise.resolve()}
   const userApi = createApi(capabilities, active)
   const userCode = getIterator(animals[active].sequence, userApi)
+  try {
+    userCode()
+  } catch (e) {
+    return res.status(200).send({status: 'failed', error: e})
+  }
   const base = Object.assign({}, props, {painted: {}})
   if (!advanced) {
     const painted = initialData.initialPainted || {}
