@@ -1,10 +1,10 @@
-const serviceAccount = require('./serviceAccount.json')
+const serviceAccount = require('./service.json')
 const mapValues = require('@f/map-values')
 const admin = require('firebase-admin')
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://artbot-dev.firebaseio.com'
+  databaseURL: 'https://artbot-26016.firebaseio.com'
 })
 
 const db = admin.database()
