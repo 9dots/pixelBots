@@ -29,26 +29,6 @@ paintAttrs.forEach((attr) => {
   exports[attr] = filterGamePaint(attr)
 })
 
-exports.savedLinesOfCode = functions.database
-  .ref('/saved/{saveRef}/animals/{animalID}/sequence')
-  .onWrite(evt => {
-    return new Promise((resolve, reject) => {
-      if (!evt.data.exists() || objEqual(evt.data.val() || {}, evt.data.previous.val() || {})) {
-        return resolve()
-      }
-      const sequence = evt.data.val()
-      const promises = [
-        evt.data.ref.parent.parent.parent.child('meta').update({
-          loc: getLoc(sequence),
-          lastEdited: Date.now()
-        })
-      ]
-      Promise.all(promises)
-        .then(resolve)
-        .catch(reject)
-    })
-  })
-
 function filterGamePaint (attr) {
   return functions.database.ref(`/saved/{saveRef}/${attr}`)
     .onWrite(evt => {
