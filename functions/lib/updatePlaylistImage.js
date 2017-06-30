@@ -21,22 +21,30 @@ module.exports = functions.database.ref('/playlists/{playlist}/sequence')
 	.onWrite(evt => {
 		const {playlist} = evt.params
     fs.mkdirsSync(`/tmp/${playlist}`)
-  	return admin.database().ref(`/playlists/${playlist}/sequence`)
-	    .limitToLast(4)
-	    .once('value')
-	    .then((res) => mapValues((val) => val, res.val() || {}).filter((el) => !!el))
-	    .then((challenges) => {
-	    	if (!challenges) {
-	    		return failed('no sequence')
-	    	}
-	      const promises = mapValues((ref) => download(playlist, `${ref}.png`), challenges).map(promiseState)
-	      return Promise.all(promises).filter((p) => p.state === 'resolved').map((p) => p.val)
-	      	.then((results) => playlistImage(playlist, results))
-	      	.then((img) => upload(img, playlist))
-	      	.then((url) => addToFirebase(`/playlists/${playlist}/imageUrl`, url))
-	      	.then(success)
-	      	.catch(failed)
-	    })
+    return evt.data.ref.parent.child('imageVersion')
+      .transaction(v => v + 1)
+      .then(({snapshot}) => snapshot.val())
+      .then(imageVersion => {
+        return admin.database().ref(`/playlists/${playlist}/sequence`)
+          .orderByKey()
+    	    .limitToLast(4)
+    	    .once('value')
+    	    .then((res) => mapValues((val) => val, res.val() || {}).filter((el) => !!el))
+    	    .then((challenges) => {
+    	    	if (!challenges) {
+    	    		return failed('no sequence')
+    	    	}
+    	      const promises = mapValues((ref) => download(playlist, `${ref}.png`), challenges).map(promiseState)
+    	      return Promise.all(promises).filter((p) => p.state === 'resolved').map((p) => p.val)
+    	      	.then((results) => playlistImage(playlist, results))
+    	      	.then((img) => upload(img, playlist))
+    	      	.then((url) => addToFirebase(`/playlists/${playlist}/imageUrl`, `${url}&${imageVersion}`))
+    	      	.then(success)
+    	      	.catch(failed)
+    	    })
+      })
+
+
 
     function success (img) {
     	fs.remove(`/tmp/${playlist}`)

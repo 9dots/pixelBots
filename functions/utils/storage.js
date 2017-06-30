@@ -11,7 +11,10 @@ function downloadFromBucket (dir, name) {
   return new Promise((resolve, reject) => {
     bucket.file(name).download({destination: newPath})
       .then(() => resolve(newPath))
-      .catch((e) => reject(e))
+      .catch((e) => {
+        console.warn(e)
+        return reject(e)
+      })
   })
 }
 
