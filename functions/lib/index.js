@@ -9,6 +9,7 @@ module.exports = {
 	fanDraftToUser: require('./fanDraftToUser'),
 	returnPlaylist: require('./returnPlaylist'),
 	fanCompleted: require('./fanCompleted'),
+	copyPlaylist: require('./copyPlaylist'),
 	createGif: require('./createGif')
 	// updateSavedImage: require('./updateSavedImage'),
 	// toggleShowcase: require('./toggleShowcase'),
