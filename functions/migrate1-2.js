@@ -3,7 +3,7 @@
  */
 
 const {colors, blackAndWhite} = require('./utils/palette')
-const serviceAccount = require('./service.json')
+const serviceAccount = require('./serviceAccount.json')
 const mapValues = require('@f/map-values')
 const admin = require('firebase-admin')
 const extend = require('@f/extend')
