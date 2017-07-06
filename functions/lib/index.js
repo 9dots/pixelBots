@@ -1,4 +1,5 @@
 module.exports = {
+	playlistUpdateExternal: require('./playlistUpdateExternal'),
 	updatePlaylistImage: require('./updatePlaylistImage'),
 	fanPlaylistProgress: require('./fanPlaylistProgress'),
 	fanPlaylistToUser: require('./fanPlaylistToUser'),

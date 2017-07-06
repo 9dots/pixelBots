@@ -5,13 +5,15 @@
 const functions = require('firebase-functions')
 const toRegexp = require('path-to-regexp')
 const admin = require('firebase-admin')
+const extend = require('@f/extend')
 const fetch = require('node-fetch')
 
 /**
  * Path regex
  */
 
-const pathRe = toRegexp('/playlist/:id')
+const path1Re = toRegexp('/playlist/:id')
+const path2Re = toRegexp('/playlist/:id/view')
 const domain = functions.config().firebase.authDomain
 
 /**
@@ -22,7 +24,9 @@ module.exports = functions.https.onRequest((req, res) => {
   const type = req.get('accept')
 
   if (type === 'application/json') {
-    const [, id] = pathRe.exec(req.url)
+    const [, id] = path1Re.test(req.url)
+      ? path1Re.exec(req.url)
+      : path2Re.exec(req.url)
 
     return admin
       .database()
@@ -48,9 +52,39 @@ module.exports = functions.https.onRequest((req, res) => {
  */
 
 function populatePlaylist (playlist) {
-  return playlist
+  return Promise.all(
+    playlist
+      .sequence
+      .map(id => admin.database().ref(`/games/${id}/meta`).once('value').then(snap => snap.val()))
+  ).then(sequence => {
+    return extend(playlist, {
+      sequence: sequence.map((challenge, i) => extend(challenge, {
+        id: playlist.sequence[i]
+      }))
+    })
+  })
 }
 
 function transformPlaylist (playlist) {
-  return playlist
+  return {
+    objectType: 'assignment',
+    author: playlist.creatorUsername,
+    image: {
+      url: playlist.imageUrl
+    },
+    description: playlist.description,
+    displayName: playlist.name,
+    attachments: playlist.sequence.map(transformChallenge)
+  }
+}
+
+function transformChallenge (challenge) {
+  return {
+    objectType: 'assignment_item',
+    guid: challenge.id,
+    image: {
+      url: challenge.imageUrl
+    },
+    displayName: challenge.title
+  }
 }
