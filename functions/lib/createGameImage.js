@@ -23,7 +23,9 @@ function createGameImage (baseRef) {
 		    const targetPainted = evt.data.val()
 		    evt.data.ref.parent.once('value')
 					.then(snap => snap.val())
-					.then(({levelSize}) => levelThumb(gameRef, levelSize[0], targetPainted))
+					.then(({levelSize, type, imageUrl}) => type === 'write'
+            ? levelThumb(gameRef, levelSize[0], targetPainted)
+            : Promise.resolve(imageUrl))
 					.then(res => upload(res, gameRef))
 					.then((res) => injectToGame(`/${baseRef}/${gameRef}/imageUrl`, res))
 					.then((res) => injectToGame(`/${baseRef}/${gameRef}/meta/imageUrl`, res))

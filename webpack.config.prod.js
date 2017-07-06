@@ -4,9 +4,8 @@ var webpack = require('webpack')
 var path = require('path')
 var net = require('net')
 var fs = require('fs')
-var WebpackDevServer = require('webpack-dev-server')
 
-console.log('dev config')
+console.log('prod config')
 
 const folders = fs.readdirSync(path.resolve(__dirname, 'lib'))
   .reduce((cur, next) => (
@@ -21,8 +20,6 @@ function config (env) {
   return {
     entry: {
       main: [
-        'webpack-dev-server/client?http://localhost:8080',
-        'webpack/hot/only-dev-server',
         './lib/client/index.js'
       ],
       vendor: [
@@ -61,20 +58,19 @@ function config (env) {
     },
     target: 'web',
     plugins: [
-      new webpack.DefinePlugin({
-        'process.env': {
-          'NODE_ENV': '"dev"'
-        }
-      }),
-      new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.optimize.CommonsChunkPlugin({
         names: ['vendor', 'manifest'] // Specify the common bundle's name.
       }),
+      new webpack.DefinePlugin({
+        'process.env': {
+          'NODE_ENV': '"production"'
+        }
+      }),
       new HtmlWebpackPlugin({
-      title: 'pixelBots',
-      template: 'my-index.html' // Load a custom template (ejs by default see the FAQ for details)
-    })
+        title: 'pixelBots',
+        template: 'my-index.html' // Load a custom template (ejs by default see the FAQ for details)
+      })
     ],
     node: {
       module: 'empty',
@@ -83,26 +79,8 @@ function config (env) {
     externals: {
       net: net,
       fs: fs
-    },
-    devtool: 'eval-source-map'
+    }
   }
 }
-
-new WebpackDevServer(webpack(config()), {
-  host: 'localhost',
-  hot: true,
-  inline: true,
-  contentBase: 'public',
-  historyApiFallback: {
-    rewrites: [{
-      from: /([\d\w\-\.]*)(\.js$|\.json$)/,
-      to: context => '/' + context.match[0]
-    }, {
-      from: /([\d\w]*\.)([\d\w]*\.)([\d\w\-]*)(\.js$|\.json$)/,
-      to: context => '/' + console.log('here\n\n\n', context)
-    }],
-    index: '/index.html'
-  }
-}).listen(8080)
 
 module.exports = config

@@ -19,6 +19,7 @@ module.exports = {
   cursor: 0,
   active: 0,
   solutionSteps: undefined,
+  advanced: null,
   steps: 0,
   speed: 1,
   frames: [],
