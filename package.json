@@ -84,7 +84,7 @@
     "to-markdown": "^3.0.3",
     "type": "0.0.3",
     "vdux": "^3.0.9",
-    "vdux-ace": "latest",
+    "vdux-ace": "^1.0.7",
     "vdux-containers": "^1.2.8",
     "vdux-css-transition": "^1.2.1",
     "vdux-delay": "^1.0.6",
