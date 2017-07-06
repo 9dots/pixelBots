@@ -54,6 +54,10 @@ body {
   animation-timing-function: ease-in-out;
 }
 
+.large {
+  width: 100%;
+}
+
 @keyframes cursor-flash {
   0% {opacity: 1;}
   50% {opacity: 0;}
