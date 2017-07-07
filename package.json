@@ -81,6 +81,7 @@
     "redux-effects-media": "^1.0.1",
     "redux-timing": "^0.1.0",
     "stack-trace": "0.0.9",
+    "strip": "^3.0.0",
     "to-markdown": "^3.0.3",
     "type": "0.0.3",
     "vdux": "^3.0.9",
