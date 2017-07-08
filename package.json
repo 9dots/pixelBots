@@ -40,7 +40,7 @@
     "@f/is-promise": "^1.1.1",
     "@f/map-values": "^1.0.0",
     "@f/omit": "^2.2.3",
-    "@f/parse-qs": "latest",
+    "@f/parse-qs": "^1.0.4",
     "@f/range": "^2.0.0",
     "@f/rgba": "^1.0.0",
     "@f/set-prop": "^1.0.0",

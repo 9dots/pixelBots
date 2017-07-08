@@ -581,7 +581,7 @@
   dependencies:
     "@f/hex-to-rgba" "^1.0.0"
 
-"@f/parse-qs@latest":
+"@f/parse-qs@^1.0.4":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@f/parse-qs/-/parse-qs-1.0.4.tgz#b11777f9cac10148e138c7f66f9682eba636a8d1"
 
