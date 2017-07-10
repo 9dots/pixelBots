@@ -1,5 +1,6 @@
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var segmentKey = require('./segmentKey')
 var webpack = require('webpack')
 var path = require('path')
 var net = require('net')
@@ -64,7 +65,8 @@ function config (env) {
       }),
       new webpack.DefinePlugin({
         'process.env': {
-          'NODE_ENV': '"production"'
+          'NODE_ENV': '"production"',
+          'TRACKING_CODE': segmentKey
         }
       }),
       new HtmlWebpackPlugin({
