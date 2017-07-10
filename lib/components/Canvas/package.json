@@ -1,0 +1,5 @@
+{
+  "name": "Canvas",
+  "main": "Canvas.js",
+  "browser": "Canvas.js"
+}
