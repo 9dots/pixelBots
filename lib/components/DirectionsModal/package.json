@@ -1,0 +1,5 @@
+{
+  "name": "DirectionsModal",
+  "main": "DirectionsModal.js",
+  "browser": "DirectionsModal.js"
+}
