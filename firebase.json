@@ -11,13 +11,6 @@
       "**/functions/**",
       "**/lib/**"
     ],
-    "redirects": [
-      {
-        "source": "/**/:file*.js",
-        "destination": "/:file.js",
-        "type": 301
-      }
-    ],
     "rewrites": [
       {
         "source": "/playlist/**",
@@ -26,6 +19,10 @@
       {
         "source": "**",
         "destination": "/index.html"
+      },
+      {
+        "source": "**/:file*.js",
+        "destination": "/:file.js"
       }
     ]
   }

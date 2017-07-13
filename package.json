@@ -68,6 +68,7 @@
     "firebase": "3.6.0",
     "google-material-color-palette-json": "^1.1.1",
     "hashids": "^1.1.1",
+    "isomorphic-fetch": "^2.2.1",
     "js-analyse": "^0.2.3",
     "lodash": "^4.17.4",
     "marked": "^0.3.6",

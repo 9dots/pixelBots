@@ -34,7 +34,7 @@ function config (env) {
     output: {
       filename: '[hash].[name].js',
       path: path.resolve(__dirname, 'public'),
-      publicPath: '/public/'
+      publicPath: '/'
     },
     resolve: {
       alias: folders,
