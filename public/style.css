@@ -210,6 +210,10 @@ code.lang-js {
   font-size: 14px;
 }
 
+#terms p {
+  margin: 1em 0;
+}
+
 @media print {
   body {
     margin: 10mm 0;
