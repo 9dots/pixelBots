@@ -44,6 +44,7 @@
     "immutable": "^3.8.1",
     "isomorphic-fetch": "^2.2.1",
     "js-analyse": "^0.2.3",
+    "jsonwebtoken": "^7.4.1",
     "lodash": "^4.17.4",
     "node-eval": "^1.1.0",
     "node-fetch": "^1.7.1",

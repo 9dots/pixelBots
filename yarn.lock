@@ -10111,7 +10111,34 @@ vdux-virtual-list@^1.0.3:
     redux-timing "^0.1.0"
     vdux "3"
 
-vdux@3, vdux@^3.0.6, vdux@^3.0.9, vdux@latest:
+vdux@3, vdux@^3.0.10, vdux@^3.0.6:
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/vdux/-/vdux-3.0.10.tgz#738cc9255ae2de0b668e0f7618bad52a25c8b01f"
+  dependencies:
+    "@f/debounce" "^1.0.2"
+    "@f/domready" "^1.0.2"
+    "@f/empty-element" "^1.0.0"
+    "@f/event-handler" "^1.0.4"
+    "@f/foreach" "^1.2.2"
+    "@f/get-value" "^1.0.1"
+    "@f/has" "^1.0.1"
+    "@f/queue" "^1.0.2"
+    "@f/raf-debounce" "^1.0.1"
+    delegant "^0.2.0"
+    ev-store "^7.0.0"
+    redux "^3.5.2"
+    redux-ephemeral "^0.3.9"
+    redux-falsy "^1.0.0"
+    redux-flo latest
+    redux-multi "^0.1.91"
+    redux-thunk "^1.0.3"
+    virtex "^0.4.0"
+    virtex-component "^0.5.5"
+    virtex-dom "^0.3.12"
+    virtex-element "^0.4.1"
+    virtex-string "^0.3.6"
+
+vdux@latest:
   version "3.0.9"
   resolved "https://registry.yarnpkg.com/vdux/-/vdux-3.0.9.tgz#03d82e6bf4127ed29c31ddb2d66d437a076cad2a"
   dependencies:
@@ -10144,9 +10171,9 @@ verror@1.3.6:
   dependencies:
     extsprintf "1.0.2"
 
-virtex-component@^0.5.4:
-  version "0.5.4"
-  resolved "https://registry.yarnpkg.com/virtex-component/-/virtex-component-0.5.4.tgz#9983e79503cfefdf97e87228025e22699985f6f0"
+virtex-component@^0.5.4, virtex-component@^0.5.5:
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/virtex-component/-/virtex-component-0.5.5.tgz#e2c1c0788efe635ea49e026ac25b6fcd3087dbef"
   dependencies:
     "@f/curry-transparently" "^1.0.0"
     "@f/defaults" "^1.0.1"

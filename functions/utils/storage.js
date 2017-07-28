@@ -19,7 +19,6 @@ function downloadFromBucket (dir, name) {
 }
 
 function uploadToBucket (img) {
-  console.log('img', img)
   return new Promise((resolve, reject) => {
     if (!img) return reject(new Error('no image'))
     bucket.upload(img, {resumable: false}, (err, file) => {

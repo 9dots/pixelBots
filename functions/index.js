@@ -1,8 +1,11 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const forEach = require('@f/foreach')
+const serviceAccount = require('./serviceAccount.json')
 
-admin.initializeApp(functions.config().firebase)
+admin.initializeApp(Object.assign({}, functions.config().firebase, {
+  credential: admin.credential.cert(serviceAccount)
+}))
 
 forEach((f, key) => exports[key] = f, require('./lib'))
 

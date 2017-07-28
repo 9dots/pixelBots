@@ -100,10 +100,11 @@ function config (env) {
 }
 
 new WebpackDevServer(webpack(config()), {
-  host: 'localhost',
+  host: '192.168.1.30',
   hot: true,
   inline: true,
   contentBase: 'public',
+  disableHostCheck: true,
   historyApiFallback: {
     rewrites: [{
       from: /([\d\w\-\.]*)(\.js$|\.json$)/,
