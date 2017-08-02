@@ -2,6 +2,7 @@ const functions = require('firebase-functions')
 const cors = require('cors')({origin: true})
 const admin = require('firebase-admin')
 const express = require('express')
+const createCode = require('../utils/createShortCode')
 
 const router = new express.Router()
 
@@ -23,8 +24,10 @@ router.post('/', (req, res) => {
         .then(snaps => snaps.map(snap => snap.val()))
         .then(games => Promise.all(games.map(game => gamesRef.push(game))))
         .then(snaps => snaps.map(s => s.key))
-        .then(keys => playlistsRef.push(Object.assign({}, playlist, {
+        .then(keys => Promise.all([Promise.resolve(keys), createCode()]))
+        .then(([keys, code]) => playlistsRef.push(Object.assign({}, playlist, {
           sequence: keys,
+          shortLink: code,
           creatorID,
           creatorUsername,
           lastEdited: Date.now(),

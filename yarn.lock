@@ -8144,7 +8144,7 @@ regenerator-runtime@^0.10.0:
   version "0.10.5"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz#336c3efc1220adcedda2c9fab67b5a7955a33658"
 
-regenerator-runtime@^0.9.6, regenerator-runtime@~0.9.5:
+regenerator-runtime@~0.9.5:
   version "0.9.6"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.9.6.tgz#d33eb95d0d2001a4be39659707c51b0cb71ce029"
 
@@ -10020,25 +10020,6 @@ vdux-delay@^1.0.6:
     "@f/create-action" "^1.1.1"
     "@f/handle-actions" "^1.1.1"
 
-vdux-fire@^1.2.10:
-  version "1.2.10"
-  resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-1.2.10.tgz#73cdad315052c043e59c5c9509ba3e7aaa1280e1"
-  dependencies:
-    "@f/create-action" "^1.1.1"
-    "@f/deep-equal" "^1.0.2"
-    "@f/equal-obj" "^1.2.1"
-    "@f/filter" "^1.1.1"
-    "@f/handle-actions" "^1.1.2"
-    "@f/map" "^1.5.3"
-    "@f/map-obj" "^1.2.2"
-    "@f/map-values" "^1.0.0"
-    "@f/omit" "^2.2.3"
-    "@f/switch" "^1.0.1"
-    firebase "3.6.0"
-    redux-ephemeral "^0.3.7"
-    regenerator-runtime "^0.9.6"
-    vdux latest
-
 vdux-form@^1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/vdux-form/-/vdux-form-1.2.3.tgz#58483326c6c78b8b72b93fd59afcf6a1b3044194"
@@ -10142,40 +10123,13 @@ vdux@3, vdux@^3.0.10, vdux@^3.0.6:
     virtex-element "^0.4.1"
     virtex-string "^0.3.6"
 
-vdux@latest:
-  version "3.0.9"
-  resolved "https://registry.yarnpkg.com/vdux/-/vdux-3.0.9.tgz#03d82e6bf4127ed29c31ddb2d66d437a076cad2a"
-  dependencies:
-    "@f/debounce" "^1.0.2"
-    "@f/domready" "^1.0.2"
-    "@f/empty-element" "^1.0.0"
-    "@f/event-handler" "^1.0.4"
-    "@f/foreach" "^1.2.2"
-    "@f/get-value" "^1.0.1"
-    "@f/has" "^1.0.1"
-    "@f/queue" "^1.0.2"
-    "@f/raf-debounce" "^1.0.1"
-    delegant "^0.2.0"
-    ev-store "^7.0.0"
-    redux "^3.5.2"
-    redux-ephemeral "^0.3.9"
-    redux-falsy "^1.0.0"
-    redux-flo latest
-    redux-multi "^0.1.91"
-    redux-thunk "^1.0.3"
-    virtex "^0.4.0"
-    virtex-component "^0.5.4"
-    virtex-dom "^0.3.12"
-    virtex-element "^0.4.1"
-    virtex-string "^0.3.6"
-
 verror@1.3.6:
   version "1.3.6"
   resolved "https://registry.yarnpkg.com/verror/-/verror-1.3.6.tgz#cff5df12946d297d2baaefaa2689e25be01c005c"
   dependencies:
     extsprintf "1.0.2"
 
-virtex-component@^0.5.4, virtex-component@^0.5.5:
+virtex-component@^0.5.5:
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/virtex-component/-/virtex-component-0.5.5.tgz#e2c1c0788efe635ea49e026ac25b6fcd3087dbef"
   dependencies:
