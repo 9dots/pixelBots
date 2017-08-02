@@ -7181,6 +7181,10 @@ object-keys@~0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-0.4.0.tgz#28a6aae7428dd2c3a92f3d95f21335dd204e0336"
 
+object-some@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/object-some/-/object-some-1.0.0.tgz#eb16e430983d1d3ed35cb8de7e26b30442d0f927"
+
 object.assign@^4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/object.assign/-/object.assign-4.0.4.tgz#b1c9cc044ef1b9fe63606fc141abbb32e14730cc"
@@ -8140,7 +8144,7 @@ regenerate@^1.2.1:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.3.2.tgz#d1941c67bad437e1be76433add5b385f95b19260"
 
-regenerator-runtime@^0.10.0:
+regenerator-runtime@^0.10.0, regenerator-runtime@^0.10.5:
   version "0.10.5"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz#336c3efc1220adcedda2c9fab67b5a7955a33658"
 
@@ -10019,6 +10023,29 @@ vdux-delay@^1.0.6:
   dependencies:
     "@f/create-action" "^1.1.1"
     "@f/handle-actions" "^1.1.1"
+
+vdux-fire@^1.2.12:
+  version "1.2.12"
+  resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-1.2.12.tgz#8212a9642ab9ad6958e779721dd5bb762e9d1e60"
+  dependencies:
+    "@f/create-action" "^1.1.1"
+    "@f/deep-equal" "^1.0.2"
+    "@f/equal-obj" "^1.2.1"
+    "@f/filter" "^1.1.1"
+    "@f/handle-actions" "^1.1.2"
+    "@f/map" "^1.5.3"
+    "@f/map-obj" "^1.2.2"
+    "@f/map-values" "^1.0.0"
+    "@f/omit" "^2.2.3"
+    "@f/splice" "^1.0.0"
+    "@f/switch" "^1.0.1"
+    "@f/union" "^1.0.0"
+    firebase "3.6.0"
+    lodash "^4.17.4"
+    object-some "^1.0.0"
+    redux-ephemeral "^0.3.7"
+    regenerator-runtime "^0.10.5"
+    vdux "^3.0.10"
 
 vdux-form@^1.2.3:
   version "1.2.3"
