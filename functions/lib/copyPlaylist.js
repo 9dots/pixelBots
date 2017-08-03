@@ -16,7 +16,6 @@ router.get('*', (req, res) => {
 router.post('/', (req, res) => {
   res.set({'Cache-Control': 'no-cache'})
   const {creatorID, playlistRef, creatorUsername} = req.body
-  console.log(req.body, creatorID, playlistRef, creatorUsername)
   return playlistsRef.child(playlistRef).once('value')
     .then(snap => snap.val())
     .then((playlist) => {
