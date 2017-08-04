@@ -8235,6 +8235,10 @@ relateurl@0.2.x:
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/relateurl/-/relateurl-0.2.7.tgz#54dbf377e51440aca90a4cd274600d3ff2d888a9"
 
+remove-markdown@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/remove-markdown/-/remove-markdown-0.2.1.tgz#1799cd8551d1942f4f308e5685436be9930c28fe"
+
 remove-trailing-separator@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.0.2.tgz#69b062d978727ad14dc6b56ba4ab772fd8d70511"
@@ -10024,9 +10028,9 @@ vdux-delay@^1.0.6:
     "@f/create-action" "^1.1.1"
     "@f/handle-actions" "^1.1.1"
 
-vdux-fire@^1.2.12:
-  version "1.2.12"
-  resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-1.2.12.tgz#8212a9642ab9ad6958e779721dd5bb762e9d1e60"
+vdux-fire@^1.2.14:
+  version "1.2.14"
+  resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-1.2.14.tgz#43719aaa8202087bfbf23dda303dadb2b02e477d"
   dependencies:
     "@f/create-action" "^1.1.1"
     "@f/deep-equal" "^1.0.2"
