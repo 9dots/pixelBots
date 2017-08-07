@@ -1,6 +1,0 @@
-# <Directions Modal/>
-
-
-
-## Usage
-
