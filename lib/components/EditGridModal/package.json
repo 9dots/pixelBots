@@ -1,0 +1,5 @@
+{
+  "name": "EditGridModal",
+  "main": "EditGridModal.js",
+  "browser": "EditGridModal.js"
+}

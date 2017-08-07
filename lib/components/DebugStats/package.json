@@ -1,0 +1,5 @@
+{
+  "name": "DebugStats",
+  "main": "DebugStats.js",
+  "browser": "DebugStats.js"
+}
