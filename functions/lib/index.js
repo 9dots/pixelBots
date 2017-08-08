@@ -14,6 +14,7 @@ module.exports = {
 	fanCompleted: require('./fanCompleted'),
 	copyPlaylist: require('./copyPlaylist'),
 	createGif: require('./createGif'),
+	weoAuth: require('./weoAuth')
 	// updateSavedImage: require('./updateSavedImage'),
 	// toggleShowcase: require('./toggleShowcase'),
 	// fanGameToUser: require('./fanGameToUser'),

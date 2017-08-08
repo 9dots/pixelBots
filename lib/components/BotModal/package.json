@@ -1,0 +1,5 @@
+{
+  "name": "BotModal",
+  "main": "BotModal.js",
+  "browser": "BotModal.js"
+}

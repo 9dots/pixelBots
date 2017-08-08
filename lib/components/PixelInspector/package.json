@@ -1,0 +1,5 @@
+{
+  "name": "PixelInspector",
+  "main": "PixelInspector.js",
+  "browser": "PixelInspector.js"
+}
