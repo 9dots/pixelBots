@@ -41,6 +41,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "gm": "^1.23.0",
     "google-material-color-palette-json": "^2.0.1",
+    "hashids": "^1.1.1",
     "immutable": "^3.8.1",
     "isomorphic-fetch": "^2.2.1",
     "js-analyse": "^0.2.3",
