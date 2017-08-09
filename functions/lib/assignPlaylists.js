@@ -43,7 +43,7 @@ module.exports = functions.database.ref('/feed/{groupId}/{assignmentRef}').onWri
           .then(snap => snap.val())
           .then(val => val || assign(playlistRef, studentRef))
         )
-    })
+    ))
 })
 
 function assign (playlist, uid) {

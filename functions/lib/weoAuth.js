@@ -13,14 +13,16 @@ const cors = require('cors')({origin: true})
 
 module.exports = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
-    const {token} = JSON.parse(req.body)
-    const {id, displayName, username} = jwt.verify(token, functions.config().weo.secret)
-    admin.auth().createCustomToken(id)
-        .then(customToken => res.status(200).send({
-          token: customToken,
-          displayName,
-          username
-        }))
-        .catch(() => res.status(500).send('broken'))
+    console.log(req.body)
+    const {uid} = JSON.parse(req.body)
+    console.log(uid)
+    return admin.auth().createCustomToken(uid)
+      .then(token => res.status(200).send({
+        token
+      }))
+      .catch((e) => {
+        console.error(e)
+        return res.status(500).send(e)
+      })
   })
 })
