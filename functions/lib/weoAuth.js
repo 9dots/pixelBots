@@ -14,8 +14,8 @@ const cors = require('cors')({origin: true})
 module.exports = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     console.log(req.body)
-    const {uid} = JSON.parse(req.body)
-    console.log(uid)
+    const {uid, keepAlive} = req.body
+    if (keepAlive) return res.status(200).send('ok')
     return admin.auth().createCustomToken(uid)
       .then(token => res.status(200).send({
         token
