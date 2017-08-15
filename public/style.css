@@ -6,6 +6,10 @@
   outline: none;
 }
 
+.svg-container svg {
+  shape-rendering: optimizeSpeed;
+}
+
 p {
   -webkit-margin-before: 0;
   -webkit-margin-after: 0;
@@ -149,9 +153,11 @@ svg {
 @keyframes pixel-bg {
   from {
     background-position-y: 0px, 0;
+    background-position-x: 0px, 0;
   }
   to {
-    background-position-y: -384px, 0;
+    background-position-y: 384px, 0;
+    background-position-x: -384px, 0;
   }
 }
 
@@ -208,6 +214,10 @@ svg {
 
 code.lang-js {
   font-size: 14px;
+}
+
+#terms p {
+  margin: 1em 0;
 }
 
 @media print {

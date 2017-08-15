@@ -17,8 +17,7 @@ const metaAttrs = [
   'attempts',
   'username',
   'likedBy',
-  'title',
-  'likes'
+  'title'
 ]
 
 metaAttrs.forEach((attr) => {

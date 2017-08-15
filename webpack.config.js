@@ -4,8 +4,10 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var webpack = require('webpack')
 var path = require('path')
 var net = require('net')
+var marked = require('marked')
 var fs = require('fs')
 var WebpackDevServer = require('webpack-dev-server')
+const renderer = new marked.Renderer()
 
 console.log('dev config')
 
@@ -57,6 +59,13 @@ function config (env) {
         {
           test: /\.css$/,
           loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+        },
+        {
+          test: /\.md$/,
+          loaders: [
+            "html-loader",
+            "markdown-loader"
+          ],
         }
       ]
     },
@@ -91,10 +100,11 @@ function config (env) {
 }
 
 new WebpackDevServer(webpack(config()), {
-  host: 'localhost',
+  host: '192.168.1.30',
   hot: true,
   inline: true,
   contentBase: 'public',
+  disableHostCheck: true,
   historyApiFallback: {
     rewrites: [{
       from: /([\d\w\-\.]*)(\.js$|\.json$)/,

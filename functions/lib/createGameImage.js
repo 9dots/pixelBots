@@ -21,16 +21,20 @@ function createGameImage (baseRef) {
 		  return new Promise((resolve, reject) => {
 		    const {gameRef} = evt.params
 		    const targetPainted = evt.data.val()
-		    evt.data.ref.parent.once('value')
-					.then(snap => snap.val())
-					.then(({levelSize, type, imageUrl}) => type === 'write'
-            ? levelThumb(gameRef, levelSize[0], targetPainted)
-            : Promise.resolve(imageUrl))
-					.then(res => upload(res, gameRef))
-					.then((res) => injectToGame(`/${baseRef}/${gameRef}/imageUrl`, res))
-					.then((res) => injectToGame(`/${baseRef}/${gameRef}/meta/imageUrl`, res))
-					.then(success)
-					.catch(failed)
+        evt.data.ref.parent.child('imageVersion').transaction(v => v + 1)
+        .then(({snapshot}) => snapshot.val())
+        .then((imageVersion) => {
+          evt.data.ref.parent.once('value')
+            .then(snap => snap.val())
+            .then(({levelSize, type = 'write', imageUrl}) => type === 'write'
+              ? levelThumb(gameRef, levelSize[0], targetPainted)
+              : Promise.resolve(imageUrl))
+            .then(res => upload(res, gameRef))
+            .then((res) => injectToGame(`/${baseRef}/${gameRef}/imageUrl`, `${res}&v=${imageVersion}`))
+            .then((res) => injectToGame(`/${baseRef}/${gameRef}/meta/imageUrl`, `${res}&v=${imageVersion}`))
+            .then(success)
+            .catch(failed)
+        })
 
 		    function failed (e) {
 		      console.warn(e)
