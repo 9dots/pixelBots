@@ -3,6 +3,7 @@ const animalApis = require('../utils/animalApis/index')
 const checkCorrect = require('../utils/checkCorrect')
 const functions = require('firebase-functions')
 const cors = require('cors')({origin: true})
+const palette = require('../utils/palette')
 const objEqual = require('@f/equal-obj')
 const admin = require('firebase-admin')
 const express = require('express')
@@ -21,11 +22,11 @@ router.get('*', (req, res) => {
 router.post('/', (req, res) => {
   res.set({'Cache-Control': 'no-cache'})
   const props = req.body.props
-  const {active, advanced, animals, solution, initialData, targetPainted, capabilities} = props
+  const {active, advanced, animals, palette, solution, initialData, targetPainted, capabilities} = props
   const saveRef = props.saveRef
     ? savedRef.child(props.saveRef)
     : {update: () => Promise.resolve()}
-  const userApi = createApi(capabilities, active)
+  const userApi = createApi(capabilities, active, palette)
   const userCode = getIterator(animals[active].sequence, userApi)
   try {
     userCode()
@@ -49,7 +50,7 @@ router.post('/', (req, res) => {
     return res.status(200).send({status: 'failed', failedSeeds: seed})
   }
 
-  const startCode = getIterator(initialData.initialPainted, createApi(teacherBot, 0))
+  const startCode = getIterator(initialData.initialPainted, createApi(teacherBot, 0, palette.color))
   const solutionIterator = getIterator(solution[0].sequence, userApi)
   const uniquePaints = []
   const failedSeeds = []

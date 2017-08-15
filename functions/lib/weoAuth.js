@@ -16,7 +16,7 @@ module.exports = functions.https.onRequest((req, res) => {
     admin.auth().createCustomToken(uid)
       .then(customToken => res.status(200).send({
         token
-      })
+      }))
       .catch(() => res.status(500).send('broken'))
   })
 })
