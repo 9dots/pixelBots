@@ -2,6 +2,7 @@ module.exports = {
 	playlistUpdateExternal: require('./playlistUpdateExternal'),
 	updatePlaylistImage: require('./updatePlaylistImage'),
 	fanPlaylistProgress: require('./fanPlaylistProgress'),
+	generateSchoolCode: require('./generateSchoolCode'),
 	fanPlaylistToUser: require('./fanPlaylistToUser'),
 	generateClassCode: require('./generateClassCode'),
 	createGameImage: require('./createGameImage'),
