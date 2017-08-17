@@ -15,7 +15,7 @@ module.exports = functions.database.ref('/playlists/{playlistRef}')
       const data = evt.data.val()
       const followedBy = data.followedBy
       const {playlistRef} = evt.params
-      const usersIds = mapValues((u, key) => usernamesRef.child(key).once('value'), followedBy)
+      const usersIds = mapValues((u, key) => usernamesRef.child(key).once('value'), followedBy || {})
       Promise.all(usersIds)
         .then(snaps => flatten(snaps.map(s => s.val())))
         .then(ids => ids.map((id) => usersRef.child(id).child('playlists').child(playlistRef)
