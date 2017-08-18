@@ -6,7 +6,9 @@ const cors = require('cors')({origin: true})
 const palette = require('../utils/palette')
 const objEqual = require('@f/equal-obj')
 const admin = require('firebase-admin')
+const filter = require('@f/filter')
 const express = require('express')
+const map = require('@f/map')
 const srand = require('@f/srand')
 
 const createApi = animalApis.default
@@ -34,11 +36,10 @@ router.post('/', (req, res) => {
     return res.status(200).send({status: 'failed', error: e})
   }
   const base = Object.assign({}, props, {painted: {}})
-  if (!advanced) {
+  const togglePaints = filter((val) => val === 'toggle', initialData.initialPainted || {})
+  if (!advanced && Object.keys(togglePaints).length === 0) {
     const painted = initialData.initialPainted || {}
-    console.log(painted)
     const [answer, steps] = getLastFrame(Object.assign({}, base, {painted}), userCode)
-    console.log('answer', answer)
     const seed = [{painted, userSolution: answer}]
     if (checkCorrect(answer, targetPainted)) {
       return saveRef.update({steps, solutionSteps: props.solutionSteps})
@@ -49,29 +50,46 @@ router.post('/', (req, res) => {
     }
     return res.status(200).send({status: 'failed', failedSeeds: seed})
   }
-
-  const startCode = getIterator(initialData.initialPainted, createApi(teacherBot, 0, palette.color))
-  const solutionIterator = getIterator(solution[0].sequence, userApi)
   const uniquePaints = []
   const failedSeeds = []
   const correctSeeds = []
-  for (let i = 0; i < 100; i++) {
-    const painted = createPainted(Object.assign({}, base, {
-      animals: animals.filter(a => a.type === 'teacherBot').map(a => Object.assign({}, a, {current: a.initial})),
-      rand: srand(i)
-    }), startCode)
-    if (uniquePaints.every((paint) => !objEqual(paint, painted))) {
-      uniquePaints.push(painted)
-      const [answer, steps] = getLastFrame(Object.assign({}, base, {painted}), userCode)
-      const solutionState = Object.assign({}, props, {startGrid: painted})
-      var [solutionPainted, solutionSteps] = generateSolution(solutionState, solutionIterator)
-      if (!checkCorrect(answer, solutionPainted)) {
-        failedSeeds.push({painted, userSolution: answer, seed: i})
-      } else {
-        correctSeeds.push({painted, userSolution: answer, seed: i, steps, solutionSteps})
+  if (advanced) {
+    const startCode = getIterator(initialData.initialPainted, createApi(teacherBot, 0, palette.color))
+    const solutionIterator = getIterator(solution[0].sequence, userApi)
+    
+    for (let i = 0; i < 100; i++) {
+      const painted = createPainted(Object.assign({}, base, {
+        animals: animals.filter(a => a.type === 'teacherBot').map(a => Object.assign({}, a, {current: a.initial})),
+        rand: srand(i)
+      }), startCode)
+      if (uniquePaints.every((paint) => !objEqual(paint, painted))) {
+        uniquePaints.push(painted)
+        const [answer, steps] = getLastFrame(Object.assign({}, base, {painted}), userCode)
+        const solutionState = Object.assign({}, props, {startGrid: painted})
+        var [solutionPainted, solutionSteps] = generateSolution(solutionState, solutionIterator)
+        if (!checkCorrect(answer, solutionPainted)) {
+          failedSeeds.push({painted, userSolution: answer, seed: i})
+        } else {
+          correctSeeds.push({painted, userSolution: answer, seed: i, steps, solutionSteps})
+        }
+      }
+    }
+  } else {
+    for (let i = 0; i < 100; i++) {
+      const rand = srand(i)
+      const painted = map((val) => val === 'toggle' ? rand(2, 0) > 1 ? 'blue' : 'yellow' : val, initialData.initialPainted)
+      if (uniquePaints.every((paint) => !objEqual(paint, painted))) {
+        uniquePaints.push(painted)
+        const [answer, steps] = getLastFrame(Object.assign({}, base, {painted}), userCode)
+        if (!checkCorrect(answer, targetPainted)) {
+          failedSeeds.push({painted, userSolution: answer, seed: i})
+        } else {
+          correctSeeds.push({painted, userSolution: answer, seed: i, steps, solutionSteps: props.solutionSteps})
+        }
       }
     }
   }
+
   if (failedSeeds.length > 0) {
     return res.status(200).send({status: 'failed', failedSeeds, correctSeeds})
   }
@@ -110,4 +128,12 @@ function generateSolution ({initialPainted, solution, levelSize, active, startGr
     animals: solution.map(animal => Object.assign({}, animal, {current: animal.initial}))
   }, code)
   return [frames.pop().painted, frames.length]
+}
+
+function objectSome (obj, fn) {
+  if (typeof obj !== 'object') {
+    throw 'Must pass object'
+  }
+  const keys = Object.keys(obj)
+  return keys.some(val => fn(obj[val], val, obj))
 }

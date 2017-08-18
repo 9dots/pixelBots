@@ -6,6 +6,8 @@ const cors = require('cors')()
 const objEqual = require('@f/equal-obj')
 const {Map} = require('immutable')
 const srand = require('@f/srand')
+const map = require('@f/map')
+
 
 const createApi = animalApis.default
 const teacherBot = animalApis.teacherBot
@@ -21,18 +23,18 @@ console.time('check')
 // console.log('teacherBot', teacherBot)
 const {active, advanced, animals, solution, initialData, targetPainted, capabilities, palette} = props
 const userApi = createApi(capabilities, active, palette)
-const userCode = getIterator(animals[active].sequence, userApi)
+const userCode = getIterator('test', userApi)
 const base = Object.assign({}, props, {painted: {}})
-if (!advanced) {
-  const painted = initialData.initialPainted || {}
-  const answer = getLastFrame(Object.assign({}, base, {painted}), userCode)
-    // console.log(answer)
-  const seed = [{painted, userSolution: answer}]
-  if (checkCorrect(answer, targetPainted)) {
-    console.log({status: 'success', correctSeeds: seed})
-  }
-  console.log({status: 'failed', failedSeeds: seed})
-} else {
+// if (!advanced) {
+//   const painted = initialData.initialPainted || {}
+//   const answer = getLastFrame(Object.assign({}, base, {painted}), userCode)
+//     // console.log(answer)
+//   const seed = [{painted, userSolution: answer}]
+//   if (checkCorrect(answer, targetPainted)) {
+//     console.log({status: 'success', correctSeeds: seed})
+//   }
+//   console.log({status: 'failed', failedSeeds: seed})
+if (advanced) {
   const startCode = getIterator(initialData.initialPainted, createApi(teacherBot, 0))
   const solutionIterator = getIterator(solution[0].sequence, userApi)
   const uniquePaints = []
@@ -56,9 +58,29 @@ if (!advanced) {
     }
   }
   console.log('failed', failedSeeds, 'correct', correctSeeds)
-}
+} else {
+    const uniquePaints = []
+    const failedSeeds = []
+    const correctSeeds = []
+    for (let i = 0; i < 100; i++) {
+      const rand = srand(i)
+      const painted = map((val) => val === 'toggle' ? rand(2, 0) > 1 ? 'blue' : 'yellow' : val, initialData.initialPainted || {})
+      if (uniquePaints.every((paint) => !objEqual(paint, painted))) {
+        uniquePaints.push(painted)
+        const [answer, steps] = getLastFrame(Object.assign({}, base, {painted}), userCode)
+        console.log('answer', answer, 'targetPainted', targetPainted)
+        if (!checkCorrect(answer, targetPainted)) {
+          failedSeeds.push({painted, userSolution: answer, seed: i})
+        } else {
+          correctSeeds.push({painted, userSolution: answer, seed: i, steps})
+        }
+      }
+    }
+    console.log(correctSeeds, failedSeeds, uniquePaints)
+  }
 
 console.timeEnd('check')
+
   // if (failedSeeds.length > 0) {
   //   console.log({status: 'failed', failedSeeds, correctSeeds})
   // } else {
@@ -97,6 +119,7 @@ function getProps () {
 "1,0":"yellow"
 },
 "initialPainted":{
+"1,0":"toggle"
 },
 "initialData":{
 "type":"write",
@@ -112,9 +135,11 @@ function getProps () {
 "selected":{
 },
 "targetPainted":{
-"1,0":"yellow"
+"1,0":"toggle"
 },
-"initialPainted":"rand(0, 2) && paint('blue')\nforward()\nrand(0, 2) && paint('blue')",
+"initialPainted":{
+  "1,0":"toggle"
+},
 "initialData":{
 },
 "saveRef":null,
@@ -381,7 +406,7 @@ function getProps () {
 "activeLine":0,
 "cursor":0,
 "active":0,
-"advanced":true,
+"advanced":false,
 "steps":0,
 "speed":1,
 "frames":{
@@ -1047,7 +1072,7 @@ true
 "activeLine":-1,
 "cursor":0,
 "active":0,
-"advanced":true,
+"advanced":false,
 "steps":3,
 "speed":1,
 "frames":{
