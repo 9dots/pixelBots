@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.images = exports.teacherBot = exports.gameImages = exports.capabilities = exports.capabilityOrder = undefined;
+exports.images = exports.teacherBot = exports.gameImages = exports.capabilities = exports.capabilityOrder = exports.typeColors = undefined;
 
 var _extends2 = require('babel-runtime/helpers/extends');
 
@@ -22,6 +22,7 @@ var _regenerator = require('babel-runtime/regenerator');
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
 exports.default = function (spec, id, palette) {
+  console.log(spec)
   return (0, _mapObj2.default)(createActionFromSpec(id), createDocs(spec, palette));
 };
 
@@ -49,9 +50,9 @@ var _mapObj2 = _interopRequireDefault(_mapObj);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _marked = [checkColor, ifColor, loopFn].map(_regenerator2.default.mark); /**
-                                                                              * Imports
-                                                                              */
+var _marked = [checkColor, ifColor, loopFn, callFn].map(_regenerator2.default.mark); /**
+                                                                                      * Imports
+                                                                                      */
 
 /**
  * Images
@@ -101,71 +102,79 @@ var animalTurn = (0, _createAction2.default)('animalTurn', function () {
 
   return args;
 });
-var paintT = (0, _createAction2.default)('paintT', function () {
+var toggle = (0, _createAction2.default)('toggle', function () {
   for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
     args[_key5] = arguments[_key5];
   }
 
   return args;
 });
-var paintL = (0, _createAction2.default)('paintL', function () {
+var paintT = (0, _createAction2.default)('paintT', function () {
   for (var _len6 = arguments.length, args = Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
     args[_key6] = arguments[_key6];
   }
 
   return args;
 });
-var paintJ = (0, _createAction2.default)('paintJ', function () {
+var paintL = (0, _createAction2.default)('paintL', function () {
   for (var _len7 = arguments.length, args = Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
     args[_key7] = arguments[_key7];
   }
 
   return args;
 });
-var paintS = (0, _createAction2.default)('paintS', function () {
+var paintJ = (0, _createAction2.default)('paintJ', function () {
   for (var _len8 = arguments.length, args = Array(_len8), _key8 = 0; _key8 < _len8; _key8++) {
     args[_key8] = arguments[_key8];
   }
 
   return args;
 });
-var paintZ = (0, _createAction2.default)('paintZ', function () {
+var paintS = (0, _createAction2.default)('paintS', function () {
   for (var _len9 = arguments.length, args = Array(_len9), _key9 = 0; _key9 < _len9; _key9++) {
     args[_key9] = arguments[_key9];
   }
 
   return args;
 });
-var paintO = (0, _createAction2.default)('paintO', function () {
+var paintZ = (0, _createAction2.default)('paintZ', function () {
   for (var _len10 = arguments.length, args = Array(_len10), _key10 = 0; _key10 < _len10; _key10++) {
     args[_key10] = arguments[_key10];
   }
 
   return args;
 });
-var paintI = (0, _createAction2.default)('paintI', function () {
+var paintO = (0, _createAction2.default)('paintO', function () {
   for (var _len11 = arguments.length, args = Array(_len11), _key11 = 0; _key11 < _len11; _key11++) {
     args[_key11] = arguments[_key11];
   }
 
   return args;
 });
-var setLine = (0, _createAction2.default)('setActiveLine', function () {
+var paintI = (0, _createAction2.default)('paintI', function () {
   for (var _len12 = arguments.length, args = Array(_len12), _key12 = 0; _key12 < _len12; _key12++) {
     args[_key12] = arguments[_key12];
   }
 
   return args;
 });
-var rand = (0, _createAction2.default)('createRand', function () {
+var setLine = (0, _createAction2.default)('setActiveLine', function () {
   for (var _len13 = arguments.length, args = Array(_len13), _key13 = 0; _key13 < _len13; _key13++) {
     args[_key13] = arguments[_key13];
   }
 
   return args;
 });
+var rand = (0, _createAction2.default)('createRand', function () {
+  for (var _len14 = arguments.length, args = Array(_len14), _key14 = 0; _key14 < _len14; _key14++) {
+    args[_key14] = arguments[_key14];
+  }
+
+  return args;
+});
 
 function checkColor(lineNum, color) {
+  var a;
   return _regenerator2.default.wrap(function checkColor$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
@@ -174,11 +183,10 @@ function checkColor(lineNum, color) {
           return getCurrentColor(lineNum);
 
         case 2:
-          _context.t0 = _context.sent;
-          _context.t1 = color;
-          return _context.abrupt('return', _context.t0 === _context.t1);
+          a = _context.sent;
+          return _context.abrupt('return', a === color);
 
-        case 5:
+        case 4:
         case 'end':
           return _context.stop();
       }
@@ -196,14 +204,13 @@ function ifColor(lineNum, color, fn) {
 
         case 2:
           if (!_context2.sent) {
-            _context2.next = 5;
+            _context2.next = 4;
             break;
           }
 
-          _context2.next = 5;
-          return fn();
+          return _context2.delegateYield(fn(), 't0', 4);
 
-        case 5:
+        case 4:
         case 'end':
           return _context2.stop();
       }
@@ -244,6 +251,29 @@ function loopFn(lineNum, max, fn) {
   }, _marked[2], this);
 }
 
+function callFn(lineNum, fn) {
+  for (var _len15 = arguments.length, args = Array(_len15 > 2 ? _len15 - 2 : 0), _key15 = 2; _key15 < _len15; _key15++) {
+    args[_key15 - 2] = arguments[_key15];
+  }
+
+  return _regenerator2.default.wrap(function callFn$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.next = 2;
+          return setLine(lineNum);
+
+        case 2:
+          return _context4.delegateYield(fn.apply(undefined, args), 't0', 3);
+
+        case 3:
+        case 'end':
+          return _context4.stop();
+      }
+    }
+  }, _marked[3], this);
+}
+
 /**
  * Capabilities
  *
@@ -265,7 +295,9 @@ var capabilities = {
     description: 'Turn the pixelbot to face north.'
   },
   up: {
-    description: 'Move the pixelbot up `steps` space.',
+    type: 'move',
+    description: 'Move the pixelbot up <%= args[0] %> space.',
+    defaultArgs: [1],
     args: [{
       name: 'steps',
       type: 'number',
@@ -275,7 +307,9 @@ var capabilities = {
     }]
   },
   left: {
-    description: 'Move the pixelbot left `steps` space.',
+    type: 'move',
+    description: 'Move the pixelbot left <%= args[0] %> space.',
+    defaultArgs: [1],
     args: [{
       name: 'steps',
       type: 'number',
@@ -285,7 +319,9 @@ var capabilities = {
     }]
   },
   right: {
-    description: 'Move the pixelbot right `steps` space.',
+    type: 'move',
+    description: 'Move the pixelbot right <%= args[0] %> space.',
+    defaultArgs: [1],
     args: [{
       name: 'steps',
       type: 'number',
@@ -295,7 +331,9 @@ var capabilities = {
     }]
   },
   down: {
-    description: 'Move the pixelbot down `steps` space.',
+    type: 'move',
+    description: 'Move the pixelbot down <%= args[0] %> space.',
+    defaultArgs: [1],
     args: [{
       name: 'steps',
       type: 'number',
@@ -305,7 +343,9 @@ var capabilities = {
     }]
   },
   paint: {
-    description: 'Paint the square the pixelbot is currently on `color`.',
+    type: 'paint',
+    description: 'Paint the square the pixelbot is currently on <%= args[0] %>.',
+    defaultArgs: ['black'],
     args: [{
       name: 'color',
       type: 'string',
@@ -314,7 +354,12 @@ var capabilities = {
       description: 'The color to paint.'
     }]
   },
+  toggle: {
+    type: 'paint',
+    description: 'Toggle between blue and yellow.'
+  },
   paintT: {
+    type: 'paint',
     description: 'Paint a T tetris shape.',
     args: [{
       name: 'color',
@@ -325,6 +370,7 @@ var capabilities = {
     }]
   },
   paintL: {
+    type: 'paint',
     description: 'Paint an L tetris shape.',
     args: [{
       name: 'color',
@@ -335,6 +381,7 @@ var capabilities = {
     }]
   },
   paintO: {
+    type: 'paint',
     description: 'Paint an O shape.',
     args: [{
       name: 'color',
@@ -345,6 +392,7 @@ var capabilities = {
     }]
   },
   paintI: {
+    type: 'paint',
     description: 'Paint an I shape.',
     args: [{
       name: 'color',
@@ -355,6 +403,7 @@ var capabilities = {
     }]
   },
   paintS: {
+    type: 'paint',
     description: 'Paint an S shape.',
     args: [{
       name: 'color',
@@ -365,6 +414,7 @@ var capabilities = {
     }]
   },
   paintZ: {
+    type: 'paint',
     description: 'Paint an Z shape.',
     args: [{
       name: 'color',
@@ -375,6 +425,7 @@ var capabilities = {
     }]
   },
   paintJ: {
+    type: 'paint',
     description: 'Paint an J shape.',
     args: [{
       name: 'color',
@@ -385,11 +436,13 @@ var capabilities = {
     }]
   },
   comment: {
+    type: 'comment',
     usage: '// comment',
     description: 'Add a comment.'
   },
   repeat: {
-    description: 'Repeat the actions inside of the loop.',
+    type: 'control',
+    description: 'Repeat the actions inside of the loop `num` times.',
     block: true,
     args: [{
       name: 'num',
@@ -405,11 +458,13 @@ var capabilities = {
     }]
   },
   block_end: {
+    type: 'control',
     description: 'end of a repeat block',
     hidden: true,
     unselectable: true
   },
   ifColor: {
+    type: 'control',
     description: 'conditional block',
     block: true,
     args: [{
@@ -421,11 +476,13 @@ var capabilities = {
     }, {
       name: '() => {\n\t// code to execute\n\t// if the color matches\n}',
       type: 'function',
+      default: null,
       values: null,
       description: 'The function to conditionally execute'
     }]
   },
   turnRight: {
+    type: 'move',
     description: 'Turn the pixelbot 90 degrees to the right.',
     args: [{
       name: 'turns',
@@ -436,6 +493,7 @@ var capabilities = {
     }]
   },
   turnLeft: {
+    type: 'move',
     description: 'Turn the pixelbot 90 degrees to the left.',
     args: [{
       name: 'turns',
@@ -446,7 +504,9 @@ var capabilities = {
     }]
   },
   forward: {
-    description: 'Move the pixelbot one space in whichever direction it is facing.',
+    type: 'move',
+    description: 'Move the pixelbot <%= args[0] %> space in the direction it is facing.',
+    defaultArgs: [1],
     args: [{
       name: 'steps',
       type: 'number',
@@ -456,6 +516,7 @@ var capabilities = {
     }]
   },
   moveTo: {
+    type: 'move',
     description: 'Move the pixelbot to a specific coordinate (x, y).',
     defaultArgs: [0, 0],
     args: [{
@@ -464,8 +525,7 @@ var capabilities = {
       default: 0,
       values: (0, _range2.default)(0, 19),
       description: 'The x coordinate to move to.'
-    },
-    {
+    }, {
       name: 'y',
       type: 'number',
       default: 0,
@@ -474,6 +534,7 @@ var capabilities = {
     }]
   },
   rand: {
+    type: null,
     description: 'Generate a random number',
     args: [{
       name: 'min',
@@ -484,22 +545,33 @@ var capabilities = {
       name: 'max',
       type: 'number'
     }]
+  },
+  callFn: {
+    hidden: true
+  },
+  setLine: {
+    hidden: true
   }
 };
 
 var hasAction = {
   repeat: loopFn,
-  ifColor: ifColor
+  ifColor: ifColor,
+  callFn: callFn
 };
 
 var teacherBot = (0, _keys2.default)(capabilities).reduce(function (acc, key) {
-  acc[key] = capabilities[key].args ? capabilities[key].args.map(function (a) {
-    return a.values || true;
-  }) : true;
+  acc[key] = capabilities[key].args ? [true] : true;
   return acc;
 }, {});
 
-var capabilityOrder = ['up', 'left', 'right', 'down', 'turnRight', 'turnLeft', 'forward', 'paint', 'paintO', 'paintI', 'paintS', 'paintZ', 'paintL', 'paintJ', 'paintT', 'comment', 'repeat', 'block_end', 'ifColor', 'rand'];
+var typeColors = {
+  move: 'green',
+  control: '#bd1317',
+  paint: 'blue'
+};
+
+var capabilityOrder = ['up', 'left', 'right', 'down', 'forward', 'moveTo', 'turnRight', 'turnLeft', 'paint', 'toggle', 'paintO', 'paintI', 'paintS', 'paintZ', 'paintL', 'paintJ', 'paintT', 'repeat', 'block_end', 'ifColor', 'rand', 'comment'];
 
 /**
  * Exports
@@ -507,12 +579,12 @@ var capabilityOrder = ['up', 'left', 'right', 'down', 'turnRight', 'turnLeft', '
 
 function createArgumentsFromSpec(id, spec, name) {
   return function (lineNum) {
-    for (var _len14 = arguments.length, args = Array(_len14 > 1 ? _len14 - 1 : 0), _key14 = 1; _key14 < _len14; _key14++) {
-      args[_key14 - 1] = arguments[_key14];
+    for (var _len16 = arguments.length, args = Array(_len16 > 1 ? _len16 - 1 : 0), _key16 = 1; _key16 < _len16; _key16++) {
+      args[_key16 - 1] = arguments[_key16];
     }
 
     return [lineNum, id].concat((0, _toConsumableArray3.default)(spec.args.map(function (aspec, i) {
-      if (aspec.name === 'color' && Array.isArray(aspec.values) && aspec.values.filter(function (arg) {
+      if (aspec.name === 'color' && aspec.values && aspec.values.filter(function (arg) {
         return arg === args[i] || arg.name === args[i];
       }).length === 0) {
         return aspec.default;
@@ -535,18 +607,23 @@ function createActionFromSpec(id) {
 
 function createDocs(traits, palette) {
   return (0, _mapObj2.default)(function (val, key) {
-    return traits[key] === true ? (0, _extends3.default)({}, val, { args: [] }) : (0, _extends3.default)({}, val, {
+    return traits[key] === true || key === 'comment' ? (0, _extends3.default)({}, val, { args: [] }) : (0, _extends3.default)({}, val, {
       args: (val.args || []).map(function (arg, i) {
         return (0, _extends3.default)({}, arg, {
           values: (traits[key][i] === true ? arg.name === 'color' ? palette : arg.values || true : traits[key][i]) || null
         });
       })
     });
-  }, (0, _filterObj2.default)(function (val, key) {
+  }, (0, _extends3.default)({}, (0, _filterObj2.default)(function (val, key) {
     return traits[key];
-  }, capabilities));
+  }, capabilities), {
+    comment: capabilities.comment,
+    setLine: capabilities.setLine,
+    callFn: capabilities.callFn
+  }));
 }
 
+exports.typeColors = typeColors;
 exports.capabilityOrder = capabilityOrder;
 exports.capabilities = capabilities;
 exports.gameImages = gameImages;

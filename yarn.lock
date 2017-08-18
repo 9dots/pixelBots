@@ -10028,12 +10028,13 @@ vdux-delay@^1.0.6:
     "@f/create-action" "^1.1.1"
     "@f/handle-actions" "^1.1.1"
 
-vdux-fire@^1.2.14:
-  version "1.2.14"
-  resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-1.2.14.tgz#43719aaa8202087bfbf23dda303dadb2b02e477d"
+vdux-fire@^1.2.24:
+  version "1.2.24"
+  resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-1.2.24.tgz#55503b1144ee02e2e0e0a0c4ff21a6dec9aece90"
   dependencies:
     "@f/create-action" "^1.1.1"
     "@f/deep-equal" "^1.0.2"
+    "@f/equal" "^1.0.1"
     "@f/equal-obj" "^1.2.1"
     "@f/filter" "^1.1.1"
     "@f/handle-actions" "^1.1.2"
@@ -10044,6 +10045,7 @@ vdux-fire@^1.2.14:
     "@f/splice" "^1.0.0"
     "@f/switch" "^1.0.1"
     "@f/union" "^1.0.0"
+    bluebird "^3.5.0"
     firebase "3.6.0"
     lodash "^4.17.4"
     object-some "^1.0.0"

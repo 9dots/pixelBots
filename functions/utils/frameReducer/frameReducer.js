@@ -112,6 +112,7 @@ var actions = {
   turnLeft: function turnLeft(frame, id) {
     return turn(frame, id, -90);
   },
+  toggle: toggle,
   paint: paint,
   paintL: paintL,
   paintJ: paintJ,
@@ -156,6 +157,20 @@ function paint(state, id) {
     paints: (state.paints || 0) + 1,
     painted: (0, _extends5.default)({}, state.painted, (0, _defineProperty3.default)({}, state.animals[id].current.location, color))
   });
+}
+
+function toggle (state, id) {
+  const location = state.animals[id].current.location
+  const currentColor = state.painted[location]
+  if (currentColor !== 'blue' && currentColor !== 'yellow') {
+    return state
+  }
+
+  return Object.assign({}, state, {
+    painted: Object.assign({}, state.painted, {
+      [location]: currentColor === 'blue' ? 'yellow' : 'blue'
+    })
+  })
 }
 
 function setAnimalRot (state, id, rot) {
@@ -333,8 +348,6 @@ function createFrames(frame, code, seed) {
         _frameReducer2 = (0, _slicedToArray3.default)(_frameReducer, 2),
         frame = _frameReducer2[0],
         ret = _frameReducer2[1];
-
-    console.log(value, ret)
 
     frames.push(frame);
 
