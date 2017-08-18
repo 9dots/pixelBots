@@ -3,20 +3,29 @@
  */
 
 const functions = require('firebase-functions')
-const admin = require('firebase-admin')
 const cors = require('cors')({origin: true})
+const admin = require('firebase-admin')
 
 /**
- * Retrieve and return a playlist
+ * Retrieve and return a login token
  */
 
 module.exports = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
-    const {uid} = JSON.parse(req.body)
-    admin.auth().createCustomToken(uid)
-      .then(customToken => res.status(200).send({
-        token
+    const {uid, keepAlive} = req.body
+    if (keepAlive) return res.status(200).send({status: 'success', payload: 'ok'})
+    if (uid) {
+      return admin.auth().createCustomToken(uid)
+      .then(token => res.status(200).send({
+        status: 'success',
+        payload: token
       }))
-      .catch(() => res.status(500).send('broken'))
+      .catch((e) => {
+        console.error(e)
+        return res.status(500).send({status: 'failed', payload: e})
+      })
+    } else {
+      return res.status(500).send({status: 'failed', payload: 'no uid'})
+    }
   })
 })
