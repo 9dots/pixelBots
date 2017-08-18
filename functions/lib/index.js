@@ -13,6 +13,7 @@ module.exports = {
 	updateGameMeta: require('./updateGameMeta'),
 	fanDraftToUser: require('./fanDraftToUser'),
 	returnPlaylist: require('./returnPlaylist'),
+	createNewUser: require('./createNewUser'),
 	fanCompleted: require('./fanCompleted'),
 	copyPlaylist: require('./copyPlaylist'),
 	createGif: require('./createGif'),
