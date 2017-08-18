@@ -21,7 +21,6 @@ const playlistByUserRef = admin.database().ref('/playlistsByUser')
  */
 
 module.exports = functions.database.ref('/users/{userRef}/studentOf/{classRef}').onWrite(evt => {
-  console.log('event happened')
   const data = evt.data.val()
   const {userRef, classRef} = evt.params
 
@@ -29,12 +28,24 @@ module.exports = functions.database.ref('/users/{userRef}/studentOf/{classRef}')
     return
   }
 
-  return new Promise((resolve, reject) => {
-    feedsRef
-      .child(classRef)
-      .limitToFirst(3)
-      .on('child_added', snap => snap.val().then(item => console.log('item', item)))
-  })
+  return feedsRef
+    .child(classRef)
+    .limitToFirst(3)
+    .once('value')
+    .then(snap => snap.val())
+    .then(items => Promise.all([
+      Object
+        .keys(items)
+        .map(key => playlistByUserRef
+          .child(userRef)
+          .child('byPlaylistRef')
+          .child(items[key].playlistRef)
+          .once('value')
+          .then(snap => snap.val())
+          .then(val => val || assign(items[key].playlistRef, userRef))
+        )
+      ])
+    )
 })
 
 function assign (playlist, uid) {
