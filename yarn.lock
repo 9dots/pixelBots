@@ -10047,9 +10047,9 @@ vdux-delay@^1.0.6:
     "@f/create-action" "^1.1.1"
     "@f/handle-actions" "^1.1.1"
 
-vdux-fire@^1.2.17:
-  version "1.2.17"
-  resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-1.2.17.tgz#077057cdf34ac323c072bfa4eb7bf1b4fe0aa49a"
+vdux-fire@^1.2.25:
+  version "1.2.25"
+  resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-1.2.25.tgz#024f3b48a256547fc2bb4193c825472f08b6b745"
   dependencies:
     "@f/create-action" "^1.1.1"
     "@f/deep-equal" "^1.0.2"
