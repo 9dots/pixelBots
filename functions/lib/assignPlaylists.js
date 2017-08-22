@@ -23,10 +23,7 @@ const playlistByUserRef = admin.database().ref('/playlistsByUser')
 module.exports = functions.database.ref('/feed/{groupId}/{assignmentRef}').onWrite(evt => {
   const data = evt.data.val()
   const {groupId} = evt.params
-  const {playlistUrl} = data
-  const parts = playlistUrl.split('/')
-  const idx = parts.indexOf('playlist')
-  const playlistRef = parts[idx + 1]
+  const {playlistRef} = data
 
   return classesRef
     .child(groupId)
@@ -41,28 +38,37 @@ module.exports = functions.database.ref('/feed/{groupId}/{assignmentRef}').onWri
           .child(playlistRef)
           .once('value')
           .then(snap => snap.val())
-          .then(val => val || assign(playlistRef, studentRef))
+          .then(val => assignOrBump(val, playlistRef, studentRef))
         )
     ))
 })
 
-function assign (playlist, uid) {
-  return instancesRef
-    .push({
-      completedChallenges: [],
-      lastEdited: Date.now(),
-      savedChallenges: null,
-      playlist,
-      current: 0,
-      uid
-    })
-    .then(({key}) => playlistByUserRef
+function assignOrBump (inst, playlist, uid) {
+  if (val) {
+    return playlistByUserRef
       .child(uid)
       .child('byPlaylistRef')
       .child(playlist)
-      .set({
+      .child('lastEdited')
+      .set(Date.now())
+  } else {
+    return instancesRef
+      .push({
+        completedChallenges: [],
         lastEdited: Date.now(),
-        instanceRef: key
+        savedChallenges: null,
+        playlist,
+        current: 0,
+        uid
       })
-    )
+      .then(({key}) => playlistByUserRef
+        .child(uid)
+        .child('byPlaylistRef')
+        .child(playlist)
+        .set({
+          lastEdited: Date.now(),
+          instanceRef: key
+        })
+      )
+  }
 }

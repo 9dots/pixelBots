@@ -42,29 +42,38 @@ module.exports = functions.database.ref('/users/{userRef}/studentOf/{classRef}')
           .child(items[key].playlistRef)
           .once('value')
           .then(snap => snap.val())
-          .then(val => val || assign(items[key].playlistRef, userRef))
+          .then(val => assignOrBump(val, items[key].playlistRef, userRef))
         )
       ])
     )
 })
 
-function assign (playlist, uid) {
-  return instancesRef
-    .push({
-      completedChallenges: [],
-      lastEdited: Date.now(),
-      savedChallenges: null,
-      playlist,
-      current: 0,
-      uid
-    })
-    .then(({key}) => playlistByUserRef
+function assignOrBump (inst, playlist, uid) {
+  if (val) {
+    return playlistByUserRef
       .child(uid)
       .child('byPlaylistRef')
       .child(playlist)
-      .set({
+      .child('lastEdited')
+      .set(Date.now())
+  } else {
+    return instancesRef
+      .push({
+        completedChallenges: [],
         lastEdited: Date.now(),
-        instanceRef: key
+        savedChallenges: null,
+        playlist,
+        current: 0,
+        uid
       })
-    )
+      .then(({key}) => playlistByUserRef
+        .child(uid)
+        .child('byPlaylistRef')
+        .child(playlist)
+        .set({
+          lastEdited: Date.now(),
+          instanceRef: key
+        })
+      )
+  }
 }
