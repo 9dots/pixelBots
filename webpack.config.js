@@ -75,7 +75,7 @@ function config (env) {
         'process.env': {
           'NODE_ENV': '"dev"',
           'TRACKING_CODE': null,
-          'CLOUD_FUNCTIONS': '"https://us-central1-artbot-26016"'
+          'CLOUD_FUNCTIONS': '"https://us-central1-artbot-dev.cloudfunctions.net"'
         }
       }),
       new webpack.HotModuleReplacementPlugin(),
