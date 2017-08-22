@@ -65,7 +65,7 @@
     "e2d": "^4.0.0-rc.1",
     "easing-utils": "0.0.5",
     "enroute": "^1.0.1",
-    "firebase": "^4.3.0",
+    "firebase": "4.3.0",
     "google-material-color-palette-json": "^1.1.1",
     "hashids": "^1.1.1",
     "isomorphic-fetch": "^2.2.1",
