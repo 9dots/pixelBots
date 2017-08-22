@@ -24,7 +24,7 @@ module.exports = functions.https.onRequest((req, res) => {
     usernameRef.child(username).once('value')
       .then(snap => snap.exists())
       .then(taken => taken ? Promise.reject('Username is taken.') : Promise.resolve())
-      .then(() => admin.auth().createUser({displayName, email}))      
+      .then(() => admin.auth().createUser({displayName, email}))
       .then(updateRefsWithUser)
       .then(() => res.status(200).send({status: 'success'}))
       .catch(e => {
@@ -36,6 +36,9 @@ module.exports = functions.https.onRequest((req, res) => {
       return Promise.all([
         usersRef.child(user.uid).update({
           displayName: user.displayName,
+          studentOf: {
+            [classId]: true
+          },
           username
         }),
         classRef.update({

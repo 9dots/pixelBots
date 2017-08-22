@@ -9,6 +9,7 @@ const flatten = require('lodash/flatten')
 const admin = require('firebase-admin')
 const chunk = require('lodash/chunk')
 const fs = require('node-fs-extra')
+const map = require('@f/map')
 const Promise = require('bluebird')
 const srand = require('@f/srand')
 const co = require('co')
@@ -46,7 +47,7 @@ module.exports = functions.database.ref('/saved/{saveID}/completions')
           const teacherApi = createApi(teacherBot, 0, savedGame.palette)
           const startCode = gameState.advanced
             ? getIterator(gameState.initialPainted, teacherApi)
-            : gameState.initialPainted
+            : map(val => val === 'toggle' ? Math.rand() > 0.5 ? 'blue' : 'yellow' : val, gameState.initialPainted || {})
           const initialPainted = gameState.advanced
             ? createPainted(Object.assign({}, gameState, {
                 painted: {},
