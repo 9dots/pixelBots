@@ -26,7 +26,7 @@ module.exports = functions.https.onRequest((req, res) => {
       .then(taken => taken ? Promise.reject('Username is taken.') : Promise.resolve())
       .then(() => admin.auth().createUser({displayName, email}))      
       .then(updateRefsWithUser)
-      .then(() => res.status(200).send({status: 'success', payload: username}))
+      .then(() => res.status(200).send({status: 'success'}))
       .catch(e => {
         console.error(e)
         res.status(200).send({status: 'failed', payload: e})

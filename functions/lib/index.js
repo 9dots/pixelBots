@@ -10,6 +10,7 @@ module.exports = {
 	assignPlaylists: require('./assignPlaylists'),
 	updateGameMeta: require('./updateGameMeta'),
 	fanDraftToUser: require('./fanDraftToUser'),
+	checkUserEmail: require('./checkUserEmail'),
 	returnPlaylist: require('./returnPlaylist'),
 	createNewUser: require('./createNewUser'),
 	fanCompleted: require('./fanCompleted'),
