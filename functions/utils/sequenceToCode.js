@@ -45,6 +45,8 @@ function blocksToCode(blocks) {
         return indent + 'down(' + (args || 1) + ')';
       case 'paint':
         return indent + 'paint("' + (args || 'black') + '")';
+      case 'toggle':
+        return indent + 'toggle()'
       case 'comment':
         return indent + '// ' + args;
       case 'move':

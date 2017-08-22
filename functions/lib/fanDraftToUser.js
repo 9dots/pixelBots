@@ -10,7 +10,7 @@ module.exports = functions.database.ref('/drafts/{draftRef}')
       const data = evt.data.val()
       const {draftRef} = evt.params
       const userRef = usersRef.child(data.creatorID)
-      userRef.child('drafts').child(draftRef)
+      return userRef.child('drafts').child(draftRef)
         .set(Date.now())
         .then(resolve)
         .catch(reject)

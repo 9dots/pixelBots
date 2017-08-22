@@ -5,7 +5,6 @@
 const functions = require('firebase-functions')
 const cors = require('cors')({origin: true})
 const admin = require('firebase-admin')
-const jwt = require('jsonwebtoken')
 
 /**
  * Retrieve and return a login token
@@ -13,7 +12,6 @@ const jwt = require('jsonwebtoken')
 
 module.exports = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
-    console.log(req.body)
     const {uid, keepAlive} = req.body
     if (keepAlive) return res.status(200).send({status: 'success', payload: 'ok'})
     if (uid) {

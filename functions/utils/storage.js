@@ -1,10 +1,10 @@
 var storage = require('@google-cloud/storage')({
-  projectId: 'artbot-dev',
-  keyFilename: './serviceAccount.json'
+  projectId: 'artbot-26016',
+  keyFilename: './service.json'
 })
 const Promise = require('bluebird')
 
-const bucket = storage.bucket('artbot-dev.appspot.com')
+const bucket = storage.bucket('artbot-26016.appspot.com')
 
 function downloadFromBucket (dir, name) {
   const newPath = `/tmp/${dir}/${name}`
