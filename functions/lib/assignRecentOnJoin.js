@@ -12,7 +12,7 @@ const pick = require('@f/pick')
  * Refs
  */
 
-const classesRef = admin.database().ref('/classes')
+const feedsRef = admin.database().ref('/feed')
 const instancesRef = admin.database().ref('/playlistInstances')
 const playlistByUserRef = admin.database().ref('/playlistsByUser')
 
@@ -20,27 +20,32 @@ const playlistByUserRef = admin.database().ref('/playlistsByUser')
  * Assign playlist to students in class
  */
 
-module.exports = functions.database.ref('/feed/{groupId}/{assignmentRef}').onWrite(evt => {
+module.exports = functions.database.ref('/users/{userRef}/studentOf/{classRef}').onWrite(evt => {
   const data = evt.data.val()
-  const {groupId} = evt.params
-  const {playlistRef} = data
+  const {userRef, classRef} = evt.params
 
-  return classesRef
-    .child(groupId)
+  if (data !== true) {
+    return
+  }
+
+  return feedsRef
+    .child(classRef)
+    .limitToFirst(3)
     .once('value')
     .then(snap => snap.val())
-    .then(({students = {}}) => Promise.all(
+    .then(items => Promise.all([
       Object
-        .keys(students)
-        .map(studentRef => playlistByUserRef
-          .child(studentRef)
+        .keys(items)
+        .map(key => playlistByUserRef
+          .child(userRef)
           .child('byPlaylistRef')
-          .child(playlistRef)
+          .child(items[key].playlistRef)
           .once('value')
           .then(snap => snap.val())
-          .then(val => assignOrBump(val, playlistRef, studentRef))
+          .then(val => assignOrBump(val, items[key].playlistRef, userRef))
         )
-    ))
+      ])
+    )
 })
 
 function assignOrBump (inst, playlist, uid) {
