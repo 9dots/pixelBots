@@ -49,7 +49,7 @@ module.exports = functions.database.ref('/users/{userRef}/studentOf/{classRef}')
 })
 
 function assignOrBump (inst, playlist, uid) {
-  if (val) {
+  if (inst) {
     return playlistByUserRef
       .child(uid)
       .child('byPlaylistRef')
