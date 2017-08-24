@@ -33,7 +33,7 @@ module.exports = functions.database.ref('/users/{userRef}/studentOf/{classRef}')
     .limitToFirst(3)
     .once('value')
     .then(snap => snap.val())
-    .then(items => Promise.all([
+    .then((items = {}) => Promise.all([
       Object
         .keys(items)
         .map(key => playlistByUserRef
@@ -49,7 +49,7 @@ module.exports = functions.database.ref('/users/{userRef}/studentOf/{classRef}')
 })
 
 function assignOrBump (inst, playlist, uid) {
-  if (val) {
+  if (inst) {
     return playlistByUserRef
       .child(uid)
       .child('byPlaylistRef')

@@ -10,7 +10,6 @@ module.exports = functions.database.ref('/playlistInstances/{instanceRef}')
       const {completed, uid, playlist} = evt.data.val()
       const {completed: prevCompleted} = evt.data.previous.val() || {}
       const {instanceRef} = evt.params
-      console.log(completed, prevCompleted)
       const childRef = completed ? 'completed' : 'inProgress'
       playlistRef.child(uid).child(childRef).update({
         [instanceRef]: {

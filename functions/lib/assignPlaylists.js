@@ -44,7 +44,7 @@ module.exports = functions.database.ref('/feed/{groupId}/{assignmentRef}').onWri
 })
 
 function assignOrBump (inst, playlist, uid) {
-  if (val) {
+  if (inst) {
     return playlistByUserRef
       .child(uid)
       .child('byPlaylistRef')
