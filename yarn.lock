@@ -3495,7 +3495,7 @@ dom-serializer@0:
     domelementtype "~1.1.1"
     entities "~1.1.1"
 
-dom-storage@2.0.2, dom-storage@^2.0.2:
+dom-storage@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/dom-storage/-/dom-storage-2.0.2.tgz#ed17cbf68abd10e0aef8182713e297c5e4b500b0"
 
@@ -4488,16 +4488,6 @@ firebase@2.x.x:
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-2.4.2.tgz#4e1119ec0396ca561d8a7acbff1630feac6c0a31"
   dependencies:
     faye-websocket ">=0.6.0"
-
-firebase@3.6.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/firebase/-/firebase-3.6.0.tgz#d87c260e178c2b5d6c0bcdd133f85167646f9623"
-  dependencies:
-    dom-storage "2.0.2"
-    faye-websocket "0.9.3"
-    jsonwebtoken "5.7.0"
-    rsvp "3.2.1"
-    xmlhttprequest "1.8.0"
 
 firebase@^4.3.0:
   version "4.3.0"
@@ -5769,7 +5759,7 @@ jsonschema@^1.0.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/jsonschema/-/jsonschema-1.2.0.tgz#d6ebaf70798db7b3a20c544f6c9ef9319b077de2"
 
-jsonwebtoken@5.7.0, jsonwebtoken@^5.4.0:
+jsonwebtoken@^5.4.0:
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-5.7.0.tgz#1c90f9a86ce5b748f5f979c12b70402b4afcddb4"
   dependencies:
@@ -7886,7 +7876,7 @@ router@^1.3.1:
     setprototypeof "1.0.3"
     utils-merge "1.0.0"
 
-rsvp@3.2.1, rsvp@^3.0.18, rsvp@^3.0.21:
+rsvp@^3.0.18, rsvp@^3.0.21:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-3.2.1.tgz#07cb4a5df25add9e826ebc67dcc9fd89db27d84a"
 
@@ -9235,9 +9225,9 @@ vdux-delay@^1.0.6:
     "@f/create-action" "^1.1.1"
     "@f/handle-actions" "^1.1.1"
 
-vdux-fire@^1.2.25:
-  version "1.2.28"
-  resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-1.2.28.tgz#2a03d9e68b1088bfcf07d79e38b09cb920b0418b"
+vdux-fire@^1.2.29:
+  version "1.2.29"
+  resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-1.2.29.tgz#4c7df70e837a1e3d3084839a67a3564c30a0ad3d"
   dependencies:
     "@f/create-action" "^1.1.1"
     "@f/deep-equal" "^1.0.2"
@@ -9253,7 +9243,7 @@ vdux-fire@^1.2.25:
     "@f/switch" "^1.0.1"
     "@f/union" "^1.0.0"
     bluebird "^3.5.0"
-    firebase "3.6.0"
+    firebase "^4.3.0"
     lodash "^4.17.4"
     object-some "^1.0.0"
     redux-ephemeral "^0.3.7"
@@ -9806,7 +9796,7 @@ xmlhttprequest-ssl@1.5.3:
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/xmlhttprequest-ssl/-/xmlhttprequest-ssl-1.5.3.tgz#185a888c04eca46c3e4070d99f7b49de3528992d"
 
-xmlhttprequest@1.8.0, xmlhttprequest@^1.8.0:
+xmlhttprequest@^1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/xmlhttprequest/-/xmlhttprequest-1.8.0.tgz#67fe075c5c24fef39f9d65f5f7b7fe75171968fc"
 
