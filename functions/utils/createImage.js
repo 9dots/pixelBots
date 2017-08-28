@@ -30,6 +30,14 @@ const baseColors = _.merge(pal, {
   offblack: '#333'
 })
 
+function getBaseColors (pal) {
+  if (!Array.isArray(pal)) return pal
+  return pal.reduce((obj, {name, value}) => {
+    obj[name] = value
+    return obj
+  }, {})
+}
+
 function shrinkImage (path, size) {
   return new Promise((resolve, reject) => {
     gm(path)
@@ -85,7 +93,8 @@ function playlistImage (name, imgs) {
   })
 }
 
-function drawFrame (size, targetPainted, writePath, file, canvas) {
+function drawFrame (size, targetPainted, writePath, file, canvas, palette = baseColors) {
+  const thisPalette = getBaseColors(palette)
   return new Promise((resolve, reject) => {
     forEach((color, key) => {
       const coords = key.split(',').map((coord) => parseInt(coord))
@@ -96,7 +105,7 @@ function drawFrame (size, targetPainted, writePath, file, canvas) {
         size,
         size
       )
-      file.fillStyle = baseColors[color]
+      file.fillStyle = thisPalette[color] || 'white'
       file.fill()
     }, targetPainted)
     const writeStream = fs.createWriteStream(writePath)
@@ -107,7 +116,7 @@ function drawFrame (size, targetPainted, writePath, file, canvas) {
   })
 }
 
-function levelThumb (name, gridSize, targetPainted, dir = '') {
+function levelThumb (name, gridSize, targetPainted, dir = '', palette) {
   const size = Math.floor(300 / gridSize)
   const imageSize = Number(size * gridSize)
   let canvas = new Canvas(imageSize, imageSize)
@@ -117,10 +126,10 @@ function levelThumb (name, gridSize, targetPainted, dir = '') {
   ctx.fill()
   const writePath = `/tmp${dir ? `/${dir}` : ''}/${name}.png`
 
-  return drawFrame(size, targetPainted, writePath, ctx, canvas)
+  return drawFrame(size, targetPainted, writePath, ctx, canvas, palette)
 }
 
-function gifFrame (name, size, imageSize, targetPainted, dir = '') {
+function gifFrame (name, size, imageSize, targetPainted, dir = '', palette) {
   let canvas = new Canvas(imageSize, imageSize)
   const ctx = canvas.getContext('2d')
   ctx.rect(0, 0, imageSize, imageSize)
@@ -128,7 +137,7 @@ function gifFrame (name, size, imageSize, targetPainted, dir = '') {
   ctx.fill()
   const writePath = `/tmp${dir ? `/${dir}` : ''}/${name}.png`
 
-  return drawFrame(size, targetPainted, writePath, ctx, canvas)
+  return drawFrame(size, targetPainted, writePath, ctx, canvas, palette)
 }
 
 exports.shrinkImages = shrinkImages
