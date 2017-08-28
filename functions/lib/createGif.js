@@ -102,7 +102,7 @@ module.exports = functions.database.ref('/saved/{saveID}/completions')
             return new Promise((resolve, reject) => {
               const promises = frames.map((frame, i) => {
                 return Promise.join(
-                  gifFrame(`${padLeft('' + batch)}-${padLeft('' + i, 4, '0')}`, size, imageSize, frame.frame, saveID),
+                  gifFrame(`${padLeft('' + batch)}-${padLeft('' + i, 4, '0')}`, size, imageSize, frame.frame, saveID, gameState.palette),
                   Promise.resolve(frame.length),
                   (img, length) => ({img, length})
                 )

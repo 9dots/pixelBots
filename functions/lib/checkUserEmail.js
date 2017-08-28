@@ -35,6 +35,9 @@ module.exports = functions.https.onRequest((req, res) => {
       })
 
     function getUser () {
+      if (!email) {
+        return Promise.resolve()
+      }
       return admin
         .auth()
         .getUserByEmail(email)
