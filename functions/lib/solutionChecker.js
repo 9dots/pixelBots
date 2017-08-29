@@ -104,6 +104,11 @@ router.post('/', (req, res) => {
     }))
 })
 
+module.exports = functions.https.onRequest((req, res) => {
+  req.url = req.path ? req.url : `/${req.url}`
+  return router(req, res)
+})
+
 function getSteps (arr, key) {
   return arr.map(val => val[key])
 }
@@ -111,11 +116,6 @@ function getSteps (arr, key) {
 function average (arr) {
   return arr.reduce((acc, next) => acc + next, 0) / arr.length
 }
-
-module.exports = functions.https.onRequest((req, res) => {
-  req.url = req.path ? req.url : `/${req.url}`
-  return router(req, res)
-})
 
 function createPainted (state, code) {
   return createFrames(state, code).pop().painted

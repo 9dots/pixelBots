@@ -14,6 +14,7 @@ module.exports = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     const {uid, keepAlive} = req.body
     if (keepAlive) return res.status(200).send({status: 'success', payload: 'ok'})
+    console.log(uid)
     if (uid) {
       return admin.auth().createCustomToken(uid)
       .then(token => res.status(200).send({
