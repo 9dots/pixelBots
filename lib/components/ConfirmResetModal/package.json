@@ -1,0 +1,5 @@
+{
+  "name": "ConfirmResetModal",
+  "main": "ConfirmResetModal.js",
+  "browser": "ConfirmResetModal.js"
+}
