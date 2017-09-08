@@ -1,0 +1,5 @@
+{
+  "name": "LineCounts",
+  "main": "LineCounts.js",
+  "browser": "LineCounts.js"
+}

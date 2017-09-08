@@ -3,7 +3,7 @@ const admin = require('firebase-admin')
 const pick = require('@f/pick')
 
 const usersRef = admin.database().ref('/users')
-const metaAttrs = ['inputType', 'description', 'type', 'lastEdited', 'title', 'imageUrl', 'creatorID']
+const metaAttrs = ['inputType', 'description', 'type', 'lastEdited', 'title', 'imageUrl', 'creatorID', 'stretch']
 
 module.exports = functions.database.ref('/games/{gameRef}')
   .onWrite(evt => {

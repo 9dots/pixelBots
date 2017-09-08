@@ -1,0 +1,5 @@
+{
+  "name": "colorDistance",
+  "main": "colorDistance.js",
+  "browser": "colorDistance.js"
+}
