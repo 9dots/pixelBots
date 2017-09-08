@@ -307,6 +307,12 @@
   dependencies:
     "@f/iterator-symbol" "^1.0.0"
 
+"@f/get-prop@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@f/get-prop/-/get-prop-1.1.1.tgz#525cbe5c037e0e70ce2bf8021eeb862db3aef4f0"
+  dependencies:
+    "@f/is-string" "^1.0.1"
+
 "@f/get-value@^1.0.0", "@f/get-value@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@f/get-value/-/get-value-1.0.1.tgz#9d50bebe00dd6687033194b60610899df766182e"
