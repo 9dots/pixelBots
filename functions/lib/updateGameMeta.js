@@ -3,7 +3,7 @@ const admin = require('firebase-admin')
 const pick = require('@f/pick')
 
 const usersRef = admin.database().ref('/users')
-const metaAttrs = ['inputType', 'description', 'type', 'lastEdited', 'title', 'imageUrl', 'creatorID']
+const metaAttrs = ['inputType', 'description', 'type', 'lastEdited', 'title', 'imageUrl', 'creatorID', 'stretch']
 
 module.exports = functions.database.ref('/games/{gameRef}')
   .onWrite(evt => {
@@ -15,10 +15,7 @@ module.exports = functions.database.ref('/games/{gameRef}')
       const {gameRef} = evt.params
       const {creatorID} = data
       const meta = pick(metaAttrs, data)
-      Promise.all([
-        evt.data.ref.child('meta').update(meta),
-        usersRef.child(creatorID).child('games').child(gameRef).update(meta)
-      ])
+      evt.data.ref.child('meta').update(meta)
         .then(resolve)
         .catch(reject)
     })

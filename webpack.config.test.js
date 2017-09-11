@@ -18,7 +18,7 @@ module.exports = {
 	target: 'node',
 	entry: {
 		// test: glob.sync('./lib/utils/**/*.test.js')
-		test: './lib/utils/frameReducer/frameReducer.test.js'
+		test: './lib/utils/colorDistance/colorDistance.test.js'
 	},
 	resolve: {
 		alias: folders

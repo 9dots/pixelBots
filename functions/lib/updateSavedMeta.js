@@ -16,6 +16,7 @@ const metaAttrs = [
   'imageUrl',
   'attempts',
   'username',
+  'badges',
   'likedBy',
   'title'
 ]
