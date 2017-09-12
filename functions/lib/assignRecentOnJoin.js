@@ -54,8 +54,10 @@ function assignOrBump (inst, playlist, uid) {
       .child(uid)
       .child('byPlaylistRef')
       .child(playlist)
-      .child('lastEdited')
-      .set(Date.now())
+      .update({
+        lastEdited: Date.now(),
+        assigned: true
+      })
   } else {
     return instancesRef
       .push({
