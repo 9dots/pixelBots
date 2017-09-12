@@ -51,6 +51,8 @@ function assignOrBump (inst, playlist, uid) {
       .child(playlist)
       .child('lastEdited')
       .set(Date.now())
+      .child('assigned')
+      .set(true)
   } else {
     return instancesRef
       .push({
@@ -59,7 +61,8 @@ function assignOrBump (inst, playlist, uid) {
         savedChallenges: null,
         playlist,
         current: 0,
-        uid
+        uid,
+        assigned: true
       })
       .then(({key}) => playlistByUserRef
         .child(uid)
@@ -67,7 +70,8 @@ function assignOrBump (inst, playlist, uid) {
         .child(playlist)
         .set({
           lastEdited: Date.now(),
-          instanceRef: key
+          instanceRef: key,
+          assigned: true
         })
       )
   }
