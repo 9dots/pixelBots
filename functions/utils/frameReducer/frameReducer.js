@@ -133,6 +133,35 @@ var actions = {
  * Actions
  */
 
+ function pickUp(state, id) {
+  const location = state.animals[id].current.location;
+  const currentColor = state.painted[location];
+  const { inventory = [] } = state.animals[id].current;
+  if (inventory.length + 1 > state.inventorySize) {
+    return (0, _extends5)({}, state, {
+      invalid: 1
+    });
+  }
+  return _extends({}, state, {
+    animals: updateAnimal(state.animals, 'current.inventory', id, [{ type: 'color', payload: currentColor }, ...(state.animals[id].current.inventory || [])]),
+    painted: (0, _extends5)({}, state.painted, {
+      [location]: null
+    })
+  });
+}
+
+function place(state, id) {
+  const { location, inventory = [] } = state.animals[id].current;
+  const toPlace = inventory[0];
+  if (!toPlace) return state;
+  return (0, _extends5)({}, state, {
+    animals: updateAnimal(state.animals, 'current.inventory', id, inventory.slice(1)),
+    painted: (0, _extends5)({}, state.painted, {
+      [location]: toPlace.payload
+    })
+  });
+}
+
  function moveTo (state, id, x, y) {
    if (x === undefined || y === undefined) {
      throw {

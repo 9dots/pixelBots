@@ -9,7 +9,6 @@ var fs = require('fs')
 
 const renderer = new marked.Renderer()
 
-
 console.log('prod config')
 
 const folders = fs.readdirSync(path.resolve(__dirname, 'lib'))

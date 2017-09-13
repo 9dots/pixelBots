@@ -3,7 +3,6 @@ const animalApis = require('../utils/animalApis/index')
 const checkCorrect = require('../utils/checkCorrect')
 const functions = require('firebase-functions')
 const cors = require('cors')({origin: true})
-const palette = require('../utils/palette')
 const objEqual = require('@f/equal-obj')
 const admin = require('firebase-admin')
 const filter = require('@f/filter')
@@ -56,7 +55,7 @@ router.post('/', (req, res) => {
   if (advanced) {
     const startCode = getIterator(initialData.initialPainted, createApi(teacherBot, 0, palette.color))
     const solutionIterator = getIterator(solution[0].sequence, userApi)
-    
+
     for (let i = 0; i < 100; i++) {
       const painted = createPainted(Object.assign({}, base, {
         animals: animals.filter(a => a.type === 'teacherBot').map(a => Object.assign({}, a, {current: a.initial})),

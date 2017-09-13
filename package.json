@@ -6,8 +6,9 @@
   "scripts": {
     "config-dev": "firebase use artbot-dev; cross-env NODE_ENV='dev' node config.js",
     "config-prod": "firebase use artbot-26016; cross-env NODE_ENV='production' node config.js",
-    "build": "rm -rf public/index.html; rm -rf public/*.js; webpack -p --config webpack.config.prod.js",
+    "build": "yarn run cleanUp; webpack -p --config webpack.config.prod.js",
     "deploy": "yarn run config-prod; yarn run build; firebase deploy --except functions;",
+    "cleanUp": "rm -rf public/index.html; rm -rf public/*.js",
     "test": "webpack --config webpack.config.test.js",
     "create": "khaos create component",
     "start": "yarn install; yarn run config-dev; rm -rf public/index.html; rm -rf public/*.js; cross-env NODE_ENV='dev' webpack-dev-server"
@@ -94,7 +95,6 @@
     "vdux-containers": "^1.2.8",
     "vdux-css-transition": "^1.2.1",
     "vdux-delay": "^1.0.6",
-    "vdux-fire": "^1.2.30",
     "vdux-form": "^1.2.3",
     "vdux-position": "^1.1.0",
     "vdux-toggle": "^2.0.0",

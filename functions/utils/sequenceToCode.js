@@ -71,6 +71,10 @@ function blocksToCode(blocks) {
         return indent + 'turnRight()';
       case 'turnLeft':
         return indent + 'turnLeft()';
+      case 'pickUp':
+        return indent + 'pickUp()';
+      case 'place':
+        return indent + 'place()';
       case 'moveTo':
         return `${indent}moveTo(${args})`
       case 'repeat':

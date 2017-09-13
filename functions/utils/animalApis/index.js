@@ -515,6 +515,14 @@ var capabilities = {
       description: 'The number of steps forward to move the pixelbot.'
     }]
   },
+  pickUp: {
+    type: 'memory',
+    description: 'Pick up the paint on the current pixel.'
+  },
+  place: {
+    type: 'memory',
+    description: 'Place the last inventory slot on the current pixel.'
+  },
   moveTo: {
     type: 'move',
     description: 'Move the pixelbot to a specific coordinate (x, y).',
@@ -571,7 +579,7 @@ var typeColors = {
   paint: 'blue'
 };
 
-var capabilityOrder = ['up', 'left', 'right', 'down', 'forward', 'moveTo', 'turnRight', 'turnLeft', 'paint', 'toggle', 'paintO', 'paintI', 'paintS', 'paintZ', 'paintL', 'paintJ', 'paintT', 'repeat', 'block_end', 'ifColor', 'rand', 'comment'];
+var capabilityOrder = ['up', 'left', 'right', 'down', 'forward', 'moveTo', 'turnRight', 'turnLeft', 'paint', 'toggle', 'paintO', 'paintI', 'paintS', 'paintZ', 'paintL', 'paintJ', 'paintT', 'pickUp', 'place','repeat', 'block_end', 'ifColor', 'rand', 'comment'];
 
 /**
  * Exports
