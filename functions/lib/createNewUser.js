@@ -18,7 +18,7 @@ const usernameRef = admin.database().ref('/usernames')
 module.exports = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     if (req.method !== 'POST') return res.status(500).send({status: 'failed', payload: 'Can Only Post'})
-    const {name, username, email, classId} = req.body
+    const {name, username, email, classId, pictureName} = req.body
     const classRef = admin.database().ref('/classes').child(classId).child('students')
     const displayName = `${name.givenName} ${name.familyName}`
     usernameRef.child(username).once('value')
@@ -36,6 +36,7 @@ module.exports = functions.https.onRequest((req, res) => {
       console.log(user, user.uid)
       return Promise.all([
         usersRef.child(user.uid).update({
+          pictureName,   
           displayName: user.displayName,
           studentOf: {
             [classId]: true
