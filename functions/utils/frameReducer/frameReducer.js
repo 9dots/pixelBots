@@ -112,6 +112,8 @@ var actions = {
   turnLeft: function turnLeft(frame, id) {
     return turn(frame, id, -90);
   },
+  pickUp: pickUp,
+  place: place,
   toggle: toggle,
   paint: paint,
   paintL: paintL,
@@ -137,15 +139,16 @@ var actions = {
   const location = state.animals[id].current.location;
   const currentColor = state.painted[location];
   const { inventory = [] } = state.animals[id].current;
+  console.log('pickup', location, currentColor, inventory, state.inventorySize)
   if (inventory.length + 1 > state.inventorySize) {
     return (0, _extends5)({}, state, {
       invalid: 1
     });
   }
-  return _extends({}, state, {
+  return (0, _extends5.default)({}, state, {
     animals: updateAnimal(state.animals, 'current.inventory', id, [{ type: 'color', payload: currentColor }, ...(state.animals[id].current.inventory || [])]),
-    painted: (0, _extends5)({}, state.painted, {
-      [location]: null
+    painted: (0, _extends5.default)({}, state.painted, {
+      [location]: "white"
     })
   });
 }
@@ -154,9 +157,9 @@ function place(state, id) {
   const { location, inventory = [] } = state.animals[id].current;
   const toPlace = inventory[0];
   if (!toPlace) return state;
-  return (0, _extends5)({}, state, {
+  return (0, _extends5.default)({}, state, {
     animals: updateAnimal(state.animals, 'current.inventory', id, inventory.slice(1)),
-    painted: (0, _extends5)({}, state.painted, {
+    painted: (0, _extends5.default)({}, state.painted, {
       [location]: toPlace.payload
     })
   });

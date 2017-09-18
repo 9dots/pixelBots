@@ -41,12 +41,14 @@ router.post('/', (req, res) => {
     const [answer, steps] = getLastFrame(Object.assign({}, base, {painted}), userCode)
     const seed = [{painted, userSolution: answer}]
     if (checkCorrect(answer, targetPainted)) {
+      console.log('correct')
       return saveRef.update({steps, solutionSteps: props.solutionSteps})
         .then(() => res.status(200).send({
           correctSeeds: seed,
           status: 'success'
         }))
     }
+    console.log('fail')
     return res.status(200).send({status: 'failed', failedSeeds: seed})
   }
   const uniquePaints = []

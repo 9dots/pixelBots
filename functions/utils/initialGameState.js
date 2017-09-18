@@ -20,6 +20,7 @@ module.exports = {
   active: 0,
   loops: {},
   solutionSteps: undefined,
+  inventorySize: null,
   advanced: null,
   steps: 0,
   speed: 1,
@@ -34,6 +35,7 @@ module.exports = {
     },
     current: {
       location: [4, 0],
+      inventory: [],
       dir: 0,
       rot: 0
     }
