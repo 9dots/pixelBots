@@ -18,9 +18,16 @@ module.exports = functions.database.ref('/playlists/{playlistRef}')
       const usersIds = mapValues((u, key) => usernamesRef.child(key).once('value'), followedBy || {})
       Promise.all(usersIds)
         .then(snaps => flatten(snaps.map(s => s.val())))
-        .then(ids => ids.map((id) => usersRef.child(id).child('playlists').child(playlistRef)
-          .update(Object.assign({}, pick(profileProps, data), {ref: playlistRef, lastEdited: Date.now()}))
-        ))
+        .then(ids => ids.map((id) => (
+          usersRef
+            .child(id)
+            .child('playlists')
+            .child(playlistRef)
+            .update(Object.assign({}, pick(profileProps, data), {
+              ref: playlistRef,
+              lastEdited: Date.now()
+            }))
+        )))
         .then(resolve)
         .catch(reject)
     })

@@ -45,10 +45,8 @@ module.exports = functions.database.ref('/feed/{groupId}/{assignmentRef}').onWri
 
 function assignOrBump (inst, playlist, uid) {
   if (inst) {
-    return playlistByUserRef
-      .child(uid)
-      .child('byPlaylistRef')
-      .child(playlist)
+    return instancesRef
+      .child(inst.instanceRef)
       .update({
         lastEdited: Date.now(),
         assigned: true
