@@ -14,6 +14,7 @@ module.exports = {
 	fanDraftToUser: require('./fanDraftToUser'),
 	checkUserEmail: require('./checkUserEmail'),
 	returnPlaylist: require('./returnPlaylist'),
+	pinAssignment: require('./pinAssignment'),
 	createNewUser: require('./createNewUser'),
 	fanCompleted: require('./fanCompleted'),
 	copyPlaylist: require('./copyPlaylist'),
