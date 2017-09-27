@@ -127,7 +127,7 @@
     "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-webpack-loader": "^1.0.0",
-    "standard": "^10.0.2",
+    "standard": "^10.0.3",
     "tap-spec": "^4.1.1",
     "tap-webpack-plugin": "^2.0.0",
     "tape": "^4.6.3",
