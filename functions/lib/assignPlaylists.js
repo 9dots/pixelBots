@@ -3,10 +3,7 @@
  */
 
 const functions = require('firebase-functions')
-const flatten = require('lodash/flattenDeep')
-const mapValues = require('@f/map-values')
 const admin = require('firebase-admin')
-const pick = require('@f/pick')
 
 /**
  * Refs
