@@ -1,0 +1,31 @@
+{
+  "extends": ["standard", "plugin:react/recommended"],
+  "globals": {
+    "hljs": true
+  },
+  "plugins": ["react"],
+  "rules": {
+    "jsx-quotes": ["error", "prefer-single"],
+    "react/jsx-uses-vars": 2,
+    "react/react-in-jsx-scope": 0,
+    "react/prop-types": [0],
+    "react/jsx-closing-bracket-location": [
+      2,
+      {
+        "selfClosing": "after-props",
+        "nonEmpty": "after-props"
+      }
+    ],
+    "react/jsx-tag-spacing": [
+      2,
+      {
+        "beforeSelfClosing": "always"
+      }
+    ]
+  },
+  "settings": {
+    "react": {
+      "pragma": "element"
+    }
+  }
+}
