@@ -1,7 +1,6 @@
 const serviceAccount = require('./service.json')
 const mapValues = require('@f/map-values')
 const admin = require('firebase-admin')
-const reduce = require('@f/reduce')
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),

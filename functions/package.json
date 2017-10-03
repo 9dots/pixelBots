@@ -28,7 +28,7 @@
     "@ffmpeg-installer/ffmpeg": "^1.0.12",
     "@google-cloud/debug-agent": "^1.0.0",
     "@google-cloud/storage": "^1.1.0",
-    "auto-yield-delegate": "^0.7.1",
+    "auto-yield-delegate": "^0.7.2",
     "babel-polyfill": "^6.23.0",
     "babel-runtime": "^6.23.0",
     "bluebird": "^3.5.0",

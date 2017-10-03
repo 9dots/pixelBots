@@ -39,12 +39,10 @@ module.exports = functions.https.onRequest((req, res) => {
   })
 })
 
-
-function pin(inst, uid, pinned) {
-
+function pin (inst, uid, pinned) {
   if (inst) {
     const obj = {pinned: !pinned}
-    if(!pinned) {
+    if (!pinned) {
       obj.lastEdited = Date.now()
     }
 
