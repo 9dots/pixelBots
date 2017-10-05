@@ -1,6 +1,5 @@
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
-var FlowtypePlugin = require('flowtype-loader/plugin')
 // var segmentKey = require('./segmentKey')
 var webpack = require('webpack')
 var path = require('path')
@@ -87,7 +86,6 @@ function config (env) {
 }
 
 new WebpackDevServer(webpack(config()), {
-  host: '192.168.1.30',
   hot: true,
   inline: true,
   contentBase: 'public',
