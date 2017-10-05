@@ -1,10 +1,13 @@
-
-const {createPaintFrames, createFrames, getIterator} = require('../utils/frameReducer/frameReducer')
+const {
+  createPaintFrames,
+  createFrames,
+  getIterator
+} = require('../utils/frameReducer/frameReducer')
 const animalApis = require('../utils/animalApis/index')
 const createVideo = require('../utils/createVideo')
-const {gifFrame} = require('../utils/createImage')
+const { gifFrame } = require('../utils/createImage')
 const functions = require('firebase-functions')
-const {upload} = require('../utils/storage')
+const { upload } = require('../utils/storage')
 const flatten = require('lodash/flatten')
 const admin = require('firebase-admin')
 const chunk = require('lodash/chunk')
@@ -24,64 +27,93 @@ const db = admin.database()
 const savedRef = db.ref('/saved')
 const gamesRef = db.ref('/games')
 
-module.exports = functions.database.ref('/saved/{saveID}/completions')
+module.exports = functions.database
+  .ref('/saved/{saveID}/completions')
   .onWrite(evt => {
     if (!evt.data.val()) {
       return
     }
     return new Promise((resolve, reject) => {
-      const {saveID} = evt.params
+      const { saveID } = evt.params
       updateGame(saveID)(null)
         .then(() => evt.data.ref.parent.once('value'))
-        .then(snap => Promise.all([
-          Promise.resolve(snap.val()),
-          snap.val().gameRef
-            ? gamesRef.child(snap.val().gameRef).once('value').then(snap => snap.val())
-            : Promise.reject(new Error('no game'))
-        ]))
+        .then(snap =>
+          Promise.all([
+            Promise.resolve(snap.val()),
+            snap.val().gameRef
+              ? gamesRef
+                .child(snap.val().gameRef)
+                .once('value')
+                .then(snap => snap.val())
+              : Promise.reject(new Error('no game'))
+          ])
+        )
         .then(([savedGame, gameState]) => {
           const levelSize = gameState.levelSize[0]
-          const {animals} = gameState.type === 'read' ? gameState : savedGame
+          const { animals } = gameState.type === 'read' ? gameState : savedGame
           const size = getSize(levelSize)
           const imageSize = size * levelSize
           const teacherApi = createApi(teacherBot, 0, savedGame.palette)
           const startCode = gameState.advanced
             ? getIterator(gameState.initialPainted, teacherApi)
-            : map(val => val === 'toggle' ? Math.rand() > 0.5 ? 'blue' : 'yellow' : val, gameState.initialPainted || {})
+            : map(
+              val =>
+                val === 'toggle'
+                  ? Math.random() > 0.5 ? 'blue' : 'yellow'
+                  : val,
+              gameState.initialPainted || {}
+            )
           const initialPainted = gameState.advanced
-            ? createPainted(Object.assign({}, gameState, {
+            ? createPainted(
+              Object.assign({}, gameState, {
                 painted: {},
                 startGrid: {},
-                animals: animals.filter(a => a.type === 'teacherBot').map(a => Object.assign({}, a, {current: a.initial})),
+                animals: animals
+                  .filter(a => a.type === 'teacherBot')
+                  .map(a => Object.assign({}, a, { current: a.initial })),
                 rand: srand(1)
-              }), startCode)
+              }),
+              startCode
+            )
             : startCode
-          const {sequence} = gameState.type === 'read'
-            ? gameState.animals[0]
-            : animals[0]
+          const { sequence } =
+            gameState.type === 'read' ? gameState.animals[0] : animals[0]
           fs.mkdirsSync(`/tmp/${saveID}`)
           const initState = Object.assign({}, gameState, {
             painted: initialPainted || {},
-            animals: animals.map(a => Object.assign({}, a, {
-              current: a.initial
-            }))
+            animals: animals.map(a =>
+              Object.assign({}, a, {
+                current: a.initial
+              })
+            )
           })
-          const it = getIterator(sequence, createApi(gameState.capabilities, 0, savedGame.palette))
-          const frames = flatten([{painted: initialPainted, step: 0}].concat(createPaintFrames(initState, it)))
+          const it = getIterator(
+            sequence,
+            createApi(gameState.capabilities, 0, savedGame.palette)
+          )
+          const frames = flatten(
+            [{ painted: initialPainted, step: 0 }].concat(
+              createPaintFrames(initState, it)
+            )
+          )
           const adjusted = frames.map((frame, i, arr) => {
-            const next = arr[i + 1]
-              ? arr[i + 1].step
-              : frame.step
-            return {length: Math.abs(next - frame.step), frame: frame.painted}
+            const next = arr[i + 1] ? arr[i + 1].step : frame.step
+            return { length: Math.abs(next - frame.step), frame: frame.painted }
           })
-          const totalLength = adjusted.reduce((total, {length}) => total + length, 0)
-          const timing = totalLength * SECONDS_PER_FRAME > MAX_RUN_TIME
-            ? MAX_RUN_TIME / totalLength
-            : SECONDS_PER_FRAME
+          const totalLength = adjusted.reduce(
+            (total, { length }) => total + length,
+            0
+          )
+          const timing =
+            totalLength * SECONDS_PER_FRAME > MAX_RUN_TIME
+              ? MAX_RUN_TIME / totalLength
+              : SECONDS_PER_FRAME
           frameChunks(chunk(adjusted, 20))
-            .then((results) => createVideo(saveID, results, timing, imageSize))
+            .then(results => createVideo(saveID, results, timing, imageSize))
             .then(upload)
-            .then((url) => updateGame(saveID)(`${url}&${savedGame.animations || 0}`))
+            .then(url =>
+              updateGame(saveID)(`${url}&${savedGame.animations || 0}`)
+            )
             .then(success)
             .catch(failed)
 
@@ -102,9 +134,16 @@ module.exports = functions.database.ref('/saved/{saveID}/completions')
             return new Promise((resolve, reject) => {
               const promises = frames.map((frame, i) => {
                 return Promise.join(
-                  gifFrame(`${padLeft('' + batch)}-${padLeft('' + i, 4, '0')}`, size, imageSize, frame.frame, saveID, gameState.palette),
+                  gifFrame(
+                    `${padLeft('' + batch)}-${padLeft('' + i, 4, '0')}`,
+                    size,
+                    imageSize,
+                    frame.frame,
+                    saveID,
+                    gameState.palette
+                  ),
                   Promise.resolve(frame.length),
-                  (img, length) => ({img, length})
+                  (img, length) => ({ img, length })
                 )
               })
               Promise.all(promises)
@@ -152,7 +191,10 @@ function updateGame (saveID) {
         'meta/animatedGif': url
       }),
       url
-        ? savedRef.child(saveID).child('animations').transaction(val => val + 1)
+        ? savedRef
+          .child(saveID)
+          .child('animations')
+          .transaction(val => val + 1)
         : Promise.resolve()
     ])
   }
@@ -160,9 +202,7 @@ function updateGame (saveID) {
 
 function getSize (size) {
   const floorSize = Math.floor(GIF_SIZE / size)
-  return floorSize % 2 === 0
-    ? floorSize
-    : floorSize - 1
+  return floorSize % 2 === 0 ? floorSize : floorSize - 1
 }
 
 function createPainted (state, code) {

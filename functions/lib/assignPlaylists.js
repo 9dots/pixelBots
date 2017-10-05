@@ -17,47 +17,48 @@ const playlistByUserRef = admin.database().ref('/playlistsByUser')
  * Assign playlist to students in class
  */
 
-module.exports = functions.database.ref('/feed/{groupId}/{assignmentRef}').onWrite(evt => {
-  const data = evt.data.val()
-  const {groupId} = evt.params
-  const {playlistRef} = data
+module.exports = functions.database
+  .ref('/feed/{groupId}/{assignmentRef}')
+  .onWrite(evt => {
+    const data = evt.data.val()
+    const { groupId } = evt.params
+    const { playlistRef } = data
 
-  return classesRef
-    .child(groupId)
-    .once('value')
-    .then(snap => snap.val())
-    .then(({students = {}}) => Promise.all(
-      Object
-        .keys(students)
-        .map(studentRef => playlistByUserRef
-          .child(studentRef)
-          .child('byPlaylistRef')
-          .child(playlistRef)
-          .once('value')
-          .then(snap => snap.val())
-          .then(val => assignOrBump(val, playlistRef, studentRef))
+    return classesRef
+      .child(groupId)
+      .once('value')
+      .then(snap => snap.val())
+      .then(({ students = {} }) =>
+        Promise.all(
+          Object.keys(students).map(studentRef =>
+            playlistByUserRef
+              .child(studentRef)
+              .child('byPlaylistRef')
+              .child(playlistRef)
+              .once('value')
+              .then(snap => snap.val())
+              .then(val => assignOrBump(val, playlistRef, studentRef))
+              .then(() => console.log('done'))
+          )
         )
-    ))
-})
+      )
+  })
 
 function assignOrBump (inst, playlist, uid) {
   if (inst) {
-    return instancesRef
-      .child(inst.instanceRef)
-      .update({
-        lastEdited: Date.now(),
-        assigned: true
-      })
+    return instancesRef.child(inst.instanceRef).update({
+      lastEdited: Date.now(),
+      assigned: true
+    })
   } else {
-    return instancesRef
-      .push({
-        completedChallenges: [],
-        lastEdited: Date.now(),
-        savedChallenges: null,
-        playlist,
-        current: 0,
-        uid,
-        assigned: true
-      })
+    return instancesRef.push({
+      completedChallenges: [],
+      lastEdited: Date.now(),
+      savedChallenges: null,
+      playlist,
+      current: 0,
+      uid,
+      assigned: true
+    })
   }
 }
