@@ -42,7 +42,6 @@ function config (env) {
       publicPath: '/public/'
     },
     resolve: {
-      alias: folders,
       modules: [path.resolve(__dirname, 'lib'), 'node_modules']
     },
     module: {
