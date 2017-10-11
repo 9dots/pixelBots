@@ -72,7 +72,7 @@ function config (env) {
           NODE_ENV: '"production"',
           TRACKING_CODE: segmentKey,
           CLOUD_FUNCTIONS:
-            '"http://us-central1-artbot-26016.cloudfunctions.net"'
+            '"https://us-central1-artbot-26016.cloudfunctions.net"'
         }
       }),
       new HtmlWebpackPlugin({

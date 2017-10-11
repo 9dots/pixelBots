@@ -11,15 +11,13 @@ const renderer = new marked.Renderer()
 
 console.log('dev config')
 
-const folders = fs
-  .readdirSync(path.resolve(__dirname, 'lib'))
-  .reduce(
-    (cur, next) =>
-      Object.assign({}, cur, {
-        [next]: path.resolve(__dirname, `lib/${next}/`)
-      }),
-    {}
-  )
+const folders = fs.readdirSync(path.resolve(__dirname, 'lib')).reduce(
+  (cur, next) =>
+    Object.assign({}, cur, {
+      [next]: path.resolve(__dirname, `lib/${next}/`)
+    }),
+  {}
+)
 
 function config (env) {
   return {
@@ -72,7 +70,7 @@ function config (env) {
         'process.env': {
           NODE_ENV: '"dev"',
           TRACKING_CODE: null,
-          CLOUD_FUNCTIONS: '"http://us-central1-artbot-dev.cloudfunctions.net"'
+          CLOUD_FUNCTIONS: '"https://us-central1-artbot-dev.cloudfunctions.net"'
         }
       }),
       new webpack.HotModuleReplacementPlugin(),
