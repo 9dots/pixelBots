@@ -886,6 +886,10 @@
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@ffmpeg-installer/win32-x64/-/win32-x64-4.0.1.tgz#f4407b73cd4fe3f7c9caa03b20b4c8ea4c0df3ae"
 
+"@firebase/webchannel-wrapper@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.2.1.tgz#2c4dbc15edd1de4f656d543a6f512ded7978ef72"
+
 "@google-cloud/common@^0.13.0":
   version "0.13.4"
   resolved "https://registry.yarnpkg.com/@google-cloud/common/-/common-0.13.4.tgz#75bb7f60931cfc9d94da0b5d408950d0bbf0e979"
@@ -4663,10 +4667,11 @@ firebase@2.x.x:
   dependencies:
     faye-websocket ">=0.6.0"
 
-firebase@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/firebase/-/firebase-4.3.0.tgz#21d95a92f862c7e406ddf871c173b50f153f8d46"
+firebase@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-4.5.0.tgz#e0973a9803b74c4c9d73d19f874712e6e9d16ba7"
   dependencies:
+    "@firebase/webchannel-wrapper" "^0.2.1"
     dom-storage "^2.0.2"
     faye-websocket "0.9.3"
     jsonwebtoken "^7.3.0"
@@ -9643,9 +9648,9 @@ vdux-delay@^1.0.6:
     "@f/create-action" "^1.1.1"
     "@f/handle-actions" "^1.1.1"
 
-vdux-fire@^1.2.32:
-  version "1.2.32"
-  resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-1.2.32.tgz#d170f809d739ac07ad4078f71d7aedbc0d6ebde7"
+vdux-fire@^1.2.33:
+  version "1.2.33"
+  resolved "https://registry.yarnpkg.com/vdux-fire/-/vdux-fire-1.2.33.tgz#89246fa32f9ca416f49897275e84cd51a91629d6"
   dependencies:
     "@f/create-action" "^1.1.1"
     "@f/deep-equal" "^1.0.2"
@@ -9662,7 +9667,7 @@ vdux-fire@^1.2.32:
     "@f/switch" "^1.0.1"
     "@f/union" "^1.0.0"
     bluebird "^3.5.0"
-    firebase "^4.3.0"
+    firebase "^4.5.0"
     lodash "^4.17.4"
     object-some "^1.0.0"
     redux-ephemeral "^0.3.7"
