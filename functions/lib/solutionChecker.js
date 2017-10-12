@@ -45,7 +45,7 @@ router.post('/', (req, res) => {
   try {
     userCode()
   } catch (e) {
-    console.error(e)
+    console.error('saveRef', saveRef, e)
     return res.status(200).send({ status: 'failed', error: e })
   }
   const base = Object.assign({}, props, { painted: {} })
@@ -71,7 +71,7 @@ router.post('/', (req, res) => {
           })
         )
     }
-    console.log('fail')
+    console.log('fail', answer, targetPainted)
     return res.status(200).send({ status: 'failed', failedSeeds: seed })
   }
   const uniquePaints = []
