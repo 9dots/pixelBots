@@ -1,7 +1,5 @@
 const functions = require('firebase-functions')
-const getLoc = require('../utils/getLoc')
 const objEqual = require('@f/equal-obj')
-const admin = require('firebase-admin')
 const filter = require('@f/filter')
 
 const paintAttrs = ['initialPainted', 'targetPainted', 'painted']

@@ -22,19 +22,20 @@ module.exports = functions.database
   .ref('/playlistInstances/{instRef}/completedChallenges')
   .onWrite(evt => {
     const completed = evt.data.val() || []
-    const {instRef} = evt.params
+    const { instRef } = evt.params
 
-    return evt.data.ref.parent.once('value')
+    return evt.data.ref.parent
+      .once('value')
       .then(snap => snap.val())
       .then(playlistInstance => {
-        const {id, playlist: playlistRef, update} = playlistInstance
+        const { id, playlist: playlistRef, update } = playlistInstance
 
         return playlistsRef
           .child(playlistRef)
           .once('value')
           .then(snap => snap.val())
           .then(playlist => {
-            const {sequence = []} = playlist
+            const { sequence = [] } = playlist
             const body = completed.reduce((acc, id) => {
               const idx = sequence.indexOf(id)
 
@@ -45,13 +46,19 @@ module.exports = functions.database
               return acc
             }, {})
 
-            console.log('playlistUpdateExternal', completed, playlist, update, body)
+            console.log(
+              'playlistUpdateExternal',
+              completed,
+              playlist,
+              update,
+              body
+            )
 
             if (update) {
               return fetch(update, {
                 method: 'POST',
                 headers: {
-                  'Accept': 'application/json',
+                  Accept: 'application/json',
                   'Content-Type': 'application/json;charset=UTF-8'
                 },
                 body: JSON.stringify(body)
