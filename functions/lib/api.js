@@ -23,7 +23,7 @@ const helmet = require('helmet')
 const app = express()
 
 app.use(cors)
-app.use(helmet())
+// app.use(helmet())
 // app.use(authenticate)
 
 app.post('/api/checkUserEmail', checkUserEmail)

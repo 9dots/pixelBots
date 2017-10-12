@@ -47,7 +47,6 @@ function pin (inst, uid, pinned) {
     if (!pinned) {
       obj.lastEdited = Date.now()
     }
-
     return instancesRef.child(inst.instanceRef).update(obj)
   } else {
     return Promise.resolve()
