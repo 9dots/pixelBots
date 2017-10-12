@@ -9,24 +9,20 @@ var fs = require('fs')
 
 const renderer = new marked.Renderer()
 
-
 console.log('prod config')
 
-const folders = fs.readdirSync(path.resolve(__dirname, 'lib'))
-  .reduce((cur, next) => (
-    Object.assign(
-      {},
-      cur,
-      {[next]: path.resolve(__dirname, `lib/${next}/`)}
-    )
-  ), {})
+const folders = fs.readdirSync(path.resolve(__dirname, 'lib')).reduce(
+  (cur, next) =>
+    Object.assign({}, cur, {
+      [next]: path.resolve(__dirname, `lib/${next}/`)
+    }),
+  {}
+)
 
 function config (env) {
   return {
     entry: {
-      main: [
-        './lib/client/index.js'
-      ],
+      main: ['./lib/client/index.js'],
       vendor: [
         'lodash',
         'brace',
@@ -61,10 +57,7 @@ function config (env) {
         },
         {
           test: /\.md$/,
-          loaders: [
-            "html-loader",
-            "markdown-loader"
-          ],
+          loaders: ['html-loader', 'markdown-loader']
         }
       ]
     },
@@ -76,9 +69,10 @@ function config (env) {
       }),
       new webpack.DefinePlugin({
         'process.env': {
-          'NODE_ENV': '"production"',
-          'TRACKING_CODE': segmentKey,
-          'CLOUD_FUNCTIONS': '"https://us-central1-artbot-26016.cloudfunctions.net"'
+          NODE_ENV: '"production"',
+          TRACKING_CODE: segmentKey,
+          CLOUD_FUNCTIONS:
+            '"https://us-central1-artbot-26016.cloudfunctions.net"'
         }
       }),
       new HtmlWebpackPlugin({

@@ -9,7 +9,9 @@ admin.initializeApp(
   })
 )
 
-forEach((f, key) => (exports[key] = f), require('./lib'))
+forEach((f, key) => {
+  exports[key] = f
+}, require('./lib'))
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/preview/functions/write-firebase-functions

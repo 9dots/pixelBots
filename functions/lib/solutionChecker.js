@@ -37,6 +37,7 @@ module.exports = (req, res) => {
   try {
     userCode()
   } catch (e) {
+    console.error(e)
     return res.status(200).send({ status: 'failed', error: e })
   }
   const base = Object.assign({}, props, { painted: {} })

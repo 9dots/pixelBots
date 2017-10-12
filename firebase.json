@@ -14,8 +14,8 @@
     "rewrites": [
       { "source": "/api/**", "function": "api" },
       { "source": "/playlist/**", "function": "returnPlaylist" },
-      { "source": "**", "destination": "/index.html" },
-      { "source": "**/:file*.js", "destination": "/:file.js" }
+      { "source": "**/:file*.js", "destination": "/:file.js" },
+      { "source": "**", "destination": "/index.html" }
     ]
   }
 }
