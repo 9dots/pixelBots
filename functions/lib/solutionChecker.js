@@ -1,8 +1,3 @@
-const {
-  createFrames,
-  getLastFrame,
-  getIterator
-} = require('../utils/frameReducer/frameReducer')
 const animalApis = require('../utils/animalApis/index')
 const checkCorrect = require('../utils/checkCorrect')
 const objEqual = require('@f/equal-obj')
@@ -10,6 +5,11 @@ const admin = require('firebase-admin')
 const filter = require('@f/filter')
 const map = require('@f/map')
 const srand = require('@f/srand')
+const {
+  createFrames,
+  getLastFrame,
+  getIterator
+} = require('../utils/frameReducer/frameReducer')
 
 const createApi = animalApis.default
 const teacherBot = animalApis.teacherBot
@@ -20,6 +20,7 @@ module.exports = (req, res) => {
   res.set({ 'Cache-Control': 'no-cache' })
   const props = req.body.props
   const {
+    docs = {},
     active,
     advanced,
     animals,
@@ -32,12 +33,19 @@ module.exports = (req, res) => {
   const saveRef = props.saveRef
     ? savedRef.child(props.saveRef)
     : { update: () => Promise.resolve() }
-  const userApi = createApi(capabilities, active, palette)
+
+  const userApi = Object.assign(
+    {},
+    docs,
+    createApi(capabilities, active, palette)
+  )
+  console.log('userApi', userApi)
   const userCode = getIterator(animals[active].sequence, userApi)
+  console.log('userCode', userCode)
   try {
     userCode()
   } catch (e) {
-    console.error(e)
+    console.error(e, saveRef)
     return res.status(200).send({ status: 'failed', error: e })
   }
   const base = Object.assign({}, props, { painted: {} })
@@ -53,7 +61,7 @@ module.exports = (req, res) => {
     )
     const seed = [{ painted, userSolution: answer }]
     if (checkCorrect(answer, targetPainted)) {
-      console.log('correct')
+      console.log('correct', saveRef)
       return saveRef
         .update({ steps, solutionSteps: props.solutionSteps })
         .then(() =>
@@ -63,7 +71,7 @@ module.exports = (req, res) => {
           })
         )
     }
-    console.log('fail')
+    console.log('fail', saveRef)
     return res.status(200).send({ status: 'failed', failedSeeds: seed })
   }
   const uniquePaints = []

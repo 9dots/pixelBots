@@ -4,20 +4,10 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var webpack = require('webpack')
 var path = require('path')
 var net = require('net')
-var marked = require('marked')
 var fs = require('fs')
 var WebpackDevServer = require('webpack-dev-server')
-const renderer = new marked.Renderer()
 
 console.log('dev config')
-
-const folders = fs.readdirSync(path.resolve(__dirname, 'lib')).reduce(
-  (cur, next) =>
-    Object.assign({}, cur, {
-      [next]: path.resolve(__dirname, `lib/${next}/`)
-    }),
-  {}
-)
 
 function config (env) {
   return {
@@ -96,7 +86,6 @@ function config (env) {
 }
 
 new WebpackDevServer(webpack(config()), {
-  host: '192.168.1.30',
   hot: true,
   inline: true,
   contentBase: 'public',

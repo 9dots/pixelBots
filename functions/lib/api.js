@@ -32,6 +32,7 @@ app.post('/api/createNewUser', createNewUser)
 app.post('/api/pinAssignment', pinAssignment)
 app.post('/api/solutionChecker', solutionChecker)
 app.post('/api/weoAuth', weoAuth)
+app.get('/api', (req, res) => res.send('hello'))
 
 // Expose the API as a function
 module.exports = functions.https.onRequest(app)

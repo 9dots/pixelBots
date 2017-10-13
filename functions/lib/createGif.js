@@ -59,7 +59,7 @@ module.exports = functions.database
             : map(
               val =>
                 val === 'toggle'
-                  ? Math.rand() > 0.5 ? 'blue' : 'yellow'
+                  ? Math.random() > 0.5 ? 'blue' : 'yellow'
                   : val,
               gameState.initialPainted || {}
             )

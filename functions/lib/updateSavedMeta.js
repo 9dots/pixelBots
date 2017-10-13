@@ -43,7 +43,6 @@ function filterGamePaint (attr) {
 function updateSaveMeta (attr) {
   return functions.database.ref(`/saved/{saveRef}/${attr}`).onWrite(evt => {
     return new Promise((resolve, reject) => {
-      const { saveRef } = evt.params
       const data = evt.data.val()
       if (objEqual(data || {}, evt.data.previous.val() || {})) {
         return resolve()

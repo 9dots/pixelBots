@@ -3,7 +3,7 @@ var fs = require('fs')
 const setups = {
   production: {
     apiKey: 'AIzaSyAj07kPi_C4eGAZBkV7ElSLEa_yg3sHoDc',
-    authDomain: 'https://www.pixelbots.io',
+    authDomain: 'pixelbots.io',
     databaseURL: 'https://artbot-26016.firebaseio.com',
     storageBucket: 'artbot-26016.appspot.com',
     messagingSenderId: '493804710533'
