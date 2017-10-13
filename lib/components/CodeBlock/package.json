@@ -1,0 +1,5 @@
+{
+  "name": "CodeBlock",
+  "main": "CodeBlock.js",
+  "browser": "CodeBlock.js"
+}

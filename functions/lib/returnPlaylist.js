@@ -53,14 +53,20 @@ module.exports = functions.https.onRequest((req, res) => {
 
 function populatePlaylist (playlist) {
   return Promise.all(
-    playlist
-      .sequence
-      .map(id => admin.database().ref(`/games/${id}/meta`).once('value').then(snap => snap.val()))
+    playlist.sequence.map(id =>
+      admin
+        .database()
+        .ref(`/games/${id}/meta`)
+        .once('value')
+        .then(snap => snap.val())
+    )
   ).then(sequence => {
     return extend(playlist, {
-      sequence: sequence.map((challenge, i) => extend(challenge, {
-        id: playlist.sequence[i]
-      }))
+      sequence: sequence.map((challenge, i) =>
+        extend(challenge, {
+          id: playlist.sequence[i]
+        })
+      )
     })
   })
 }

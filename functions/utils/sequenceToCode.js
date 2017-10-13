@@ -29,16 +29,10 @@ function blocksToCode (blocks) {
   return blocks
     .map(function (_ref) {
       var type = _ref.type,
-        payload = _ref.payload
+        payload = _ref.payload,
+        parentType = _ref.parentType
 
-      var args =
-        (typeof payload === 'undefined'
-          ? 'undefined'
-          : (0, _typeof3.default)(payload)) === 'object'
-          ? (0, _mapValues2.default)(function (v) {
-            return v
-          }, payload).join(', ')
-          : payload
+      var args = getArgs(type, payload)
       var indent = tabs(level)
 
       switch (type) {
@@ -53,11 +47,13 @@ function blocksToCode (blocks) {
         case 'down':
           return indent + 'down(' + (args || 1) + ')'
         case 'paint':
-          return indent + 'paint("' + (args || 'black') + '")'
+          return indent + 'paint(' + (args || "'black'") + ')'
         case 'toggle':
           return indent + 'toggle()'
         case 'comment':
           return indent + '// ' + args
+        case 'lineBreak':
+          return
         case 'move':
           return indent + 'forward(' + (args || 1) + ')'
         case 'paintO':
@@ -76,25 +72,49 @@ function blocksToCode (blocks) {
           return indent + 'paintL("' + (args || 'black') + '")'
         case 'forward':
           return indent + 'forward(' + (args || 1) + ')'
+        case 'moveTo':
+          return indent + 'moveTo(' + args + ')'
         case 'turnRight':
           return indent + 'turnRight()'
         case 'turnLeft':
           return indent + 'turnLeft()'
-        case 'moveTo':
-          return `${indent}moveTo(${args})`
         case 'repeat':
-          return tabs(level++) + 'repeat(' + payload[0] + ', function * () {'
+          return tabs(level++) + 'repeat(' + args + ', function () {'
         case 'block_end':
-          return tabs(--level) + '})'
+          return '' + tabs(--level) + (parentType === 'userFn' ? '}' : '})')
+        case 'userFn':
+          return tabs(level++) + 'function ' + payload[0] + ' (' + args + ') {'
         case 'ifColor':
-          return tabs(level++) + "ifColor('" + payload[0] + "', function * () {"
+          return tabs(level++) + "ifColor('" + payload[0] + "', function () {"
         default:
-          throw new Error(
-            'blocksToCode: encountered unknown block type (' + type + ')'
-          )
+          return '' + indent + type + '(' + args + ')'
       }
     })
     .join('\n')
+}
+
+function getArgs (type, payload) {
+  if (type === 'userFn') {
+    return payload
+      .slice(1)
+      .map(function (val) {
+        return val.name
+      })
+      .join(', ')
+  } else if (
+    (typeof payload === 'undefined'
+      ? 'undefined'
+      : (0, _typeof3.default)(payload)) === 'object'
+  ) {
+    return payload
+      .map(function (val) {
+        var value = val.value || val
+        return val.type && val.type === 'string' ? '"' + value + '"' : value
+      })
+      .join(', ')
+  } else {
+    return payload
+  }
 }
 
 function tabs (n) {
@@ -103,6 +123,7 @@ function tabs (n) {
   while (n--) {
     str += '\t'
   }
+
   return str
 }
 

@@ -1,33 +1,26 @@
+const animalApis = require('../utils/animalApis/index')
+const checkCorrect = require('../utils/checkCorrect')
+const objEqual = require('@f/equal-obj')
+const admin = require('firebase-admin')
+const filter = require('@f/filter')
+const map = require('@f/map')
+const srand = require('@f/srand')
 const {
   createFrames,
   getLastFrame,
   getIterator
 } = require('../utils/frameReducer/frameReducer')
-const animalApis = require('../utils/animalApis/index')
-const checkCorrect = require('../utils/checkCorrect')
-const functions = require('firebase-functions')
-const cors = require('cors')({ origin: true })
-const objEqual = require('@f/equal-obj')
-const admin = require('firebase-admin')
-const filter = require('@f/filter')
-const express = require('express')
-const map = require('@f/map')
-const srand = require('@f/srand')
 
 const createApi = animalApis.default
 const teacherBot = animalApis.teacherBot
-const router = new express.Router()
 
 const savedRef = admin.database().ref('/saved')
 
-router.use(cors)
-router.get('*', (req, res) => {
-  return res.send('Can not GET')
-})
-router.post('/', (req, res) => {
+module.exports = (req, res) => {
   res.set({ 'Cache-Control': 'no-cache' })
   const props = req.body.props
   const {
+    docs = {},
     active,
     advanced,
     animals,
@@ -40,8 +33,15 @@ router.post('/', (req, res) => {
   const saveRef = props.saveRef
     ? savedRef.child(props.saveRef)
     : { update: () => Promise.resolve() }
-  const userApi = createApi(capabilities, active, palette)
+
+  const userApi = Object.assign(
+    {},
+    docs,
+    createApi(capabilities, active, palette)
+  )
+  console.log('userApi', userApi)
   const userCode = getIterator(animals[active].sequence, userApi)
+  console.log('userCode', userCode)
   try {
     userCode()
   } catch (e) {
@@ -61,7 +61,7 @@ router.post('/', (req, res) => {
     )
     const seed = [{ painted, userSolution: answer }]
     if (checkCorrect(answer, targetPainted)) {
-      console.log('correct')
+      console.log('correct', saveRef)
       return saveRef
         .update({ steps, solutionSteps: props.solutionSteps })
         .then(() =>
@@ -160,12 +160,7 @@ router.post('/', (req, res) => {
         correctSeeds
       })
     )
-})
-
-module.exports = functions.https.onRequest((req, res) => {
-  req.url = req.path ? req.url : `/${req.url}`
-  return router(req, res)
-})
+}
 
 function getSteps (arr, key) {
   return arr.map(val => val[key])
@@ -194,12 +189,4 @@ function generateSolution (
     code
   )
   return [frames.pop().painted, frames.length]
-}
-
-function objectSome (obj, fn) {
-  if (typeof obj !== 'object') {
-    throw 'Must pass object'
-  }
-  const keys = Object.keys(obj)
-  return keys.some(val => fn(obj[val], val, obj))
 }
