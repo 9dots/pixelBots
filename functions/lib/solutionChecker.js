@@ -59,6 +59,7 @@ module.exports = (req, res) => {
       Object.assign({}, base, { painted }),
       userCode
     )
+    console.log(answer, steps)
     const seed = [{ painted, userSolution: answer }]
     if (checkCorrect(answer, targetPainted)) {
       console.log('correct', saveRef)
@@ -71,7 +72,7 @@ module.exports = (req, res) => {
           })
         )
     }
-    console.log('fail', answer, targetPainted)
+    console.log('fail simple challenge', answer, targetPainted)
     return res.status(200).send({ status: 'failed', failedSeeds: seed })
   }
   const uniquePaints = []

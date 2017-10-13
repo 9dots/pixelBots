@@ -57,19 +57,19 @@ function blocksToCode (blocks) {
         case 'move':
           return indent + 'forward(' + (args || 1) + ')'
         case 'paintO':
-          return indent + 'paintO("' + (args || 'black') + '")'
+          return indent + 'paintO(' + (args || "'black'") + ')'
         case 'paintI':
-          return indent + 'paintI("' + (args || 'black') + '")'
+          return indent + 'paintI(' + (args || "'black'") + ')'
         case 'paintS':
-          return indent + 'paintS("' + (args || 'black') + '")'
+          return indent + 'paintS(' + (args || "'black'") + ')'
         case 'paintZ':
-          return indent + 'paintZ("' + (args || 'black') + '")'
+          return indent + 'paintZ(' + (args || "'black'") + ')'
         case 'paintJ':
-          return indent + 'paintJ("' + (args || 'black') + '")'
+          return indent + 'paintJ(' + (args || "'black'") + ')'
         case 'paintT':
-          return indent + 'paintT("' + (args || 'black') + '")'
+          return indent + 'paintT(' + (args || "'black'") + ')'
         case 'paintL':
-          return indent + 'paintL("' + (args || 'black') + '")'
+          return indent + 'paintL(' + (args || "'black'") + ')'
         case 'forward':
           return indent + 'forward(' + (args || 1) + ')'
         case 'moveTo':
@@ -109,7 +109,7 @@ function getArgs (type, payload) {
     return payload
       .map(function (val) {
         var value = val.value || val
-        return val.type && val.type === 'string' ? '"' + value + '"' : value
+        return !val.type || val.type === 'string' ? '"' + value + '"' : value
       })
       .join(', ')
   } else {
