@@ -1156,15 +1156,11 @@ dot-prop@^4.1.0:
   dependencies:
     is-obj "^1.0.0"
 
-<<<<<<< HEAD
-duplexify@^3.1.2, duplexify@^3.5.0, duplexify@^3.5.1:
-=======
 duplexer@~0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/duplexer/-/duplexer-0.1.1.tgz#ace6ff808c1ce66b57d1ebf97977acb02334cfc1"
 
-duplexify@^3.1.2, duplexify@^3.5.0:
->>>>>>> 5e75dc8c0901865647c518d9fa458014a0b075a3
+duplexify@^3.1.2, duplexify@^3.5.0, duplexify@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/duplexify/-/duplexify-3.5.1.tgz#4e1516be68838bc90a49994f0b39a6e5960befcd"
   dependencies:
@@ -1254,11 +1250,6 @@ eval@^0.1.2:
   dependencies:
     require-like ">= 0.1.1"
 
-<<<<<<< HEAD
-expect-ct@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/expect-ct/-/expect-ct-0.1.0.tgz#52735678de18530890d8d7b95f0ac63640958094"
-=======
 event-stream@^3.3.4:
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/event-stream/-/event-stream-3.3.4.tgz#4ab4c9a0f5a54db9338b4c34d86bfce8f4b35571"
@@ -1270,7 +1261,10 @@ event-stream@^3.3.4:
     split "0.3"
     stream-combiner "~0.0.4"
     through "~2.3.1"
->>>>>>> 5e75dc8c0901865647c518d9fa458014a0b075a3
+
+expect-ct@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/expect-ct/-/expect-ct-0.1.0.tgz#52735678de18530890d8d7b95f0ac63640958094"
 
 express@^4.0.33, express@^4.15.2:
   version "4.15.4"

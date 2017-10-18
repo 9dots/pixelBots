@@ -8,11 +8,17 @@ module.exports = {
   generateClassCode: require('./generateClassCode'),
   createGameImage: require('./createGameImage'),
   updateSavedMeta: require('./updateSavedMeta'),
+  solutionChecker: require('./solutionChecker'),
   assignPlaylists: require('./assignPlaylists'),
   updateGameMeta: require('./updateGameMeta'),
   fanDraftToUser: require('./fanDraftToUser'),
+  checkUserEmail: require('./checkUserEmail'),
   returnPlaylist: require('./returnPlaylist'),
+  pinAssignment: require('./pinAssignment'),
+  createNewUser: require('./createNewUser'),
   fanCompleted: require('./fanCompleted'),
+  copyPlaylist: require('./copyPlaylist'),
   createGif: require('./createGif'),
+  weoAuth: require('./weoAuth'),
   api: require('./api')
 }
