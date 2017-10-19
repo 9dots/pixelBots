@@ -46,14 +46,6 @@ module.exports = functions.database
               return acc
             }, {})
 
-            console.log(
-              'playlistUpdateExternal',
-              completed,
-              playlist,
-              update,
-              body
-            )
-
             if (update) {
               return fetch(update, {
                 method: 'POST',
