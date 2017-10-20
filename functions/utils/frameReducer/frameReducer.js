@@ -644,13 +644,13 @@ function vadd (x, y) {
     throw new Error('Cannot add vectors of different lengths')
   }
   return x.map(function (a, i) {
-    return a + y[i]
+    return Number(a) + Number(y[i])
   })
 }
 
 function vmul (a, x) {
   return x.map(function (b) {
-    return b * a
+    return Number(b) * Number(a)
   })
 }
 

@@ -1,7 +1,5 @@
 *IMPORTANT! If you are not of legal age to form a binding contract (in many places, this is 18 years old), then you must get your parent or guardian to read these terms and agree to them for you, before you use PixelBots or provide any information to us. Please review this agreement with your parent or guardian so that you both understand how PixelBots works and what restrictions apply to your use of our websites and services. Remember, always get an adult's permission before going online.*
 
-
-
 ### TERMS OF SERVICE
 
 #### Effective date: March 1, 2015

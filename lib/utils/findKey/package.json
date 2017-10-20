@@ -1,0 +1,5 @@
+{
+  "name": "findKey",
+  "main": "findKey.js",
+  "browser": "findKey.js"
+}

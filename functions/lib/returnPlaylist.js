@@ -4,6 +4,7 @@
 
 const functions = require('firebase-functions')
 const toRegexp = require('path-to-regexp')
+const mapValues = require('@f/map-values')
 const admin = require('firebase-admin')
 const extend = require('@f/extend')
 const fetch = require('node-fetch')
@@ -53,18 +54,20 @@ module.exports = functions.https.onRequest((req, res) => {
 
 function populatePlaylist (playlist) {
   return Promise.all(
-    playlist.sequence.map(id =>
-      admin
-        .database()
-        .ref(`/games/${id}/meta`)
-        .once('value')
-        .then(snap => snap.val())
+    mapValues(
+      ({ gameRef }) =>
+        admin
+          .database()
+          .ref(`/games/${gameRef}/meta`)
+          .once('value')
+          .then(snap => snap.val()),
+      playlist.sequence
     )
   ).then(sequence => {
     return extend(playlist, {
       sequence: sequence.map((challenge, i) =>
         extend(challenge, {
-          id: playlist.sequence[i]
+          id: playlist.sequence[i].gameRef
         })
       )
     })
