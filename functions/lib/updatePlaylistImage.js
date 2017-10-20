@@ -37,7 +37,7 @@ module.exports = functions.database
               return failed('no sequence')
             }
             const promises = mapValues(
-              ref => download(playlist, `${ref}.png`),
+              ({ gameRef }) => download(playlist, `${gameRef}.png`),
               challenges
             ).map(promiseState)
             return Promise.all(promises)
