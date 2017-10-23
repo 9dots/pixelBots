@@ -1,9 +1,10 @@
 {
+  "parser": "babel-eslint",
   "extends": ["standard", "plugin:react/recommended"],
   "globals": {
     "hljs": true
   },
-  "plugins": ["react"],
+  "plugins": ["react", "flowtype"],
   "rules": {
     "jsx-quotes": ["error", "prefer-single"],
     "react/jsx-uses-vars": 2,

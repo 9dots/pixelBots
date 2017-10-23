@@ -10,6 +10,7 @@ module.exports = {
   activeLine: 0,
   type: 'write',
   runners: null,
+  docs: {},
   imageUrl: '/animalImages/teacherBot.png',
   selected: [],
   solution: '',
@@ -24,18 +25,20 @@ module.exports = {
   steps: 0,
   speed: 1,
   frames: [],
-  animals: [{
-    type: 'penguin',
-    sequence: [],
-    initial: {
-      location: [4, 0],
-      dir: 0,
-      rot: 0
-    },
-    current: {
-      location: [4, 0],
-      dir: 0,
-      rot: 0
+  animals: [
+    {
+      type: 'penguin',
+      sequence: [],
+      initial: {
+        location: [4, 0],
+        dir: 0,
+        rot: 0
+      },
+      current: {
+        location: [4, 0],
+        dir: 0,
+        rot: 0
+      }
     }
-  }]
+  ]
 }

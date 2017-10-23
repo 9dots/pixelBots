@@ -12,9 +12,9 @@ const flatten = require('lodash/flatten')
 const admin = require('firebase-admin')
 const chunk = require('lodash/chunk')
 const fs = require('node-fs-extra')
-const map = require('@f/map')
 const Promise = require('bluebird')
 const srand = require('@f/srand')
+const map = require('@f/map')
 const co = require('co')
 
 const createApi = animalApis.default
@@ -59,7 +59,7 @@ module.exports = functions.database
             : map(
               val =>
                 val === 'toggle'
-                  ? Math.rand() > 0.5 ? 'blue' : 'yellow'
+                  ? Math.random() > 0.5 ? 'blue' : 'yellow'
                   : val,
               gameState.initialPainted || {}
             )
