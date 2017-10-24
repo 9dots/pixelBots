@@ -26,6 +26,7 @@ app.use(cors)
 // app.use(helmet())
 // app.use(authenticate)
 
+app.get('/api/keepAlive', (req, res) => res.send({ status: 'success' }))
 app.post('/api/checkUserEmail', checkUserEmail)
 app.post('/api/copyPlaylist', copyPlaylist)
 app.post('/api/createNewUser', createNewUser)
