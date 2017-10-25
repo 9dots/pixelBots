@@ -4,18 +4,14 @@
   "description": "Artbot test",
   "main": "src/index.js",
   "scripts": {
-    "config-dev":
-      "firebase use artbot-dev; cross-env NODE_ENV='dev' node config.js",
-    "config-prod":
-      "firebase use artbot-26016; cross-env NODE_ENV='production' node config.js",
+    "config-dev": "firebase use artbot-dev; cross-env NODE_ENV='dev' node config.js",
+    "config-prod": "firebase use artbot-26016; cross-env NODE_ENV='production' node config.js",
     "build": "yarn run cleanUp; webpack -p --config webpack.config.prod.js",
-    "deploy":
-      "yarn run config-prod; yarn run build; firebase deploy --only hosting;",
+    "deploy": "yarn run config-prod; yarn run build; firebase deploy --only hosting;",
     "cleanUp": "rm -rf public/index.html; rm -rf public/*.js",
     "test": "webpack --config webpack.config.test.js",
     "create": "khaos create component",
-    "start":
-      "yarn install; yarn run config-dev; rm -rf public/index.html; rm -rf public/*.js; cross-env NODE_ENV='dev' webpack-dev-server"
+    "start": "yarn install; yarn run config-dev; rm -rf public/index.html; rm -rf public/*.js; cross-env NODE_ENV='dev' webpack-dev-server"
   },
   "repository": {
     "url": "git+https://github.com/danleavitt0/artbot.git",
@@ -160,6 +156,8 @@
     "worker-loader": "^0.8.0"
   },
   "standard": {
-    "globals": ["element"]
+    "globals": [
+      "element"
+    ]
   }
 }
