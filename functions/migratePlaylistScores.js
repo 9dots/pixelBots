@@ -2,7 +2,6 @@ const serviceAccount = require('./service.json')
 const mapValues = require('@f/map-values')
 const admin = require('firebase-admin')
 const reduce = require('@f/reduce')
-const map = require('@f/map')
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -12,6 +11,7 @@ admin.initializeApp({
 const db = admin.database()
 const instancesRef = db.ref('/playlistInstances')
 const savedRef = db.ref('/saved')
+const gamesRef = db.ref('/games')
 
 instancesRef
   .once('value')
@@ -50,7 +50,15 @@ function getSavedBadges (challenges) {
           .child(challenge)
           .once('value')
           .then(snap => snap.val() || {})
-          .then(({ meta = {}, gameRef }) => [
+          .then(({ meta = {}, gameRef }) =>
+            gamesRef
+              .child(gameRef)
+              .child('stretch')
+              .once('value')
+              .then(snap => snap.val())
+              .then(stretch => [stretch, meta, gameRef])
+          )
+          .then(([stretch, meta, gameRef]) => [
             gameRef,
             reduce((acc, val, key) => acc + val, 0, meta.badges || {})
           ]),

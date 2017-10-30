@@ -8,10 +8,6 @@ var _typeof2 = require('babel-runtime/helpers/typeof')
 
 var _typeof3 = _interopRequireDefault(_typeof2)
 
-var _mapValues = require('@f/map-values')
-
-var _mapValues2 = _interopRequireDefault(_mapValues)
-
 function _interopRequireDefault (obj) {
   return obj && obj.__esModule ? obj : { default: obj }
 }
@@ -85,7 +81,7 @@ function blocksToCode (blocks) {
         case 'userFn':
           return tabs(level++) + 'function ' + payload[0] + ' (' + args + ') {'
         case 'ifColor':
-          return tabs(level++) + "ifColor('" + payload[0] + "', function () {"
+          return tabs(level++) + 'ifColor(' + args + ', function () {'
         default:
           return '' + indent + type + '(' + args + ')'
       }
