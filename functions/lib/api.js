@@ -17,7 +17,6 @@ const copyPlaylist = require('./copyPlaylist')
 const cors = require('cors')({ origin: true })
 const weoAuth = require('./weoAuth')
 const express = require('express')
-const helmet = require('helmet')
 // const admin = require('firebase-admin')
 
 const app = express()

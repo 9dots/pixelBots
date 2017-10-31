@@ -1,23 +1,16 @@
 const {
-  generatePainted,
   createFrames,
   getLastFrame,
-  getIterator,
-  createPaintFrames
+  getIterator
 } = require('../utils/frameReducer/frameReducer')
 const animalApis = require('../utils/animalApis/index')
 const checkCorrect = require('../utils/checkCorrect')
-const functions = require('firebase-functions')
-const cors = require('cors')()
 const objEqual = require('@f/equal-obj')
-const { Map } = require('immutable')
 const srand = require('@f/srand')
 const map = require('@f/map')
 
 const createApi = animalApis.default
 const teacherBot = animalApis.teacherBot
-
-let incorrect = false
 
 const props = getProps()
 // const {active, animals, solution, initialData, targetPainted} = props
