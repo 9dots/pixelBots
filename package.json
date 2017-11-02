@@ -73,6 +73,7 @@
     "hex-to-rgb": "^1.0.1",
     "isomorphic-fetch": "^2.2.1",
     "js-analyse": "^0.2.3",
+    "khaos": "^0.9.3",
     "lodash": "^4.17.4",
     "marked": "^0.3.6",
     "moment": "^2.17.1",

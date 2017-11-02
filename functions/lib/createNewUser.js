@@ -16,7 +16,7 @@ module.exports = (req, res) => {
   if (req.method !== 'POST') {
     return res.status(500).send({ status: 'failed', payload: 'Can Only Post' })
   }
-  const { name, username, email, classId } = req.body
+  const { name, username, email, classId, pictureName } = req.body
   const classRef = admin
     .database()
     .ref('/classes')
@@ -40,8 +40,10 @@ module.exports = (req, res) => {
     })
 
   function updateRefsWithUser (user) {
+    console.log(user, user.uid)
     return Promise.all([
       usersRef.child(user.uid).update({
+        pictureName,
         displayName: user.displayName,
         studentOf: {
           [classId]: true
