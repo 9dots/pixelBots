@@ -19,10 +19,10 @@ const playlistByUserRef = admin.database().ref('/playlistsByUser')
 
 module.exports = functions.database
   .ref('/feed/{groupId}/{assignmentRef}')
-  .onWrite(evt => {
+  .onCreate(evt => {
     const data = evt.data.val()
     const { groupId } = evt.params
-    const { playlistRef } = data
+    const { playlistRef } = data || {}
 
     return classesRef
       .child(groupId)
@@ -38,13 +38,14 @@ module.exports = functions.database
               .once('value')
               .then(snap => snap.val())
               .then(val => assignOrBump(val, playlistRef, studentRef))
-              .then(() => console.log('done'))
           )
         )
       )
+      .then(() => console.log('done'))
   })
 
 function assignOrBump (inst, playlist, uid) {
+  console.log(inst, playlist, uid)
   if (inst) {
     return instancesRef.child(inst.instanceRef).update({
       lastEdited: Date.now(),
@@ -55,6 +56,7 @@ function assignOrBump (inst, playlist, uid) {
       completedChallenges: [],
       lastEdited: Date.now(),
       savedChallenges: null,
+      started: false,
       playlist,
       current: 0,
       uid,

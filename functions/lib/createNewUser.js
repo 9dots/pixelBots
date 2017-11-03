@@ -40,7 +40,6 @@ module.exports = (req, res) => {
     })
 
   function updateRefsWithUser (user) {
-    console.log(user, user.uid)
     return Promise.all([
       usersRef.child(user.uid).update({
         pictureName,

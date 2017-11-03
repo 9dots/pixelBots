@@ -19,7 +19,7 @@ const feedsRef = admin.database().ref('/feed')
 
 module.exports = functions.database
   .ref('/users/{userRef}/studentOf/{classRef}')
-  .onWrite(evt => {
+  .onCreate(evt => {
     const data = evt.data.val()
     const { userRef, classRef } = evt.params
 
@@ -58,10 +58,11 @@ function assignOrBump (inst, playlist, uid) {
       completedChallenges: [],
       lastEdited: Date.now(),
       savedChallenges: null,
-      playlist,
+      assigned: true,
+      started: false,
       current: 0,
-      uid,
-      assigned: true
+      playlist,
+      uid
     })
   }
 }

@@ -12,6 +12,7 @@ module.exports = functions.database
       const { completed: prevCompleted } = evt.data.previous.val() || {}
       const { instanceRef } = evt.params
       const childRef = completed ? 'completed' : 'inProgress'
+      console.log(instanceRef, uid, playlist)
       playlistRef
         .child(uid)
         .child(childRef)
