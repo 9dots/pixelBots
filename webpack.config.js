@@ -5,18 +5,13 @@ var webpack = require('webpack')
 var path = require('path')
 var net = require('net')
 var fs = require('fs')
-var WebpackDevServer = require('webpack-dev-server')
 
 console.log('dev config')
 
 function config (env) {
   return {
     entry: {
-      main: [
-        'webpack-dev-server/client?http://localhost:8080',
-        'webpack/hot/only-dev-server',
-        './lib/client/index.js'
-      ],
+      app: './lib/client/index.js',
       vendor: [
         'lodash',
         'brace',
@@ -60,16 +55,18 @@ function config (env) {
         'process.env': {
           NODE_ENV: '"dev"',
           TRACKING_CODE: null,
-          CLOUD_FUNCTIONS: '"/api"'
+          CLOUD_FUNCTIONS: '"https://artbot-dev.firebaseapp.com/api"'
         }
       }),
+      new webpack.NamedModulesPlugin(),
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.optimize.CommonsChunkPlugin({
         names: ['vendor', 'manifest'] // Specify the common bundle's name.
       }),
       new HtmlWebpackPlugin({
-        title: 'pixelBots',
+        title: 'PixelBots Dev',
+        cache: true,
         template: 'my-index.html' // Load a custom template (ejs by default see the FAQ for details)
       })
     ],
@@ -81,28 +78,36 @@ function config (env) {
       net: net,
       fs: fs
     },
-    devtool: 'eval-source-map'
+    devtool: 'eval-source-map',
+    devServer: {
+      hot: true,
+      contentBase: path.join(__dirname, 'public'),
+      compress: true,
+      historyApiFallback: {
+        index: '/public/index.html'
+      },
+      overlay: true
+      // index: '/public/index.html'
+      // publicPath: '/public/'
+      // index: '/public/index.html'
+      // disableHostCheck: true
+      // historyApiFallback: {
+      //   rewrites: [
+      //     {
+      //       from: /([\d\w\-\.]*)(\.js$|\.json$)/,
+      //       to: context => '/' + context.match[0]
+      //     },
+      //     {
+      //       from: /([\d\w]*\.)([\d\w]*\.)([\d\w\-]*)(\.js$|\.json$)/,
+      //       to: context => '/' + console.log('here\n\n\n', context)
+      //     }
+      //   ],
+      //   index: '/index.html'
+      // }
+    }
   }
 }
 
-new WebpackDevServer(webpack(config()), {
-  hot: true,
-  inline: true,
-  contentBase: 'public',
-  disableHostCheck: true,
-  historyApiFallback: {
-    rewrites: [
-      {
-        from: /([\d\w\-\.]*)(\.js$|\.json$)/,
-        to: context => '/' + context.match[0]
-      },
-      {
-        from: /([\d\w]*\.)([\d\w]*\.)([\d\w\-]*)(\.js$|\.json$)/,
-        to: context => '/' + console.log('here\n\n\n', context)
-      }
-    ],
-    index: '/index.html'
-  }
-}).listen(8080)
+// new WebpackDevServer(webpack(config()), {}).listen(8080)
 
 module.exports = config
