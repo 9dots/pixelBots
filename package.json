@@ -57,7 +57,7 @@
     "@ffmpeg-installer/ffmpeg": "^1.0.12",
     "@weo-edu/schema": "git+https://github.com/danleavitt0/schema.git",
     "@weo-edu/validate": "git+https://github.com/danleavitt0/validate.git",
-    "auto-yield-delegate": "^0.7.2",
+    "auto-yield-delegate": "^0.8.0",
     "bluebird": "^3.5.0",
     "brace": "^0.10.0",
     "canvas-webworker": "^0.0.2",

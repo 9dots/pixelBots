@@ -1,0 +1,5 @@
+{
+  "name": "PreviewModal",
+  "main": "PreviewModal.js",
+  "browser": "PreviewModal.js"
+}
