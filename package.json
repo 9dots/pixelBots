@@ -4,14 +4,18 @@
   "description": "Artbot test",
   "main": "src/index.js",
   "scripts": {
-    "config-dev": "firebase use artbot-dev; cross-env NODE_ENV='dev' node config.js",
-    "config-prod": "firebase use artbot-26016; cross-env NODE_ENV='production' node config.js",
+    "config-dev":
+      "firebase use artbot-dev; cross-env NODE_ENV='dev' node config.js",
+    "config-prod":
+      "firebase use artbot-26016; cross-env NODE_ENV='production' node config.js",
     "build": "yarn run cleanUp; webpack -p --config webpack.config.prod.js",
-    "deploy": "yarn run config-prod; yarn run build; firebase deploy --except functions;",
+    "deploy":
+      "yarn run config-prod; yarn run build; firebase deploy --only hosting; node updateHash.js",
     "cleanUp": "rm -rf public/index.html; rm -rf public/*.js",
     "test": "webpack --config webpack.config.test.js",
     "create": "khaos create component",
-    "start": "yarn install; yarn run config-dev; rm -rf public/index.html; rm -rf public/*.js; cross-env NODE_ENV='dev' webpack-dev-server"
+    "start":
+      "yarn install; yarn run config-dev; rm -rf public/index.html; rm -rf public/*.js; cross-env NODE_ENV='dev' webpack-dev-server"
   },
   "repository": {
     "url": "git+https://github.com/danleavitt0/artbot.git",
@@ -68,11 +72,14 @@
     "easing-utils": "0.0.5",
     "enroute": "^1.0.1",
     "firebase": "^4.5.0",
+    "firebase-admin": "^5.4.3",
+    "fs-extra": "^4.0.2",
     "google-material-color-palette-json": "^1.1.1",
     "hashids": "^1.1.1",
     "hex-to-rgb": "^1.0.1",
     "isomorphic-fetch": "^2.2.1",
     "js-analyse": "^0.2.3",
+    "khaos": "^0.9.3",
     "lodash": "^4.17.4",
     "marked": "^0.3.6",
     "moment": "^2.17.1",
@@ -104,9 +111,9 @@
     "vdux-virtual-list": "^1.0.3"
   },
   "devDependencies": {
-    "babel-core": "^6.22.1",
+    "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
-    "babel-loader": "^6.2.10",
+    "babel-loader": "7.1.2",
     "babel-plugin-transform-react-jsx": "^6.7.5",
     "babel-plugin-transform-runtime": "^6.9.0",
     "babel-plugin-vdux-transform": "^1.1.1",
@@ -127,10 +134,9 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.4.0",
     "eslint-plugin-standard": "^3.0.1",
-    "extract-text-webpack-plugin": "^1.0.1",
+    "extract-text-webpack-plugin": "3.0.2",
     "firebase-tools": "^3.0.4",
     "flow-bin": "^0.56.0",
-    "flowtype-loader": "^0.2.2",
     "html-loader": "^0.4.5",
     "html-webpack-plugin": "^2.28.0",
     "json-loader": "^0.5.4",
@@ -149,15 +155,11 @@
     "uglifyjs": "^2.4.10",
     "url": "^0.11.0",
     "watchify": "^3.7.0",
-    "webpack": "2",
-    "webpack-bundle-analyzer": "^2.8.2",
-    "webpack-dev-server": "2",
-    "weo-redux-logger": "^2.6.1",
-    "worker-loader": "^0.8.0"
+    "webpack": "^3",
+    "webpack-dev-server": "^2.9.4",
+    "weo-redux-logger": "^2.6.1"
   },
   "standard": {
-    "globals": [
-      "element"
-    ]
+    "globals": ["element"]
   }
 }

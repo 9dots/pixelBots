@@ -26,7 +26,7 @@ module.exports = functions.database
         return admin
           .database()
           .ref(`/playlists/${playlist}/sequence`)
-          .orderByKey()
+          .orderByChild('order')
           .limitToLast(4)
           .once('value')
           .then(res =>

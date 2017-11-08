@@ -1,4 +1,5 @@
 const createCode = require('../utils/createShortCode')
+const mapValues = require('@f/map-values')
 const admin = require('firebase-admin')
 
 const playlistsRef = admin.database().ref('/playlists')
@@ -14,7 +15,10 @@ module.exports = (req, res) => {
     .then(snap => Promise.all([Promise.resolve(snap.val()), createCode()]))
     .then(([playlist, code]) => {
       return Promise.all(
-        playlist.sequence.map(gameRef => gamesRef.child(gameRef).once('value'))
+        mapValues(
+          ({ gameRef }) => gamesRef.child(gameRef).once('value'),
+          playlist.sequence || {}
+        )
       )
         .then(snaps => snaps.map(snap => snap.val()))
         .then(games => Promise.all(games.map(game => gamesRef.push(game))))
@@ -22,7 +26,7 @@ module.exports = (req, res) => {
         .then(keys =>
           playlistsRef.push(
             Object.assign({}, playlist, {
-              sequence: keys,
+              sequence: keys.map((gameRef, i) => ({ gameRef, order: i })),
               shortLink: code,
               creatorID,
               creatorUsername,

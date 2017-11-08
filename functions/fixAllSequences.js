@@ -30,17 +30,17 @@ playlistsRef
   .catch(console.error)
 
 // let count = 0
-//
+
 // const fs = require('fs')
 // const path = require('path')
 // const JSONStream = require('JSONStream')
 // const es = require('event-stream')
 // fs
 //   .createReadStream(path.join(process.cwd(), 'restoreDb.json'))
-//   .pipe(JSONStream.parse('playlists'))
+//   .pipe(JSONStream.parse('playlistsByUser'))
 //   .pipe(
 //     es.mapSync(function (data) {
-//       fs.writeFileSync('newPlaylistDb.json', JSON.stringify(data))
+//       fs.writeFileSync('playlistsByUser.json', JSON.stringify(data))
 //       return data
 //     })
 //   )

@@ -1,20 +1,19 @@
-const serviceAccount = require('./serviceAccount.json')
+const serviceAccount = require('./service.json')
 const mapValues = require('@f/map-values')
 const admin = require('firebase-admin')
 const map = require('@f/map')
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://artbot-dev.firebaseio.com'
+  databaseURL: 'https://artbot-26016.firebaseio.com'
 })
 
 const db = admin.database()
 const instancesRef = db.ref('/playlistInstances')
 const playlistsRef = db.ref('/playlists')
 
-migratePlaylistSequence()
-  .then(updateSaves)
-  .catch(console.error)
+// migratePlaylistSequence()
+updateSaves().catch(console.error)
 
 // Add description to game meta
 

@@ -22,7 +22,7 @@ const folders = fs.readdirSync(path.resolve(__dirname, 'lib')).reduce(
 function config (env) {
   return {
     entry: {
-      main: ['./lib/client/index.js'],
+      app: './lib/client/index.js',
       vendor: [
         'lodash',
         'brace',
@@ -76,6 +76,7 @@ function config (env) {
       }),
       new HtmlWebpackPlugin({
         title: 'pixelBots',
+        cache: true,
         template: 'my-index.html' // Load a custom template (ejs by default see the FAQ for details)
       })
     ],
