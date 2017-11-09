@@ -4,18 +4,14 @@
   "description": "Artbot test",
   "main": "src/index.js",
   "scripts": {
-    "config-dev":
-      "firebase use artbot-dev; cross-env NODE_ENV='dev' node config.js",
-    "config-prod":
-      "firebase use artbot-26016; cross-env NODE_ENV='production' node config.js",
+    "config-dev": "firebase use artbot-dev; cross-env NODE_ENV='dev' node config.js",
+    "config-prod": "firebase use artbot-26016; cross-env NODE_ENV='production' node config.js",
     "build": "yarn run cleanUp; webpack -p --config webpack.config.prod.js",
-    "deploy":
-      "yarn run config-prod; yarn run build; firebase deploy --only hosting; node updateHash.js",
+    "deploy": "yarn run config-prod; yarn run build; firebase deploy --only hosting; node updateHash.js",
     "cleanUp": "rm -rf public/index.html; rm -rf public/*.js",
     "test": "webpack --config webpack.config.test.js",
     "create": "khaos create component",
-    "start":
-      "yarn install; yarn run config-dev; rm -rf public/index.html; rm -rf public/*.js; cross-env NODE_ENV='dev' webpack-dev-server"
+    "start": "yarn install; yarn run config-dev; rm -rf public/index.html; rm -rf public/*.js; cross-env NODE_ENV='dev' webpack-dev-server"
   },
   "repository": {
     "url": "git+https://github.com/danleavitt0/artbot.git",
@@ -108,7 +104,8 @@
     "vdux-toggle": "^2.0.0",
     "vdux-transition": "^1.1.1",
     "vdux-ui": "^1.3.7",
-    "vdux-virtual-list": "^1.0.3"
+    "vdux-virtual-list": "^1.0.3",
+    "worker-loader": "^1.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -160,6 +157,8 @@
     "weo-redux-logger": "^2.6.1"
   },
   "standard": {
-    "globals": ["element"]
+    "globals": [
+      "element"
+    ]
   }
 }
