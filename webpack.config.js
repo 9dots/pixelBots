@@ -62,7 +62,7 @@ function config (env) {
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.optimize.CommonsChunkPlugin({
-        names: ['vendor', 'manifest'] // Specify the common bundle's name.
+        names: ['vendor', 'manifest', 'worker'] // Specify the common bundle's name.
       }),
       new HtmlWebpackPlugin({
         title: 'PixelBots Dev',
