@@ -8,27 +8,30 @@ const hashids = new Hashids(
   'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789'
 )
 
-module.exports = functions.database.ref('/classes/{classRef}')
-  .onWrite(evt => {
-      const cls = evt.data.val()
+module.exports = functions.database.ref('/classes/{classRef}').onWrite(evt => {
+  const cls = evt.data.val()
 
-      if (!cls.code) {
-        return createCode().then(code => Promise.all([
-          classes
-            .child(evt.params.classRef)
-            .update({
-              code
-            }),
-          admin.database().ref('/class_codes/').update({
+  if (!cls.code) {
+    return createCode().then(code =>
+      Promise.all([
+        classes.child(evt.params.classRef).update({
+          code
+        }),
+        admin
+          .database()
+          .ref('/class_codes/')
+          .update({
             [code]: evt.params.classRef
           })
-        ]))
-      }
+      ])
+    )
+  }
 
-      return Promise.resolve()
-  })
+  return Promise.resolve()
+})
 
-const generateRands = () => [0, 1, 2, 3, 4].map(() => Math.round(Math.random() * 100000))
+const generateRands = () =>
+  [0, 1, 2, 3, 4].map(() => Math.round(Math.random() * 100000))
 
 function generateID () {
   return hashids.encode(generateRands()).substr(0, 5)
@@ -47,6 +50,5 @@ function checkForExisting (ref, id) {
 function createCode (ref = '/class_codes/') {
   const id = generateID()
 
-  return checkForExisting(ref, id)
-    .then(val => val ? createCode(ref) : id)
+  return checkForExisting(ref, id).then(val => (val ? createCode(ref) : id))
 }

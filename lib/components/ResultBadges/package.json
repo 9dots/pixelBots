@@ -1,0 +1,5 @@
+{
+  "name": "ResultBadges",
+  "main": "ResultBadges.js",
+  "browser": "ResultBadges.js"
+}
