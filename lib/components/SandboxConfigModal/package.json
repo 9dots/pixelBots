@@ -1,0 +1,5 @@
+{
+  "name": "SandboxConfigModal",
+  "main": "SandboxConfigModal.js",
+  "browser": "SandboxConfigModal.js"
+}

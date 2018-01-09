@@ -1,0 +1,5 @@
+{
+  "name": "SandboxView",
+  "main": "SandboxView.js",
+  "browser": "SandboxView.js"
+}
