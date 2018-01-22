@@ -9,6 +9,7 @@
  */
 
 const solutionChecker = require('./solutionChecker')
+const uploadAnimationThumb = require('./uploadAnimationThumb')
 const checkUserEmail = require('./checkUserEmail')
 const createNewUser = require('./createNewUser')
 const pinAssignment = require('./pinAssignment')
@@ -33,6 +34,7 @@ app.post('/api/createNewUser', createNewUser)
 app.post('/api/pinAssignment', pinAssignment)
 app.post('/api/solutionChecker', solutionChecker)
 app.post('/api/checkUsername', checkUsername)
+app.post('/api/uploadAnimationThumb', uploadAnimationThumb)
 app.post('/api/weoAuth', weoAuth)
 app.get('/api', (req, res) => res.send('hello'))
 
