@@ -10875,9 +10875,9 @@ vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
 
-vdux-ace@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/vdux-ace/-/vdux-ace-1.0.7.tgz#c1f6d33ce16ae6dc496252c7e86e2e46ac493bb0"
+vdux-ace@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/vdux-ace/-/vdux-ace-1.0.8.tgz#3e9ad9af8ab3f942927f70b0e4835b8224593f46"
   dependencies:
     "@f/combine-reducers" "^1.2.0"
     "@f/create-action" "^1.1.1"
