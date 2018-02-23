@@ -1,0 +1,5 @@
+{
+  "name": "TwoCanvas",
+  "main": "TwoCanvas.js",
+  "browser": "TwoCanvas.js"
+}

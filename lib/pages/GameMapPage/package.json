@@ -1,0 +1,5 @@
+{
+  "name": "GameMapPage",
+  "main": "GameMapPage.js",
+  "browser": "GameMapPage.js"
+}

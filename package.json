@@ -94,6 +94,7 @@
     "stack-trace": "0.0.9",
     "strip": "^3.0.0",
     "to-markdown": "^3.0.3",
+    "two.js": "^0.7.0-alpha.1",
     "type": "0.0.3",
     "vdux": "^3.0.10",
     "vdux-ace": "^1.0.7",
