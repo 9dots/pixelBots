@@ -9,6 +9,7 @@
     "build": "yarn run cleanUp; webpack -p --config webpack.config.prod.js",
     "deploy": "yarn run config-prod; yarn run build; firebase deploy --only hosting; node updateHash.js",
     "cleanUp": "rm -rf public/index.html; rm -rf public/*.js",
+    "deploy-dev": "yarn cleanUp; yarn config-dev; webpack -p; firebase deploy --only hosting",
     "test": "webpack --config webpack.config.test.js",
     "create": "khaos create component",
     "start": "yarn install; yarn run config-dev; rm -rf public/index.html; rm -rf public/*.js; cross-env NODE_ENV='dev' webpack-dev-server"
