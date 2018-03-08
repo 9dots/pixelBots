@@ -10,7 +10,8 @@ const metaAttrs = [
   'title',
   'imageUrl',
   'creatorID',
-  'stretch'
+  'stretch',
+  'coordinates'
 ]
 
 module.exports = functions.database.ref('/games/{gameRef}').onWrite(evt => {
