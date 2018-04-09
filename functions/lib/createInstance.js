@@ -1,30 +1,27 @@
-const admin = require('firebase-admin')
 const toRegexp = require('path-to-regexp')
+const admin = require('firebase-admin')
 
 const db = admin.database()
+const savedRef = db.ref('/saved')
 
-const instancesRef = db.ref('/playlistInstances')
-const playlistRef = db.ref('/playlists')
-
-const path1Re = toRegexp('/playlist/:id')
-const path2Re = toRegexp('/playlist/:id/view')
+const path1Re = toRegexp('/game/:id')
 
 module.exports = (req, res) => {
-  const { playlistUrl } = req.body
+  const { taskUrl } = req.body
+  try {
+    const [, id] = path1Re.exec(taskUrl)
+    return savedRef
+      .push()
+      .then(snap => snap.key)
+      .then(instance =>
+        res.send({ ok: true, instance: `/game/${id}/instance/${instance}` })
+      )
+      .catch(sendError)
+  } catch (e) {
+    return sendError('bad_url')
+  }
 
-  const [, id] = path1Re.test(playlistUrl)
-    ? path1Re.exec(playlistUrl)
-    : path2Re.exec(playlistUrl)
-
-  instancesRef
-    .push({
-      completedChallenges: [],
-      lastEdited: Date.now(),
-      savedChallenges: null,
-      started: false,
-      assigned: true,
-      playlist: id,
-      current: 0
-    })
-    .then(snap => res.send({ url: `/activity/${id}/instance/${snap.key}` }))
+  function sendError (e) {
+    return res.send({ ok: false, error: e })
+  }
 }
