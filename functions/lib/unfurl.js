@@ -30,13 +30,13 @@ function unfurlGame (url) {
     .then(data => ({
       displayName: data.title,
       imageUrl: data.imageUrl,
-      url: `/games/${id}`
+      url: `/game/${id}`
     }))
 }
 
 function unfurlPlaylist (url) {
   const path1Re = toRegexp('/playlist/:id')
-  const path2Re = toRegexp('/playlist/:id/view')
+  const path2Re = toRegexp('/playlist/:id/:mode')
   const [, id] = path1Re.test(url) ? path1Re.exec(url) : path2Re.exec(url)
   return getSaveRefs(id).then(sequence =>
     Promise.all(sequence.map(({ gameRef }) => unfurlGame(`/game/${gameRef}`)))
