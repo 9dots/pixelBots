@@ -3,8 +3,10 @@ const firebase = require('firebase')
 const fs = require('fs-extra')
 const path = require('path')
 
+const ref = process.env.VERSION === 'V1' ? '/v1Version' : '/versionNumber'
+console.log(ref)
 firebase.initializeApp(config)
-const versionRef = firebase.database().ref('/versionNumber')
+const versionRef = firebase.database().ref(ref)
 
 fs
   .readFile(path.resolve(__dirname, 'public', 'index.html'), 'utf8')

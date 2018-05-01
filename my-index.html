@@ -14,7 +14,19 @@
 </head>
 
 <body>
-  <div id="app"></div>
+  <div id="app">
+    <span class="vui-text" style="position: absolute; margin: auto; width: 200px; height: 100px; text-align: center; top: 0px; right: 0px; bottom: 0px; left: 0px;">
+      <div class="vui-block" style="margin-top: 16px;">
+        <span class="vui-text" style="line-height: 30px; font-weight: lighter;">Loading…</span>
+      </div>
+      <div class="vui-block" style="width: 80px; height: 80px; justify-content: center; align-items: center; display: flex; animation: spin 6s ease-in-out infinite; margin: auto;">
+        <div class="vui-block" style="margin-top: 0px; margin-bottom: 0px; position: absolute; display: inline-block; background-color: rgb(221, 102, 92); border-radius: 9999px; width: 15px; height: 15px; transform: translateY(20px); animation: wave 2s ease-in-out 0.1s infinite;"></div>
+        <div class="vui-block" style="margin-top: 0px; margin-bottom: 0px; position: absolute; display: inline-block; background-color: rgb(235, 191, 46); border-radius: 9999px; width: 15px; height: 15px; transform: translateX(20px); animation: wave 2s ease-in-out 0.2s infinite;"></div>
+        <div class="vui-block" style="margin-top: 0px; margin-bottom: 0px; position: absolute; display: inline-block; background-color: rgb(89, 189, 130); border-radius: 9999px; width: 15px; height: 15px; transform: translateY(-20px); animation: wave 2s ease-in-out 0.3s infinite;"></div>
+        <div class="vui-block" style="margin-top: 0px; margin-bottom: 0px; position: absolute; display: inline-block; background-color: rgb(37, 168, 224); border-radius: 9999px; width: 15px; height: 15px; transform: translateX(-20px); animation: wave 2s ease-in-out 0.4s infinite;"></div>
+      </div>
+    </span>
+  </div>
   <script>hljs.initHighlightingOnLoad()</script>
 </body>
 

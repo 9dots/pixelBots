@@ -6,8 +6,11 @@
   "scripts": {
     "config-dev": "firebase use artbot-dev; cross-env NODE_ENV='dev' node config.js",
     "config-prod": "firebase use artbot-26016; cross-env NODE_ENV='production' node config.js",
+    "config-v1": "firebase use artbot-v1; cross-env NODE_ENV='production' node config.js",
     "build": "yarn run cleanUp; webpack -p --config webpack.config.prod.js",
+    "build-v1": "yarn run cleanUp; webpack -p --config webpack.config.v1.js",
     "deploy": "yarn run config-prod; yarn run build; firebase deploy --only hosting; node updateHash.js",
+    "deploy-v1": "yarn run config-v1; yarn run build-v1; firebase deploy --only hosting; cross-env VERSION='V1' node updateHash.js",
     "cleanUp": "rm -rf public/index.html; rm -rf public/*.js",
     "deploy-dev": "yarn cleanUp; yarn config-dev; webpack -p; firebase deploy --only hosting",
     "test": "webpack --config webpack.config.test.js",
