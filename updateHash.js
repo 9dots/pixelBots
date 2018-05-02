@@ -10,7 +10,7 @@ const versionRef = firebase.database().ref(ref)
 
 fs
   .readFile(path.resolve(__dirname, 'public', 'index.html'), 'utf8')
-  .then(html => html.match(/(?:[a-z1-9]*)(?=\.app)/))
+  .then(html => html.match(/(?:[a-zA-Z1-9]*)(?=\.app)/))
   .then(match => (match ? versionRef.set(match[0]) : Promise.resolve()))
   .then(() => firebase.app().delete())
   .then(() => console.log('done'))
