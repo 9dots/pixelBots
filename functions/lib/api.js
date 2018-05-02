@@ -8,8 +8,9 @@
  * weoAuth
  */
 
-const solutionChecker = require('./solutionChecker')
 const uploadAnimationThumb = require('./uploadAnimationThumb')
+const solutionChecker = require('./solutionChecker')
+const createInstance = require('./createInstance')
 const checkUserEmail = require('./checkUserEmail')
 const createNewUser = require('./createNewUser')
 const pinAssignment = require('./pinAssignment')
@@ -19,6 +20,7 @@ const copyPlaylist = require('./copyPlaylist')
 const cors = require('cors')({ origin: true })
 const weoAuth = require('./weoAuth')
 const express = require('express')
+const unfurl = require('./unfurl')
 // const admin = require('firebase-admin')
 
 const app = express()
@@ -28,14 +30,16 @@ app.use(cors)
 // app.use(authenticate)
 
 app.get('/api/keepAlive', (req, res) => res.send({ status: 'success' }))
+app.post('/api/uploadAnimationThumb', uploadAnimationThumb)
+app.post('/api/solutionChecker', solutionChecker)
 app.post('/api/checkUserEmail', checkUserEmail)
-app.post('/api/copyPlaylist', copyPlaylist)
+app.post('/api/createInstance', createInstance)
 app.post('/api/createNewUser', createNewUser)
 app.post('/api/pinAssignment', pinAssignment)
-app.post('/api/solutionChecker', solutionChecker)
 app.post('/api/checkUsername', checkUsername)
-app.post('/api/uploadAnimationThumb', uploadAnimationThumb)
+app.post('/api/copyPlaylist', copyPlaylist)
 app.post('/api/weoAuth', weoAuth)
+app.post('/api/unfurl', unfurl)
 app.get('/api', (req, res) => res.send('hello'))
 
 // Expose the API as a function

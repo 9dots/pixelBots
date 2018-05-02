@@ -2,12 +2,9 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var segmentKey = require('./segmentKey')
 var webpack = require('webpack')
-var marked = require('marked')
 var path = require('path')
 var net = require('net')
 var fs = require('fs')
-
-const renderer = new marked.Renderer()
 
 console.log('prod config')
 

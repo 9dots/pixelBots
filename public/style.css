@@ -38,6 +38,10 @@ body {
   font-family: 'Lato', 'Roboto', sans-serif;
 }
 
+svg text {
+  user-select: none;
+}
+
 [disabled] {
   pointer-events: none;
   user-select: none;

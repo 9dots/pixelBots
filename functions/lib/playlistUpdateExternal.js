@@ -41,7 +41,9 @@ module.exports = functions.database
 
               acc[id] = {
                 complete: true,
-                url: `/playlist/${playlistRef}/play/${instRef}/play/${idx}/results`
+                url: `/playlist/${playlistRef}/play/${instRef}/play/${
+                  idx
+                }/results`
               }
               return acc
             }, {})
