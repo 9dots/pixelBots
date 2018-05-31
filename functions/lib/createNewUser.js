@@ -34,10 +34,7 @@ module.exports = (req, res) => {
     .then(() => admin.auth().createUser({ displayName, email }))
     .then(updateRefsWithUser)
     .then(() => res.status(200).send({ status: 'success' }))
-    .catch(e => {
-      console.error(e)
-      res.status(200).send({ status: 'failed', payload: e })
-    })
+    .catch(e => res.status(200).send({ status: 'failed', payload: e }))
 
   function updateRefsWithUser (user) {
     return Promise.all([

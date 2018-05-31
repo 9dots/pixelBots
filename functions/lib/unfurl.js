@@ -19,8 +19,8 @@ const unfurls = ['playlist', 'game']
 
 module.exports = (req, res) => {
   const { taskUrl } = req.body
-  const task = url.parse(taskUrl).pathname
-  return unfurl(task)
+  return parseTaskUrl(taskUrl)
+    .then(unfurl)
     .then(data => res.send({ ok: true, tasks: formatTasks(data) }))
     .catch(e => res.send({ ok: false, error: e }))
 }
@@ -32,6 +32,16 @@ function formatTasks (data) {
       url: url.resolve(origin, task.url)
     })
   )
+}
+
+function parseTaskUrl (task) {
+  return new Promise((resolve, reject) => {
+    try {
+      return resolve(url.parse(task).pathname)
+    } catch (e) {
+      return reject(e)
+    }
+  })
 }
 
 function unfurl (url) {

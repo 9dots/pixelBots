@@ -9,28 +9,22 @@ const path1Re = toRegexp('/game/:id')
 const origin = 'https://v1.pixelbots.io'
 
 module.exports = (req, res) => {
-  const { taskUrl, update } = req.body
-  const task = url.parse(taskUrl).pathname
-  try {
-    const [, id] = path1Re.exec(task)
-    return savedRef
-      .push({ externalUpdate: update })
-      .then(snap => snap.key)
-      .then(instance =>
-        res.send({
-          ok: true,
-          instance: formatRes(`/game/${id}/instance/${instance}`)
-        })
-      )
-      .catch(sendError)
-  } catch (e) {
-    console.error('error', e)
-    return sendError('not_found')
-  }
+  const { tasks } = req.body
+  return Promise.all(tasks.map(getInstance))
+    .then(instances => res.send({ ok: true, instances }))
+    .catch(e => res.send({ ok: false, error: e }))
+}
 
-  function sendError (e) {
-    return res.send({ ok: false, error: e })
-  }
+function getInstance ({ taskUrl, update }) {
+  const task = url.parse(taskUrl).pathname
+  const [, id] = path1Re.exec(task)
+  return savedRef
+    .push({ externalUpdate: update })
+    .then(snap => snap.key)
+    .then(instance => ({
+      instance: formatRes(`/game/${id}/instance/${instance}`),
+      id: update.id
+    }))
 }
 
 function formatRes (instance) {
