@@ -3,7 +3,6 @@ image: node:latest
 cache:
   paths:
     - node_modules/
-    - app/bower_components
 
 deploy_production:
   stage: deploy
