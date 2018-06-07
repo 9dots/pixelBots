@@ -1,0 +1,5 @@
+{
+  "name": "GameMapView",
+  "main": "GameMapView.js",
+  "browser": "GameMapView.js"
+}
