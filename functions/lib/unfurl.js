@@ -28,7 +28,7 @@ module.exports = (req, res) => {
 function formatTasks (data) {
   return [].concat(data).map(task =>
     Object.assign({}, task, {
-      type: 'assignment',
+      type: 'practice',
       url: url.resolve(origin, task.url)
     })
   )
