@@ -13,6 +13,7 @@ const linksRef = db.ref('/links')
 const path2Re = toRegexp('/playlist/:id/:mode')
 const path1Re = toRegexp('/playlist/:id')
 const gameRe = toRegexp('/game/:id')
+const activityRe = toRegexp('/activity/:id/:index')
 
 const origin = 'https://v1.pixelbots.io'
 const unfurls = ['playlist', 'game']
@@ -28,7 +29,7 @@ module.exports = (req, res) => {
 function formatTasks (data) {
   return [].concat(data).map(task =>
     Object.assign({}, task, {
-      type: 'assignment',
+      type: 'practice',
       url: url.resolve(origin, task.url)
     })
   )
@@ -49,6 +50,8 @@ function unfurl (url) {
     return unfurlGame(url)
   } else if (path1Re.test(url) || path2Re.test(url)) {
     return unfurlPlaylist(url)
+  } else if (activityRe.test(url)) {
+    return unfurlActivity(url)
   } else {
     return unfurlShareLink(url)
   }
@@ -67,6 +70,17 @@ function unfurlShareLink (url) {
     })
 }
 
+function unfurlActivity (url) {
+  const [, id, index] = path1Re.test(url)
+    ? path1Re.exec(url)
+    : path2Re.exec(url)
+  return getPlaylistSequence(id).then(sequence => {
+    if (!sequence[index]) throw new Error('not_found')
+    const gameRef = sequence[index].gameRef
+    return unfurlGame(`/game/${gameRef}`)
+  })
+}
+
 function unfurlGame (url) {
   const [, id] = gameRe.exec(url)
   return gamesRef
@@ -81,15 +95,13 @@ function unfurlGame (url) {
 }
 
 function unfurlPlaylist (url) {
-  const path1Re = toRegexp('/playlist/:id')
-  const path2Re = toRegexp('/playlist/:id/:mode')
   const [, id] = path1Re.test(url) ? path1Re.exec(url) : path2Re.exec(url)
-  return getSaveRefs(id).then(sequence =>
+  return getPlaylistSequence(id).then(sequence =>
     Promise.all(sequence.map(({ gameRef }) => unfurlGame(`/game/${gameRef}`)))
   )
 }
 
-function getSaveRefs (id) {
+function getPlaylistSequence (id) {
   return playlistRef
     .child(id)
     .once('value')
