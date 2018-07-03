@@ -53,3 +53,4 @@ src/.DS_Store
 
 functions/serviceAccount.json
 functions/service.json
+functions/secrets.js
