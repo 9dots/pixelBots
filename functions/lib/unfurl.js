@@ -71,9 +71,7 @@ function unfurlShareLink (url) {
 }
 
 function unfurlActivity (url) {
-  const [, id, index] = path1Re.test(url)
-    ? path1Re.exec(url)
-    : path2Re.exec(url)
+  const [, id, index] = activityRe.exec(url)
   return getPlaylistSequence(id).then(sequence => {
     if (!sequence[index]) throw new Error('not_found')
     const gameRef = sequence[index].gameRef
