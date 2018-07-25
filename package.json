@@ -103,6 +103,7 @@
     "strip": "^3.0.0",
     "to-markdown": "^3.0.3",
     "type": "0.0.3",
+    "uuid": "^3.3.2",
     "vdux": "^3.0.10",
     "vdux-ace": "^1.0.11",
     "vdux-containers": "^1.2.8",
