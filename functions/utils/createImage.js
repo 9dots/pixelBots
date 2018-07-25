@@ -1,22 +1,27 @@
 const gPalette = require('google-material-color-palette-json')
-const gm = require('gm').subClass({imageMagick: true})
+const gm = require('gm').subClass({ imageMagick: true })
+const Canvas = require('canvas-prebuilt')
 const forEach = require('@f/foreach')
 const reduce = require('@f/reduce')
 const Promise = require('bluebird')
-const Canvas = require('canvas-prebuilt')
 const _ = require('lodash')
 const fs = require('fs')
 
-const palette = _.drop(reduce(
-  (arr, value, key) => [...arr, {
-    name: key,
-    value: value['shade_500'] || value
-  }],
-  [],
-  gPalette
-))
+const palette = _.drop(
+  reduce(
+    (arr, value, key) => [
+      ...arr,
+      {
+        name: key,
+        value: value['shade_500'] || value
+      }
+    ],
+    [],
+    gPalette
+  )
+)
 
-const pal = palette.reduce((obj, {name, value}) => {
+const pal = palette.reduce((obj, { name, value }) => {
   obj[name] = value
   return obj
 }, {})
@@ -32,7 +37,7 @@ const baseColors = _.merge(pal, {
 
 function getBaseColors (pal) {
   if (!Array.isArray(pal)) return pal
-  return pal.reduce((obj, {name, value}) => {
+  return pal.reduce((obj, { name, value }) => {
     obj[name] = value
     return obj
   }, {})
@@ -40,25 +45,29 @@ function getBaseColors (pal) {
 
 function shrinkImage (path, size) {
   return new Promise((resolve, reject) => {
-    gm(path)
-      .thumb(size, size, path, 100, (err) => {
-        if (err) { return reject(err) }
-        return resolve(path)
-      })
+    gm(path).thumb(size, size, path, 100, err => {
+      if (err) {
+        return reject(err)
+      }
+      return resolve(path)
+    })
   })
 }
 
 function shrinkImages (imgs) {
   return new Promise((resolve, reject) => {
-    if (typeof (imgs) === 'string') {
+    if (typeof imgs === 'string') {
       shrinkImage(imgs, 150)
         .then(() => resolve())
-        .catch((e) => reject(e))
+        .catch(e => reject(e))
     } else {
-      const shrinkPromises = imgs.map((img) => shrinkImage(img, 150 / 2))
+      const shrinkPromises = imgs.map(img => shrinkImage(img, 150 / 2))
       Promise.all(shrinkPromises)
-        .then((res) => { console.log('done shrinking'); return resolve(res) })
-        .catch((e) => reject(e))
+        .then(res => {
+          console.log('done shrinking')
+          return resolve(res)
+        })
+        .catch(e => reject(e))
     }
   })
 }
@@ -67,7 +76,7 @@ function append (imgs, file, ltr = false) {
   return new Promise((resolve, reject) => {
     gm(0, 0)
       .append(imgs, ltr)
-      .write(file, (err) => {
+      .write(file, err => {
         if (err) return reject(err)
         return resolve(file)
       })
@@ -80,39 +89,47 @@ function playlistImage (name, imgs) {
     if (imgs.length < 4) {
       return resolve(imgs[0])
     }
-    const column1 = append(imgs.filter((img, i) => i % 2 === 0), path + '/column1.png')
-    const column2 = append(imgs.filter((img, i) => i % 2 === 1), path + '/column2.png')
+    const column1 = append(
+      imgs.filter((img, i) => i % 2 === 0),
+      path + '/column1.png'
+    )
+    const column2 = append(
+      imgs.filter((img, i) => i % 2 === 1),
+      path + '/column2.png'
+    )
     Promise.all([column1, column2])
-      .then((res) => {
+      .then(res => {
         const file = `${path}/${name}.png`
         append(res, file, true)
           .then(() => resolve(file))
-          .catch((e) => reject(e))
+          .catch(e => reject(e))
       })
-      .catch((e) => reject(e))
+      .catch(e => reject(e))
   })
 }
 
-function drawFrame (size, targetPainted, writePath, file, canvas, palette = baseColors) {
+function drawFrame (
+  size,
+  targetPainted,
+  writePath,
+  ctx,
+  canvas,
+  palette = baseColors
+) {
   const thisPalette = getBaseColors(palette)
   return new Promise((resolve, reject) => {
     forEach((color, key) => {
-      const coords = key.split(',').map((coord) => parseInt(coord))
-      file.beginPath()
-      file.rect(
-        (coords[1] * size),
-        (coords[0] * size),
-        size,
-        size
-      )
-      file.fillStyle = thisPalette[color] || 'white'
-      file.fill()
+      const coords = key.split(',').map(coord => parseInt(coord))
+      console.log(coords, size, thisPalette[color] || 'white')
+      ctx.beginPath()
+      ctx.rect(coords[1] * size, coords[0] * size, size, size)
+      ctx.fillStyle = thisPalette[color] || 'white'
+      ctx.fill()
     }, targetPainted)
     const writeStream = fs.createWriteStream(writePath)
-    canvas
-      .pngStream()
-      .on('data', (data) => writeStream.write(data))
-      .on('end', () => resolve(writePath))
+    const stream = canvas.createPNGStream()
+    stream.pipe(writeStream)
+    writeStream.on('finish', () => resolve(writePath))
   })
 }
 
