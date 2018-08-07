@@ -3,7 +3,7 @@
     "rules": "database.rules.json"
   },
   "hosting": {
-    "public": "public",
+    "public": "./public",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -11,21 +11,10 @@
       "**/functions/**",
       "**/lib/**"
     ],
-    "redirects": [
-      {
-        "source": "/public/:file",
-        "destination": "/:file",
-        "type": 301
-      }
-    ],
     "rewrites": [
       {
         "source": "/api/**",
         "function": "api"
-      },
-      {
-        "source": "**/:file*.js",
-        "destination": "/:file.js"
       },
       {
         "source": "**",

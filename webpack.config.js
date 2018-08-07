@@ -23,7 +23,7 @@ function config (env) {
     output: {
       filename: '[hash].[name].js',
       path: path.resolve(__dirname, 'public'),
-      publicPath: '/public/'
+      publicPath: '/'
     },
     resolve: {
       modules: [path.resolve(__dirname, 'lib'), 'node_modules']
