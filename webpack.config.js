@@ -84,7 +84,7 @@ function config (env) {
       contentBase: path.join(__dirname, 'public'),
       compress: true,
       historyApiFallback: {
-        index: '/public/index.html'
+        index: '/index.html'
       },
       overlay: true
       // index: '/public/index.html'
